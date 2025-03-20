@@ -2,7 +2,7 @@ import React from 'react';
 import { BiCalendarAlt, BiTrash, BiHeart } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { calculateDiscountedPrice } from '../../utils/discountedPrice';
-import { formatNumber } from '../../utils/format';
+import { formatNumber, formatDate } from '../../utils/format';
 
 const typeMapping = {
   pension: '펜션',
@@ -78,7 +78,9 @@ const ProductCard = ({ favorite }) => {
                     <BiCalendarAlt className="text-base" />
                     <p className="font-bold">체크인</p>
                   </div>
-                  <time dateTime={favorite.check_in}>{favorite.check_in}</time>
+                  <time dateTime={favorite.check_in}>
+                    {formatDate(favorite.check_in)}
+                  </time>
                 </div>
 
                 <div className="flex gap-4 items-center">
@@ -87,7 +89,7 @@ const ProductCard = ({ favorite }) => {
                     <p className="font-bold">체크아웃</p>
                   </div>
                   <time dateTime={favorite.check_out}>
-                    {favorite.check_out}
+                    {formatDate(favorite.check_out)}
                   </time>
                 </div>
               </div>

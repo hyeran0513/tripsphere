@@ -1,77 +1,113 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiUser, BiCalendarAlt } from 'react-icons/bi';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
-import { formatNumber } from '../../utils/format';
+import { compareToday, formatDate, formatNumber } from '../../utils/format';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebase/firebaseConfig';
+import { useUserOrders } from '../../hooks/useOrderData';
 
-const OrderHistory = ({ orderInfo }) => {
+const OrderHistory = () => {
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    // 로그인 상태 감지
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid); // 로그인
+      } else {
+        setUserId(null); // 로그아웃
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const { data: orderInfo, isLoading, error } = useUserOrders(userId);
+
+  if (isLoading) return <>로딩 중...</>;
+  if (error) return <>오류</>;
+
   return (
-    <ul className="mt-8 list bg-base-100 rounded-box shadow-md">
-      <li className="p-4 pb-2 text-xs opacity-60 tracking-wide flex justify-between">
-        <p className="flex items-center gap-2">
-          <HiOutlineTicket /> 주문 내역
-        </p>
+    <div>
+      <div className="my-8 p-4 pb-2 text-xs opacity-60 tracking-wide flex justify-between">
+        <h2 className="flex items-center gap-2 font-bold text-xl">
+          <HiOutlineTicket size={20} /> 주문 내역
+        </h2>
 
         <Link
           to="/orderhistory"
           className="text-primary font-bold">
           더 보기
         </Link>
-      </li>
+      </div>
 
-      {orderInfo.map(order => (
-        <li className="list-row flex-col flex">
-          <div className="py-2 border-b border-stone-200 flex justify-between items-center">
-            <div>{order.order_date}</div>
-          </div>
+      <ul className="mt-8 list bg-base-100 rounded-box shadow-md">
+        {orderInfo?.map((order, index) => (
+          <li
+            className="list-row flex-col flex"
+            key={index}>
+            <div className="flex justify-between">
+              <div className="flex gap-6">
+                <img
+                  className="size-24 rounded-box"
+                  src={
+                    order.accommodation?.images?.[0] ||
+                    'https://via.placeholder.com/100'
+                  }
+                  alt={order.accommodation?.name || '숙소 정보 없음'}
+                />
 
-          <div className="flex justify-between">
-            <div className="flex gap-6">
-              <img
-                className="size-20 rounded-box"
-                src={order.accommodation.images[0]}
-                alt={order.accommodation.name}
-              />
+                <div className="flex flex-col">
+                  <h2 className="text-md opacity-60 ">
+                    {formatDate(order.order_date)}
+                    {order.payment_status === 'completed' ? '결제완료' : '취소'}
+                  </h2>
 
-              <div className="flex flex-col">
-                <h2 className="text-md font-bold">
-                  {order.accommodation.name}
-                </h2>
-                <div className="mb-4 text-xs uppercase opacity-60">
-                  예약번호 : {order.id}
-                </div>
-
-                <div className="flex-col flex gap-[4px] mt-auto">
-                  <div className="flex items-center gap-2 text-xs">
-                    <BiUser />
-                    <div className="mr-1 text-xs">
-                      인원수 {order.guest_count}
-                    </div>
-                    <div>
-                      (성인: {order.adults}명 소아: {order.children}명)
-                    </div>
+                  <div className="mb-2 text-xs uppercase font-bold">
+                    예약번호 : {order.id}
                   </div>
 
-                  <div className="flex items-center gap-10">
+                  <div className="mb-2 text-md uppercase font-bold">
+                    {order.accommodation?.name}
+                  </div>
+
+                  <div className="flex-col flex gap-[4px] mt-auto">
                     <div className="flex items-center gap-2 text-xs">
-                      <BiCalendarAlt />
-                      <span>체크인:</span> <span>{order.check_in}</span>
+                      <BiUser />
+                      <div className="mr-1 text-xs">
+                        인원수 (성인: {order.guest_count.adults}명 소아:
+                        {order.guest_count.children}
+                        명)
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs">
-                      <BiCalendarAlt />
-                      <span>체크아웃:</span> <span>{order.check_out}</span>
+                    <div className="flex items-center gap-10">
+                      <div className="flex items-center gap-2 text-xs">
+                        <BiCalendarAlt />
+                        <span>체크인:</span>
+                        <span>{formatDate(order.check_in)}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs">
+                        <BiCalendarAlt />
+                        <span>체크아웃:</span>
+                        <span>{formatDate(order.check_out)}</span>
+                      </div>
                     </div>
+                    {compareToday(order.check_in) && (
+                      <div class="badge badge-soft badge-primary text-xs">
+                        {compareToday(order.check_in)}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
+              <div>{formatNumber(order.total_price)}원</div>
             </div>
-
-            <div>{formatNumber(order.total_price)}원</div>
-          </div>
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   getDoc,
 } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebaseConfig';
+import { fetchAccomData } from './productService.';
 
 // 사용자 찜 목록 가져오기
 const getUserWishlist = async () => {
@@ -60,4 +61,17 @@ export const checkFavorite = async (accommodationId) => {
   if (!userData) return;
 
   return userData.wishlist.includes(accommodationId);
+};
+
+// 찜 목록 숙소 정보 조회
+export const getFavoriteAccomm = async () => {
+  const userData = await getUserWishlist();
+
+  const accomPromises = userData.wishlist.map(async (item) => {
+    return fetchAccomData(item);
+  });
+
+  const accommodations = await Promise.all(accomPromises);
+
+  return accommodations.filter((accom) => accom !== null);
 };

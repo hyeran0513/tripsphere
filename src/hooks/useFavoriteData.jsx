@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { checkFavorite, controlFavorite } from '../services/favoriteService';
+import {
+  checkFavorite,
+  controlFavorite,
+  getFavoriteAccomm,
+} from '../services/favoriteService';
 
 // 찜 버튼 제어
 export const useControlFavorite = (showToast) => {
@@ -31,5 +35,14 @@ export const useCheckFavorite = (accommodationId) => {
     queryKey: ['favorite', accommodationId],
     queryFn: () => checkFavorite(accommodationId),
     enabled: !!accommodationId,
+  });
+};
+
+// 찜 목록 숙소 정보 조회
+export const useFavoriteAccommData = (userId) => {
+  return useQuery({
+    queryKey: ['favorite', userId],
+    queryFn: () => getFavoriteAccomm(),
+    enabled: !!userId,
   });
 };

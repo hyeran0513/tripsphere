@@ -126,7 +126,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                       <ul
                         role="list"
                         className="flex flex-wrap gap-4">
-                        {accommodations.map(accommodation => (
+                        {accommodations.map((accommodation) => (
                           <li
                             key={accommodation.id}
                             className="flex w-[48%] h-auto py-6 border border-gray-200 rounded-lg p-4">
@@ -165,13 +165,11 @@ const ShoppingCart = ({ open, setOpen }) => {
                                     <BiTrash className="size-[1.2em]" />
                                   </button>
                                 </div>
-
                                 <h2 className="mt-2 transition-colors card-title text-lg pb-3.5">
                                   <div className="line-clamp-1">
                                     {accommodation.name}
                                   </div>
                                 </h2>
-
                                 {/* 가격정보 */}
                                 <div className="flex flex-col border-b-1 border-gray-200 pb-3.5">
                                   <div className="flex items-center gap-2">
@@ -194,7 +192,6 @@ const ShoppingCart = ({ open, setOpen }) => {
                                     {formatNumber(accommodation.final_price)}원
                                   </div>
                                 </div>
-
                                 <div
                                   className=""
                                   title="패키지 상세정보들">

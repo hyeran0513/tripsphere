@@ -58,3 +58,16 @@ export const formatToTimestamp = (dateStr) => {
   const parsedDate = parse(dateStr, 'yyyy. M. d.', new Date());
   return Timestamp.fromDate(parsedDate);
 };
+
+// 오늘과 비교
+export const compareToday = (timestamp) => {
+  const checkoutDate = new Date(timestamp.seconds * 1000);
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+  checkoutDate.setHours(0, 0, 0, 0);
+
+  if (today > checkoutDate) {
+    return '지난 예약 내역';
+  }
+};

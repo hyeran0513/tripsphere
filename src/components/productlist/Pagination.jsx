@@ -27,12 +27,15 @@ const Pagination = ({ data }) => {
   // 페이지 변경
   const handlePageChange = (page) => {
     console.log('page : ', page);
+
     if (page > 0 && page <= Math.ceil(data?.length / itemsPerPage)) {
       setSearchParams((prevParams) => {
         const newParams = new URLSearchParams(prevParams);
         newParams.set('page', page);
         return newParams; //리턴 안하면 url 변경 안됨.
       });
+    } else {
+      alert('이동할 수 없는 페이지입니다.');
     }
 
     moveScroll();
@@ -87,7 +90,8 @@ const Pagination = ({ data }) => {
               className="inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
               onClick={(e) => {
                 e.preventDefault();
-                handlePageChange(currentPage - 1);
+                // 현재목록에서 이전 목록의 마지막으로 이동.
+                handlePageChange(currentPage - (currentPage % itemsPerPage));
               }}>
               <span className="sr-only">이전</span>
               <BiChevronLeft
@@ -121,7 +125,10 @@ const Pagination = ({ data }) => {
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:text-white"
               onClick={(e) => {
                 e.preventDefault();
-                handlePageChange(currentPage + 1);
+                handlePageChange(
+                  // 현재목록에서 다음 목록의 첫번째로 이동.
+                  currentPage + (itemsPerPage - currentPage) + 1,
+                );
               }}>
               <span className="sr-only">다음</span>
               <BiChevronRight

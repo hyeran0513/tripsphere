@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
 
@@ -19,13 +19,15 @@ const Pagination = ({ data }) => {
   //   }
   // }, [currentPage, data]);
 
+  useEffect(() => {}, [currentPage, data]);
   // 페이지 변경
   const handlePageChange = (page) => {
+    console.log('page : ', page);
     if (page > 0 && page <= Math.ceil(data?.length / itemsPerPage)) {
       setSearchParams((prevParams) => {
         const newParams = new URLSearchParams(prevParams);
         newParams.set('page', page);
-        return newParams;
+        return newParams; //리턴 안하면 url 변경 안됨.
       });
     }
   };
@@ -40,7 +42,8 @@ const Pagination = ({ data }) => {
         <a
           href="#"
           className="relative inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             handlePageChange(currentPage - 1);
           }}>
           Previous
@@ -48,7 +51,8 @@ const Pagination = ({ data }) => {
         <a
           href="#"
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             handlePageChange(currentPage + 1);
           }}>
           Next
@@ -73,9 +77,12 @@ const Pagination = ({ data }) => {
             aria-label="Pagination"
             className="isolate inline-flex -space-x-px rounded-md shadow-xs">
             <a
-              href="#"
+              href=""
               className="inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-              onClick={() => handlePageChange(currentPage - 1)}>
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(currentPage - 1);
+              }}>
               <span className="sr-only">이전</span>
               <BiChevronLeft
                 aria-hidden="true"
@@ -94,7 +101,8 @@ const Pagination = ({ data }) => {
                         ? 'bg-indigo-600 text-white'
                         : ''
                     }`}
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       handlePageChange(pageNumber);
                     }}>
                     {pageNumber}
@@ -103,9 +111,12 @@ const Pagination = ({ data }) => {
               },
             )}
             <a
-              href="#"
+              href=""
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:text-white"
-              onClick={() => handlePageChange(currentPage + 1)}>
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(currentPage + 1);
+              }}>
               <span className="sr-only">다음</span>
               <BiChevronRight
                 aria-hidden="true"

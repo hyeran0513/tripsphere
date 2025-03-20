@@ -19,6 +19,10 @@ const Pagination = ({ data }) => {
   //   }
   // }, [currentPage, data]);
 
+  const moveScroll = () => {
+    scroll({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {}, [currentPage, data]);
   // 페이지 변경
   const handlePageChange = (page) => {
@@ -30,6 +34,8 @@ const Pagination = ({ data }) => {
         return newParams; //리턴 안하면 url 변경 안됨.
       });
     }
+
+    moveScroll();
   };
 
   if (!data || data.length === 0) {

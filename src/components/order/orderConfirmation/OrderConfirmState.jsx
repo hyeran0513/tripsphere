@@ -1,18 +1,18 @@
 import { FcApproval, FcCancel, FcClock, FcQuestions } from 'react-icons/fc';
-import OrderList from '../orderList';
+import OrderList from '../OrderList';
 
 const OrderState = ({ orderInfo }) => {
   let State;
   let message;
 
   const hasPending = orderInfo.some(
-    order => order.payment_status === 'pending',
+    (order) => order.payment_status === 'pending',
   );
   const hasCanceled = orderInfo.some(
-    order => order.payment_status === 'canceled',
+    (order) => order.payment_status === 'canceled',
   );
   const allCompleted = orderInfo.every(
-    order => order.payment_status === 'completed',
+    (order) => order.payment_status === 'completed',
   );
 
   if (hasPending) {

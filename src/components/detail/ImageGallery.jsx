@@ -43,10 +43,12 @@ const ImageGallery = ({ images }) => {
         className="mySwiper mt-4">
         {images.map((image, index) => (
           <SwiperSlide key={`children-${index}`}>
-            <img
-              src={image}
-              className="rounded-lg"
-            />
+            <div className="h-[140px] border overflow-hidden rounded-lg">
+              <img
+                src={image}
+                className="w-full h-full"
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

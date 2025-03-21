@@ -1,7 +1,7 @@
 import React from 'react';
 import { BiCalendarAlt, BiHeart } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-import { formatNumber } from '../../utils/format';
+import { formatDate, formatNumber } from '../../utils/format';
 import KakaoShareButton from '../common/KakaoShareButton';
 
 const ProductCard = ({ index, product, arrayLength }) => {
@@ -61,7 +61,7 @@ const ProductCard = ({ index, product, arrayLength }) => {
               </div>
 
               <div className="badge badge-soft badge-info">
-                {product.location.place_name}
+                {product.location.city} {product.location.sub_city}
               </div>
             </div>
 
@@ -101,7 +101,7 @@ const ProductCard = ({ index, product, arrayLength }) => {
                     <p className="font-bold">체크인</p>
                   </div>
                   <time dateTime={product.check_in.toLocaleString()}>
-                    {product.check_in.toLocaleString()}
+                    {formatDate(product.check_in)}
                   </time>
                 </div>
 
@@ -111,7 +111,7 @@ const ProductCard = ({ index, product, arrayLength }) => {
                     <p className="font-bold">체크아웃</p>
                   </div>
                   <time dateTime={product.check_out.toLocaleString()}>
-                    {product.check_out.toLocaleString()}
+                    {formatDate(product.check_out)}
                   </time>
                 </div>
               </div>
@@ -142,7 +142,7 @@ const ProductCard = ({ index, product, arrayLength }) => {
                   </p>
                 </div>
 
-                <span> {product.discount_rate}% </span>
+                <span> {product.discount_rate * 100}% </span>
               </div>
             </div>
           </div>

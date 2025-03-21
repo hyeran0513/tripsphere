@@ -67,11 +67,12 @@ const serviceNames = {
 const Checkout = () => {
   const navigate = useNavigate();
   const [openDate, setOpenDate] = useState(false);
-  const { checkIn, checkOut, adultCount, childrenCount, totalPrice } =
-    useReservationStore();
+  // const { checkIn, checkOut, adultCount, childrenCount, totalPrice } =
+  //   useReservationStore();
+
   return (
     <div className="max-w-[1200px] mx-auto px-[20px] py-[40px] dark:text-gray-200">
-      <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
+      {/* <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
         checkIn: {checkIn}
         <br />
         checkOut: {checkOut}
@@ -79,7 +80,8 @@ const Checkout = () => {
         adultCount: {adultCount} <br />
         childrenCount: {childrenCount} <br />
         totalPrice: {totalPrice}
-      </div>
+      </div> */}
+
       <div className="flex space-y-6 gap-10 py-[30px] max-lg:flex-col max-lg:items-center">
         {/* 주문 결제 정보 */}
         <div className="flex-10/12 max-lg:w-full">
@@ -192,10 +194,8 @@ const Checkout = () => {
 
               <div className="card-actions justify-end">
                 <button
-                  type="submit"
-                  onClick={() =>
-                    navigate('/orderconfirmation', { replace: true })
-                  }
+                  type="button"
+                  onClick={() => navigate('/orderconfirmation')}
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
                   결제하기
                 </button>

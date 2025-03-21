@@ -69,12 +69,16 @@ const SideFilter = ({ setLoading, setError }) => {
 
   return (
     <aside
+      aria-label="숙소 검색 옵션 변경하기"
       className={`sidebar z-10 sticky top-5 ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
       <div className="flex mb-4 items-center justify-between">
         {isFormOpen && <div>검색 영역</div>}
         <button
           type="button"
           onClick={toggleForm}
+          aria-label={
+            isFormOpen ? '숙소 검색 옵션 열림' : '숙소 검색 옵션 닫힘'
+          }
           className={`border border-gray-200 px-0.5 py-2 ${
             isFormOpen ? 'rounded-l-md' : 'rounded-r-md'
           }`}>

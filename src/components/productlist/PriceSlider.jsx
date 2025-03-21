@@ -17,13 +17,13 @@ const PriceSlider = ({ step = 5 }) => {
     if (index === 0) {
       if (numValue >= range.max) {
         setMessage('최소값은 최대값보다 작아야 합니다.');
-        return;
+        // return;
       }
       setRangeMin(numValue);
     } else {
       if (numValue <= range.min) {
         setMessage('최대값은 최소값보다 커야 합니다.');
-        return;
+        // return;
       }
       setRangeMax(numValue);
       setMaxInput(numValue);
@@ -48,16 +48,14 @@ const PriceSlider = ({ step = 5 }) => {
     [setRangeMin, setRangeMax, rangeLimit.max, step],
   );
 
-  // useEffect(() => {
-  //   if (range.max >= rangeLimit.max) {
-  //     setMaxInput('최대');
-  //   } else {
-  //     setMaxInput(range.max);
-  //   }
-  // }, [range.max, rangeLimit.max]);
   useEffect(() => {
-    console.log('가격 범위 : ', range);
-  });
+    if (range.max >= rangeLimit.max) {
+      setMaxInput('최대');
+    } else {
+      setMaxInput(range.max);
+    }
+  }, [range.min, range.max]);
+
   return (
     <div className="w-full flex flex-col items-center">
       <div className="flex justify-between items-center mb-4 gap-4">
@@ -70,7 +68,7 @@ const PriceSlider = ({ step = 5 }) => {
             max={rangeLimit.max}
             step={1}
             onChange={(e) => updateByInput(0, e.target.value)}
-            className="border rounded-md px-1 py-1 w-14 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="border rounded-md px-1 py-1  text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </label>
         ~

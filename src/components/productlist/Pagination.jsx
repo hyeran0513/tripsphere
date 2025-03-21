@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
+import usePriceStore from '../../stores/usePriceStore';
 
 const Pagination = ({ data }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const initPageNumber = Number(searchParams.get('page')) || 1;
-  const [currentPage, setCurrentPage] = useState(initPageNumber);
+  const [currentPage, setCurrentPage] = useState(
+    Number(searchParams.get('page')) || 1,
+  );
   const [itemsPerPage] = useState(10);
   const [currentItems, setCurrentItems] = useState([]);
+  const { range } = usePriceStore();
 
   // 데이터 셋팅
-  // useEffect(() => {
-  //   if (data && data.length) {
-  //     const startIdx = (currentPage - 1) * itemsPerPage;
-  //     const endIdx = startIdx + itemsPerPage;
+  useEffect(() => {
+    if (data && data.length) {
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
 
-  //     setCurrentItems(data.slice(startIdx, endIdx));
-  //   }
-  // }, [currentPage, data]);
+      setCurrentItems(data.slice(startIdx, endIdx));
+    }
+  }, [currentPage, data, range.min, range.max]);
 
   const moveScroll = () => {
     scroll({ top: 0, behavior: 'smooth' });
   };
 
-  useEffect(() => {}, [currentPage, data]);
+  // useEffect(() => {
+  //   console.log('페이지 목록 이동 : ', currentPage);
+  // }, [currentPage, data]);
+
   // 페이지 변경
   const handlePageChange = (page) => {
     console.log('page : ', page);
@@ -32,13 +38,14 @@ const Pagination = ({ data }) => {
       setSearchParams((prevParams) => {
         const newParams = new URLSearchParams(prevParams);
         newParams.set('page', page);
-        return newParams; //리턴 안하면 url 변경 안됨.
+        //리턴 안하면 url 변경 안됨.
+        return newParams;
       });
+
+      moveScroll();
     } else {
       alert('이동할 수 없는 페이지입니다.');
     }
-
-    moveScroll();
   };
 
   if (!data || data.length === 0) {
@@ -49,7 +56,7 @@ const Pagination = ({ data }) => {
     <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6 mt-5">
       <div className="flex flex-1 justify-between sm:hidden">
         <a
-          href="#"
+          href=""
           className="relative inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           onClick={(e) => {
             e.preventDefault();
@@ -58,7 +65,7 @@ const Pagination = ({ data }) => {
           Previous
         </a>
         <a
-          href="#"
+          href=""
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           onClick={(e) => {
             e.preventDefault();

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import usePriceStore from '../../stores/usePriceStore';
 import useProductListStore from '../../stores/useProductListStore';
@@ -24,18 +24,9 @@ const ProductsPageList = ({ loading, error }) => {
     let array = [];
     async function filterWaiting() {
       setFilterLoading(true);
-      console.log(
-        'before await accomCheck(array); : ',
-        new Date().getMilliseconds(),
-      );
       await accomCheck(array);
-      console.log(
-        'after await accomCheck(array); : ',
-        new Date().getMilliseconds(),
-      );
       setFiltered([...array]);
       setFilterLoading(false);
-      console.log('filterted : ', array);
     }
     filterWaiting();
 
@@ -45,6 +36,8 @@ const ProductsPageList = ({ loading, error }) => {
 
   useEffect(() => {}, [filterLoading]);
 
+  const focus = useRef();
+
   const getPrice = useCallback((val) => {
     return val * 10000;
   });
@@ -52,19 +45,6 @@ const ProductsPageList = ({ loading, error }) => {
   const accomCheck = (array) => {
     const start = new Date().getMilliseconds();
     list.map((ele) => {
-      console.log(
-        'range.min : ',
-        getPrice(range.min),
-        ' ele.final_price : ',
-        ele.final_price,
-        'check max value : ',
-        range.max < rangeLimit.max ? getPrice(range.max) : Number.MAX_VALUE,
-        '\nrange.min <= ele.final_price  ',
-        getPrice(range.min) <= ele.final_price,
-        ' ele.final_price  <= max value : ',
-        ele.final_price <=
-          (range.max < rangeLimit.max ? getPrice(range.max) : Number.MAX_VALUE),
-      );
       if (
         getPrice(range.min) <= ele.final_price &&
         ele.final_price <=
@@ -75,20 +55,15 @@ const ProductsPageList = ({ loading, error }) => {
             duplicatedCheck(array, ele);
           }
         } else {
-          console.log('이거 추가함 : ', ele);
           duplicatedCheck(array, ele);
         }
       }
     });
     const end = new Date().getMilliseconds();
-
-    console.log('get Accom Array time gap : ', end - start);
   };
 
   const duplicatedCheck = (array, item) => {
     let isContain = false;
-
-    console.log(' filtered.length :', array.length);
 
     if (array.length < 1) {
       array.push(item);
@@ -98,7 +73,6 @@ const ProductsPageList = ({ loading, error }) => {
     array.map((ele) => {
       if (ele.id == item.id) {
         isContain = true;
-        console.log('이맛이 아니야!! 이놈 이미 들어가있어! : ', ele.id);
       }
     });
 
@@ -139,10 +113,16 @@ const ProductsPageList = ({ loading, error }) => {
                 index={index}
                 product={product}
                 arrayLength={array.length}
+                ref={focus}
               />
             ))}
       </ul>
-      {!filterLoading && <Pagination data={filtered} />}
+      {!filterLoading && (
+        <Pagination
+          data={filtered}
+          focus={focus}
+        />
+      )}
     </>
   );
 };

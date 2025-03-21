@@ -4,11 +4,11 @@ import { getAllAccomData } from '../../services/productListService';
 import useFilterStore from '../../stores/useFilterStore.js';
 import usePriceStore from '../../stores/usePriceStore.js';
 import useProductListStore from '../../stores/useProductListStore.js';
-import useRoomType from '../../stores/useRoomType';
 import CitySelector from '../common/CitySelector';
 import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
 import PriceSlider from './PriceSlider.jsx';
+import RoomTypeSelector from './RoomTypeSelect.jsx';
 
 const SideFilter = ({ setLoading, setError }) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
@@ -25,13 +25,6 @@ const SideFilter = ({ setLoading, setError }) => {
 
   const { range } = usePriceStore();
   const { list, setList, resetList } = useProductListStore();
-  const {
-    roomTypes,
-    defaultOption,
-    addRoomTypes,
-    delRoomTypes,
-    resetRoomTypes,
-  } = useRoomType();
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
@@ -62,10 +55,6 @@ const SideFilter = ({ setLoading, setError }) => {
     checkIn,
     checkOut,
   ]);
-
-  useEffect(() => {
-    console.log('저장된 결과를 필터링해야하는 옵션 변경');
-  }, [roomTypes, range.min, range.max]);
 
   return (
     <aside
@@ -101,28 +90,7 @@ const SideFilter = ({ setLoading, setError }) => {
           </fieldset>
 
           {/* 숙박 장소 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 p-3">
-            <legend className="fieldset-legend px-2 font-medium">
-              숙박 장소
-            </legend>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-              {['호텔', '펜션', '게스트하우스', '캠핑'].map((ele) => (
-                <label
-                  htmlFor={ele}
-                  key={ele}
-                  className="flex items-center space-x-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="checkbox"
-                    id={ele}
-                    name={ele}
-                  />
-                  <span>{ele}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
+          <RoomTypeSelector />
 
           {/* 예산 범위 선택 */}
           <fieldset className="rounded-lg border border-gray-200 px-3">

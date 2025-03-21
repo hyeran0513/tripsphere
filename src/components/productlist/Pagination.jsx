@@ -3,7 +3,7 @@ import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
 import usePriceStore from '../../stores/usePriceStore';
 
-const Pagination = ({ data }) => {
+const Pagination = ({ data, ref = '' }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get('page')) || 1,
@@ -41,7 +41,7 @@ const Pagination = ({ data }) => {
         //리턴 안하면 url 변경 안됨.
         return newParams;
       });
-
+      // ref.current.focus();
       moveScroll();
     } else {
       alert('이동할 수 없는 페이지입니다.');
@@ -57,6 +57,7 @@ const Pagination = ({ data }) => {
       <div className="flex flex-1 justify-between sm:hidden">
         <a
           href=""
+          aria-label={`이전페이지 ${currentPage + 1} 로 이동하기`}
           className="relative inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           onClick={(e) => {
             e.preventDefault();
@@ -66,6 +67,7 @@ const Pagination = ({ data }) => {
         </a>
         <a
           href=""
+          aria-label={`다음페이지 ${currentPage + 1} 로 이동하기`}
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           onClick={(e) => {
             e.preventDefault();
@@ -90,10 +92,15 @@ const Pagination = ({ data }) => {
         </div>
         <div>
           <nav
-            aria-label="Pagination"
+            aria-label="페이지 목록"
             className="isolate inline-flex -space-x-px rounded-md shadow-xs">
             <a
               href=""
+              aria-label={
+                currentPage - (currentPage % itemsPerPage) > 0
+                  ? `이전 페이지 목록 ${itemsPerPage}개 보기`
+                  : '이전 페이지 목록을 볼 수 없습니다.'
+              }
               className="inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
               onClick={(e) => {
                 e.preventDefault();
@@ -111,6 +118,7 @@ const Pagination = ({ data }) => {
                 const pageNumber = index + 1;
                 return (
                   <a
+                    aria-label={`페이지 번호 ${pageNumber}로 이동하기`}
                     href=""
                     key={pageNumber}
                     className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-200 dark:hover:bg-gray-50 hover:bg-gray-300 hover:text-white dark:hover:text-black ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
@@ -129,6 +137,7 @@ const Pagination = ({ data }) => {
             )}
             <a
               href=""
+              aria-label={`다음 페이지 목록 최대 ${itemsPerPage}개 보기`}
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:text-white"
               onClick={(e) => {
                 e.preventDefault();

@@ -1,7 +1,13 @@
 import React from 'react';
 import { BiPlus, BiMinus } from 'react-icons/bi';
 
-const Counter = ({ type, label, count, maxCount, handlePeopleCount }) => {
+const Counter = ({
+  type,
+  label,
+  count,
+  maxCount = Infinity,
+  handlePeopleCount,
+}) => {
   const increase = () => {
     if (count < maxCount) {
       handlePeopleCount(type, count + 1);

@@ -48,8 +48,8 @@ const PeopleSelector = ({ stateType, setAdults, capacity }) => {
   }, [adultCount, childrenCount]);
 
   const handlePeopleCount = (type, count) => {
-    const maxAdults = capacity?.adults || 0;
-    const maxChildren = capacity?.children || 0;
+    const maxAdults = capacity?.adults ?? Infinity;
+    const maxChildren = capacity?.children ?? Infinity;
 
     if (type === 'adultCount' && count <= maxAdults) {
       setAdultCount(count);
@@ -83,7 +83,7 @@ const PeopleSelector = ({ stateType, setAdults, capacity }) => {
               label="성인"
               handlePeopleCount={handlePeopleCount}
               count={adultCount}
-              maxCount={capacity?.adults}
+              maxCount={capacity?.adults ?? Infinity}
             />
 
             <Counter
@@ -91,7 +91,7 @@ const PeopleSelector = ({ stateType, setAdults, capacity }) => {
               label="미성년자"
               handlePeopleCount={handlePeopleCount}
               count={childrenCount}
-              maxCount={capacity?.children}
+              maxCount={capacity?.children ?? Infinity}
             />
           </div>
         </div>

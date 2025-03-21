@@ -20,7 +20,9 @@ const Pagination = ({ data, ref = '' }) => {
 
       setCurrentItems(data.slice(startIdx, endIdx));
     }
-  }, [currentPage, data, range.min, range.max]);
+
+    setCurrentPage(Number(searchParams.get('page')) || 1);
+  }, [currentPage, data, range.min, range.max, searchParams.get('page')]);
 
   const moveScroll = () => {
     scroll({ top: 0, behavior: 'smooth' });

@@ -36,9 +36,12 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
   }
 
   return (
-    <Link to={`/product/${product.id}`}>
-      <li
-        ref={focus ? focus : ''}
+    <li
+    // ref={focus ? focus : ''}
+    >
+      <Link
+        to={`/product/${product.id}`}
+        aria-label={`숙소 ${product.name} 상세 정보 페이지로 이동`}
         className={`group card bg-base-100 transition-shadow grid grid-cols-[2fr_5fr] gap-[20px] ${
           index === 0 ? 'pb-[30px]' : 'py-[30px]'
         } ${index !== arrayLength - 1 ? 'border-b border-gray-200' : ''} `}>
@@ -47,8 +50,9 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
             <div className="h-[200px] rounded-md overflow-hidden">
               <img
                 src={product.images[0]}
-                alt={product.name}
+                alt="" // {product.name} 숙소 이미지를 보여주는 단순한 꾸미는 용도라 필요 없을 것 같음
                 className="h-full object-cover"
+                aria-label=""
               />
             </div>
           </div>
@@ -79,7 +83,8 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
               <span className="hidden sm:block">
                 <button
                   type="button"
-                  className="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
+                  className="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
+                  aria-label="카카오톡으로 숙소 정보 공유하기">
                   <BiHeart
                     aria-hidden="true"
                     className="size-5 text-gray-400"
@@ -101,7 +106,9 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                     <BiCalendarAlt className="text-base" />
                     <p className="font-bold">체크인</p>
                   </div>
-                  <time dateTime={formatDate(product.check_in)}>
+                  <time
+                    aria-label="체크인 시간"
+                    dateTime={formatDate(product.check_in)}>
                     {formatDate(product.check_in)}
                   </time>
                 </div>
@@ -111,7 +118,9 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                     <BiCalendarAlt className="text-base" />
                     <p className="font-bold">체크아웃</p>
                   </div>
-                  <time dateTime={formatDate(product.check_out)}>
+                  <time
+                    aria-label="체크아웃 시간"
+                    dateTime={formatDate(product.check_out)}>
                     {formatDate(product.check_out)}
                   </time>
                 </div>
@@ -119,7 +128,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
 
               <p
                 className="line-clamp-2"
-                title="패키지 설명">
+                aria-label="숙소 간단 설명">
                 {product.description}
               </p>
             </div>
@@ -132,24 +141,24 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                 <div title="가격할인">
                   <p
                     className="line-through text-red-600"
-                    title="정가">
+                    aria-label="정가">
                     {formatNumber(product.original_price)}원
                   </p>
 
                   <p
                     className="underline font-bold text-2xl transition-colors"
-                    title="할인가">
+                    aria-label="할인가">
                     {formatNumber(product.final_price)}원
                   </p>
                 </div>
 
-                <span> {product.discount_rate}% </span>
+                <span aria-label="할인율"> {product.discount_rate}% </span>
               </div>
             </div>
           </div>
         </div>
-      </li>
-    </Link>
+      </Link>
+    </li>
   );
 };
 

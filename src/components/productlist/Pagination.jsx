@@ -3,26 +3,26 @@ import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
 import usePriceStore from '../../stores/usePriceStore';
 
-const Pagination = ({ data, ref = '' }) => {
+const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get('page')) || 1,
   );
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(pagePerItem);
   const [currentItems, setCurrentItems] = useState([]);
   const { range } = usePriceStore();
 
   // 데이터 셋팅
   useEffect(() => {
-    if (data && data.length) {
-      const startIdx = (currentPage - 1) * itemsPerPage;
-      const endIdx = startIdx + itemsPerPage;
+    // if (data && data.length) {
+    //   const startIdx = (currentPage - 1) * itemsPerPage;
+    //   const endIdx = startIdx + itemsPerPage;
 
-      setCurrentItems(data.slice(startIdx, endIdx));
-    }
+    //   setCurrentItems(data.slice(startIdx, endIdx));
+    // }
 
     setCurrentPage(Number(searchParams.get('page')) || 1);
-  }, [currentPage, data, range.min, range.max, searchParams.get('page')]);
+  }, [currentPage, data, range.min, range.max]);
 
   const moveScroll = () => {
     scroll({ top: 0, behavior: 'smooth' });

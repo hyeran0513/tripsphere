@@ -62,6 +62,7 @@ const PriceSlider = ({ step = 5 }) => {
         <label className="flex items-center gap-x-3">
           <span>최소</span>
           <input
+            aria-label={`숙소 최소가격 설정. 현재가격 ${range.min} 만원`}
             type="number"
             value={range.min}
             min={rangeLimit.min}
@@ -75,6 +76,11 @@ const PriceSlider = ({ step = 5 }) => {
         <label className="flex items-center gap-x-3">
           <span>최대</span>
           <input
+            aria-label={`숙소 최대가격 설정. 현재가격 ${
+              range.max === rangeLimit.max
+                ? '최대가격 제한 없음'
+                : (range.max, '만원')
+            } `}
             type="text"
             value={maxInput}
             onFocus={() => setMaxInput(range.max)}
@@ -92,6 +98,7 @@ const PriceSlider = ({ step = 5 }) => {
       {message && <p className="text-red-500 text-sm">{message}</p>}
 
       <Range
+        aria-label={`숙소 가격 범위 설정 UI. 시작장애인분들은 넘겨주시기 바랍니다.`}
         step={step}
         min={rangeLimit.min}
         max={rangeLimit.max}
@@ -100,10 +107,12 @@ const PriceSlider = ({ step = 5 }) => {
         renderTrack={({ props, children }) => (
           <div
             {...props}
+            aria-label={`숙소 가격 범위 설정 UI. 시작장애인분들은 넘겨주시기 바랍니다.`}
             className="relative bg-gray-300 w-full h-2 rounded">
             {children}
             {[...Array(Math.floor(rangeLimit.max / step))].map((_, i) => (
               <div
+                aria-label={`숙소 가격 범위 설정 UI. 시작장애인분들은 넘겨주시기 바랍니다.`}
                 key={i}
                 className="absolute top-0 h-2 w-px bg-gray-700"
                 style={{

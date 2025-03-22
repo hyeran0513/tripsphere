@@ -7,6 +7,7 @@ const RoomTypeSelector = () => {
     addRoomTypes,
     delRoomTypes,
     resetRoomTypes,
+    getKor,
   } = useRoomType();
 
   return (
@@ -16,8 +17,11 @@ const RoomTypeSelector = () => {
         <legend className="fieldset-legend px-2 font-medium">숙박 장소</legend>
         <div className="grid grid-cols-2 gap-x-3 gap-y-2">
           {defaultOption.map((ele) => (
-            <div className="flex items-center space-x-2">
+            <div
+              className="flex items-center space-x-2"
+              key={ele}>
               <input
+                aria-label={`${getKor(ele)} 선택하기`}
                 type="checkbox"
                 defaultChecked
                 className="checkbox"
@@ -26,9 +30,8 @@ const RoomTypeSelector = () => {
               />
               <label
                 htmlFor={ele}
-                key={ele}
                 className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                {ele}
+                {getKor(ele)}
               </label>
             </div>
           ))}

@@ -80,7 +80,9 @@ const SideFilter = ({ setLoading, setError }) => {
       </div>
 
       {isFormOpen && (
-        <form className="flex flex-col gap-y-5 p-2.5">
+        <form
+          aria-label="검색 옵션 변경창"
+          className="flex flex-col gap-y-5 p-2.5">
           {/* 여행 장소 선택 */}
           <fieldset className="rounded-lg border border-gray-200 p-3">
             <legend className="fieldset-legend px-2 font-medium">
@@ -119,6 +121,7 @@ const SideFilter = ({ setLoading, setError }) => {
           </fieldset>
 
           <button
+            aria-label="검색 옵션 변경을 적용하기"
             type="submit"
             className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             옵션 수정 적용

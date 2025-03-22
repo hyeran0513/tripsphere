@@ -1,5 +1,6 @@
 import React from 'react';
 import { BiCalendarAlt, BiHeart } from 'react-icons/bi';
+import { FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { formatDate, formatNumber } from '../../utils/format';
 import KakaoShareButton from '../common/KakaoShareButton';
@@ -62,17 +63,23 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
         <div className="card-body py-0 px-0 gap-0">
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
-              <div className="badge badge-soft badge-primary">
+              <div
+                className="badge badge-soft badge-primary"
+                aria-label={`숙소 형태 ${bulidingType({ product })}`}>
                 {bulidingType({ product })}
               </div>
 
-              <div className="badge badge-soft badge-info">
+              <div
+                className="badge badge-soft badge-info"
+                aria-label={`숙소 위치 ${product.rating}`}>
                 {product.location.city} {product.location.sub_city}
               </div>
             </div>
 
             <div className="flex gap-2">
-              <span className="hidden sm:block">
+              <span
+                className="hidden sm:block"
+                aria-label="카카오톡으로 숙소 정보 공유하기">
                 <KakaoShareButton
                   title={product.name}
                   description={product.description}
@@ -85,7 +92,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                 <button
                   type="button"
                   className="inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
-                  aria-label="카카오톡으로 숙소 정보 공유하기">
+                  aria-label="이 숙소를 찜목록에 추가하기">
                   <BiHeart
                     aria-hidden="true"
                     className="size-5 text-gray-400"
@@ -94,9 +101,19 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
               </span>
             </div>
           </div>
-          <h2 className=" transition-colors card-title text-2xl pb-3.5 border-b-1 border-gray-200">
-            {product.name}
-          </h2>
+          <div className="flex justify-between">
+            <h2
+              className=" transition-colors card-title text-2xl pb-3.5 border-b-1 border-gray-200"
+              aria-label={`숙소 이름 ${product.name}`}>
+              {product.name}
+            </h2>
+            <div className="flex justify-center">
+              <span aria-label="">
+                <FaStar />
+              </span>
+              <p aria-label={`숙소 평점 ${product.rating}`}>{product.rating}</p>
+            </div>
+          </div>
 
           {/* 패키지 정보 */}
           <div className="grid grid-cols-[3fr_1fr] h-4/5">
@@ -139,7 +156,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
               <div
                 title="가격정보"
                 className="flex flex-col justify-around items-start">
-                <div title="가격할인">
+                <div title="숙소 가격 정보">
                   <p
                     className="line-through text-red-600"
                     aria-label="정가">

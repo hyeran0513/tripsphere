@@ -28,15 +28,17 @@ const RoomTypeSelector = () => {
           <input
             aria-label={
               roomTypes.includes(ele)
-                ? `${getKor(ele)} 선택하기`
-                : `${getKor(ele)} 선택해제`
+                ? `${getKor(ele)} 선택해제`
+                : `${getKor(ele)} 선택하기`
             }
             type="checkbox"
             className="checkbox"
             checked={roomTypes.includes(ele)}
+            // 새로운 스토어 생성 필요. 일단 건너뛰기
+            // disabled={!array.some((accom) => accom.type === ele)}
             id={ele}
             name={ele}
-            onClick={(e) => checkType(ele, e.target.checked)}
+            onChange={(e) => checkType(ele, e.target.checked)}
           />
           <label
             htmlFor={ele}

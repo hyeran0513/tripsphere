@@ -28,11 +28,11 @@ const ProductsPageList = ({ loading, error }) => {
     async function filterWaiting() {
       setFilterLoading(true);
       await accomCheck(array);
-      setFiltered(typeCheck([...array]));
+      array = sortProduct(array);
+      setFiltered(typeCheck(array));
       setFilterLoading(false);
     }
     filterWaiting();
-    setFiltered(sortProduct(filtered));
 
     // setFiltered(array);
     console.log('filtered:', filtered);

@@ -28,14 +28,14 @@ const ProductsPageList = ({ loading, error }) => {
     async function filterWaiting() {
       setFilterLoading(true);
       await accomCheck(array);
-      setFiltered([...array]);
-      sortProduct(array);
+      setFiltered(typeCheck([...array]));
       setFilterLoading(false);
     }
     filterWaiting();
+    setFiltered(sortProduct(filtered));
 
     // setFiltered(array);
-    console.log(filtered);
+    console.log('filtered:', filtered);
   }, [range.min, range.max, roomTypes]);
 
   useEffect(() => {}, [filterLoading]);
@@ -45,6 +45,10 @@ const ProductsPageList = ({ loading, error }) => {
   const getPrice = useCallback((val) => {
     return val * 10000;
   });
+
+  const typeCheck = (array) => {
+    return array.filter((ele) => roomTypes.includes(ele.type));
+  };
 
   // 출력전 상품 기본 정렬.
   const sortProduct = (array, category = 'price', orderBy = 'asc') => {
@@ -93,7 +97,6 @@ const ProductsPageList = ({ loading, error }) => {
   };
 
   const accomCheck = (array) => {
-    const start = new Date().getMilliseconds();
     list.map((ele) => {
       if (
         getPrice(range.min) <= ele.final_price &&
@@ -109,7 +112,6 @@ const ProductsPageList = ({ loading, error }) => {
         }
       }
     });
-    const end = new Date().getMilliseconds();
   };
 
   const duplicatedCheck = (array, item) => {

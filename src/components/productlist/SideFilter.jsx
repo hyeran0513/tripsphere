@@ -92,7 +92,14 @@ const SideFilter = ({ setLoading, setError }) => {
           </fieldset>
 
           {/* 숙박 장소 선택 */}
-          <RoomTypeSelector />
+          <fieldset className="rounded-lg border border-gray-200 p-3">
+            <legend className="fieldset-legend px-2 font-medium">
+              숙박 장소
+            </legend>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+              <RoomTypeSelector />
+            </div>
+          </fieldset>
 
           {/* 예산 범위 선택 */}
           <fieldset className="rounded-lg border border-gray-200 px-3">

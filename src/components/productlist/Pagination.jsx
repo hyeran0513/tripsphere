@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
 import usePriceStore from '../../stores/usePriceStore';
+import useRoomType from '../../stores/useRoomType';
 
 const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,6 +12,8 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
   const [itemsPerPage] = useState(pagePerItem);
   const [currentItems, setCurrentItems] = useState([]);
   const { range } = usePriceStore();
+
+  const { roomTypes } = useRoomType();
 
   // 데이터 셋팅
   useEffect(() => {
@@ -22,7 +25,7 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
     // }
 
     setCurrentPage(Number(searchParams.get('page')) || 1);
-  }, [currentPage, data, range.min, range.max]);
+  }, [currentPage, data, range.min, range.max, roomTypes]);
 
   const moveScroll = () => {
     scroll({ top: 0, behavior: 'smooth' });

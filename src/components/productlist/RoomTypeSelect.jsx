@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import useRoomType from '../../stores/useRoomType';
 
 const RoomTypeSelector = () => {
@@ -10,33 +11,40 @@ const RoomTypeSelector = () => {
     getKor,
   } = useRoomType();
 
+  useEffect(() => {}, [roomTypes]);
+
+  const checkType = (type, isChecked) => {
+    if (isChecked) addRoomTypes(type);
+    else delRoomTypes(type);
+  };
+
   return (
     <>
       {/* 숙박 장소 선택 */}
-      <fieldset className="rounded-lg border border-gray-200 p-3">
-        <legend className="fieldset-legend px-2 font-medium">숙박 장소</legend>
-        <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-          {defaultOption.map((ele) => (
-            <div
-              className="flex items-center space-x-2"
-              key={ele}>
-              <input
-                aria-label={`${getKor(ele)} 선택하기`}
-                type="checkbox"
-                defaultChecked
-                className="checkbox"
-                id={ele}
-                name={ele}
-              />
-              <label
-                htmlFor={ele}
-                className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                {getKor(ele)}
-              </label>
-            </div>
-          ))}
+      {defaultOption.map((ele, index) => (
+        <div
+          className="flex items-center space-x-2"
+          key={ele}>
+          <input
+            aria-label={
+              roomTypes.includes(ele)
+                ? `${getKor(ele)} 선택하기`
+                : `${getKor(ele)} 선택해제`
+            }
+            type="checkbox"
+            className="checkbox"
+            checked={roomTypes.includes(ele)}
+            id={ele}
+            name={ele}
+            onClick={(e) => checkType(ele, e.target.checked)}
+          />
+          <label
+            htmlFor={ele}
+            className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+            {getKor(ele)}
+          </label>
         </div>
-      </fieldset>
+      ))}
     </>
   );
 };

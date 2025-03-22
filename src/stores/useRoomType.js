@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 const useRoomType = create()(
   persist((set) => ({
-    roomTypes: [],
+    roomTypes: ['hotel', 'motel', 'pension', 'resort', 'camping', 'guest'],
     defaultOption: ['hotel', 'motel', 'pension', 'resort', 'camping', 'guest'],
     addRoomTypes: (data) =>
       set((state) => ({
@@ -11,7 +11,7 @@ const useRoomType = create()(
       })),
     delRoomTypes: (data) =>
       set((state) => ({
-        roomTypes: roomTypes.filter((ele) => ele !== data),
+        roomTypes: state.roomTypes.filter((ele) => ele !== data),
       })),
     resetRoomTypes: () =>
       set(() => ({
@@ -19,6 +19,8 @@ const useRoomType = create()(
       })),
     getKor: (type) => {
       switch (type) {
+        case 'all':
+          return '전부';
         case 'hotel':
           return '호텔';
         case 'motel':

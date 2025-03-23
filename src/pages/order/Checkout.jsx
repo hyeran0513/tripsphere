@@ -128,7 +128,7 @@ const Checkout = () => {
                     />
 
                     <li>
-                      <fieldset className="fieldset py-4 px-6">
+                      <div className="py-4 px-6">
                         {/* 체크인 · 체크아웃 */}
                         <DateSelector
                           openDate={openDate}
@@ -137,7 +137,7 @@ const Checkout = () => {
 
                         {/* 인원수 */}
                         <PeopleSelector />
-                      </fieldset>
+                      </div>
                     </li>
                   </ul>
                 </dd>

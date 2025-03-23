@@ -162,7 +162,7 @@ const ProductDetails = ({ product, productId }) => {
           <div className="card bg-base-100 w-96 shadow-sm">
             <div className="card-body">
               <h2 className="card-title">예약 정보</h2>
-              <fieldset className="fieldset border border-base-300 dark:border-gray-100 p-4 rounded-box">
+              <div className="border border-base-300 dark:border-gray-100 p-4 rounded-box">
                 {/* 체크인 · 체크아웃 */}
                 <DateSelector
                   stateType="reservation"
@@ -177,7 +177,7 @@ const ProductDetails = ({ product, productId }) => {
                   stateType="reservation"
                   capacity={product.capacity}
                 />
-              </fieldset>
+              </div>
 
               <div className="flex items-center justify-between py-2">
                 {totalDays(checkIn, checkOut) !== 0 ? (

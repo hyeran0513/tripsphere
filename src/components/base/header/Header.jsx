@@ -1,9 +1,9 @@
 import Logo from './Logo';
-import ThemeToggleButton from './ThemeTogglebutton';
 import CartButton from './CartButton';
 import UserDropdown from './UserDropdown';
 import ShoppingCart from '../../cart/ShoppingCart';
 import { useState } from 'react';
+import ThemeToggleButton from './ThemeToggleButton';
 
 const Header = () => {
   const [open, setOpen] = useState(false);

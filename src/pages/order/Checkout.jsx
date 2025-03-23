@@ -9,6 +9,7 @@ import OrderList from '../../components/order/checkout/OrderList';
 import OrderSummary from '../../components/order/checkout/OrderSummary';
 import DateSelector from '../../components/common/DateSelector';
 import useReservationStore from '../../stores/useReservationStore';
+import ServiceList from '../../components/detail/details/ServiceList';
 
 const accommodation = {
   id: '1',
@@ -154,26 +155,7 @@ const Checkout = () => {
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm/6 font-medium">서비스</dt>
                 <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                  <ul
-                    role="list"
-                    className="divide-y divide-gray-100 rounded-md border border-gray-200">
-                    {accommodation.services &&
-                      accommodation.services.map((service, index) => (
-                        <li
-                          key={index}
-                          className="flex items-center py-4 px-4 text-sm">
-                          <div className="flex items-center gap-2">
-                            <ServiceIcon
-                              key={service}
-                              type={service}
-                            />
-                            <span className="font-medium">
-                              {serviceNames[service]}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                  </ul>
+                  <ServiceList services={accommodation.services} />
                 </dd>
               </div>
             </dl>

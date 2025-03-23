@@ -1,4 +1,4 @@
-import ServiceIcon from '../../common/ServiceIcon';
+import ServiceIcon from './ServiceIcon';
 
 const ServiceList = ({ services }) => (
   <div className="px-4 py-6 gap-4 sm:px-0 text-sm/6 text-gray-70">

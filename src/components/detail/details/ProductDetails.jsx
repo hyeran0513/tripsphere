@@ -6,7 +6,7 @@ import { formatToTimestamp, totalDays } from '../../../utils/format';
 import { serverTimestamp } from 'firebase/firestore';
 import { useAddCarts } from '../../../hooks/useCartData';
 import ProductInfo from './ProductInfo';
-import ServiceList from './ServiceList';
+import ServiceList from '../../common/ServiceList';
 import HostInfo from './HostInfo';
 import ReservationForm from './reservationForm';
 import PriceDetails from './PriceDetails';

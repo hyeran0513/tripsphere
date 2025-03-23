@@ -9,7 +9,7 @@ import OrderList from '../../components/order/checkout/OrderList';
 import OrderSummary from '../../components/order/checkout/OrderSummary';
 import DateSelector from '../../components/common/DateSelector';
 import useReservationStore from '../../stores/useReservationStore';
-import ServiceList from '../../components/detail/details/ServiceList';
+import ServiceList from '../../components/common/ServiceList';
 
 const accommodation = {
   id: '1',

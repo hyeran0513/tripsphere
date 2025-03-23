@@ -74,13 +74,10 @@ const ProductHeader = ({ product, productId }) => {
 
       {/* 토스트 메시지 */}
       {toast && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-10">
-          <Toast
-            type={toast.type}
-            message={toast.message}
-            onClose={() => setToast(null)}
-          />
-        </div>
+        <ToastMessage
+          toast={toast}
+          setToast={setToast}
+        />
       )}
     </>
   );

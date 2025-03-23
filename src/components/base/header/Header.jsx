@@ -13,7 +13,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-base-100 shadow-sm">
+    <header className="bg-base-100 shadow-sm fixed w-full z-100">
       <div className="navbar max-w-[1200px] mx-auto">
         {/* 로고 */}
         <div className="navbar-start">

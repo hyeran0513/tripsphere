@@ -9,6 +9,7 @@ const PeopleSelector = ({ stateType, setAdults, capacity }) => {
   const [localAdultCount, setLocalAdultCount] = useState(0);
   const [localChildrenCount, setLocalChildrenCount] = useState(0);
   const [people, setPeople] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
   let selectedState;
 
   if (stateType === 'filter') {
@@ -67,34 +68,35 @@ const PeopleSelector = ({ stateType, setAdults, capacity }) => {
       </label>
       <div className="dropdown w-full">
         <input
-          tabIndex={1}
           role="button"
+          onClick={() => setIsOpen((prev) => !prev)}
           className="input bg-base-200 w-full dark:border-gray-200"
           placeholder="인원수"
           value={`총 인원 ${people}`}
           readOnly
         />
-        <div
-          tabIndex={1}
-          className="dropdown-content card card-sm bg-base-100 z-1 w-64 shadow-md">
-          <div className="card-body">
-            <Counter
-              type="adultCount"
-              label="성인"
-              handlePeopleCount={handlePeopleCount}
-              count={adultCount}
-              maxCount={capacity?.adults ?? Infinity}
-            />
 
-            <Counter
-              type="childrenCount"
-              label="미성년자"
-              handlePeopleCount={handlePeopleCount}
-              count={childrenCount}
-              maxCount={capacity?.children ?? Infinity}
-            />
+        {isOpen && (
+          <div className="dropdown-content card card-sm bg-base-100 z-1 w-64 shadow-md">
+            <div className="card-body">
+              <Counter
+                type="adultCount"
+                label="성인"
+                handlePeopleCount={handlePeopleCount}
+                count={adultCount}
+                maxCount={capacity?.adults ?? Infinity}
+              />
+
+              <Counter
+                type="childrenCount"
+                label="미성년자"
+                handlePeopleCount={handlePeopleCount}
+                count={childrenCount}
+                maxCount={capacity?.children ?? Infinity}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

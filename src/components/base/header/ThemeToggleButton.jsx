@@ -10,8 +10,11 @@ const ThemeToggleButton = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
+
+  const labelText =
+    theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환';
 
   return (
     <label className="swap swap-rotate">
@@ -19,15 +22,20 @@ const ThemeToggleButton = () => {
         type="checkbox"
         checked={theme === 'dark'}
         onChange={toggleTheme}
+        aria-label={labelText}
       />
 
-      {/* 해 아이콘 */}
-      <div className="btn btn-ghost btn-circle swap-on fill-current">
+      {/* 해 아이콘 - 라이트 모드 */}
+      <div
+        className="btn btn-ghost btn-circle swap-on fill-current"
+        aria-hidden="true">
         <BiSun className="h-5 w-5" />
       </div>
 
-      {/* 달 아이콘 */}
-      <div className="btn btn-ghost btn-circle swap-off fill-current">
+      {/* 달 아이콘 - 다크 모드 */}
+      <div
+        className="btn btn-ghost btn-circle swap-off fill-current"
+        aria-hidden="true">
         <BiMoon className="h-5 w-5" />
       </div>
     </label>

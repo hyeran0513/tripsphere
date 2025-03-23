@@ -1,10 +1,4 @@
 import { useMemo, useState } from 'react';
-import useAuthStore from '../../../stores/useAuthStore';
-import { useNavigate } from 'react-router-dom';
-import useReservationStore from '../../../stores/useReservationStore';
-import { formatToTimestamp, totalDays } from '../../../utils/format';
-import { serverTimestamp } from 'firebase/firestore';
-import { useAddCarts } from '../../../hooks/useCartData';
 import ProductInfo from './ProductInfo';
 import ServiceList from '../../common/ServiceList';
 import HostInfo from './HostInfo';
@@ -12,37 +6,22 @@ import ReservationForm from './reservationForm';
 import PriceDetails from './PriceDetails';
 import ToastMessage from '../../common/ToastMessage';
 import ProductDescription from './ProductDescription';
+import CartButton from './CartButton';
+import ReservationButton from './ReservationButton';
+import useReservationStore from '../../../stores/useReservationStore';
+import { totalDays } from '../../../utils/format';
 
 const ProductDetails = ({ product, productId }) => {
-  const { user } = useAuthStore();
   const [openDate, setOpenDate] = useState(false);
-  const navigate = useNavigate();
   const [adults, setAdults] = useState(0);
-  const { checkIn, checkOut, setTotalPrice, adultCount, childrenCount } =
-    useReservationStore();
   const [toast, setToast] = useState(null);
+  const { checkIn, checkOut, adultCount, childrenCount, setTotalPrice } =
+    useReservationStore();
 
   // 토스트 보여주기
   const showToast = (type, message) => {
     setToast({ type, message });
     setTimeout(() => setToast(null), 3000);
-  };
-
-  // firebase에 장바구니 추가
-  const { mutate } = useAddCarts(user?.uid, showToast);
-
-  // 장바구니 추가
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-
-    mutate({
-      accommodation_id: productId,
-      check_in: formatToTimestamp(checkIn),
-      check_out: formatToTimestamp(checkOut),
-      guest_count: { adults: adultCount, children: childrenCount },
-      cart_date: serverTimestamp(),
-      user_id: user?.uid,
-    });
   };
 
   // 총 금액
@@ -52,14 +31,6 @@ const ProductDetails = ({ product, productId }) => {
       product.final_price,
     [checkIn, checkOut, product.final_price],
   );
-
-  // 예약하기 핸들러
-  const handleReservation = (e) => {
-    e.preventDefault();
-
-    setTotalPrice(totalPrice);
-    navigate('/checkout');
-  };
 
   return (
     <>
@@ -110,20 +81,21 @@ const ProductDetails = ({ product, productId }) => {
               {/* 버튼 영역 */}
               <div className="flex space-x-2">
                 {/* 장바구니 버튼 */}
-                <button
-                  type="button"
-                  onClick={handleAddToCart}
-                  className="text-base font-medium flex-1 border border-gray-300 px-8 py-3 rounded hover:bg-gray-100 cursor-pointer">
-                  장바구니
-                </button>
+                <CartButton
+                  productId={productId}
+                  showToast={showToast}
+                  checkIn={checkIn}
+                  checkOut={checkOut}
+                  adultCount={adultCount}
+                  childrenCount={childrenCount}
+                />
 
                 {/* 예약하기 버튼 */}
-                <button
-                  type="button"
-                  onClick={handleReservation}
-                  className="text-base font-medium flex-1 border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden rounded cursor-pointer">
-                  예약하기
-                </button>
+                <ReservationButton
+                  product={product}
+                  totalPrice={totalPrice}
+                  setTotalPrice={setTotalPrice}
+                />
               </div>
             </div>
           </div>

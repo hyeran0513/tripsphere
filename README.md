@@ -28,7 +28,8 @@
 | **react-use**                  | `npm install react-use`                    | |
 | **kakao-map**                  | `npm install react-kakao-maps-sdk`     | [Kakao maps sdk](https://react-kakao-maps-sdk.jaeseokim.dev/docs/sample/) |
 | **swiper**                     | `npm install swiper`                   | |
-| **react-range**                     | `npm install react-range`                   |[npm] (https://www.npmjs.com/package/react-range) |
+| **react-range**                | `npm install react-range`                   |[npm] (https://www.npmjs.com/package/react-range) |
+| **react-loader-spinner**       | `npm install react-loader-spinner`     | |
 ---
 
 ### **📍 주요 기능**

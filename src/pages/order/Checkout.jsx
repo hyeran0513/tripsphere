@@ -50,12 +50,6 @@ const orderInfo = {
   },
 };
 
-const typeMapping = {
-  pension: '펜션',
-  hotel: '호텔',
-  camping: '캠핑',
-};
-
 const serviceNames = {
   wifi: '와이파이',
   parking: '주차장',
@@ -124,7 +118,7 @@ const Checkout = () => {
                     <OrderList
                       IconComponent={BiHotel}
                       Title={'숙박 시설'}
-                      description={typeMapping[accommodation.type]}
+                      type={accommodation.type}
                     />
 
                     <li>

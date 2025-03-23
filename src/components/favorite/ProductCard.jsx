@@ -3,12 +3,7 @@ import { BiCalendarAlt, BiTrash, BiHeart } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { calculateDiscountedPrice } from '../../utils/discountedPrice';
 import { formatNumber, formatDate } from '../../utils/format';
-
-const typeMapping = {
-  pension: '펜션',
-  hotel: '호텔',
-  camping: '캠핑',
-};
+import TypeMapping from '../common/TypeMapping';
 
 const ProductCard = ({ favorite }) => {
   return (
@@ -31,9 +26,7 @@ const ProductCard = ({ favorite }) => {
         <div className="card-body w-full py-0 px-0 gap-0">
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
-              <div className="badge badge-soft badge-primary text-xs">
-                {typeMapping[favorite.type]}
-              </div>
+              <TypeMapping type={favorite.type} />
 
               <div className="badge badge-soft badge-info text-xs">
                 {favorite.location.place_name}

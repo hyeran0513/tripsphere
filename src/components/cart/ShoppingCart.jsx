@@ -7,6 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import { BiCalendarAlt, BiX, BiTrash } from 'react-icons/bi';
 import { formatNumber } from '../../utils/format';
+import TypeMapping from '../common/TypeMapping';
 
 // [250311] hrkim: firebase 사용하면, users 테이블의 cart에 있는 accommodation_id 리스트를 이용하여 아래 정보를 조회해주세요
 const accommodations = [
@@ -71,12 +72,6 @@ const accommodations = [
     },
   },
 ];
-
-const typeMapping = {
-  pension: '펜션',
-  hotel: '호텔',
-  camping: '캠핑',
-};
 
 const ShoppingCart = ({ open, setOpen }) => {
   const totalPrice = accommodations.reduce((acc, product) => {
@@ -151,9 +146,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center justify-between">
                                     <div className="flex gap-2">
-                                      <div className="badge bg-transparent border border-gray-300 dark:border-indigo-200 text-gray-900 dark:text-indigo-200 text-xs ">
-                                        {typeMapping[accommodation.type]}
-                                      </div>
+                                      <TypeMapping type={accommodation.type} />
 
                                       <div className="badge bg-transparent border border-gray-300 dark:border-sky-300 text-gray-900 dark:text-sky-300 text-xs">
                                         {accommodation.location.place_name}

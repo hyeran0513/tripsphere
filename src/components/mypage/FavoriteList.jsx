@@ -5,12 +5,7 @@ import { formatDate, formatNumber } from '../../utils/format';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
-
-const typeMapping = {
-  pension: '펜션',
-  hotel: '호텔',
-  camping: '캠핑',
-};
+import TypeMapping from '../common/TypeMapping';
 
 const FavoriteList = () => {
   const [user, setUser] = useState(null);
@@ -67,9 +62,8 @@ const FavoriteList = () => {
                   <div className="flex flex-col">
                     <h2 className="text-md font-bold mb-2">{favorite.name}</h2>
                     <div className="flex gap-2">
-                      <div className="badge badge-soft badge-primary text-xs">
-                        {typeMapping[favorite.type]}
-                      </div>
+                      <TypeMapping type={favorite.type} />
+
                       <div className="badge badge-soft badge-info text-xs">
                         {favorite.location.place_name}
                       </div>

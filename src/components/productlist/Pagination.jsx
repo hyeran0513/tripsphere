@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
+import Loading from '../common/Loading';
 
 const Pagination = ({ data }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,7 +32,7 @@ const Pagination = ({ data }) => {
   };
 
   if (!data || data.length === 0) {
-    return <div>로딩 중...</div>;
+    return <Loading />;
   }
 
   return (

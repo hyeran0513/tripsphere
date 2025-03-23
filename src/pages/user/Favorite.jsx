@@ -6,6 +6,7 @@ import ProductCard from '../../components/favorite/ProductCard';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
 import { auth } from '../../firebase/firebaseConfig';
+import Loading from '../../components/common/Loading';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -38,7 +39,7 @@ const Favorite = () => {
     }
   }, [data]);
 
-  if (isLoading) return <>로딩 중..</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (

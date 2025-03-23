@@ -6,6 +6,7 @@ import InputField from '../../components/common/InputField';
 import { useEditUserData, useUserData } from '../../hooks/useUserData';
 import Modal from '../../components/common/Modal';
 import { validateForm } from '../../utils/validation';
+import Loading from '../../components/common/Loading';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -63,7 +64,7 @@ const Profile = () => {
     mutate(updatedData);
   };
 
-  if (isLoading) return <>로딩 중..</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (

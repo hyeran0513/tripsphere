@@ -5,6 +5,7 @@ import { usePointData } from '../../hooks/usePointData';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
 import { formatDate } from '../../utils/format';
+import Loading from '../common/Loading';
 
 const PointHistory = () => {
   const [user, setUser] = useState(null);
@@ -27,7 +28,7 @@ const PointHistory = () => {
     }
   }, [data]);
 
-  if (isLoading) return <>로딩 중..</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (

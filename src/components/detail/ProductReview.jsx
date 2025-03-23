@@ -3,6 +3,7 @@ import ReviewForm from './ReviewForm';
 import ReviewItem from './ReviewItem';
 import { useReviewData } from '../../hooks/useReviewData';
 import { BiSolidStar } from 'react-icons/bi';
+import Loading from '../common/Loading';
 
 const ProductReview = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
@@ -24,7 +25,7 @@ const ProductReview = ({ productId }) => {
     reviews.reduce((acc, cmd) => acc + cmd.rating, 0) / reviews.length
   ).toFixed(1);
 
-  if (isLoading) return <>로딩 중...</>;
+  if (isLoading) return <Loading />;
   if (error) return <>에러</>;
 
   return (

@@ -5,6 +5,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { useUserData } from '../../hooks/useUserData';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
+import Loading from '../common/Loading';
 
 const PointModal = ({ onClose }) => {
   const [balance, setBalance] = useState(0);
@@ -29,7 +30,7 @@ const PointModal = ({ onClose }) => {
     setBalance(`현재 총포인트는 ${data.points}포인트입니다`);
   }, [data]);
 
-  if (isLoading) return <>로딩 중...</>;
+  if (isLoading) return <Loading />;
   if (error) return <>에러</>;
 
   const handleBackgroundClick = (e) => {

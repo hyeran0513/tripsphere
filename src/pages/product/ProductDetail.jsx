@@ -6,6 +6,7 @@ import ProductHeader from '../../components/detail/ProductHeader';
 import ProductLocation from '../../components/detail/ProductLocation';
 import ProductReview from '../../components/detail/ProductReview';
 import { useAccomData } from '../../hooks/useProductData';
+import Loading from '../../components/common/Loading';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -22,7 +23,7 @@ const ProductDetail = () => {
     error: accomodationError,
   } = useAccomData(productId);
 
-  if (isAccommodationLoading) return <>로딩 중...</>;
+  if (isAccommodationLoading) return <Loading />;
   if (accomodationError) return <>에러</>;
 
   return (

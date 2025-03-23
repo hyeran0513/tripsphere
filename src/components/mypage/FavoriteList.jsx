@@ -6,6 +6,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
 import TypeMapping from '../common/TypeMapping';
+import Loading from '../common/Loading';
 
 const FavoriteList = () => {
   const [user, setUser] = useState(null);
@@ -28,7 +29,7 @@ const FavoriteList = () => {
     }
   }, [data]);
 
-  if (isLoading) return <>로딩 중..</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (

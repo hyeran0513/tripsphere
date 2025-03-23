@@ -5,6 +5,7 @@ import InputField from '../common/InputField';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useUserData, useVerifyPassword } from '../../hooks/useUserData';
 import Toast from '../common/Toast';
+import Loading from '../common/Loading';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const UserProfile = () => {
     setTimeout(() => setToast(null), 3000);
   };
 
-  if (isLoading) return <>로딩 중...</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (

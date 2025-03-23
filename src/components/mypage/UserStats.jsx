@@ -9,6 +9,7 @@ import { auth } from '../../firebase/firebaseConfig';
 import { useUserData } from '../../hooks/useUserData';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useUserOrders } from '../../hooks/useOrderData';
+import Loading from '../common/Loading';
 const UserStats = () => {
   const [user, setUser] = useState(null);
   //포인트 모달 열기
@@ -42,7 +43,7 @@ const UserStats = () => {
     }
   }, [data]);
 
-  if (isLoading) return <>로딩 중...</>;
+  if (isLoading) return <Loading />;
   if (error) return <>에러</>;
 
   return (

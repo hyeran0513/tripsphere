@@ -6,6 +6,7 @@ import { compareToday, formatDate, formatNumber } from '../../utils/format';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
 import { useUserOrders } from '../../hooks/useOrderData';
+import Loading from '../common/Loading';
 
 const OrderHistory = () => {
   const [userId, setUserId] = useState(null);
@@ -25,7 +26,7 @@ const OrderHistory = () => {
 
   const { data: orderInfo, isLoading, error } = useUserOrders(userId);
 
-  if (isLoading) return <>로딩 중...</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (

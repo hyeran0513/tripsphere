@@ -82,7 +82,7 @@ const ShoppingCart = ({ open, setOpen }) => {
     <Dialog
       open={open}
       onClose={setOpen}
-      className="relative z-10">
+      className="relative z-101">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-closed:opacity-0 "

@@ -20,18 +20,21 @@ const ProductDetails = ({ product, productId }) => {
   const [adults, setAdults] = useState(0);
   const { checkIn, checkOut, setTotalPrice, adultCount, childrenCount } =
     useReservationStore();
-
   const [toast, setToast] = useState(null);
 
+  // 토스트 보여주기
   const showToast = (type, message) => {
     setToast({ type, message });
     setTimeout(() => setToast(null), 3000);
   };
 
+  // firebase에 장바구니 추가
   const { mutate } = useAddCarts(user?.uid, showToast);
 
+  // 장바구니 추가
   const handleAddToCart = (e) => {
     e.preventDefault();
+
     mutate({
       accommodation_id: productId,
       check_in: formatToTimestamp(checkIn),
@@ -42,6 +45,7 @@ const ProductDetails = ({ product, productId }) => {
     });
   };
 
+  // 총 금액
   const totalPrice = useMemo(
     () =>
       (checkIn === checkOut ? 1 : totalDays(checkIn, checkOut)) *
@@ -49,8 +53,10 @@ const ProductDetails = ({ product, productId }) => {
     [checkIn, checkOut, product.final_price],
   );
 
+  // 예약하기 핸들러
   const handleReservation = (e) => {
     e.preventDefault();
+
     setTotalPrice(totalPrice);
     navigate('/checkout');
   };

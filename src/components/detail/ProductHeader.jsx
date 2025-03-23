@@ -10,7 +10,6 @@ import useAuthStore from '../../stores/useAuthStore';
 
 const ProductHeader = ({ product, productId }) => {
   const [toast, setToast] = useState(null);
-  const { isAuthenticated } = useAuthStore();
 
   // 토스트 메시지
   const showToast = (type, message) => {
@@ -18,6 +17,7 @@ const ProductHeader = ({ product, productId }) => {
     setTimeout(() => setToast(null), 3000);
   };
 
+  const { isAuthenticated } = useAuthStore();
   const { mutate: favoriteMutation, isLoading: isFavoriteLoading } =
     useControlFavorite(showToast);
   const { data: isFavorite } = useCheckFavorite(productId);
@@ -25,20 +25,24 @@ const ProductHeader = ({ product, productId }) => {
   // 찜 버튼 핸들러
   const handleFavorite = (e) => {
     if (e) e.preventDefault();
+
     favoriteMutation(productId);
   };
 
   return (
     <>
       <div className="lg:flex lg:items-center lg:justify-between">
+        {/* 숙소명 */}
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
             {product.name}
           </h2>
         </div>
 
+        {/* 로그인할 경우에만, 버튼 노출 */}
         {isAuthenticated && (
           <div className="mt-5 flex lg:mt-0 lg:ml-4">
+            {/* 카카오 공유하기 버튼 */}
             <span className="hidden sm:block">
               <KakaoShareButton
                 hasText
@@ -49,6 +53,7 @@ const ProductHeader = ({ product, productId }) => {
               />
             </span>
 
+            {/* 찜하기 버튼 */}
             <span className="ml-3 hidden sm:block">
               <button
                 onClick={handleFavorite}

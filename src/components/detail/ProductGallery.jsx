@@ -31,7 +31,7 @@ const ProductGallery = ({ product }) => {
         </div>
       </dialog>
 
-      {/* 이미지 영역 */}
+      {/* 이미지 영역 (1개일 경우) */}
       {product.images.length === 1 && (
         <div className="mx-auto mt-6 max-w-2xl lg:grid lg:max-w-7xl h-[500px] overflow-hidden rounded-l-lg rounded-r-lg">
           <img
@@ -42,6 +42,7 @@ const ProductGallery = ({ product }) => {
         </div>
       )}
 
+      {/* 이미지 영역 (2개일 경우) */}
       {product.images.length === 2 && (
         <div className="mx-auto mt-6 max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-2">
           <img
@@ -57,6 +58,7 @@ const ProductGallery = ({ product }) => {
         </div>
       )}
 
+      {/* 이미지 영역 (3개일 경우) */}
       {product.images.length === 3 && (
         <div className="mx-auto mt-6 max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-2">
           <img
@@ -77,6 +79,7 @@ const ProductGallery = ({ product }) => {
         </div>
       )}
 
+      {/* 이미지 영역 (4개일 경우) */}
       {product.images.length >= 4 && (
         <div className="mx-auto mt-6 max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-2 h-[500px]">
           <img

@@ -15,11 +15,6 @@ const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
   const { user } = useAuthStore();
   const { data: orderInfo } = useUserOrders(user?.uid);
   const { data, isLoading, error } = useUserData(user?.uid);
-  useEffect(() => {
-    if (data) {
-      console.log('사용자 정보:', JSON.stringify(data));
-    }
-  }, [data]);
 
   if (isLoading) return <Loading />;
   if (error) return <>에러</>;

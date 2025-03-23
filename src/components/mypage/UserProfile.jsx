@@ -4,7 +4,6 @@ import { BiCog, BiLock } from 'react-icons/bi';
 import InputField from '../common/InputField';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useUserData, useVerifyPassword } from '../../hooks/useUserData';
-import Toast from '../common/Toast';
 import Loading from '../common/Loading';
 import Modal from '../common/Modal';
 import ToastMessage from '../common/ToastMessage';
@@ -65,7 +64,9 @@ const UserProfile = () => {
                 </a>
               </h3>
             </div>
-            <p className="mt-1 text-sm text-gray-500">{userInfo?.nickname}</p>
+            <div className="mt-1 text-sm text-gray-500">
+              {userInfo?.nickname}
+            </div>
           </div>
         </div>
 
@@ -74,7 +75,7 @@ const UserProfile = () => {
           buttonTitle={<BiCog size={24} />}
           modalId="verification"
           title="본인 인증">
-          <p className="py-4">
+          <div className="py-4">
             <div className="mb-4">
               개인정보 변경 전 본인 인증을 위해 비밀번호를 입력해주세요.
             </div>
@@ -92,7 +93,9 @@ const UserProfile = () => {
               showPassword={showPassword}
               onTogglePassword={() => setShowPassword(!showPassword)}
             />
-          </p>
+          </div>
+
+          {/* 버튼 영역 */}
           <div className="modal-action">
             <form method="dialog">
               <button

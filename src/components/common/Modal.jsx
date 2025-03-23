@@ -19,7 +19,7 @@ const Modal = ({ modalId, buttonTitle, title, children }) => {
             </button>
           </form>
           <h3 className="font-bold text-lg">{title}</h3>
-          <p className="py-4">{children}</p>
+          <div className="py-4">{children}</div>
         </div>
 
         <form

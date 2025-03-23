@@ -4,7 +4,7 @@ import { useAuthForm } from '../../hooks/useAuthForm';
 import { useEffect, useState } from 'react';
 import InputField from '../../components/common/InputField';
 import { useEditUserData, useUserData } from '../../hooks/useUserData';
-import Modal from '../../components/common/Modal';
+import NotificationModal from '../../components/common/NotificationModal';
 import { validateForm } from '../../utils/validation';
 import Loading from '../../components/common/Loading';
 
@@ -153,7 +153,7 @@ const Profile = () => {
       </form>
 
       {/* 모달 */}
-      <Modal
+      <NotificationModal
         open={modalOpen}
         setOpen={setModalOpen}
         text={modalText}

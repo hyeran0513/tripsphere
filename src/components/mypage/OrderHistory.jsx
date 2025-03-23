@@ -1,30 +1,14 @@
-import React, { useEffect, useState } from 'react';
 import { BiUser, BiCalendarAlt } from 'react-icons/bi';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { compareToday, formatDate, formatNumber } from '../../utils/format';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../firebase/firebaseConfig';
 import { useUserOrders } from '../../hooks/useOrderData';
 import Loading from '../common/Loading';
+import useAuthStore from '../../stores/useAuthStore';
 
 const OrderHistory = () => {
-  const [userId, setUserId] = useState(null);
-
-  useEffect(() => {
-    // 로그인 상태 감지
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid); // 로그인
-      } else {
-        setUserId(null); // 로그아웃
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const { data: orderInfo, isLoading, error } = useUserOrders(userId);
+  const { user } = useAuthStore();
+  const { data: orderInfo, isLoading, error } = useUserOrders(user?.uid);
 
   if (isLoading) return <Loading />;
   if (error) return <>오류</>;

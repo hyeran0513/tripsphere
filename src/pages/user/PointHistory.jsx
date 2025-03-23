@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import { usePointData } from '../../hooks/usePointData';
-import { auth } from '../../firebase/firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
 import { formatDate } from '../../utils/format';
 import Loading from '../../components/common/Loading';
+import useAuthStore from '../../stores/useAuthStore';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -12,16 +10,7 @@ const breadcrumb = [
 ];
 
 const PointHistory = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
+  const { user } = useAuthStore();
   // 포인트 내역 조회
   const { data, isLoading, error } = usePointData(user?.uid);
 

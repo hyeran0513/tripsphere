@@ -1,25 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { LiaCoinsSolid } from 'react-icons/lia';
 import { Link } from 'react-router-dom';
 import { usePointData } from '../../hooks/usePointData';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../../firebase/firebaseConfig';
 import { formatDate } from '../../utils/format';
 import Loading from '../common/Loading';
+import useAuthStore from '../../stores/useAuthStore';
 
 const PointHistory = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Firebase 인증 상태가 변경될 때마다 호출
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    // 컴포넌트가 언마운트될 때 리스너를 정리
-    return () => unsubscribe();
-  }, []);
-
+  const { user } = useAuthStore();
   const { data, isLoading, error } = usePointData(user?.uid);
 
   useEffect(() => {

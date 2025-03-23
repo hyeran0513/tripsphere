@@ -9,17 +9,24 @@ import {
   addDoc,
   serverTimestamp,
   orderBy,
+  limit as firestoreLimit,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 // 포인트 내역 조회
-export const getPoints = async (userId) => {
+export const getPoints = async (userId, limit) => {
   try {
-    const q = query(
+    let q = query(
       collection(db, 'points'),
       where('user_id', '==', userId),
       orderBy('received_date', 'desc'),
     );
+
+    // 제한
+    if (limit) {
+      q = query(q, firestoreLimit(limit));
+    }
+
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({

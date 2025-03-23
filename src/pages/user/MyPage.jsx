@@ -21,7 +21,7 @@ const MyPage = () => {
     data: pointHistory,
     isLoading,
     refetch: pointHistoryRefetch,
-  } = usePointData(user?.uid);
+  } = usePointData(user?.uid, 3);
 
   if (isLoading) return <Loading />;
 

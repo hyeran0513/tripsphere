@@ -1,24 +1,8 @@
-import React, { useEffect } from 'react';
 import { LiaCoinsSolid } from 'react-icons/lia';
 import { Link } from 'react-router-dom';
-import { usePointData } from '../../hooks/usePointData';
 import { formatDate } from '../../utils/format';
-import Loading from '../common/Loading';
-import useAuthStore from '../../stores/useAuthStore';
 
 const PointHistory = ({ points }) => {
-  const { user } = useAuthStore();
-  const { data, isLoading, error } = usePointData(user?.uid);
-
-  useEffect(() => {
-    if (data) {
-      console.log('포인트 목록 내역:', JSON.stringify(data));
-    }
-  }, [data]);
-
-  if (isLoading) return <Loading />;
-  if (error) return <>{error.message}</>;
-
   return (
     <>
       <div className="mt-8 p-4 pb-2 text-xs opacity-60 tracking-wide flex justify-between ">

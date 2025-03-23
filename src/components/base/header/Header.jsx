@@ -1,5 +1,5 @@
 import Logo from './Logo';
-import ThemeTogglebutton from './ThemeTogglebutton';
+import ThemeToggleButton from './ThemeTogglebutton';
 import CartButton from './CartButton';
 import UserDropdown from './UserDropdown';
 import ShoppingCart from '../../cart/ShoppingCart';
@@ -29,7 +29,7 @@ const Header = () => {
         {/* 우측 버튼 영역 */}
         <div className="navbar-end">
           <div className="flex items-center gap-2">
-            <ThemeTogglebutton />
+            <ThemeToggleButton />
             <CartButton onClick={toggleCart} />
             <UserDropdown />
           </div>

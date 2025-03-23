@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ProductDetails from '../../components/detail/ProductDetails';
+import ProductDetails from '../../components/detail/details/ProductDetails';
 import ProductGallery from '../../components/detail/ProductGallery';
 import ProductHeader from '../../components/detail/ProductHeader';
 import ProductLocation from '../../components/detail/ProductLocation';

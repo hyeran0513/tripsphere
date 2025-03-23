@@ -62,7 +62,7 @@ const CitySelector = ({ isGlobal }) => {
   return (
     <div className="w-full">
       <label
-        htmlFor="roomType"
+        htmlFor="city"
         className="mb-2 block text-sm font-medium text-gray-700 text-left dark:text-gray-200">
         지역
       </label>

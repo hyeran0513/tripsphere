@@ -20,8 +20,9 @@ const ProductReview = ({ productId }) => {
   };
 
   // 총 평점
-  const avgRating =
-    reviews.reduce((acc, cmd) => acc + cmd.rating, 0) / reviews.length;
+  const avgRating = (
+    reviews.reduce((acc, cmd) => acc + cmd.rating, 0) / reviews.length
+  ).toFixed(1);
 
   if (isLoading) return <>로딩 중...</>;
   if (error) return <>에러</>;

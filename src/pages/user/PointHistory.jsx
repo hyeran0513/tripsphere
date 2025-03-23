@@ -15,7 +15,7 @@ const PointHistory = () => {
   const { data, isLoading, error } = usePointData(user?.uid);
 
   if (isLoading) return <Loading />;
-  if (error) return <>오류</>;
+  if (error) return <>{error.message}</>;
 
   return (
     <div className="max-w-[700px] mx-auto py-[40px]">
@@ -44,7 +44,10 @@ const PointHistory = () => {
                 </div>
               </div>
 
-              <div className="text-secondary">{point.points} 포인트</div>
+              <div className="text-secondary">
+                {point.points > 0 ? '+' : '-'}
+                {point.points} 포인트
+              </div>
             </div>
           </li>
         ))}

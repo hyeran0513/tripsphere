@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import UserProfile from '../../components/mypage/UserProfile';
 import UserStats from '../../components/mypage/UserStats';
 import PointHistory from '../../components/mypage/PointHistory';
 import OrderHistory from '../../components/mypage/OrderHistory';
 import FavoriteList from '../../components/mypage/FavoriteList';
+import { usePointData } from '../../hooks/usePointData';
+import useAuthStore from '../../stores/useAuthStore';
+import Loading from '../../components/common/Loading';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -12,6 +15,16 @@ const breadcrumb = [
 ];
 
 const MyPage = () => {
+  const { user } = useAuthStore();
+  const [points, setPoints] = useState();
+  const {
+    data: pointHistory,
+    isLoading,
+    refetch: pointHistoryRefetch,
+  } = usePointData(user?.uid);
+
+  if (isLoading) return <Loading />;
+
   return (
     <div className="py-[40px] max-w-[700px] mx-auto">
       <PageHeader
@@ -23,10 +36,14 @@ const MyPage = () => {
       <UserProfile />
 
       {/* 상태 */}
-      <UserStats />
+      <UserStats
+        points={points}
+        setPoints={setPoints}
+        pointHistoryRefetch={pointHistoryRefetch}
+      />
 
       {/* 포인트 내역 */}
-      <PointHistory />
+      <PointHistory points={pointHistory} />
 
       {/* 주문 내역 */}
       <OrderHistory />

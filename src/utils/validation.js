@@ -5,7 +5,7 @@ export const validateForm = (state, mode) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
     if (!state.email || !emailRegex.test(state.email)) {
-      errors.email = '유효한 이메일을 입력해주세요.';
+      errors.email = '유효한 이메일을 입력해 주세요.';
     }
 
     if (!state.password) {
@@ -23,15 +23,23 @@ export const validateForm = (state, mode) => {
 
   if (mode === 'userinfo') {
     if (!state.username) {
-      errors.username = '이름을 입력해주세요.';
+      errors.username = '이름을 입력해 주세요.';
     }
 
     if (!state.nickname) {
-      errors.nickname = '닉네임을 입력해주세요.';
+      errors.nickname = '닉네임을 입력해 주세요.';
     }
 
     if (!state.phone) {
-      errors.phone = '연락처를 입력해주세요.';
+      errors.phone = '연락처를 입력해 주세요.';
+    }
+  }
+
+  if (mode === 'point') {
+    const point = Number(state.point);
+
+    if (!point || point <= 0) {
+      errors.point = '유효한 포인트 값을 입력해 주세요.';
     }
   }
 

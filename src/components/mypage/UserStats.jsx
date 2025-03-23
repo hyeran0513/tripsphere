@@ -11,11 +11,10 @@ import Loading from '../common/Loading';
 import Modal from '../common/Modal';
 import useAuthStore from '../../stores/useAuthStore';
 
-const UserStats = () => {
+const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
   const { user } = useAuthStore();
   const { data: orderInfo } = useUserOrders(user?.uid);
   const { data, isLoading, error } = useUserData(user?.uid);
-
   useEffect(() => {
     if (data) {
       console.log('사용자 정보:', JSON.stringify(data));
@@ -40,9 +39,7 @@ const UserStats = () => {
 
           {/* 포인트 점수 */}
           <div>
-            <strong className="stat-value text-primary">
-              {data && data.points}
-            </strong>
+            <strong className="stat-value text-primary">{points}</strong>
             포인트
           </div>
         </Link>
@@ -52,7 +49,11 @@ const UserStats = () => {
           buttonTitle="충전"
           modalId="addPoint"
           title="포인트 충전">
-          <PointModal />
+          <PointModal
+            points={points}
+            setPoints={setPoints}
+            pointHistoryRefetch={pointHistoryRefetch}
+          />
         </Modal>
       </div>
 

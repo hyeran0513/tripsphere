@@ -1,33 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import InputField from '../common/InputField';
 import useAuthStore from '../../stores/useAuthStore';
 import { useUserData } from '../../hooks/useUserData';
+import { useAddPoints } from '../../hooks/usePointData';
+import { useAuthForm } from '../../hooks/useAuthForm';
+import { validateForm } from '../../utils/validation';
 
-const PointModal = () => {
-  const [point, setPoint] = useState(null);
-
+const PointModal = ({ points, setPoints, pointHistoryRefetch }) => {
   const { user } = useAuthStore();
+  const [state, dispatch] = useAuthForm();
+  const { data, isLoading, refetch } = useUserData(user?.uid);
+  const { mutate } = useAddPoints(user?.uid);
 
-  const { data, isLoading, error } = useUserData(user?.uid);
+  useEffect(() => {
+    if (data?.points) {
+      setPoints(data?.points);
+      pointHistoryRefetch();
+    }
+  }, [data?.points]);
+
+  const handlePoint = async (e) => {
+    if (e) e.preventDefault();
+
+    // 폼 유효성 검사
+    const errors = validateForm(state, 'point');
+
+    // 에러 상태 설정
+    if (Object.keys(errors).length > 0) {
+      dispatch({ type: 'SET_ERRORS', payload: errors });
+      return;
+    }
+
+    // 포인트 추가 요청
+    await mutate(Number(state.point));
+
+    // 입력값 초기화
+    dispatch({ type: 'SET_POINT', payload: '' });
+
+    // 포인트 갱신
+    setPoints((prev) => prev + Number(state.point));
+
+    // 데이터 갱신
+    await refetch();
+    await pointHistoryRefetch();
+  };
 
   return (
     <>
       <InputField
         label="포인트"
-        type="number"
-        value={point}
-        placeholder="포인트를 입력해 주세요."
-        onChange={() => {}}
+        type="email"
+        value={state.point}
+        placeholder={state.placeholder.point}
+        onChange={(e) =>
+          dispatch({ type: 'SET_POINT', payload: e.target.value })
+        }
+        error={state.errors.point}
       />
+      <div className="mt-2 text-indigo-500 text-sm">
+        보유 포인트: <span className="font-bold">{points}</span> 포인트
+      </div>
 
-      <div>보유 포인트: {data.points}</div>
-
-      <button
-        type="submit"
-        onClick={() => {}}
-        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors">
-        포인트 추가
-      </button>
+      <div className="modal-action">
+        <form method="dialog">
+          <button
+            type="button"
+            onClick={handlePoint}
+            className="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors">
+            {isLoading ? '포인트 추가 중...' : '포인트 추가'}
+          </button>
+        </form>
+      </div>
     </>
   );
 };

@@ -13,7 +13,7 @@ const RatingView = ({ ratingScore }) => {
         <FaStar key={i} />
       ))}
 
-      {/* 반 개 별 추가 (조건부 렌더링) */}
+      {/* 반 개 별 추가 */}
       {half && <FaStarHalfAlt />}
 
       {/* 빈 별 추가 */}

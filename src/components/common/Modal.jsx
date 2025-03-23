@@ -21,6 +21,12 @@ const Modal = ({ modalId, buttonTitle, title, children }) => {
           <h3 className="font-bold text-lg">{title}</h3>
           <p className="py-4">{children}</p>
         </div>
+
+        <form
+          method="dialog"
+          className="modal-backdrop">
+          <button>close</button>
+        </form>
       </dialog>
     </>
   );

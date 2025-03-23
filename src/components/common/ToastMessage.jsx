@@ -1,7 +1,7 @@
 import Toast from '../common/Toast';
 
 const ToastMessage = ({ toast, setToast }) => (
-  <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-10">
+  <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-102">
     <Toast
       type={toast.type}
       message={toast.message}

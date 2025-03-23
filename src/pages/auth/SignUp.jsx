@@ -6,6 +6,7 @@ import Step from '../../components/signup/Step';
 import { Link } from 'react-router-dom';
 import Toast from '../../components/common/Toast';
 import UserInfo from '../../components/signup/UserInfo';
+import ToastMessage from '../../components/common/ToastMessage';
 
 const SignUp = () => {
   const [currentStep, setCurrentStep] = useState(1);

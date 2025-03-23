@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react';
+import useReservationStore from '../../../stores/useReservationStore';
+import { totalDays } from '../../../utils/format';
 import ProductInfo from './ProductInfo';
 import ServiceList from '../../common/ServiceList';
 import HostInfo from './HostInfo';
-import ReservationForm from './reservationForm';
-import PriceDetails from './PriceDetails';
-import ToastMessage from '../../common/ToastMessage';
 import ProductDescription from './ProductDescription';
-import CartButton from './CartButton';
-import ReservationButton from './ReservationButton';
-import useReservationStore from '../../../stores/useReservationStore';
-import { totalDays } from '../../../utils/format';
+import ReservationForm from '../reservation/ReservationForm';
+import PriceDetails from '../reservation/PriceDetails';
+import CartButton from '../reservation/CartButton';
+import ReservationButton from '../reservation/ReservationButton';
+import ToastMessage from '../../common/ToastMessage';
 
 const ProductDetails = ({ product, productId }) => {
   const [openDate, setOpenDate] = useState(false);

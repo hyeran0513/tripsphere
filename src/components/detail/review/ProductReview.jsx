@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import ReviewForm from './ReviewForm';
 import ReviewItem from './ReviewItem';
-import { useReviewData } from '../../hooks/useReviewData';
+import { useReviewData } from '../../../hooks/useReviewData';
 import { BiSolidStar } from 'react-icons/bi';
-import Loading from '../common/Loading';
+import Loading from '../../common/Loading';
 
 const ProductReview = ({ productId }) => {
   const [reviews, setReviews] = useState([]);

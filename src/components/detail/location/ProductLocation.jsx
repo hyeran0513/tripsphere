@@ -1,5 +1,5 @@
 import React from 'react';
-import KakaoMap from '../../components/common/KakaoMap';
+import KakaoMap from '../../common/KakaoMap';
 
 const ProductLocation = ({ product }) => {
   return (

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Rating from '../common/Rating';
-import { useAddReview } from '../../hooks/useReviewData';
-import { auth } from '../../firebase/firebaseConfig';
-import useAuthStore from '../../stores/useAuthStore';
-import NoData from '../common/NoData';
+import Rating from '../../common/Rating';
+import { useAddReview } from '../../../hooks/useReviewData';
+import { auth } from '../../../firebase/firebaseConfig';
+import useAuthStore from '../../../stores/useAuthStore';
+import NoData from '../../common/NoData';
 import { BiMessageAltEdit } from 'react-icons/bi';
 
 const ReviewForm = ({ handleNewReview, productId }) => {

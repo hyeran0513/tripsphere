@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import KakaoShareButton from '../../components/common/KakaoShareButton';
+import KakaoShareButton from '../../common/KakaoShareButton';
 import { BiCart, BiHeart, BiSolidHeart } from 'react-icons/bi';
-import Toast from '../common/Toast';
+import Toast from '../../common/Toast';
 import {
   useCheckFavorite,
   useControlFavorite,
-} from '../../hooks/useFavoriteData';
-import useAuthStore from '../../stores/useAuthStore';
+} from '../../../hooks/useFavoriteData';
+import useAuthStore from '../../../stores/useAuthStore';
 
 const ProductHeader = ({ product, productId }) => {
   const [toast, setToast] = useState(null);

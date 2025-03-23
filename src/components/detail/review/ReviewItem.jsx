@@ -1,7 +1,7 @@
-import Rating from '../common/Rating';
-import { formatDate } from '../../utils/format';
+import Rating from '../../common/Rating';
+import { formatDate } from '../../../utils/format';
 import { BiMessageAltEdit } from 'react-icons/bi';
-import NoData from '../common/NoData';
+import NoData from '../../common/NoData';
 
 const ReviewItem = ({ reviews }) => {
   if (!reviews || reviews.length === 0) {

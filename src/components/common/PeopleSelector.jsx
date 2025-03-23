@@ -64,7 +64,7 @@ const PeopleSelector = ({ stateType, setAdults, capacity }) => {
       {/* 라벨 영역 */}
       <label
         htmlFor="peopleCount"
-        className="mb-2 block text-sm font-medium text-gray-700 text-left dark:text-gray-200">
+        className="mb-1 block text-xs font-medium text-gray-700 text-left dark:text-gray-200">
         인원수
       </label>
 

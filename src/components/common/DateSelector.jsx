@@ -47,7 +47,7 @@ const DateSelector = ({ openDate, setOpenDate, stateType }) => {
     <div className="w-full">
       <label
         htmlFor="checkinout"
-        className="mb-2 block text-sm font-medium text-gray-700 text-left dark:text-gray-200">
+        className="mb-1 block text-xs font-medium text-gray-700 text-left dark:text-gray-200">
         체크인 · 체크아웃
       </label>
 

@@ -15,7 +15,10 @@ const ServiceIcon = ({ type }) => {
 
   return (
     <div className="flex items-center gap-3">
+      {/* 서비스 아이콘 */}
       <div className="text-lg">{services[type].icon}</div>
+
+      {/* 서비스명 */}
       <span>{services[type].name}</span>
     </div>
   );

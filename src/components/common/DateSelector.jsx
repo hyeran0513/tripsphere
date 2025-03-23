@@ -46,7 +46,7 @@ const DateSelector = ({ openDate, setOpenDate, stateType }) => {
   return (
     <div className="w-full">
       <label
-        htmlFor="roomType"
+        htmlFor="checkinout"
         className="mb-2 block text-sm font-medium text-gray-700 text-left dark:text-gray-200">
         체크인 · 체크아웃
       </label>

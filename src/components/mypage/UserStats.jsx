@@ -65,7 +65,7 @@ const UserStats = () => {
         </Link>
         <button
           onClick={handleOpen}
-          className="btn bg-green-500">
+          className="btn bg-indigo-600 hover:bg-indigo-500 text-white">
           충전
         </button>
         {isOpen && (

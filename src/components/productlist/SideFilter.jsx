@@ -61,7 +61,7 @@ const SideFilter = ({ setLoading, setError }) => {
       aria-label="숙소 검색 옵션 변경하기"
       className={`sidebar z-10 sticky top-5 ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
       <div className="flex mb-4 items-center justify-between">
-        {isFormOpen && <div>검색 영역</div>}
+        {isFormOpen && <div>검색 옵션 영역</div>}
         <button
           type="button"
           onClick={toggleForm}
@@ -91,14 +91,17 @@ const SideFilter = ({ setLoading, setError }) => {
             <CitySelector isGlobal={true} />
           </fieldset>
 
-          {/* 숙박 장소 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 p-3">
-            <legend className="fieldset-legend px-2 font-medium">
-              숙박 장소
-            </legend>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-              <RoomTypeSelector />
-            </div>
+          <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
+            <legend className="fieldset-legend px-2 font-medium">일정</legend>
+            {/* 체크인 · 체크아웃 */}
+            <DateSelector
+              stateType="filter"
+              openDate={openDate}
+              setOpenDate={setOpenDate}
+            />
+
+            {/* 인원수 */}
+            <PeopleSelector stateType="filter" />
           </fieldset>
 
           {/* 예산 범위 선택 */}
@@ -114,17 +117,14 @@ const SideFilter = ({ setLoading, setError }) => {
             </div>
           </fieldset>
 
-          <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
-            <legend className="fieldset-legend px-2 font-medium">일정</legend>
-            {/* 체크인 · 체크아웃 */}
-            <DateSelector
-              stateType="filter"
-              openDate={openDate}
-              setOpenDate={setOpenDate}
-            />
-
-            {/* 인원수 */}
-            <PeopleSelector stateType="filter" />
+          {/* 숙박 장소 선택 */}
+          <fieldset className="rounded-lg border border-gray-200 p-3">
+            <legend className="fieldset-legend px-2 font-medium">
+              숙박 장소
+            </legend>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+              <RoomTypeSelector />
+            </div>
           </fieldset>
 
           <button

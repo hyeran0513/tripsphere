@@ -107,11 +107,17 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
               aria-label={`숙소 이름 ${product.name}`}>
               {product.name}
             </h2>
-            <div className="flex justify-center">
-              <span aria-label="">
+            <div className="flex justify-center items-center">
+              <span
+                aria-label=""
+                className="text-yellow-200 text-2xl">
                 <FaStar />
               </span>
-              <p aria-label={`숙소 평점 ${product.rating}`}>{product.rating}</p>
+              <p
+                aria-label={`숙소 평점 ${product.rating}`}
+                className="text-xl font-medium">
+                {product.rating}
+              </p>
             </div>
           </div>
 

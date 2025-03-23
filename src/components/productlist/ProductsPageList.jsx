@@ -35,10 +35,13 @@ const ProductsPageList = ({ loading, error }) => {
     filterWaiting();
 
     // setFiltered(array);
+    console.log('pageperitem : ', pagePerItem);
     console.log('filtered:', filtered);
-  }, [range.min, range.max, roomTypes]);
+  }, [range.min, range.max, roomTypes, pagePerItem]);
 
-  useEffect(() => {}, [filterLoading]);
+  useEffect(() => {
+    console.log('pageperitem : ', pagePerItem);
+  }, [filterLoading, pagePerItem]);
 
   const focus = useRef();
 
@@ -96,6 +99,10 @@ const ProductsPageList = ({ loading, error }) => {
     }
   };
 
+  const changePagePerItem = (e) => {
+    setPagePerItem(Number(e.target.value));
+  };
+
   const accomCheck = (array) => {
     list.map((ele) => {
       if (
@@ -147,10 +154,21 @@ const ProductsPageList = ({ loading, error }) => {
   return (
     <>
       {/* 할인률 , 평점 , 리뷰수 정렬, 목록 5,10,15 개씩 보기 UI 추가 예정 */}
-      {filtered.length > 0 &&
-        console.log(
-          '정렬순서(오름차순, 내림차순), 정렬항목(가격, 평점, 할인률, 리뷰수) , 보이는 목록갯수 설정',
-        )}
+      {filtered.length > 0 && (
+        // console.log(
+        //   '정렬순서(오름차순, 내림차순), 정렬항목(가격, 평점, 할인률, 리뷰수) , 보이는 목록갯수 설정',)
+
+        <div className="rounded-full">
+          <select
+            aria-label="보이는 상품 목록 갯수 선택하기"
+            value={pagePerItem}
+            onChange={changePagePerItem}>
+            <option value="15">15개씩 보기</option>
+            <option value="10">10개씩 보기</option>
+            <option value="5">5개씩 보기</option>
+          </select>
+        </div>
+      )}
       <ul>
         {filtered.length > 0 &&
           filtered

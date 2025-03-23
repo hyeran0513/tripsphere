@@ -69,7 +69,7 @@ const PriceSlider = ({ step = 5 }) => {
             max={rangeLimit.max}
             step={1}
             onChange={(e) => updateByInput(0, e.target.value)}
-            className="border rounded-md px-1 py-1  text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="border bg-base-200 border-gray-300 dark:border-gray-200 rounded-md px-1 py-1  text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </label>
         ~
@@ -91,7 +91,7 @@ const PriceSlider = ({ step = 5 }) => {
             max={rangeLimit.max}
             step={1}
             onChange={(e) => updateByInput(1, e.target.value)}
-            className="border rounded-md px-1 py-1 w-14 text-center"
+            className="border bg-base-200 border-gray-300  dark:border-gray-200 rounded-md px-1 py-1 w-14 text-center"
           />
         </label>
       </div>

@@ -54,7 +54,7 @@ const FavoriteList = () => {
                       <TypeMapping type={favorite.type} />
 
                       <div className="badge badge-soft badge-info text-xs">
-                        {favorite.location.place_name}
+                        {favorite.location.city} {favorite.location.sub_city}
                       </div>
                     </div>
 

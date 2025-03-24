@@ -3,8 +3,8 @@ import { create } from 'zustand';
 const useReservationStore = create((set) => ({
   adultCount: 0,
   childrenCount: 0,
-  checkIn: '',
-  checkOut: '',
+  checkIn: new Date().toLocaleDateString(),
+  checkOut: new Date().toLocaleDateString(),
   totalPrice: 0,
   accommodationId: '',
 
@@ -31,8 +31,8 @@ const useReservationStore = create((set) => ({
     set({
       adultCount: 0,
       childrenCount: 0,
-      checkIn: '',
-      checkOut: '',
+      checkIn: new Date().toLocaleDateString(),
+      checkOut: new Date().toLocaleDateString(),
       totalPrice: 0,
       accommodationId: '',
     }),

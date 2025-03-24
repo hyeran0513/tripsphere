@@ -1,5 +1,6 @@
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import PasswordToggle from './PasswordToggle';
+import { Link } from 'react-router-dom';
 
 const InputField = ({
   label,
@@ -11,16 +12,28 @@ const InputField = ({
   showPassword,
   onTogglePassword,
   disabled,
+  isResetPassword,
 }) => {
   return (
     <div>
       {/* 라벨 영역 */}
-      <label
-        htmlFor={label}
-        className="dark:text-gray-400 block text-sm font-medium text-gray-900">
-        {label}
-      </label>
+      <div class="flex items-center justify-between">
+        <label
+          htmlFor={label}
+          className="dark:text-gray-400 block text-sm font-medium text-gray-900">
+          {label}
+        </label>
 
+        {isResetPassword && (
+          <div class="text-sm">
+            <Link
+              to="/resetpassword"
+              class="font-semibold text-indigo-600 hover:text-indigo-500">
+              비밀번호 재설정
+            </Link>
+          </div>
+        )}
+      </div>
       <div className="mt-2 relative">
         {/* 인풋 영역 */}
         <input

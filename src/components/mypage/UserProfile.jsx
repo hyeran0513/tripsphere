@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BiCog, BiLock } from 'react-icons/bi';
+import { FaUser } from 'react-icons/fa';
 import InputField from '../common/InputField';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useUserData, useVerifyPassword } from '../../hooks/useUserData';
@@ -47,10 +48,14 @@ const UserProfile = () => {
         {/* 프로필사진 */}
         <div className="avatar">
           <div className="w-20 rounded-full">
-            <img
-              src={userInfo?.profile_image}
-              alt={userInfo?.username}
-            />
+            {userInfo ? (
+              <img
+                src={userInfo?.profile_image}
+                alt={userInfo?.username}
+              />
+            ) : (
+              <FaUser size={80} />
+            )}
           </div>
         </div>
 

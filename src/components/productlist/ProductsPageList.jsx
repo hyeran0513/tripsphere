@@ -150,9 +150,6 @@ const ProductsPageList = ({ loading, error }) => {
       </div>
     );
 
-  if (filtered.length === 0 || filtered === null)
-    return <div>조건에 맞는 숙소가 없습니다.</div>;
-
   if (loading) return <Loading />;
   if (list.length <= 0) return <div>조건에 맞는 숙소가 없습니다.</div>;
 

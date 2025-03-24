@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
-import usePriceStore from '../../stores/usePriceStore';
-import useRoomType from '../../stores/useRoomType';
 import Loading from '../common/Loading';
 
 const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {

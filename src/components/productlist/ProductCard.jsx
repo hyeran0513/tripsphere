@@ -69,9 +69,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                 {bulidingType({ product })}
               </div>
 
-              <div
-                className="badge badge-soft badge-info"
-                aria-label={`숙소 위치 ${product.rating}`}>
+              <div className="badge badge-soft badge-info">
                 {product.location.city} {product.location.sub_city}
               </div>
             </div>
@@ -130,9 +128,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                     <BiCalendarAlt className="text-base" />
                     <p className="font-bold">체크인</p>
                   </div>
-                  <time
-                    aria-label="체크인 시간"
-                    dateTime={formatDate(product.check_in)}>
+                  <time dateTime={product.check_in.toLocaleString()}>
                     {formatDate(product.check_in)}
                   </time>
                 </div>
@@ -142,9 +138,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                     <BiCalendarAlt className="text-base" />
                     <p className="font-bold">체크아웃</p>
                   </div>
-                  <time
-                    aria-label="체크아웃 시간"
-                    dateTime={formatDate(product.check_out)}>
+                  <time dateTime={product.check_out.toLocaleString()}>
                     {formatDate(product.check_out)}
                   </time>
                 </div>
@@ -176,7 +170,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                   </p>
                 </div>
 
-                <span aria-label="할인율">{product.discount_rate * 100}%</span>
+                <span> {product.discount_rate * 100}% </span>
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ const useReservationStore = create((set) => ({
   checkIn: '',
   checkOut: '',
   totalPrice: 0,
+  accommodationId: '',
 
   // 어른 수 변경
   setAdultCount: (num) => set({ adultCount: num }),
@@ -22,6 +23,9 @@ const useReservationStore = create((set) => ({
   // 총 예약 금액
   setTotalPrice: (num) => set({ totalPrice: num }),
 
+  // 상품 ID
+  setAccommodationId: (num) => set({ accommodationId: num }),
+
   // 상태 초기화
   resetReservation: () =>
     set({
@@ -30,6 +34,7 @@ const useReservationStore = create((set) => ({
       checkIn: '',
       checkOut: '',
       totalPrice: 0,
+      accommodationId: '',
     }),
 }));
 

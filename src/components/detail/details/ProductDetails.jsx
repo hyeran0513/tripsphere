@@ -15,8 +15,14 @@ const ProductDetails = ({ product, productId }) => {
   const [openDate, setOpenDate] = useState(false);
   const [adults, setAdults] = useState(0);
   const [toast, setToast] = useState(null);
-  const { checkIn, checkOut, adultCount, childrenCount, setTotalPrice } =
-    useReservationStore();
+  const {
+    checkIn,
+    checkOut,
+    adultCount,
+    childrenCount,
+    setTotalPrice,
+    setAccommodationId,
+  } = useReservationStore();
 
   // 토스트 보여주기
   const showToast = (type, message) => {
@@ -95,6 +101,8 @@ const ProductDetails = ({ product, productId }) => {
                   product={product}
                   totalPrice={totalPrice}
                   setTotalPrice={setTotalPrice}
+                  setAccommodationId={setAccommodationId}
+                  productId={productId}
                 />
               </div>
             </div>

@@ -21,6 +21,16 @@ const useReservationStore = create((set) => ({
 
   // 총 예약 금액
   setTotalPrice: (num) => set({ totalPrice: num }),
+
+  // 상태 초기화
+  resetReservation: () =>
+    set({
+      adultCount: 0,
+      childrenCount: 0,
+      checkIn: '',
+      checkOut: '',
+      totalPrice: 0,
+    }),
 }));
 
 export default useReservationStore;

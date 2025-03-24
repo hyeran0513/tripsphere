@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import ProductHeader from '../../components/detail/header/ProductHeader';
 import ProductGallery from '../../components/detail/gallery/ProductGallery';
 import ProductDetails from '../../components/detail/details/ProductDetails';
@@ -7,10 +7,20 @@ import ProductLocation from '../../components/detail/location/ProductLocation';
 import ProductReview from '../../components/detail/review/ProductReview';
 import { useAccomData } from '../../hooks/useProductData';
 import Loading from '../../components/common/Loading';
+import useReservationStore from '../../stores/useReservationStore';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [productId, setProductId] = useState(id);
+  const location = useLocation();
+  const resetReservation = useReservationStore(
+    (state) => state.resetReservation,
+  );
+
+  // 예약 정보 폼 초기화
+  useEffect(() => {
+    resetReservation();
+  }, [location]);
 
   useEffect(() => {
     setProductId(id);

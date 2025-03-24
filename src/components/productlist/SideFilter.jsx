@@ -4,11 +4,11 @@ import { getAllAccomData } from '../../services/productListService';
 import useFilterStore from '../../stores/useFilterStore.js';
 import usePriceStore from '../../stores/usePriceStore.js';
 import useProductListStore from '../../stores/useProductListStore.js';
-import useRoomType from '../../stores/useRoomType';
 import CitySelector from '../common/CitySelector';
 import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
 import PriceSlider from './PriceSlider.jsx';
+import RoomTypeSelector from './RoomTypeSelect.jsx';
 
 const SideFilter = ({ setLoading, setError }) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
@@ -25,13 +25,6 @@ const SideFilter = ({ setLoading, setError }) => {
 
   const { range } = usePriceStore();
   const { list, setList, resetList } = useProductListStore();
-  const {
-    roomTypes,
-    defaultOption,
-    addRoomTypes,
-    delRoomTypes,
-    resetRoomTypes,
-  } = useRoomType();
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
@@ -63,18 +56,18 @@ const SideFilter = ({ setLoading, setError }) => {
     checkOut,
   ]);
 
-  useEffect(() => {
-    console.log('저장된 결과를 필터링해야하는 옵션 변경');
-  }, [roomTypes, range.min, range.max]);
-
   return (
     <aside
+      aria-label="숙소 검색 옵션 변경하기"
       className={`sidebar z-10 sticky top-5 ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
       <div className="flex mb-4 items-center justify-between">
-        {isFormOpen && <div>검색 영역</div>}
+        {isFormOpen && <div>검색 옵션 영역</div>}
         <button
           type="button"
           onClick={toggleForm}
+          aria-label={
+            isFormOpen ? '숙소 검색 옵션 열림' : '숙소 검색 옵션 닫힘'
+          }
           className={`border border-gray-200 px-0.5 py-2 ${
             isFormOpen ? 'rounded-l-md' : 'rounded-r-md'
           }`}>
@@ -87,50 +80,15 @@ const SideFilter = ({ setLoading, setError }) => {
       </div>
 
       {isFormOpen && (
-        <form className="flex flex-col gap-y-5 p-2.5">
+        <form
+          aria-label="검색 옵션 변경창"
+          className="flex flex-col gap-y-5 p-2.5">
           {/* 여행 장소 선택 */}
           <fieldset className="rounded-lg border border-gray-200 p-3">
             <legend className="fieldset-legend px-2 font-medium">
               여행 장소
             </legend>
             <CitySelector isGlobal={true} />
-          </fieldset>
-
-          {/* 숙박 장소 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 p-3">
-            <legend className="fieldset-legend px-2 font-medium">
-              숙박 장소
-            </legend>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-              {['호텔', '펜션', '게스트하우스', '캠핑'].map((ele) => (
-                <label
-                  htmlFor={ele}
-                  key={ele}
-                  className="flex items-center space-x-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="checkbox"
-                    id={ele}
-                    name={ele}
-                  />
-                  <span>{ele}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-
-          {/* 예산 범위 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 px-3">
-            <legend className="fieldset-legend px-2 font-medium">가격</legend>
-            <div className="flex items-center justify-between">
-              <div className="w-full p-3 max-w-xs">
-                <PriceSlider
-                  step={5}
-                  className="relative w-full p-4"
-                />
-              </div>
-            </div>
           </fieldset>
 
           <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
@@ -146,7 +104,31 @@ const SideFilter = ({ setLoading, setError }) => {
             <PeopleSelector stateType="filter" />
           </fieldset>
 
+          {/* 예산 범위 선택 */}
+          <fieldset className="rounded-lg border border-gray-200 px-3">
+            <legend className="fieldset-legend px-2 font-medium">가격</legend>
+            <div className="flex items-center justify-between">
+              <div className="w-full p-3 max-w-xs">
+                <PriceSlider
+                  step={5}
+                  className="relative w-full p-4"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          {/* 숙박 장소 선택 */}
+          <fieldset className="rounded-lg border border-gray-200 p-3">
+            <legend className="fieldset-legend px-2 font-medium">
+              숙박 장소
+            </legend>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+              <RoomTypeSelector />
+            </div>
+          </fieldset>
+
           <button
+            aria-label="검색 옵션 변경을 적용하기"
             type="submit"
             className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             옵션 수정 적용

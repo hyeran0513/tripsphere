@@ -9,6 +9,7 @@ import OrderList from '../../components/order/checkout/OrderList';
 import OrderSummary from '../../components/order/checkout/OrderSummary';
 import DateSelector from '../../components/common/DateSelector';
 import useReservationStore from '../../stores/useReservationStore';
+import ServiceList from '../../components/common/ServiceList';
 
 const accommodation = {
   id: '1',
@@ -50,12 +51,6 @@ const orderInfo = {
   },
 };
 
-const typeMapping = {
-  pension: '펜션',
-  hotel: '호텔',
-  camping: '캠핑',
-};
-
 const serviceNames = {
   wifi: '와이파이',
   parking: '주차장',
@@ -67,11 +62,12 @@ const serviceNames = {
 const Checkout = () => {
   const navigate = useNavigate();
   const [openDate, setOpenDate] = useState(false);
-  const { checkIn, checkOut, adultCount, childrenCount, totalPrice } =
-    useReservationStore();
+  // const { checkIn, checkOut, adultCount, childrenCount, totalPrice } =
+  //   useReservationStore();
+
   return (
     <div className="max-w-[1200px] mx-auto px-[20px] py-[40px] dark:text-gray-200">
-      <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
+      {/* <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
         checkIn: {checkIn}
         <br />
         checkOut: {checkOut}
@@ -79,7 +75,8 @@ const Checkout = () => {
         adultCount: {adultCount} <br />
         childrenCount: {childrenCount} <br />
         totalPrice: {totalPrice}
-      </div>
+      </div> */}
+
       <div className="flex space-y-6 gap-10 py-[30px] max-lg:flex-col max-lg:items-center">
         {/* 주문 결제 정보 */}
         <div className="flex-10/12 max-lg:w-full">
@@ -122,11 +119,11 @@ const Checkout = () => {
                     <OrderList
                       IconComponent={BiHotel}
                       Title={'숙박 시설'}
-                      description={typeMapping[accommodation.type]}
+                      type={accommodation.type}
                     />
 
                     <li>
-                      <fieldset className="fieldset py-4 px-6">
+                      <div className="py-4 px-6">
                         {/* 체크인 · 체크아웃 */}
                         <DateSelector
                           openDate={openDate}
@@ -135,7 +132,7 @@ const Checkout = () => {
 
                         {/* 인원수 */}
                         <PeopleSelector />
-                      </fieldset>
+                      </div>
                     </li>
                   </ul>
                 </dd>
@@ -158,26 +155,7 @@ const Checkout = () => {
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm/6 font-medium">서비스</dt>
                 <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                  <ul
-                    role="list"
-                    className="divide-y divide-gray-100 rounded-md border border-gray-200">
-                    {accommodation.services &&
-                      accommodation.services.map((service, index) => (
-                        <li
-                          key={index}
-                          className="flex items-center py-4 px-4 text-sm">
-                          <div className="flex items-center gap-2">
-                            <ServiceIcon
-                              key={service}
-                              type={service}
-                            />
-                            <span className="font-medium">
-                              {serviceNames[service]}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                  </ul>
+                  <ServiceList services={accommodation.services} />
                 </dd>
               </div>
             </dl>
@@ -192,7 +170,7 @@ const Checkout = () => {
 
               <div className="card-actions justify-end">
                 <button
-                  type="submit"
+                  type="button"
                   onClick={() => navigate('/orderconfirmation')}
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
                   결제하기

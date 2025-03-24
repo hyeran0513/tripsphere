@@ -1,12 +1,13 @@
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const PasswordToggle = ({ showPassword, onClick }) => {
+const PasswordToggle = ({ showPassword, onTogglePassword }) => {
   return (
-    <div
+    <button
+      type="button"
       className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-      onClick={onClick}>
+      onClick={onTogglePassword}>
       {showPassword ? <FaEyeSlash /> : <FaEye />}
-    </div>
+    </button>
   );
 };
 

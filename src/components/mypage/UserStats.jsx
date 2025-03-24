@@ -1,48 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BiHeart } from 'react-icons/bi';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { LiaCoinsSolid } from 'react-icons/lia';
 
 import PointModal from './PointModal';
-import { auth } from '../../firebase/firebaseConfig';
 import { useUserData } from '../../hooks/useUserData';
-import { onAuthStateChanged } from 'firebase/auth';
 import { useUserOrders } from '../../hooks/useOrderData';
-const UserStats = () => {
-  const [user, setUser] = useState(null);
-  //포인트 모달 열기
-  const [isOpen, setIsOpen] = useState(false);
+import Loading from '../common/Loading';
+import Modal from '../common/Modal';
+import useAuthStore from '../../stores/useAuthStore';
 
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    // Firebase 인증 상태가 변경될 때마다 호출
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    // 컴포넌트가 언마운트될 때 리스너를 정리
-    return () => unsubscribe();
-  }, []);
-
+const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
+  const { user } = useAuthStore();
   const { data: orderInfo } = useUserOrders(user?.uid);
-
   const { data, isLoading, error } = useUserData(user?.uid);
 
-  useEffect(() => {
-    if (data) {
-      console.log('사용자 정보:', JSON.stringify(data));
-    }
-  }, [data]);
-
-  if (isLoading) return <>로딩 중...</>;
+  if (isLoading) return <Loading />;
   if (error) return <>에러</>;
 
   return (
@@ -52,28 +26,30 @@ const UserStats = () => {
         <Link
           to="/pointhistory"
           className="flex-1 flex items-center gap-2 justify-around  py-4">
+          {/* 포인트 제목 */}
           <div className="flex-none flex gap-2 items-center">
             <LiaCoinsSolid size={30} />
             <div>포인트</div>
           </div>
+
+          {/* 포인트 점수 */}
           <div>
-            <strong className="stat-value text-primary">
-              {data && data.points}
-            </strong>
+            <strong className="stat-value text-primary">{points}</strong>
             포인트
           </div>
         </Link>
-        <button
-          onClick={handleOpen}
-          className="btn bg-green-500">
-          충전
-        </button>
-        {isOpen && (
+
+        {/* 포인트 충전 버튼 */}
+        <Modal
+          buttonTitle="충전"
+          modalId="addPoint"
+          title="포인트 충전">
           <PointModal
-            onClose={handleClose}
-            data={data}
+            points={points}
+            setPoints={setPoints}
+            pointHistoryRefetch={pointHistoryRefetch}
           />
-        )}
+        </Modal>
       </div>
 
       {/* 주문내역 박스  */}

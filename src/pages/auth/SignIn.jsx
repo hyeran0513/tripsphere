@@ -1,11 +1,9 @@
-import { onAuthStateChanged } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthForm } from '../../hooks/useAuthForm';
-import { auth } from '../../firebase/firebaseConfig';
 import { useSignInMutation } from '../../hooks/useAuthData';
 import InputField from '../../components/common/InputField';
-import Modal from '../../components/common/Modal';
+import NotificationModal from '../../components/common/NotificationModal';
 
 const SignIn = () => {
   const [state, dispatch] = useAuthForm();
@@ -14,15 +12,6 @@ const SignIn = () => {
   const [modalText, setModalText] = useState({ title: '', description: '' });
   const [modalType, setModalType] = useState('error');
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const showModal = (type, title, description) => {
     setModalType(type);
@@ -74,6 +63,7 @@ const SignIn = () => {
               label="비밀번호"
               type="password"
               value={state.password}
+              isResetPassword={true}
               placeholder={state.placeholder.password}
               onChange={(e) =>
                 dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
@@ -103,7 +93,8 @@ const SignIn = () => {
         </div>
       </div>
 
-      <Modal
+      {/* 모달 */}
+      <NotificationModal
         open={modalOpen}
         setOpen={setModalOpen}
         text={modalText}

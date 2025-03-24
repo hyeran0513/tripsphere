@@ -1,15 +1,26 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import ProductDetails from '../../components/detail/ProductDetails';
-import ProductGallery from '../../components/detail/ProductGallery';
-import ProductHeader from '../../components/detail/ProductHeader';
-import ProductLocation from '../../components/detail/ProductLocation';
-import ProductReview from '../../components/detail/ProductReview';
+import { useLocation, useParams } from 'react-router-dom';
+import ProductHeader from '../../components/detail/header/ProductHeader';
+import ProductGallery from '../../components/detail/gallery/ProductGallery';
+import ProductDetails from '../../components/detail/details/ProductDetails';
+import ProductLocation from '../../components/detail/location/ProductLocation';
+import ProductReview from '../../components/detail/review/ProductReview';
 import { useAccomData } from '../../hooks/useProductData';
+import Loading from '../../components/common/Loading';
+import useReservationStore from '../../stores/useReservationStore';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [productId, setProductId] = useState(id);
+  const location = useLocation();
+  const resetReservation = useReservationStore(
+    (state) => state.resetReservation,
+  );
+
+  // 예약 정보 폼 초기화
+  useEffect(() => {
+    resetReservation();
+  }, [location]);
 
   useEffect(() => {
     setProductId(id);
@@ -22,7 +33,7 @@ const ProductDetail = () => {
     error: accomodationError,
   } = useAccomData(productId);
 
-  if (isAccommodationLoading) return <>로딩 중...</>;
+  if (isAccommodationLoading) return <Loading />;
   if (accomodationError) return <>에러</>;
 
   return (

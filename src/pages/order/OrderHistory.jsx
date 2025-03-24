@@ -2,9 +2,7 @@ import React from 'react';
 import OrderList from '../../components/order/OrderList';
 import PageHeader from '../../components/common/PageHeader';
 import { useUserOrders } from '../../hooks/useOrderData';
-import { auth } from '../../firebase/firebaseConfig';
-import { useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import useAuthStore from '../../stores/useAuthStore';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -12,21 +10,8 @@ const breadcrumb = [
 ];
 
 const OrderHistory = () => {
-  const [userId, setUserId] = useState(null);
-
-  useEffect(() => {
-    // 로그인 상태 감지
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid); // 로그인
-      } else {
-        setUserId(null); // 로그아웃
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-  const { data: orderInfo, isLoading, error } = useUserOrders(userId);
+  const { user } = useAuthStore();
+  const { data: orderInfo, isLoading, error } = useUserOrders(user?.uid);
 
   if (isLoading) {
     return (

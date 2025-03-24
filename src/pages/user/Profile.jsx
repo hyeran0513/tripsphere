@@ -4,8 +4,9 @@ import { useAuthForm } from '../../hooks/useAuthForm';
 import { useEffect, useState } from 'react';
 import InputField from '../../components/common/InputField';
 import { useEditUserData, useUserData } from '../../hooks/useUserData';
-import Modal from '../../components/common/Modal';
+import NotificationModal from '../../components/common/NotificationModal';
 import { validateForm } from '../../utils/validation';
+import Loading from '../../components/common/Loading';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -63,7 +64,7 @@ const Profile = () => {
     mutate(updatedData);
   };
 
-  if (isLoading) return <>로딩 중..</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (
@@ -128,7 +129,14 @@ const Profile = () => {
                   error={state.errors.phone}
                 />
 
-                <Link to="/">비밀번호 재설정 페이지 (만들 예정)</Link>
+                <p className="mt-10 text-center text-sm text-gray-500">
+                  비밀번호를 변경하고 싶으신가요?
+                  <Link
+                    to="/resetpassword"
+                    className="ml-2 font-semibold text-indigo-600 hover:text-indigo-500">
+                    비밀번호 재설정
+                  </Link>
+                </p>
               </form>
             </div>
           </div>
@@ -152,7 +160,7 @@ const Profile = () => {
       </form>
 
       {/* 모달 */}
-      <Modal
+      <NotificationModal
         open={modalOpen}
         setOpen={setModalOpen}
         text={modalText}

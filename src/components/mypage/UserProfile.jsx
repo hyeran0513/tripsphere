@@ -4,7 +4,9 @@ import { BiCog, BiLock } from 'react-icons/bi';
 import InputField from '../common/InputField';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useUserData, useVerifyPassword } from '../../hooks/useUserData';
-import Toast from '../common/Toast';
+import Loading from '../common/Loading';
+import Modal from '../common/Modal';
+import ToastMessage from '../common/ToastMessage';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ const UserProfile = () => {
     setTimeout(() => setToast(null), 3000);
   };
 
-  if (isLoading) return <>로딩 중...</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (
@@ -62,70 +64,56 @@ const UserProfile = () => {
                 </a>
               </h3>
             </div>
-            <p className="mt-1 text-sm text-gray-500">{userInfo?.nickname}</p>
+            <div className="mt-1 text-sm text-gray-500">
+              {userInfo?.nickname}
+            </div>
           </div>
         </div>
 
         {/* 개인정보 수정 설정 버튼 */}
-        <button
-          className="btn"
-          onClick={() => document.getElementById('my_modal_2').showModal()}>
-          <BiCog size={24} />
-        </button>
-        <dialog
-          id="my_modal_2"
-          className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg flex items-center gap-2">
-              <BiLock /> 본인 인증
-            </h3>
-            <p className="py-4">
-              <div className="mb-4">
-                개인정보 변경 전 본인 인증을 위해 비밀번호를 입력해주세요.
-              </div>
-
-              {/* 비밀번호 */}
-              <InputField
-                label="비밀번호"
-                type="password"
-                value={state.password}
-                placeholder={state.placeholder.password}
-                onChange={(e) =>
-                  dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
-                }
-                error={state.errors.password}
-                showPassword={showPassword}
-                onTogglePassword={() => setShowPassword(!showPassword)}
-              />
-            </p>
-            <div className="modal-action">
-              <form method="dialog">
-                <button
-                  className="btn"
-                  onClick={handleVerify}>
-                  확인
-                </button>
-              </form>
+        <Modal
+          buttonTitle={<BiCog size={24} />}
+          modalId="verification"
+          title="본인 인증">
+          <div className="py-4">
+            <div className="mb-4">
+              개인정보 변경 전 본인 인증을 위해 비밀번호를 입력해주세요.
             </div>
+
+            {/* 비밀번호 */}
+            <InputField
+              label="비밀번호"
+              type="password"
+              value={state.password}
+              placeholder={state.placeholder.password}
+              onChange={(e) =>
+                dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
+              }
+              error={state.errors.password}
+              showPassword={showPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+            />
           </div>
 
-          <form
-            method="dialog"
-            className="modal-backdrop">
-            <button>close</button>
-          </form>
-        </dialog>
+          {/* 버튼 영역 */}
+          <div className="modal-action">
+            <form method="dialog">
+              <button
+                className="btn"
+                onClick={handleVerify}>
+                확인
+              </button>
+            </form>
+          </div>
+        </Modal>
       </div>
 
       {/* 토스트 메시지 */}
       {toast && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-10">
-          <Toast
-            type={toast.type}
-            message={toast.message}
-            onClose={() => setToast(null)}
-          />
-        </div>
+        <ToastMessage
+          toast={toast}
+          setToast={setToast}
+        />
       )}
     </>
   );

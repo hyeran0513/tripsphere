@@ -5,7 +5,8 @@ import Completion from '../../components/signup/Completion';
 import Step from '../../components/signup/Step';
 import { Link } from 'react-router-dom';
 import Toast from '../../components/common/Toast';
-import UserInfo from '../../components/signup/UserinFo';
+import UserInfo from '../../components/signup/UserInfo';
+import ToastMessage from '../../components/common/ToastMessage';
 
 const SignUp = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -84,13 +85,10 @@ const SignUp = () => {
 
       {/* 토스트 메시지 */}
       {toast && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-10">
-          <Toast
-            type={toast.type}
-            message={toast.message}
-            onClose={() => setToast(null)}
-          />
-        </div>
+        <ToastMessage
+          toast={toast}
+          setToast={setToast}
+        />
       )}
     </>
   );

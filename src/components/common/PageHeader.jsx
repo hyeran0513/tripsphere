@@ -8,6 +8,7 @@ const PageHeader = ({ title, breadcrumb, hasBackButton }) => {
   return (
     <div className="mb-[30px] pb-7 border-b border-gray-200">
       <div className="flex justify-between items-center">
+        {/* 페이지 경로 */}
         <nav
           aria-label="Breadcrumb"
           className="mb-4">
@@ -39,6 +40,7 @@ const PageHeader = ({ title, breadcrumb, hasBackButton }) => {
           </ol>
         </nav>
 
+        {/* 뒤로 가기 버튼 */}
         {hasBackButton && (
           <button
             type="button"
@@ -48,6 +50,7 @@ const PageHeader = ({ title, breadcrumb, hasBackButton }) => {
         )}
       </div>
 
+      {/* 제목 */}
       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
         {title}
       </h2>

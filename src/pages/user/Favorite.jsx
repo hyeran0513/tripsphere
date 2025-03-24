@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import Pagination from '../../components/productlist/Pagination';
 import PageHeader from '../../components/common/PageHeader';
 import ProductCard from '../../components/favorite/ProductCard';
-
-import { onAuthStateChanged } from 'firebase/auth';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
-import { auth } from '../../firebase/firebaseConfig';
+
+import Loading from '../../components/common/Loading';
+import useAuthStore from '../../stores/useAuthStore';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -13,7 +13,7 @@ const breadcrumb = [
 ];
 
 const Favorite = () => {
-  const [user, setUser] = useState(null);
+  const { user } = useAuthStore();
   const [inputValue, setInputValue] = useState('');
 
   const handleSearchInput = (e) => {
@@ -21,14 +21,6 @@ const Favorite = () => {
   };
 
   const handleSearchButton = () => {};
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const { data, isLoading, error } = useFavoriteAccommData(user?.uid);
 
@@ -38,7 +30,7 @@ const Favorite = () => {
     }
   }, [data]);
 
-  if (isLoading) return <>로딩 중..</>;
+  if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
   return (

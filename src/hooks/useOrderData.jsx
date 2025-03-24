@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { cancelUserOrder, fetchUserOrders } from '../services/OrderService';
+import { cancelUserOrder, fetchUserOrders } from '../services/orderService';
 
 // 주문내역 조회
 export const useUserOrders = (userId) => {

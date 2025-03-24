@@ -73,7 +73,7 @@ const ProductList = () => {
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">
-      <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
+      {/* <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
         selectedCity: {selectedCity} <br />
         selectedSubCity: {selectedSubCity} <br />
         adultCount: {adultCount} <br />
@@ -94,7 +94,7 @@ const ProductList = () => {
       <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
         searchParams : {searchParams}
         <br />
-      </div>
+      </div> */}
 
       <PageHeader
         title="여행 숙소 검색 결과"

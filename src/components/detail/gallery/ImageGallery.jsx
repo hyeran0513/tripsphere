@@ -13,6 +13,7 @@ const ImageGallery = ({ images }) => {
 
   return (
     <>
+      {/* 이미지 미리보기 */}
       <Swiper
         style={{
           '--swiper-navigation-color': '#fff',
@@ -33,6 +34,7 @@ const ImageGallery = ({ images }) => {
         ))}
       </Swiper>
 
+      {/* 이미지 목록 */}
       <Swiper
         onSwiper={setThumbsSwiper}
         spaceBetween={10}
@@ -43,10 +45,12 @@ const ImageGallery = ({ images }) => {
         className="mySwiper mt-4">
         {images.map((image, index) => (
           <SwiperSlide key={`children-${index}`}>
-            <img
-              src={image}
-              className="rounded-lg"
-            />
+            <div className="h-[140px] border overflow-hidden rounded-lg">
+              <img
+                src={image}
+                className="w-full h-full"
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

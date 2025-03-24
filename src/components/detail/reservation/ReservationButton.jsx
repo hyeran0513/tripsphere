@@ -1,12 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 
-const ReservationButton = ({ setTotalPrice, totalPrice }) => {
+const ReservationButton = ({
+  setTotalPrice,
+  totalPrice,
+  setAccommodationId,
+  productId,
+}) => {
   const navigate = useNavigate();
 
   // 예약하기 핸들러
   const handleReservation = (e) => {
     e.preventDefault();
 
+    setAccommodationId(productId);
     setTotalPrice(totalPrice);
     navigate('/checkout');
   };

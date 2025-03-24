@@ -5,13 +5,7 @@ import { Link } from 'react-router-dom';
 import { formatDate, formatNumber } from '../../utils/format';
 import KakaoShareButton from '../common/KakaoShareButton';
 
-const ProductCard = ({
-  index,
-  product,
-  arrayLength,
-  ref = null,
-  ref = null,
-}) => {
+const ProductCard = ({ index, product, arrayLength, ref = null }) => {
   function bulidingType({ product }) {
     let message;
 

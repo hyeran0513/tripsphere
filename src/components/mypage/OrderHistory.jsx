@@ -32,6 +32,14 @@ const OrderHistory = () => {
           <li
             className="list-row flex-col flex"
             key={index}>
+            <div className="text-xs uppercase font-bold flex items-center justify-between">
+              {compareToday(order.check_in) && (
+                <div className="badge badge-soft badge-primary text-xs">
+                  {compareToday(order.check_in)}
+                </div>
+              )}
+              <div> 예약번호 : {order.id} </div>
+            </div>
             <div className="flex justify-between">
               <div className="flex gap-6">
                 <img
@@ -44,14 +52,9 @@ const OrderHistory = () => {
                 />
 
                 <div className="flex flex-col">
-                  <h2 className="text-md opacity-60 ">
+                  <h4 className="text-md opacity-60 ">
                     {formatDate(order.order_date)}
-                    {order.payment_status === 'completed' ? '결제완료' : '취소'}
-                  </h2>
-
-                  <div className="mb-2 text-xs uppercase font-bold">
-                    예약번호 : {order.id}
-                  </div>
+                  </h4>
 
                   <div className="mb-2 text-md uppercase font-bold">
                     {order.accommodation?.name}
@@ -79,15 +82,15 @@ const OrderHistory = () => {
                         <span>{formatDate(order.check_out)}</span>
                       </div>
                     </div>
-                    {compareToday(order.check_in) && (
-                      <div className="badge badge-soft badge-primary text-xs">
-                        {compareToday(order.check_in)}
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
-              <div>{formatNumber(order.total_price)}원</div>
+              <div>
+                {formatNumber(order.total_price)}원
+                <div>
+                  {order.payment_status === 'completed' ? '결제완료' : '취소'}
+                </div>
+              </div>
             </div>
           </li>
         ))}

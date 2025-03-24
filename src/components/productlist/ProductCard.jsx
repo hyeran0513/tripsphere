@@ -5,7 +5,13 @@ import { Link } from 'react-router-dom';
 import { formatDate, formatNumber } from '../../utils/format';
 import KakaoShareButton from '../common/KakaoShareButton';
 
-const ProductCard = ({ index, product, arrayLength, ref = null }) => {
+const ProductCard = ({
+  index,
+  product,
+  arrayLength,
+  ref = null,
+  ref = null,
+}) => {
   function bulidingType({ product }) {
     let message;
 
@@ -52,7 +58,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
             <div className="h-[200px] rounded-md overflow-hidden">
               <img
                 src={product.images[0]}
-                alt="" // {product.name} 숙소 이미지를 보여주는 단순한 꾸미는 용도라 필요 없을 것 같음
+                alt="" // "" // {product.name} 숙소 이미지를 보여주는 단순한 꾸미는 용도라 필요 없을 것 같음 숙소 이미지를 보여주는 단순한 꾸미는 용도라 필요 없을 것 같음
                 className="h-full object-cover"
                 aria-label=""
               />
@@ -69,7 +75,9 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                 {bulidingType({ product })}
               </div>
 
-              <div className="badge badge-soft badge-info">
+              <div
+                className="badge badge-soft badge-info"
+                aria-label={`숙소 위치 ${product.rating}`}>
                 {product.location.city} {product.location.sub_city}
               </div>
             </div>
@@ -100,11 +108,25 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
             </div>
           </div>
           <div className="flex justify-between">
-            <h2
-              className=" transition-colors card-title text-2xl pb-3.5 border-b-1 border-gray-200"
-              aria-label={`숙소 이름 ${product.name}`}>
-              {product.name}
-            </h2>
+            <div className="flex justify-between">
+              <h2
+                className=" transition-colors card-title text-2xl pb-3.5 border-b-1 border-gray-200"
+                aria-label={`숙소 이름 ${product.name}`}>
+                {product.name}
+              </h2>
+              <div className="flex justify-center items-center">
+                <span
+                  aria-label=""
+                  className="text-yellow-200 text-2xl">
+                  <FaStar />
+                </span>
+                <p
+                  aria-label={`숙소 평점 ${product.rating}`}
+                  className="text-xl font-medium">
+                  {product.rating}
+                </p>
+              </div>
+            </div>
             <div className="flex justify-center items-center">
               <span
                 aria-label=""
@@ -128,7 +150,9 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                     <BiCalendarAlt className="text-base" />
                     <p className="font-bold">체크인</p>
                   </div>
-                  <time dateTime={product.check_in.toLocaleString()}>
+                  <time
+                    aria-label="체크인 시간"
+                    dateTime={formatDate(product.check_in)}>
                     {formatDate(product.check_in)}
                   </time>
                 </div>
@@ -138,7 +162,9 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                     <BiCalendarAlt className="text-base" />
                     <p className="font-bold">체크아웃</p>
                   </div>
-                  <time dateTime={product.check_out.toLocaleString()}>
+                  <time
+                    aria-label="체크아웃 시간"
+                    dateTime={formatDate(product.check_out)}>
                     {formatDate(product.check_out)}
                   </time>
                 </div>
@@ -171,6 +197,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                 </div>
 
                 <span> {product.discount_rate * 100}% </span>
+                <span aria-label="할인율"> {product.discount_rate}% </span>
               </div>
             </div>
           </div>

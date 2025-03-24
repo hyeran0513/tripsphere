@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
+import usePriceStore from '../../stores/usePriceStore';
+import useRoomType from '../../stores/useRoomType';
 import Loading from '../common/Loading';
 
-const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
+const Pagination = ({
+  data,
+  pagePerItem = 10,
+  ref = '',
+  pagePerItem = 10,
+  ref = '',
+}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
   const [itemsPerPage, setItemsPerPage] = useState(pagePerItem);

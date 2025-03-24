@@ -96,7 +96,7 @@ const OrderList = ({ orderInfo }) => {
                     </div>
                   </div>
                   {compareToday(order.check_in) && (
-                    <div class="badge badge-soft badge-primary text-xs">
+                    <div className="badge badge-soft badge-primary text-xs">
                       {compareToday(order.check_in)}
                     </div>
                   )}

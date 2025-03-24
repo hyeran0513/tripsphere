@@ -17,7 +17,7 @@ const InputField = ({
   return (
     <div>
       {/* 라벨 영역 */}
-      <div class="flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <label
           htmlFor={label}
           className="dark:text-gray-400 block text-sm font-medium text-gray-900">
@@ -25,10 +25,10 @@ const InputField = ({
         </label>
 
         {isResetPassword && (
-          <div class="text-sm">
+          <div className="text-sm">
             <Link
               to="/resetpassword"
-              class="font-semibold text-indigo-600 hover:text-indigo-500">
+              className="font-semibold text-indigo-600 hover:text-indigo-500">
               비밀번호 재설정
             </Link>
           </div>

@@ -52,8 +52,13 @@ const OrderHistory = () => {
                 />
 
                 <div className="flex flex-col">
-                  <h4 className="text-md opacity-60 ">
+                  <h4 className="text-md opacity-60 flex gap-2">
                     {formatDate(order.order_date)}
+                    <div>
+                      {order.payment_status === 'completed'
+                        ? '결제완료'
+                        : '취소'}
+                    </div>
                   </h4>
 
                   <div className="mb-2 text-md uppercase font-bold">
@@ -85,12 +90,7 @@ const OrderHistory = () => {
                   </div>
                 </div>
               </div>
-              <div>
-                {formatNumber(order.total_price)}원
-                <div>
-                  {order.payment_status === 'completed' ? '결제완료' : '취소'}
-                </div>
-              </div>
+              <div>{formatNumber(order.total_price)}원</div>
             </div>
           </li>
         ))}

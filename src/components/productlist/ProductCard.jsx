@@ -5,13 +5,7 @@ import { Link } from 'react-router-dom';
 import { formatDate, formatNumber } from '../../utils/format';
 import KakaoShareButton from '../common/KakaoShareButton';
 
-const ProductCard = ({
-  index,
-  product,
-  arrayLength,
-  ref = null,
-  ref = null,
-}) => {
+const ProductCard = ({ index, product, arrayLength, ref = null }) => {
   function bulidingType({ product }) {
     let message;
 
@@ -110,7 +104,7 @@ const ProductCard = ({
           <div className="flex justify-between">
             <div className="flex justify-between">
               <h2
-                className=" transition-colors card-title text-2xl pb-3.5 border-b-1 border-gray-200"
+                className="transition-colors card-title text-2xl pb-3.5 border-b-1 border-gray-200"
                 aria-label={`숙소 이름 ${product.name}`}>
                 {product.name}
               </h2>

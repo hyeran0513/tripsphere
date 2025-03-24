@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import PageHeader from '../../components/common/PageHeader';
 import ProductsPageList from '../../components/productlist/ProductsPageList';
 import SideFilter from '../../components/productlist/SideFilter';
-import useFilterStore from '../../stores/useFilterStore';
-import usePriceStore from '../../stores/usePriceStore';
 
 const products = [
   {
@@ -53,19 +50,6 @@ const breadcrumb = [
 ];
 
 const ProductList = () => {
-  const {
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-  } = useFilterStore();
-
-  const { range, rangeLimit } = usePriceStore();
-
-  const [searchParams] = useSearchParams();
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -73,29 +57,6 @@ const ProductList = () => {
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">
-      {/* <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
-        selectedCity: {selectedCity} <br />
-        selectedSubCity: {selectedSubCity} <br />
-        adultCount: {adultCount} <br />
-        childrenCount: {childrenCount} <br />
-        checkIn: {checkIn} <br />
-        checkOut: {checkOut}
-      </div>
-
-      <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
-        nowMin: {range.min} <br />
-        nowMax: {range.max} <br />
-        rangeLow : {rangeLimit.min}
-        <br />
-        rangeHigh : {rangeLimit.max}
-        <br />
-      </div>
-
-      <div className="inline-block py-4 px-4 bg-gray-100 rounded-md">
-        searchParams : {searchParams}
-        <br />
-      </div> */}
-
       <PageHeader
         title="여행 숙소 검색 결과"
         breadcrumb={breadcrumb}

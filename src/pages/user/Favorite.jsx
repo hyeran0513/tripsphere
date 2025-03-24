@@ -29,15 +29,34 @@ const Favorite = () => {
   if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
+  const typeMapping = {
+    hotel: '호텔',
+    motel: '모텔',
+    resort: '리조트',
+    pension: '펜션',
+    guesthouse: '게스트하우스',
+    camping: '캠핑',
+  };
+
   const handleSearchButton = () => {
     if (!searchTerm.trim()) {
       setFilteredData(data);
     } else {
-      const results = data.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-
-      setFilteredData(results);
+      const results = data.filter((item) => {
+        const searchableContent = [
+          item.name,
+          item.host.name,
+          typeMapping[item.type] || item.type,
+          item.description,
+          item.location.city,
+          item.location.sub_city,
+          item.services.join(', '),
+        ]
+          .join(' ')
+          .toLowerCase(); // 검색 범위가 되는 텍스트를 모두 합침
+        return searchableContent.includes(searchTerm.toLowerCase());
+      });
+      setFilteredData(results); // 검색어와 일치하는 데이터만 표시
     }
   };
 

@@ -104,7 +104,7 @@ const CitySelector = React.memo(({ isGlobal }) => {
             className="input bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
             value={selectedSubCity}
             onChange={handleSubCitySelect}>
-            <option value="전체">소분류 선택</option>
+            <option value="">소분류 선택</option>
             {subCityOptions}
           </select>
         </div>

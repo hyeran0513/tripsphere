@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+build/
 *.local
 .env
 
@@ -24,4 +25,7 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Firebase
+.firebase/
 /public/

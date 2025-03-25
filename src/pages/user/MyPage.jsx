@@ -43,7 +43,7 @@ const MyPage = () => {
       />
 
       {/* 포인트 내역 */}
-      {points && <PointHistory points={pointHistory} />}
+      <PointHistory points={pointHistory} />
 
       {/* 주문 내역 */}
       <OrderHistory />

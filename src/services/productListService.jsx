@@ -44,11 +44,11 @@ export const getAllAccomData = async (filters) => {
     let checkInTimestamp = Timestamp.fromDate(new Date(filters.checkIn));
     constraints.push(where('check_in', '>=', checkInTimestamp));
   }
-
+  let checkOutTimestamp;
   // 체크아웃 날짜 필터
   // Firestore에서 필터링하지 않고, 이후 클라이언트에서 필터링
   if (filters.checkOut) {
-    let checkOutTimestamp = Timestamp.fromDate(new Date(filters.checkOut));
+    checkOutTimestamp = Timestamp.fromDate(new Date(filters.checkOut));
   }
 
   const q = query(accomDoc, ...constraints);
@@ -61,11 +61,11 @@ export const getAllAccomData = async (filters) => {
     // 클라이언트 측 필터링
     // 임시 데이터의 시간들이 과거로 들어가있어서
     // 필터링 중지후 일괄 호출.
-    // if (checkOutTimestamp) {
-    //   results = results.filter(
-    //     (accom) => accom.check_out.toMillis() <= checkOutTimestamp.toMillis(),
-    //   );
-    // }
+    if (checkOutTimestamp) {
+      results = results.filter(
+        (accom) => accom.check_out.toMillis() <= checkOutTimestamp.toMillis(),
+      );
+    }
 
     return results;
   } catch (error) {

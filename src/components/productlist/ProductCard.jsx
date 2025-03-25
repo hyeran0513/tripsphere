@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { formatDate, formatNumber } from '../../utils/format';
 import KakaoShareButton from '../common/KakaoShareButton';
 
+// 상품목록의 상품카드
 const ProductCard = ({ index, product, arrayLength, ref = null }) => {
   function bulidingType({ product }) {
     let message;
@@ -40,6 +41,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
     <li
     // ref={focus ? focus : ''}
     >
+      {/* 구조변경필요 nvda에서 세부정보 못읽음. a -> div 구조 */}
       <Link
         to={`/product/${product.id}`}
         autoFocus={index === 1 ? true : false}
@@ -52,7 +54,7 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
             <div className="h-[200px] rounded-md overflow-hidden">
               <img
                 src={product.images[0]}
-                alt="" // "" // {product.name} 숙소 이미지를 보여주는 단순한 꾸미는 용도라 필요 없을 것 같음 숙소 이미지를 보여주는 단순한 꾸미는 용도라 필요 없을 것 같음
+                alt=""
                 className="h-full object-cover"
                 aria-label=""
               />
@@ -108,18 +110,6 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                 aria-label={`숙소 이름 ${product.name}`}>
                 {product.name}
               </h2>
-              <div className="flex justify-center items-center">
-                <span
-                  aria-label=""
-                  className="text-yellow-200 text-2xl">
-                  <FaStar />
-                </span>
-                <p
-                  aria-label={`숙소 평점 ${product.rating}`}
-                  className="text-xl font-medium">
-                  {product.rating}
-                </p>
-              </div>
             </div>
             <div className="flex justify-center items-center">
               <span
@@ -190,7 +180,6 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                   </p>
                 </div>
 
-                <span> {product.discount_rate * 100}% </span>
                 <span aria-label="할인율"> {product.discount_rate}% </span>
               </div>
             </div>

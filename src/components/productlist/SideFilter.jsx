@@ -77,7 +77,6 @@ const SideFilter = ({ setLoading, setError }) => {
       setLoading(true);
       try {
         const data = await getAllAccomData(useFilterStore);
-        console.log('roomTypes : ', roomTypes);
         setList(data);
       } catch (error) {
         console.error('상품정보 로딩 중 오류 ', error);

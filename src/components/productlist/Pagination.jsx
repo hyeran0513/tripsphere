@@ -31,7 +31,7 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
 
       setCurrentItems(data.slice(startIdx, endIdx));
     }
-    console.log('pagePerItem : ', pagePerItem);
+    // console.log('pagePerItem : ', pagePerItem);
     setItemsPerPage(pagePerItem);
   }, [currentPage, data, range.min, range.max, roomTypes, itemsPerPage]);
 
@@ -40,12 +40,12 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
   };
 
   useEffect(() => {
-    console.log('페이지 목록 이동 : ', currentPage);
+    // console.log('페이지 목록 이동 : ', currentPage);
   }, [currentPage, data]);
 
   // 페이지 변경
   const handlePageChange = (page) => {
-    console.log('page : ', page);
+    // console.log('page : ', page);
 
     if (page > 0 && page <= Math.ceil(data?.length / itemsPerPage)) {
       setSearchParams((prevParams) => {

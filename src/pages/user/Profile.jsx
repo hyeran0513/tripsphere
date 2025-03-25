@@ -129,7 +129,14 @@ const Profile = () => {
                   error={state.errors.phone}
                 />
 
-                <Link to="/">비밀번호 재설정 페이지 (만들 예정)</Link>
+                <p className="mt-10 text-center text-sm text-gray-500">
+                  비밀번호를 변경하고 싶으신가요?
+                  <Link
+                    to="/resetpassword"
+                    className="ml-2 font-semibold text-indigo-600 hover:text-indigo-500">
+                    비밀번호 재설정
+                  </Link>
+                </p>
               </form>
             </div>
           </div>

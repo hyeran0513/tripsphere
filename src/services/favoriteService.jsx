@@ -5,20 +5,13 @@ import {
   arrayRemove,
   getDoc,
 } from 'firebase/firestore';
-import { auth, db } from '../firebase/firebaseConfig';
+import { db } from '../firebase/firebaseConfig';
 import { fetchAccomData } from './productService.';
 
 // 사용자 찜 목록 가져오기
-const getUserWishlist = async () => {
-  const user = auth.currentUser;
-
-  if (!user) {
-    console.log('사용자가 없습니다.');
-    return;
-  }
-
+const getUserWishlist = async (userId) => {
   try {
-    const userDocRef = doc(db, 'users', user.uid);
+    const userDocRef = doc(db, 'users', userId);
     const userDocSnap = await getDoc(userDocRef);
 
     if (!userDocSnap.exists()) {
@@ -33,8 +26,8 @@ const getUserWishlist = async () => {
 };
 
 // 찜 버튼 제어
-export const controlFavorite = async (accommodationId) => {
-  const userData = await getUserWishlist();
+export const controlFavorite = async (userId, accommodationId) => {
+  const userData = await getUserWishlist(userId);
 
   if (!userData) return;
 
@@ -56,16 +49,16 @@ export const controlFavorite = async (accommodationId) => {
 };
 
 // 찜 목록에 항목 포함 여부
-export const checkFavorite = async (accommodationId) => {
-  const userData = await getUserWishlist();
+export const checkFavorite = async (userId, accommodationId) => {
+  const userData = await getUserWishlist(userId);
   if (!userData) return;
 
   return userData.wishlist.includes(accommodationId);
 };
 
 // 찜 목록 숙소 정보 조회
-export const getFavoriteAccomm = async () => {
-  const userData = await getUserWishlist();
+export const getFavoriteAccomm = async (userId) => {
+  const userData = await getUserWishlist(userId);
 
   const accomPromises = userData.wishlist.map(async (item) => {
     return fetchAccomData(item);

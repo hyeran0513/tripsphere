@@ -3,9 +3,10 @@ import { create } from 'zustand';
 const useReservationStore = create((set) => ({
   adultCount: 0,
   childrenCount: 0,
-  checkIn: '',
-  checkOut: '',
+  checkIn: new Date().toLocaleDateString(),
+  checkOut: new Date().toLocaleDateString(),
   totalPrice: 0,
+  accommodationId: '',
 
   // 어른 수 변경
   setAdultCount: (num) => set({ adultCount: num }),
@@ -21,6 +22,20 @@ const useReservationStore = create((set) => ({
 
   // 총 예약 금액
   setTotalPrice: (num) => set({ totalPrice: num }),
+
+  // 상품 ID
+  setAccommodationId: (num) => set({ accommodationId: num }),
+
+  // 상태 초기화
+  resetReservation: () =>
+    set({
+      adultCount: 0,
+      childrenCount: 0,
+      checkIn: new Date().toLocaleDateString(),
+      checkOut: new Date().toLocaleDateString(),
+      totalPrice: 0,
+      accommodationId: '',
+    }),
 }));
 
 export default useReservationStore;

@@ -1,5 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { saveUserInfo, signInUser, signupUser } from '../services/authService';
+import {
+  resetPassword,
+  saveUserInfo,
+  signInUser,
+  signupUser,
+} from '../services/authService';
 import useAuthStore from '../stores/useAuthStore';
 
 // 이메일 & 비밀번호
@@ -57,6 +62,31 @@ export const useSignInMutation = (state, dispatch, showModal, navigate) => {
         errorMessage = '비밀번호가 일치하지 않습니다.';
 
       showModal('error', '로그인 실패', errorMessage);
+    },
+  });
+};
+
+// 비밀번호 재설정
+export const useResetPassword = (showModal) => {
+  return useMutation({
+    mutationKey: ['resetPassword'],
+    mutationFn: (email) => resetPassword(email),
+    onSuccess: () => {
+      showModal(
+        'success',
+        '비밀번호 재설정 이메일 발송',
+        '발송된 이메일에서 비밀번호를 재설정해 주세요.',
+      );
+    },
+    onError: (error) => {
+      console.error(error);
+
+      let errorMsg = '오류가 발생했습니다.';
+
+      if (error.code === 'auth/user-not-found') {
+        errorMsg = '가입된 사용자가 없습니다.';
+      }
+      showModal('error', '비밀번호 재설정 실패', errorMsg);
     },
   });
 };

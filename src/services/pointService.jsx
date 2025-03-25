@@ -1,15 +1,15 @@
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  updateDoc,
-  increment,
   addDoc,
-  serverTimestamp,
-  orderBy,
+  collection,
+  doc,
   limit as firestoreLimit,
+  getDocs,
+  increment,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
@@ -59,5 +59,29 @@ export const addPoints = async (userId, points) => {
     });
   } catch (error) {
     console.error('포인트 추가 오류:', error.message);
+  }
+};
+
+// 포인트 사용 및 포인트 사용 내역 추가
+export const usedPoints = async (userId, points) => {
+  try {
+    const pointsRef = collection(db, 'points');
+    const userRef = doc(db, 'users', userId);
+
+    // 포인트 내역 추가
+    await addDoc(pointsRef, {
+      user_id: userId,
+      title: '포인트 사용',
+      description: `${points} 포인트가 사용되었습니다!`,
+      points: points,
+      received_date: serverTimestamp(),
+    });
+
+    // 유저 포인트 감소
+    await updateDoc(userRef, {
+      points: increment(-points),
+    });
+  } catch (error) {
+    console.error('포인트 사용 오류:', error.message);
   }
 };

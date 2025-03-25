@@ -18,3 +18,12 @@ export const useAddPoints = (userId) => {
     enabled: !!userId,
   });
 };
+
+// 포인트 사용 및 포인트 사용 내역 추가
+export const pointUse = (userId) => {
+  return useMutation({
+    mutationKey: ['usedPoint'],
+    mutationFn: (points) => usedPoints(userId, points),
+    enabled: !!userId,
+  });
+};

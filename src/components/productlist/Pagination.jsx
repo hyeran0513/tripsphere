@@ -5,6 +5,7 @@ import usePriceStore from '../../stores/usePriceStore';
 import useRoomType from '../../stores/useRoomType';
 import Loading from '../common/Loading';
 
+// 상품목록 하단 페이지 목록 컴포넌트
 const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
@@ -14,11 +15,13 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
 
   const { roomTypes } = useRoomType();
 
+  // 페이지 목록 최대 10개 표출--------
   const totalPages = Math.ceil(data?.length / itemsPerPage);
   const [pageGroupSize] = useState(10); // 페이지 목록 개수 제한
 
   // 현재 페이지 그룹 계산 (1~10, 11~20, ...)
   const currentPageGroup = Math.floor((currentPage - 1) / pageGroupSize);
+  // ---------------------
 
   // 데이터 셋팅
   useEffect(() => {
@@ -28,7 +31,7 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
 
       setCurrentItems(data.slice(startIdx, endIdx));
     }
-    console.log('pagePerItem : ', pagePerItem);
+    // console.log('pagePerItem : ', pagePerItem);
     setItemsPerPage(pagePerItem);
   }, [currentPage, data, range.min, range.max, roomTypes, itemsPerPage]);
 
@@ -37,12 +40,12 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
   };
 
   useEffect(() => {
-    console.log('페이지 목록 이동 : ', currentPage);
+    // console.log('페이지 목록 이동 : ', currentPage);
   }, [currentPage, data]);
 
   // 페이지 변경
   const handlePageChange = (page) => {
-    console.log('page : ', page);
+    // console.log('page : ', page);
 
     if (page > 0 && page <= Math.ceil(data?.length / itemsPerPage)) {
       setSearchParams((prevParams) => {

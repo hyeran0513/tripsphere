@@ -7,7 +7,7 @@ import Loading from '../common/Loading';
 import Pagination from './Pagination';
 import ProductCard from './ProductCard';
 
-const ProductsPageList = ({ loading, error }) => {
+const ProductsList = ({ loading, error }) => {
   const [searchParams] = useSearchParams();
   const initPageNumber = Number(searchParams.get('page')) || 1;
   const { list } = useProductListStore();
@@ -36,12 +36,12 @@ const ProductsPageList = ({ loading, error }) => {
     filterWaiting();
 
     // setFiltered(array);
-    console.log('pageperitem : ', pagePerItem);
-    console.log('filtered:', filtered);
+    // console.log('pageperitem : ', pagePerItem);
+    // console.log('filtered:', filtered);
   }, [range.min, range.max, roomTypes, pagePerItem]);
 
   useEffect(() => {
-    console.log('pageperitem : ', pagePerItem);
+    // console.log('pageperitem : ', pagePerItem);
   }, [filterLoading, pagePerItem]);
 
   const focus = useRef();
@@ -202,4 +202,4 @@ const ProductsPageList = ({ loading, error }) => {
   );
 };
 
-export default ProductsPageList;
+export default ProductsList;

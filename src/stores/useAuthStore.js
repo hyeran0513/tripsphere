@@ -5,6 +5,7 @@ import { auth } from '../firebase/firebaseConfig';
 const useAuthStore = create((set) => ({
   isAuthenticated: false,
   user: null,
+  points: null,
 
   initializeAuth: () => {
     const storedUser = localStorage.getItem('user');
@@ -21,7 +22,7 @@ const useAuthStore = create((set) => ({
     try {
       await signOut(auth);
       localStorage.removeItem('user');
-      set({ isAuthenticated: false, user: null });
+      set({ isAuthenticated: false, user: null, points: null });
     } catch (error) {
       console.error('로그아웃 실패:', error);
     }

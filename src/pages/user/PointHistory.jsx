@@ -11,6 +11,7 @@ const breadcrumb = [
 
 const PointHistory = () => {
   const { user } = useAuthStore();
+
   // 포인트 내역 조회
   const { data, isLoading, error } = usePointData(user?.uid);
 

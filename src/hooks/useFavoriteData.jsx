@@ -6,11 +6,11 @@ import {
 } from '../services/favoriteService';
 
 // 찜 버튼 제어
-export const useControlFavorite = (showToast, userId, accommodationId) => {
+export const useControlFavorite = (showToast, userId) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => controlFavorite(userId, accommodationId),
+    mutationFn: (accommodationId) => controlFavorite(userId, accommodationId),
     onSuccess: (data, variables) => {
       if (data === 'add') {
         showToast('success', '찜 목록에 추가되었습니다.');

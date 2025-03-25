@@ -30,7 +30,7 @@ import useReservationStore from '../../stores/useReservationStore';
 //   ],
 //   host: {
 //     name: '홍길동',
-//     experience: '3',
+//     email: 'example@naver.com',
 //     contact: '010-1234-5678',
 //   },
 //   services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],

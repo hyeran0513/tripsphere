@@ -2,20 +2,50 @@ import { useEffect, useState } from 'react';
 import Pagination from '../../components/productlist/Pagination';
 import PageHeader from '../../components/common/PageHeader';
 import ProductCard from '../../components/favorite/ProductCard';
-import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
+import {
+  useControlFavorite,
+  useFavoriteAccommData,
+} from '../../hooks/useFavoriteData';
 
 import Loading from '../../components/common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
+import ToastMessage from '../../components/common/ToastMessage';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
   { link: '/favorite', text: '찜 목록' },
 ];
 
-const Favorite = () => {
+const Favorite = ({ index }) => {
   const { user } = useAuthStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  const [toast, setToast] = useState(null);
+
+  // 토스트 메시지
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => setToast(null), 3000);
+  };
+  const { mutate: favoriteMutation, isLoading: isFavoriteLoading } =
+    useControlFavorite(showToast);
+
+  const typeMapping = {
+    hotel: '호텔',
+    motel: '모텔',
+    resort: '리조트',
+    pension: '펜션',
+    guesthouse: '게스트하우스',
+    camping: '캠핑',
+  };
+
+  const servicesMapping = {
+    wifi: '와이파이',
+    parking: '주차장',
+    tv: '텔레비전',
+    breakfast: '조식',
+    barbecue: '바베큐',
+  };
 
   const { data, isLoading, error } = useFavoriteAccommData(user?.uid);
 
@@ -29,35 +59,45 @@ const Favorite = () => {
   if (isLoading) return <Loading />;
   if (error) return <>오류</>;
 
-  const typeMapping = {
-    hotel: '호텔',
-    motel: '모텔',
-    resort: '리조트',
-    pension: '펜션',
-    guesthouse: '게스트하우스',
-    camping: '캠핑',
-  };
-
   const handleSearchButton = () => {
     if (!searchTerm.trim()) {
       setFilteredData(data);
     } else {
       const results = data.filter((item) => {
+        const servicesInKorean = item.services
+          .map((service) => servicesMapping[service] || service)
+          .join(', ');
+
         const searchableContent = [
           item.name,
           item.host.name,
+          item.type,
           typeMapping[item.type] || item.type,
           item.description,
           item.location.city,
           item.location.sub_city,
+          item.original_price,
+          item.final_price,
+          servicesInKorean,
           item.services.join(', '),
         ]
           .join(' ')
-          .toLowerCase(); // 검색 범위가 되는 텍스트를 모두 합침
+          .toLowerCase();
         return searchableContent.includes(searchTerm.toLowerCase());
       });
-      setFilteredData(results); // 검색어와 일치하는 데이터만 표시
+      setFilteredData(results);
     }
+  };
+  // Enter 키를 눌렀을 때
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handleSearchButton();
+    }
+  };
+
+  const handleDelete = (e) => {
+    if (e) e.preventDefault();
+    favoriteMutation(index);
   };
 
   return (
@@ -75,6 +115,7 @@ const Favorite = () => {
           placeholder="검색어를 입력하세요"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyUp={handleKeyUp}
           className="input border border-blue-400 p-4 rounded-l-2xl "
         />
         <button
@@ -92,6 +133,7 @@ const Favorite = () => {
             <ProductCard
               key={index}
               favorite={favorite}
+              handleDelete={handleDelete}
             />
           ))
         ) : (
@@ -100,6 +142,13 @@ const Favorite = () => {
       </div>
 
       <Pagination data={data} />
+      {/* 토스트 메시지 */}
+      {toast && (
+        <ToastMessage
+          toast={toast}
+          setToast={setToast}
+        />
+      )}
     </div>
   );
 };

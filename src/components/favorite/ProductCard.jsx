@@ -5,7 +5,7 @@ import { calculateDiscountedPrice } from '../../utils/discountedPrice';
 import { formatNumber, formatDate } from '../../utils/format';
 import TypeMapping from '../common/TypeMapping';
 
-const ProductCard = ({ favorite }) => {
+const ProductCard = ({ favorite, handleDelete }) => {
   return (
     <Link to="/product/0">
       <div className="flex flex-col items-start group card bg-base-100 transition-shadow gap-[20px]">
@@ -19,7 +19,9 @@ const ProductCard = ({ favorite }) => {
           </div>
         </div>
 
-        <button className="btn btn-square btn-ghost indicator-item badge absolute top-2 right-2 transition opacity-0 hover:scale-110 group-hover:opacity-100 ">
+        <button
+          className="btn btn-square btn-ghost indicator-item badge absolute top-2 right-2 transition opacity-0 hover:scale-110 group-hover:opacity-100 "
+          onClick={handleDelete}>
           <BiTrash className="size-[1.2em]" />
         </button>
 

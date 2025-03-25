@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
-import ProductsPageList from '../../components/productlist/ProductsPageList';
+import ProductsList from '../../components/productlist/ProductsList';
 import SideFilter from '../../components/productlist/SideFilter';
 
 const products = [
@@ -56,6 +56,11 @@ const ProductList = () => {
   useEffect(() => {
     const htmlTitle = document.querySelector('title');
     htmlTitle.innerHTML = '숙소 목록 - Tripshere';
+
+    return () => {
+      //unmount 시점, deps update 직전에 실행할 작업 (componentWillUnmount)
+      htmlTitle.innerHTML = 'Tripshere';
+    };
   }, []);
 
   return (
@@ -74,7 +79,7 @@ const ProductList = () => {
         />
 
         <article className="content flex-1">
-          <ProductsPageList
+          <ProductsList
             loading={loading}
             error={error}
           />

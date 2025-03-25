@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BiHotel } from 'react-icons/bi';
 import { FaMapLocationDot } from 'react-icons/fa6';
-import { useNavigate } from 'react-router-dom';
 import DateSelector from '../../components/common/DateSelector';
 import KakaoMap from '../../components/common/KakaoMap';
 import PeopleSelector from '../../components/common/PeopleSelector';
@@ -60,7 +59,6 @@ import useReservationStore from '../../stores/useReservationStore';
 // };
 
 const Checkout = () => {
-  const navigate = useNavigate();
   const [openDate, setOpenDate] = useState(false);
   const {
     checkIn,
@@ -89,6 +87,11 @@ const Checkout = () => {
 
     const htmlTitle = document.querySelector('title');
     htmlTitle.innerHTML = '결제 페이지 - Tripshere';
+
+    return () => {
+      //unmount 시점, deps update 직전에 실행할 작업 (componentWillUnmount)
+      htmlTitle.innerHTML = 'Tripshere';
+    };
   }, []);
 
   return (
@@ -135,7 +138,6 @@ const Checkout = () => {
           <ul>
             {reservationData.length > 0 &&
               reservationData.map((ele) => {
-                console.log('ele.accommodationId : ', ele.accommodationId);
                 const { data, isLoading, error } = useAccomData(
                   ele.accommodationId,
                 );
@@ -143,14 +145,12 @@ const Checkout = () => {
                 // 상품페이지 -> 결제정보 -> 뒤로가기 -> 앞으로가기
                 if (data === undefined) return <>유효하지 않은 접근입니다.</>;
 
-                console.log('data : ', JSON.stringify(data));
                 const { name, description, host, location, services, type } =
                   data;
 
                 if (isLoading) return <Loading />;
 
                 if (error) {
-                  console.log('accommodation : ', JSON.stringify(data));
                   return <>에러 : 숙소정보를 확인 할 수 없습니다.</>;
                 }
                 return (

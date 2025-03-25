@@ -1,59 +1,81 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { cities } from '../data/cities';
 import useFilterStore from '../../stores/useFilterStore';
+import useCitySelection from '../../hooks/useCitySelection';
 
-const CitySelector = ({ isGlobal }) => {
+const CitySelector = React.memo(({ isGlobal }) => {
   const store = useFilterStore();
-  const [subCities, setSubCities] = useState([]);
-  const [localCity, setLocalCity] = useState('');
-  const [localSubCity, setLocalSubCity] = useState('');
+  const {
+    selectedCity,
+    setSelectedCity,
+    selectedSubCity,
+    setSelectedSubCity,
+    subCities,
+    setSubCities,
+  } = useCitySelection(isGlobal, store);
 
-  const selectedState = isGlobal
-    ? {
-        selectedCity: store.selectedCity,
-        setSelectedCity: store.setSelectedCity,
-        selectedSubCity: store.selectedSubCity,
-        setSelectedSubCity: store.setSelectedSubCity,
+  // 대분류 선택 핸들러
+  const handleCitySelect = useCallback(
+    (event) => {
+      const city = event.target.value;
+      setSelectedCity(city);
+
+      if (city === '전체') {
+        setSubCities([]);
+        setSelectedSubCity('전체');
+      } else {
+        const selected = cities.find((item) => item.name === city);
+        const newSubCities = selected ? selected.subCities : [];
+        setSubCities(newSubCities);
+        setSelectedSubCity('전체');
       }
-    : {
-        selectedCity: localCity,
-        setSelectedCity: setLocalCity,
-        selectedSubCity: localSubCity,
-        setSelectedSubCity: setLocalSubCity,
-      };
-
-  const { selectedCity, setSelectedCity, selectedSubCity, setSelectedSubCity } =
-    selectedState;
-
-  // 지역 선택 핸들러
-  const handleCitySelect = (event) => {
-    const city = event.target.value;
-    setSelectedCity(city);
-
-    if (city === '전체') {
-      setSubCities([]);
-      setSelectedSubCity('전체');
-    } else {
-      const selectedCity = cities.find((item) => item.name === city);
-      const newSubCities = selectedCity ? selectedCity.subCities : [];
-
-      setSubCities(newSubCities);
-      setSelectedSubCity('전체');
-    }
-  };
+    },
+    [setSelectedCity, setSubCities, setSelectedSubCity],
+  );
 
   // 소분류 선택 핸들러
-  const handleSubCitySelect = (event) => {
-    setSelectedSubCity(event.target.value);
-  };
+  const handleSubCitySelect = useCallback(
+    (event) => {
+      setSelectedSubCity(event.target.value);
+    },
+    [setSelectedSubCity],
+  );
+
+  // 대분류 옵션
+  const cityOptions = useMemo(
+    () =>
+      cities.map((item) => (
+        <option
+          key={item.name}
+          value={item.name}>
+          {item.name}
+        </option>
+      )),
+    [],
+  );
+
+  // 소분류 옵션
+  const subCityOptions = useMemo(
+    () =>
+      subCities.map((item) => (
+        <option
+          key={item}
+          value={item}>
+          {item}
+        </option>
+      )),
+    [subCities],
+  );
 
   return (
     <div className="w-full">
+      {/* 라벨 영역 */}
       <label
         htmlFor="city"
         className="mb-1 block text-xs font-medium text-gray-700 text-left dark:text-gray-200">
         지역
       </label>
+
       <div className="flex gap-2">
         {/* 대분류 선택 */}
         <div className="w-full">
@@ -67,13 +89,7 @@ const CitySelector = ({ isGlobal }) => {
               disabled>
               대분류 선택
             </option>
-            {cities.map((item, index) => (
-              <option
-                key={`${item} - ${index}`}
-                value={item.name}>
-                {item.name}
-              </option>
-            ))}
+            {cityOptions}
           </select>
         </div>
 
@@ -85,18 +101,12 @@ const CitySelector = ({ isGlobal }) => {
             value={selectedSubCity}
             onChange={handleSubCitySelect}>
             <option value="전체">소분류 선택</option>
-            {subCities.map((item, index) => (
-              <option
-                key={`${item} - ${index}`}
-                value={item}>
-                {item}
-              </option>
-            ))}
+            {subCityOptions}
           </select>
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default CitySelector;

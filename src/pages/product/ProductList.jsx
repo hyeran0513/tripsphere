@@ -53,7 +53,10 @@ const ProductList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const htmlTitle = document.querySelector('title');
+    htmlTitle.innerHTML = '숙소 목록 - Tripshere';
+  }, []);
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">

@@ -1,4 +1,10 @@
-import { collection, getDocs, query } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  Timestamp,
+  where,
+} from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 // 여러 숙소들 정보 쿼리

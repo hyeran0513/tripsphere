@@ -2,6 +2,7 @@ import { auth, db } from '../firebase/firebaseConfig';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
@@ -72,4 +73,9 @@ export const signInUser = async ({ email, password, dispatch }) => {
   );
 
   return userCredential.user;
+};
+
+// 비밀번호 재설정
+export const resetPassword = async (email) => {
+  await sendPasswordResetEmail(auth, email);
 };

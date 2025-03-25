@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CitySelector from '../common/CitySelector';
 import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
 import SearchButton from './SearchButton';
+import { useLocation } from 'react-router-dom';
+import useFilterStore from '../../stores/useFilterStore';
 
 const Filter = () => {
   const [openDate, setOpenDate] = useState(false);
+  const location = useLocation();
+  const resetFilter = useFilterStore((state) => state.resetFilter);
+
+  // 필터 초기화
+  useEffect(() => {
+    resetFilter();
+  }, [location]);
 
   return (
     <div className="container mx-auto px-4 py-8">

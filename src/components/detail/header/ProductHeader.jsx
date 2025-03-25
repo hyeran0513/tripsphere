@@ -11,6 +11,7 @@ import ToastMessage from '../../common/ToastMessage';
 
 const ProductHeader = ({ product, productId }) => {
   const [toast, setToast] = useState(null);
+  const { user } = useAuthStore();
 
   // 토스트 메시지
   const showToast = (type, message) => {
@@ -21,13 +22,13 @@ const ProductHeader = ({ product, productId }) => {
   const { isAuthenticated } = useAuthStore();
   const { mutate: favoriteMutation, isLoading: isFavoriteLoading } =
     useControlFavorite(showToast);
-  const { data: isFavorite } = useCheckFavorite(productId);
+  const { data: isFavorite } = useCheckFavorite(user?.uid, productId);
 
   // 찜 버튼 핸들러
   const handleFavorite = (e) => {
     if (e) e.preventDefault();
 
-    favoriteMutation(productId);
+    favoriteMutation(user?.uid, productId);
   };
 
   return (

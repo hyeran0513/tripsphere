@@ -10,7 +10,8 @@ export const useControlFavorite = (showToast) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (accommodationId) => controlFavorite(accommodationId),
+    mutationFn: (userId, accommodationId) =>
+      controlFavorite(userId, accommodationId),
     onSuccess: (data, variables) => {
       if (data === 'add') {
         showToast('success', '찜 목록에 추가되었습니다.');
@@ -30,10 +31,10 @@ export const useControlFavorite = (showToast) => {
 };
 
 // 찜 선택 여부
-export const useCheckFavorite = (accommodationId) => {
+export const useCheckFavorite = (userId, accommodationId) => {
   return useQuery({
     queryKey: ['favorite', accommodationId],
-    queryFn: () => checkFavorite(accommodationId),
+    queryFn: () => checkFavorite(userId, accommodationId),
     enabled: !!accommodationId,
   });
 };
@@ -42,7 +43,7 @@ export const useCheckFavorite = (accommodationId) => {
 export const useFavoriteAccommData = (userId) => {
   return useQuery({
     queryKey: ['favorite', userId],
-    queryFn: () => getFavoriteAccomm(),
+    queryFn: () => getFavoriteAccomm(userId),
     enabled: !!userId,
   });
 };

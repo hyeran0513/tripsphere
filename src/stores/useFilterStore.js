@@ -25,6 +25,17 @@ const useFilterStore = create((set) => ({
 
   // 체크아웃 날짜 변경
   setCheckOut: (date) => set({ checkOut: date }),
+
+  // 상태 초기화
+  resetFilter: () =>
+    set({
+      selectedCity: '',
+      selectedSubCity: '',
+      adultCount: 0,
+      childrenCount: 0,
+      checkIn: '',
+      checkOut: '',
+    }),
 }));
 
 export default useFilterStore;

@@ -21,14 +21,14 @@ const ProductHeader = ({ product, productId }) => {
 
   const { isAuthenticated } = useAuthStore();
   const { mutate: favoriteMutation, isLoading: isFavoriteLoading } =
-    useControlFavorite(showToast);
+    useControlFavorite(showToast, user?.uid, productId);
   const { data: isFavorite } = useCheckFavorite(user?.uid, productId);
 
   // 찜 버튼 핸들러
   const handleFavorite = (e) => {
     if (e) e.preventDefault();
 
-    favoriteMutation(user?.uid, productId);
+    favoriteMutation();
   };
 
   return (

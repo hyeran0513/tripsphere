@@ -48,7 +48,7 @@ const UserProfile = () => {
         {/* 프로필사진 */}
         <div className="avatar">
           <div className="w-20 rounded-full">
-            {userInfo ? (
+            {userInfo.profile_image ? (
               <img
                 src={userInfo?.profile_image}
                 alt={userInfo?.username}

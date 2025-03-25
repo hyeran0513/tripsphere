@@ -17,7 +17,7 @@ const HostInfo = ({ product }) => {
           <div>
             <div className="font-bold">호스트: {product.host.name}</div>
             <div className="text-xs uppercase opacity-60">
-              호스트 이메일 {product.host.email}
+              호스트 연락처 {product.host.contact}
             </div>
           </div>
         </li>

@@ -28,7 +28,7 @@ export const addAccommodations = async () => {
     {
       name: '역삼 아르누보씨티 호텔 앤 레지던스',
       description:
-        '최고급 가구와 주방시설을 갖춘 럭셔리한 레지던스형 호텔입니다./n역삼역과 선릉역 사이에 위치해 강남 어디로든 이동이 편리합니다.',
+        '최고급 가구와 주방시설을 갖춘 럭셔리한 레지던스형 호텔입니다.\n역삼역과 선릉역 사이에 위치해 강남 어디로든 이동이 편리합니다.',
       capacity: { adults: 3, children: 2 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -59,7 +59,7 @@ export const addAccommodations = async () => {
     {
       name: '글래드 강남 코엑스센터',
       description:
-        '한국소비자포럼 주최의 2022 올해의 브랜드 대상 어워드에서 글래드 호텔이 올해의 라이프 스타일 호텔 부문 1위로 선정되었습니다./nGLAD 체인호텔로, 모던한 디자인의 객실을 보유하고 있습니다./n삼성역 1번 출구 도보 10초 거리에 위치한, COEX 인근 가장 합리적인 가격의 호텔 입니다./n코엑스, 도심 공항 터미널, SM Theater, 잠실 종합운동장 등 편의시설이 모두 차량 5분 이내 거리에 위치하고 있습니다.',
+        '한국소비자포럼 주최의 2022 올해의 브랜드 대상 어워드에서 글래드 호텔이 올해의 라이프 스타일 호텔 부문 1위로 선정되었습니다.\nGLAD 체인호텔로, 모던한 디자인의 객실을 보유하고 있습니다.\n삼성역 1번 출구 도보 10초 거리에 위치한, COEX 인근 가장 합리적인 가격의 호텔 입니다.\n코엑스, 도심 공항 터미널, SM Theater, 잠실 종합운동장 등 편의시설이 모두 차량 5분 이내 거리에 위치하고 있습니다.',
       capacity: { adults: 2, children: 0 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -92,7 +92,7 @@ export const addAccommodations = async () => {
     {
       name: '호텔 소울하다',
       description:
-        '서울의 HOT PLACE인 강남에서 심플, 모던, 고급스러움을 컨셉으로 고객님께 다가갑니다./n숙박을 넘어 새로운 경험을 제공하는 호텔로 소울하다라는 우리말 이름을 사용하여 차별성을 보여줍니다./n세련되면서 개성과 젊음의 가득한 호텔에서 답답함을 풀어헤치고 진정성을 담은 휴식을 느껴보세요.',
+        '서울의 HOT PLACE인 강남에서 심플, 모던, 고급스러움을 컨셉으로 고객님께 다가갑니다.\n숙박을 넘어 새로운 경험을 제공하는 호텔로 소울하다라는 우리말 이름을 사용하여 차별성을 보여줍니다.\n세련되면서 개성과 젊음의 가득한 호텔에서 답답함을 풀어헤치고 진정성을 담은 휴식을 느껴보세요.',
       capacity: { adults: 2, children: 0 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -123,7 +123,7 @@ export const addAccommodations = async () => {
     {
       name: '노보텔 앰배서더 강남',
       description:
-        '조식 PKG 이용 시, (동반 자녀 소인 최대 2인까지 조식 무료제공)/n강남권에 위치한 아코르 계열의 특1급 호텔로서 교통이 편리하고 코엑스에 인접한 최고의 비즈니스 호텔입니다!/n9개의 스위트룸과 332개의 안락한 객실, 최고급 뷔페 등 특1급 호텔에서만 느낄 수 있는 최고급 품격의 완성 :)/n최첨단 시설을 갖춘 수영장, 골프 연습장, 체련장, 사우나, 에어로빅 룸과 조깅 트랙 등이 완비되어 있습니다.',
+        '조식 PKG 이용 시, (동반 자녀 소인 최대 2인까지 조식 무료제공)\n강남권에 위치한 아코르 계열의 특1급 호텔로서 교통이 편리하고 코엑스에 인접한 최고의 비즈니스 호텔입니다!\n9개의 스위트룸과 332개의 안락한 객실, 최고급 뷔페 등 특1급 호텔에서만 느낄 수 있는 최고급 품격의 완성 :)\n최첨단 시설을 갖춘 수영장, 골프 연습장, 체련장, 사우나, 에어로빅 룸과 조깅 트랙 등이 완비되어 있습니다.',
       capacity: { adults: 2, children: 0 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -187,7 +187,7 @@ export const addAccommodations = async () => {
     {
       name: '가평 헬리오스풀빌라',
       description:
-        '24년 신축 풀빌라입니다./n2개 동으로 이루어져 있으며,/n1층에 수영장과 주방을 비롯한 거실과 화장실 2개와/n2층에 방3개와 화장실2개 별도의 세면대가 준비되어 있어/n고객님들에게 프라이빗하고 쾌적한 객실을 제공 합니다.',
+        '24년 신축 풀빌라입니다.\n2개 동으로 이루어져 있으며,\n1층에 수영장과 주방을 비롯한 거실과 화장실 2개와\n2층에 방3개와 화장실2개 별도의 세면대가 준비되어 있어\n고객님들에게 프라이빗하고 쾌적한 객실을 제공 합니다.',
       capacity: { adults: 2, children: 0 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -218,7 +218,7 @@ export const addAccommodations = async () => {
     {
       name: '가평 하루가평펜션',
       description:
-        '※ 에디터 TIP/n1. 하루가평 펜션의 고객은 낮 시간에 평상 무료 이용 가능합니다./n2. 전 객실 개별BBQ가 가능하며 숯불 바베큐장(공용)이 별도 마련되어 있습니다./n3. 전 객실 개별 야외 수영장 이용 가능 (겨울철 이용 불가)/n4. 수영장 커버 인클로저가 설치된 객실 (101.102. 202)/n5. 전 객실 개별 바베큐 및 OTT 서비스 이용 가능',
+        '※ 에디터 TIP\n1. 하루가평 펜션의 고객은 낮 시간에 평상 무료 이용 가능합니다.\n2. 전 객실 개별BBQ가 가능하며 숯불 바베큐장(공용)이 별도 마련되어 있습니다.\n3. 전 객실 개별 야외 수영장 이용 가능 (겨울철 이용 불가)\n4. 수영장 커버 인클로저가 설치된 객실 (101.102. 202)\n5. 전 객실 개별 바베큐 및 OTT 서비스 이용 가능',
       capacity: { adults: 2, children: 0 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -371,7 +371,7 @@ export const addAccommodations = async () => {
     {
       name: '가평 동물카라반펜션',
       description:
-        '아침고요수목원의 수려한 자연,펜션주변 잣나무 숲의 맑은공기,사계절 흐르는 계곡이 있는 곳/n저희 펜션은 주위가 잣나무숲으로 둘러싸여 맑은 공기를 마시며 계곡의 맑은 물과/n자연과 더불어 동화 될 수 있는 주변 여건을 갖춘 펜션입니다.',
+        '아침고요수목원의 수려한 자연,펜션주변 잣나무 숲의 맑은공기,사계절 흐르는 계곡이 있는 곳\n저희 펜션은 주위가 잣나무숲으로 둘러싸여 맑은 공기를 마시며 계곡의 맑은 물과\n자연과 더불어 동화 될 수 있는 주변 여건을 갖춘 펜션입니다.',
       capacity: { adults: 3, children: 2 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -403,7 +403,7 @@ export const addAccommodations = async () => {
     {
       name: '영월 스타글램핑',
       description:
-        '저희 영월 Star 글램핑은 캠핑의 대명사로 불리는 청정 법흥계곡에 위치하고 있으며/n방문해 주시는 분들이 일상에 지친 몸과 마음을 편안한 휴식을 통해 마음껏 힐링하고/n돌아갈 수 있도록 다양한 편의시설을 제공하고 안전한 글램핑과 즐길꺼리를 제공하고 있습니다.',
+        '저희 영월 Star 글램핑은 캠핑의 대명사로 불리는 청정 법흥계곡에 위치하고 있으며\n방문해 주시는 분들이 일상에 지친 몸과 마음을 편안한 휴식을 통해 마음껏 힐링하고\n돌아갈 수 있도록 다양한 편의시설을 제공하고 안전한 글램핑과 즐길꺼리를 제공하고 있습니다.',
       capacity: { adults: 4, children: 2 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -434,7 +434,7 @@ export const addAccommodations = async () => {
     {
       name: '영월 달콤하우스',
       description:
-        '1,200평 넓은 공간을 먼저 예약한 한팀이 독채로 이용하시는 펜션입니다./n밤하늘 별이 쏟아지는 달콤하우스에서 새소리와 물소리를 함께 들으며 자연에서 즐기는 진정한 휴식을 느껴보세요./n주변 동강 전망이 좋고 앞마당에 메타세콰이어 길이 마음을 풍요롭게 합니다./nA, B타입 모두 먼저 예약한 분이 독채로 이용하실 수 있습니다.',
+        '1,200평 넓은 공간을 먼저 예약한 한팀이 독채로 이용하시는 펜션입니다.\n밤하늘 별이 쏟아지는 달콤하우스에서 새소리와 물소리를 함께 들으며 자연에서 즐기는 진정한 휴식을 느껴보세요.\n주변 동강 전망이 좋고 앞마당에 메타세콰이어 길이 마음을 풍요롭게 합니다.\nA, B타입 모두 먼저 예약한 분이 독채로 이용하실 수 있습니다.',
       capacity: { adults: 2, children: 2 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -466,7 +466,7 @@ export const addAccommodations = async () => {
     {
       name: '속초 밤하늘 글램핑',
       description:
-        '속초밤하늘글램핑으로 두 마리 토끼를 잡으세요/n낮에는 즐길거리 가득한 속초여행을, 밤에는 속초밤하늘글램핑에서 편안하고 감성 가득한 글램핑의 추억을 만드세요./n(동서울에서 2시간 10분대, 속초 IC에서 5분, 속초 주요 관광지 10분대 거리)',
+        '속초밤하늘글램핑으로 두 마리 토끼를 잡으세요\n낮에는 즐길거리 가득한 속초여행을, 밤에는 속초밤하늘글램핑에서 편안하고 감성 가득한 글램핑의 추억을 만드세요.\n(동서울에서 2시간 10분대, 속초 IC에서 5분, 속초 주요 관광지 10분대 거리)',
       capacity: { adults: 2, children: 2 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -549,7 +549,7 @@ export const addAccommodations = async () => {
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2024/11/18/06/1280/673ad895a182d5.49033304.jpg',
-        'https://place-site.yanolja.com/places/10047648?checkInDate=2025-03-26&checkOutDate=2025-03-27&adultPax=2',
+        'https://yaimg.yanolja.com/v5/2024/11/18/06/1280/673ad8a2ba4835.82120237.jpg',
       ],
     },
     {
@@ -615,7 +615,7 @@ export const addAccommodations = async () => {
     {
       name: '제주 하루',
       description:
-        '호텔 HARU는 2022년 2월 22일 새롭게 리뉴얼 된 모습으로 고객님들께 찾아뵙게 되었습니다/n공항에서 5분 거리, 깨끗하고 안락한, 주변 맛집이 가득한, 가성비가 좋은,/n호텔 HARU는 전문 소독(방역) 업체와 계약을 맺어 주기적으로 소독 방역을 실시하고 있습니다/n스탠다드, 디럭스 타입별로 객실이미지와 배정된 객실은 인테리어가 상이 할수 있습니다',
+        '호텔 HARU는 2022년 2월 22일 새롭게 리뉴얼 된 모습으로 고객님들께 찾아뵙게 되었습니다\n공항에서 5분 거리, 깨끗하고 안락한, 주변 맛집이 가득한, 가성비가 좋은,\n호텔 HARU는 전문 소독(방역) 업체와 계약을 맺어 주기적으로 소독 방역을 실시하고 있습니다\n스탠다드, 디럭스 타입별로 객실이미지와 배정된 객실은 인테리어가 상이 할수 있습니다',
       capacity: { adults: 2, children: 2 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),
@@ -709,7 +709,7 @@ export const addAccommodations = async () => {
     {
       name: '전주 한옥마을 덕수궁 한옥스테이',
       description:
-        '전주 한옥마을을 도보 3분 내로 도착할 수 있는 신축 한옥입니다./n한국관광품질인증을 받은 한옥스테이 입니다./n＊덕수궁은 2인실 (1인 1침구 싱글+싱글), 2인실 (퀸침대) 객실있습니다./n＊각종 어메니티 (칫솔, 치약, 클렌징폼, 바디타올 등) 구비되어 있습니다./n＊덕수궁 전용 주차장이 있습니다. (입실 전 후 무료주차 가능합니다.)',
+        '전주 한옥마을을 도보 3분 내로 도착할 수 있는 신축 한옥입니다.\n한국관광품질인증을 받은 한옥스테이 입니다.\n＊덕수궁은 2인실 (1인 1침구 싱글+싱글), 2인실 (퀸침대) 객실있습니다.\n＊각종 어메니티 (칫솔, 치약, 클렌징폼, 바디타올 등) 구비되어 있습니다.\n＊덕수궁 전용 주차장이 있습니다. (입실 전 후 무료주차 가능합니다.)',
       capacity: { adults: 4, children: 3 },
       check_in: serverTimestamp(),
       check_out: serverTimestamp(),

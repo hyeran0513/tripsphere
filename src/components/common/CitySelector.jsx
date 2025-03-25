@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useReducer, useRef } from 'react';
 import { cities } from '../data/cities';
 import useFilterStore from '../../stores/useFilterStore';
 import useCitySelection from '../../hooks/useCitySelection';
@@ -13,6 +13,7 @@ const CitySelector = React.memo(({ isGlobal }) => {
     subCities,
     setSubCities,
   } = useCitySelection(isGlobal, store);
+  const subCityRef = useRef();
 
   // 대분류 선택 핸들러
   const handleCitySelect = useCallback(
@@ -23,11 +24,13 @@ const CitySelector = React.memo(({ isGlobal }) => {
       if (city === '전체') {
         setSubCities([]);
         setSelectedSubCity('전체');
+        subCityRef.current.disabled = true;
       } else {
         const selected = cities.find((item) => item.name === city);
         const newSubCities = selected ? selected.subCities : [];
         setSubCities(newSubCities);
         setSelectedSubCity('전체');
+        subCityRef.current.disabled = false;
       }
     },
     [setSelectedCity, setSubCities, setSelectedSubCity],
@@ -97,6 +100,7 @@ const CitySelector = React.memo(({ isGlobal }) => {
         <div className="w-full">
           <select
             id="subCity"
+            ref={subCityRef}
             className="input bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
             value={selectedSubCity}
             onChange={handleSubCitySelect}>

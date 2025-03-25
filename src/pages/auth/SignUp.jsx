@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import EmailPassword from '../../components/signup/EmailPassword';
 import EmailVerification from '../../components/signup/EmailVerification';
 import Completion from '../../components/signup/Completion';
-import Step from '../../components/signup/Step';
-import { Link } from 'react-router-dom';
-import Toast from '../../components/common/Toast';
 import UserInfo from '../../components/signup/UserInfo';
+import Step from '../../components/signup/Step';
 import ToastMessage from '../../components/common/ToastMessage';
+import { useDeleteUnverifiedUser } from '../../hooks/useAuthData';
 
 const SignUp = () => {
   const [currentStep, setCurrentStep] = useState(1);
-
   const [toast, setToast] = useState(null);
 
+  // 토스트 메시지 표시
   const showToast = (type, message) => {
     setToast({ type, message });
     setTimeout(() => setToast(null), 3000);
   };
 
+  // 이전 단계 핸들러
   const handlePrevStep = () => {
-    setCurrentStep((prev) => (prev > 0 ? prev - 1 : 1));
+    setCurrentStep((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
+  // 다음 단계 핸들러
   const handleNextStep = () => {
     setCurrentStep((prev) => prev + 1);
   };
+
+  // 이메일 인증되지 않은 유저 삭제
+  useDeleteUnverifiedUser();
 
   return (
     <>
@@ -33,8 +38,7 @@ const SignUp = () => {
           to="/"
           className="block text-center">
           <p className="font-bold text-2xl">
-            TRIP
-            <span className="text-indigo-500">SPHERE</span>
+            TRIP<span className="text-indigo-500">SPHERE</span>
           </p>
         </Link>
 
@@ -50,7 +54,7 @@ const SignUp = () => {
         </div>
       </div>
 
-      {/* Step1. 이메일 & 비밀번호 입력 */}
+      {/* Step 1: 이메일 & 비밀번호 입력 */}
       {currentStep === 1 && (
         <EmailPassword
           onNext={handleNextStep}
@@ -58,7 +62,7 @@ const SignUp = () => {
         />
       )}
 
-      {/* Step2. 이메일 인증 */}
+      {/* Step 2: 이메일 인증 */}
       {currentStep === 2 && (
         <EmailVerification
           onNext={handleNextStep}
@@ -67,7 +71,7 @@ const SignUp = () => {
         />
       )}
 
-      {/* Step3. 이름, 닉네임, 연락처 입력 + 약관 동의 */}
+      {/* Step 3: 유저 정보 입력 */}
       {currentStep === 3 && (
         <UserInfo
           onNext={handleNextStep}
@@ -75,7 +79,7 @@ const SignUp = () => {
         />
       )}
 
-      {/* Step4. 회원가입 완료 */}
+      {/* Step 4: 회원가입 완료 */}
       {currentStep === 4 && (
         <Completion
           onNext={handleNextStep}

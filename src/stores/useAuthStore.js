@@ -7,14 +7,22 @@ const useAuthStore = create((set) => ({
   user: null,
 
   initializeAuth: () => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      set({ isAuthenticated: true, user: JSON.parse(storedUser) });
-    }
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // 인증된 유저가 있으면 상태 업데이트
+        set({ isAuthenticated: true, user: user });
+        localStorage.setItem('user', JSON.stringify(user));
+      } else {
+        // 인증된 유저가 없으면 상태 초기화
+        set({ isAuthenticated: false, user: null });
+        localStorage.removeItem('user');
+      }
+    });
   },
 
   login: (userData) => {
     set({ isAuthenticated: true, user: userData });
+    localStorage.setItem('user', JSON.stringify(userData));
   },
 
   logout: async () => {

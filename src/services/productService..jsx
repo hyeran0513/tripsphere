@@ -8,5 +8,10 @@ export const fetchAccomData = async (accomId) => {
   const accomDoc = doc(db, 'accommodations', accomId);
   const accomSnap = await getDoc(accomDoc);
 
-  return accomSnap.exists() ? accomSnap.data() : null;
+  if (accomSnap.exists()) {
+    const data = accomSnap.data();
+    return { ...data, accomId };
+  } else {
+    return null;
+  }
 };

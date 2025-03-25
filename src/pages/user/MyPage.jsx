@@ -15,7 +15,7 @@ const breadcrumb = [
 ];
 
 const MyPage = () => {
-  const { user, isAuthenticated } = useAuthStore();
+  const { user } = useAuthStore();
   const [points, setPoints] = useState();
   const {
     data: pointHistory,
@@ -43,7 +43,7 @@ const MyPage = () => {
       />
 
       {/* 포인트 내역 */}
-      {isAuthenticated && points && <PointHistory points={pointHistory} />}
+      {points && <PointHistory points={pointHistory} />}
 
       {/* 주문 내역 */}
       <OrderHistory />

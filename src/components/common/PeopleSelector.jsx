@@ -1,63 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Counter from './Counter';
-import useFilterStore from '../../stores/useFilterStore';
-import useReservationStore from '../../stores/useReservationStore';
+import usePeopleSelection from '../../hooks/usePeopleSelection';
 
 const PeopleSelector = ({ stateType, setAdults, capacity }) => {
-  const filterStore = useFilterStore();
-  const reservationStore = useReservationStore();
-  const [localAdultCount, setLocalAdultCount] = useState(0);
-  const [localChildrenCount, setLocalChildrenCount] = useState(0);
-  const [people, setPeople] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  let selectedState;
 
-  if (stateType === 'filter') {
-    selectedState = {
-      adultCount: filterStore.adultCount,
-      setAdultCount: filterStore.setAdultCount,
-      childrenCount: filterStore.childrenCount,
-      setChildrenCount: filterStore.setChildrenCount,
-    };
-  } else if (stateType === 'reservation') {
-    selectedState = {
-      adultCount: reservationStore.adultCount,
-      setAdultCount: reservationStore.setAdultCount,
-      childrenCount: reservationStore.childrenCount,
-      setChildrenCount: reservationStore.setChildrenCount,
-    };
-  } else {
-    selectedState = {
-      adultCount: localAdultCount,
-      setAdultCount: setLocalAdultCount,
-      childrenCount: localChildrenCount,
-      setChildrenCount: setLocalChildrenCount,
-    };
-  }
-
-  const { adultCount, setAdultCount, childrenCount, setChildrenCount } =
-    selectedState;
-
-  useEffect(() => {
-    if (stateType === 'reservation') {
-      setAdults(adultCount);
-    }
-  }, [adultCount]);
-
-  useEffect(() => {
-    setPeople(adultCount + childrenCount);
-  }, [adultCount, childrenCount]);
-
-  const handlePeopleCount = (type, count) => {
-    const maxAdults = capacity?.adults ?? Infinity;
-    const maxChildren = capacity?.children ?? Infinity;
-
-    if (type === 'adultCount' && count <= maxAdults) {
-      setAdultCount(count);
-    } else if (type === 'childrenCount' && count <= maxChildren) {
-      setChildrenCount(count);
-    }
-  };
+  const { adultCount, childrenCount, people, handlePeopleCount } =
+    usePeopleSelection(stateType, capacity, setAdults);
 
   return (
     <div className="w-full">

@@ -1,47 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import DatePicker from './DatePicker';
-import useFilterStore from '../../stores/useFilterStore';
-import useReservationStore from '../../stores/useReservationStore';
+import useDateSelection from '../../hooks/useDateSelection';
 
 const DateSelector = ({ openDate, setOpenDate, stateType }) => {
-  const filterStore = useFilterStore();
-  const reservationStore = useReservationStore();
-  const [date, setDate] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-  });
-
-  const [localCheckIn, setLocalCheckIn] = useState();
-  const [localCheckOut, setLocalCheckOut] = useState();
-
-  let selectedState;
-
-  if (stateType === 'filter') {
-    selectedState = {
-      setCheckIn: filterStore.setCheckIn,
-      setCheckOut: filterStore.setCheckOut,
-    };
-  } else if (stateType === 'reservation') {
-    selectedState = {
-      setCheckIn: reservationStore.setCheckIn,
-      setCheckOut: reservationStore.setCheckOut,
-    };
-  } else {
-    selectedState = {
-      setCheckIn: setLocalCheckIn,
-      setCheckOut: setLocalCheckOut,
-    };
-  }
-
-  const { setCheckIn, setCheckOut } = selectedState;
-
-  useEffect(() => {
-    if (date.startDate && date.endDate) {
-      setCheckIn(date.startDate.toLocaleDateString());
-      setCheckOut(date.endDate.toLocaleDateString());
-    }
-  }, [date]);
+  const { date, setDate } = useDateSelection(stateType);
 
   return (
     <div className="w-full">

@@ -86,6 +86,9 @@ const Checkout = () => {
 
   useEffect(() => {
     console.log(reservationData);
+
+    const htmlTitle = document.querySelector('title');
+    htmlTitle.innerHTML = '결제 페이지 - Tripshere';
   }, []);
 
   return (
@@ -136,6 +139,9 @@ const Checkout = () => {
                 const { data, isLoading, error } = useAccomData(
                   ele.accommodationId,
                 );
+
+                // 상품페이지 -> 결제정보 -> 뒤로가기 -> 앞으로가기
+                if (data === undefined) return <>유효하지 않은 접근입니다.</>;
 
                 console.log('data : ', JSON.stringify(data));
                 const { name, description, host, location, services, type } =
@@ -230,21 +236,32 @@ const Checkout = () => {
         </div>
 
         {/* 최종 결제 금액 */}
-        <div className="">
-          <div className="sticky card top-15 bg-base-100 w-96 shadow-sm dark:border-gray-400 dark:border-1">
-            <form className="card-body">
-              <OrderSummary orderInfo={[reservationData]} />
+        <div className="sticky card top-15 bg-base-100 w-96 shadow-sm dark:border-gray-400 dark:border-1">
+          {reservationData.length > 0 &&
+            reservationData.map((ele) => {
+              const { data, isLoading, error } = useAccomData(
+                ele.accommodationId,
+              );
 
-              <div className="card-actions justify-end">
-                <button
-                  type="button"
-                  onClick={() => navigate('/orderconfirmation')}
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
-                  결제하기
-                </button>
-              </div>
-            </form>
-          </div>
+              // 상품페이지 -> 결제정보 -> 뒤로가기 -> 앞으로가기
+              // 히스토리만 추적하다, 전달정보가 없는경우
+              if (data === undefined) return <></>;
+
+              return (
+                <form className="card-body">
+                  <OrderSummary orderInfo={[reservationData]} />
+
+                  <div className="card-actions justify-end">
+                    <button
+                      type="button"
+                      onClick={() => navigate('/orderconfirmation')}
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
+                      결제하기
+                    </button>
+                  </div>
+                </form>
+              );
+            })}
         </div>
       </div>
     </div>

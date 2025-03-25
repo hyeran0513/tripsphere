@@ -1,4 +1,12 @@
-const OrderSummaryChart = (reservationData) => {
+import { useNavigate } from 'react-router-dom';
+import { useAccomData } from '../../../hooks/useProductData';
+import NoData from '../../common/NoData';
+import OrderSummary from './OrderSummary';
+
+const OrderSummaryChart = ({ reservationData }) => {
+  const navigate = useNavigate();
+  console.log(JSON.stringify(reservationData));
+
   let isValid = true;
   reservationData.map((ele) => {
     const { data } = useAccomData(ele.accommodationId);
@@ -7,7 +15,7 @@ const OrderSummaryChart = (reservationData) => {
 
   // 상품페이지 -> 결제정보 -> 뒤로가기 -> 앞으로가기
   // 히스토리만 추적하다, 전달정보가 없는경우
-  if (data === undefined)
+  if (isValid === false)
     return <NoData text={'주문하기/예약하기 버튼을 클릭해주세요'} />;
 
   return (

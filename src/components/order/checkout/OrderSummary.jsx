@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { fetchUserData } from '../../../services/userService';
 import useAuthStore from '../../../stores/useAuthStore';
 
-const OrderSummary = ({ orderInfo }) => {
+const OrderSummary = ({
+  orderInfo, //, userInfo
+}) => {
   const [price, setPrice] = useState(0);
   const [commision, setCommision] = useState(0);
   const [userInfo, setUserInfo] = useState(null);
   const { user } = useAuthStore();
-
-  const { email, uid, token } = user;
 
   useEffect(() => {
     let sum = 0;
@@ -18,14 +18,21 @@ const OrderSummary = ({ orderInfo }) => {
     setPrice(sum);
     setCommision(Math.ceil(sum / 10));
 
-    console.log('userInfo : ', JSON.stringify(userInfo));
-    console.log(JSON.stringify(setUserInfo(fetchUserData(uid))));
-    console.log(userDataWait(uid));
-  }, []);
+    const { email, uid, token } = user;
 
-  const userDataWait = async (a) => {
-    return await fetchUserData(uid);
-  };
+    console.log('uid : ', uid);
+
+    const userDataWait = async (a) => {
+      const data = await fetchUserData(uid);
+      console.log('data : ', data);
+      console.log('userInfo : ', userInfo);
+      setUserInfo(data);
+      return data;
+    };
+
+    const data = userDataWait();
+    console.log(data);
+  }, []);
 
   return (
     <div className="dark:font-bold">
@@ -56,7 +63,10 @@ const OrderSummary = ({ orderInfo }) => {
       <div className="border-t border-gray-200">
         <div className="flex justify-between py-4">
           <p>결제 후 잔여 포인트</p>
-          <p className="flex justify-end">{price + commision}원</p>
+          <p className="flex justify-end">
+            유저 잔액 : {userInfo.points}원<br />
+            {userInfo.points - price + commision}원
+          </p>
         </div>
       </div>
     </div>

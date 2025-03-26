@@ -45,7 +45,7 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
 
   // 페이지 변경
   const handlePageChange = (page) => {
-    // console.log('page : ', page);
+    console.log('page : ', page);
 
     if (page > 0 && page <= Math.ceil(data?.length / itemsPerPage)) {
       setSearchParams((prevParams) => {

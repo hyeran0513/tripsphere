@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   fetchAccomData,
+  getFilteredRoomData,
   getRoomData,
   getRoomOfAccomData,
 } from '../services/productService.';
@@ -29,5 +30,14 @@ export const useRoomData = (roomId) => {
     queryKey: ['room', roomId],
     queryFn: () => getRoomData(roomId),
     enabled: !!roomId,
+  });
+};
+
+// 필터링된 숙소 정보 쿼리
+export const useFilteredRoomData = (accomId, filters) => {
+  return useQuery({
+    queryKey: ['filteredRoom', accomId, filters],
+    queryFn: () => getFilteredRoomData(accomId, filters),
+    enabled: !!accomId,
   });
 };

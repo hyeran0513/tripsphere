@@ -4,6 +4,7 @@ import {
   getDoc,
   getDocs,
   query,
+  Timestamp,
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
@@ -59,5 +60,60 @@ export const getRoomData = async (roomId) => {
     return { ...data, roomId, accomData };
   } else {
     return null;
+  }
+};
+
+// 필터링된 숙소 정보 쿼리
+export const getFilteredRoomData = async (accomId, filters) => {
+  if (!accomId) return null;
+
+  const roomsRef = collection(db, 'rooms');
+
+  let constraints = [];
+
+  constraints.push(where('accommodation_id', '==', accomId));
+  // 어른 수
+  if (filters.adults > 0) {
+    constraints.push(where('capacity.adults', '>=', filters.adults));
+  }
+
+  // 미성년자 수
+  if (filters.children > 0) {
+    constraints.push(where('capacity.children', '>=', filters.children));
+  }
+
+  // 체크인
+  if (filters.datePickerDate.startDate) {
+    let checkInTimestamp = Timestamp.fromDate(
+      new Date(filters.datePickerDate.startDate),
+    );
+    constraints.push(where('check_in', '>=', checkInTimestamp));
+  }
+
+  let checkOutTimestamp = '';
+  // 체크아웃
+  if (filters.datePickerDate.endDate) {
+    checkOutTimestamp = Timestamp.fromDate(
+      new Date(filters.datePickerDate.endDate),
+    );
+  }
+
+  const q = query(roomsRef, ...constraints);
+
+  try {
+    const accomSnap = await getDocs(q);
+    let results = accomSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    // 체크아웃은 클라이언트에서 처리
+    if (checkOutTimestamp) {
+      results = results.filter(
+        (accom) => accom.check_out.toMillis() <= checkOutTimestamp.toMillis(),
+      );
+    }
+
+    return results;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 };

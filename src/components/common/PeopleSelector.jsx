@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Counter from './Counter';
 import usePeopleSelection from '../../hooks/usePeopleSelection';
 
-const PeopleSelector = ({ stateType, setAdults, capacity }) => {
+const PeopleSelector = ({ stateType, setAdults, setChildren, capacity }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { adultCount, childrenCount, people, handlePeopleCount } =
-    usePeopleSelection(stateType, capacity, setAdults);
+    usePeopleSelection(stateType, capacity, setAdults, setChildren);
 
   return (
     <div className="w-full">

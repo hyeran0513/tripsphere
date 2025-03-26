@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DatePicker from './DatePicker';
 import useDateSelection from '../../hooks/useDateSelection';
 import { getDatesInRange, convertToDate } from '../../utils/format';
 
-const DateSelector = ({ openDate, setOpenDate, stateType, bookedDates }) => {
+const DateSelector = ({
+  openDate,
+  setOpenDate,
+  stateType,
+  bookedDates,
+  setDatePickerDate,
+}) => {
   const { date, setDate } = useDateSelection(stateType);
+
+  useEffect(() => {
+    setDatePickerDate(date);
+  }, [date]);
 
   // 비활성화할 날짜들 (예약된 날짜들)
   const disabledDates =

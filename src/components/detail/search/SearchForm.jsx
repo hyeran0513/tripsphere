@@ -1,13 +1,47 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BiChevronRight } from 'react-icons/bi';
 import DateSelector from '../../common/DateSelector';
 import PeopleSelector from '../../common/PeopleSelector';
 
-const SearchForm = ({ openDate, setOpenDate, adults, setAdults, product }) => {
+const SearchForm = ({
+  openDate,
+  setOpenDate,
+  adults,
+  setAdults,
+  product,
+  children,
+  setChildren,
+  datePickerDate,
+  setDatePickerDate,
+  setFilters,
+  filters,
+}) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
+  };
+
+  useEffect(() => {
+    console.log('searchform' + setChildren);
+  }, []);
+
+  // 검색 핸들러
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    setFilters({
+      datePickerDate,
+      adults,
+      children,
+    });
+
+    console.log('필터:' + JSON.stringify(filters));
+
+    console.log('?@@@@@ 검색');
+    console.log(datePickerDate);
+    console.log('어른:' + adults);
+    console.log('어린이:' + children);
   };
 
   return (
@@ -43,13 +77,15 @@ const SearchForm = ({ openDate, setOpenDate, adults, setAdults, product }) => {
               stateType="reservation"
               openDate={openDate}
               setOpenDate={setOpenDate}
+              setDatePickerDate={setDatePickerDate}
+              datePickerDate={datePickerDate}
               bookedDates={product?.booked_dates}
             />
 
             {/* 인원수 */}
             <PeopleSelector
-              adults={adults}
               setAdults={setAdults}
+              setChildren={setChildren}
               stateType="reservation"
               capacity={product?.capacity}
             />
@@ -57,8 +93,8 @@ const SearchForm = ({ openDate, setOpenDate, adults, setAdults, product }) => {
 
           <button
             aria-label="검색"
-            type="submit"
-            onClick={() => {}}
+            type="button"
+            onClick={(e) => handleSearch(e)}
             className="cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             검색
           </button>

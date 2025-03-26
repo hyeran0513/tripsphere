@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import useFilterStore from '../stores/useFilterStore';
 import useReservationStore from '../stores/useReservationStore';
 
-const usePeopleSelection = (stateType, capacity, setAdults) => {
+const usePeopleSelection = (stateType, capacity, setAdults, setChildren) => {
   const [localAdultCount, setLocalAdultCount] = useState(0);
   const [localChildrenCount, setLocalChildrenCount] = useState(0);
   const [people, setPeople] = useState(0);
@@ -48,6 +48,17 @@ const usePeopleSelection = (stateType, capacity, setAdults) => {
       setAdults(adultCount);
     }
   }, [adultCount, stateType, setAdults]);
+
+  // reservation 상태인 경우, setChildren 함수 호출
+  useEffect(() => {
+    console.log('타나?' + childrenCount);
+    console.log(setChildren);
+    console.log(stateType);
+    if (stateType === 'reservation' && setChildren) {
+      console.log('타dy?' + childrenCount);
+      setChildren(childrenCount);
+    }
+  }, [childrenCount, stateType, setChildren]);
 
   // 인원 수 변경 핸들러
   const handlePeopleCount = useCallback(

@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Navbar from '../../components/detail/NavBar';
 import { useParams } from 'react-router-dom';
-import { useAccomData, useRoomOfAccomData } from '../../hooks/useProductData';
+import {
+  useAccomData,
+  useFilteredRoomData,
+  useRoomOfAccomData,
+} from '../../hooks/useProductData';
 import ProductGallery from '../../components/detail/gallery/ProductGallery';
 import ProductLocation from '../../components/detail/location/ProductLocation';
 import ProductReview from '../../components/detail/review/ProductReview';
@@ -21,7 +24,12 @@ const ProductDetail = () => {
   const { id } = useParams();
   const { data: reviews, refetch } = useReviewData(id);
   const [openDate, setOpenDate] = useState(false);
+  const [datePickerDate, setDatePickerDate] = useState(null);
   const [adults, setAdults] = useState(0);
+  const [children, setChildren] = useState(0);
+  const [filters, setFilters] = useState({});
+
+  const { data: filteredRooms } = useFilteredRoomData(id, filters);
 
   const avgRating =
     reviews && reviews.length
@@ -78,12 +86,19 @@ const ProductDetail = () => {
         <div
           id="container"
           className="flex items-start gap-10 mt-6">
-          <RoomList rooms={rooms} />
+          <RoomList rooms={filteredRooms} />
+
           <SearchForm
             openDate={openDate}
             setOpenDate={setOpenDate}
             adults={adults}
             setAdults={setAdults}
+            children={children}
+            setChildren={setChildren}
+            datePickerDate={datePickerDate}
+            setDatePickerDate={setDatePickerDate}
+            setFilters={setFilters}
+            filters={filters}
           />
         </div>
       </section>
@@ -122,6 +137,7 @@ const ProductDetail = () => {
             <span className="text-orange-400">{avgRating}</span>
           </div>
         </h1>
+
         <ProductReview
           reviews={reviews}
           handleReFetch={handleReFetch}

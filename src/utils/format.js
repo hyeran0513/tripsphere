@@ -33,6 +33,20 @@ export const formatDate = (timestamp) => {
   return `${year}.${month}.${day}`;
 };
 
+// timestamp에서 시간 추출 후 포맷
+export const formatTimeStampTime = (timestamp) => {
+  if (!timestamp || !timestamp.seconds) {
+    return '';
+  }
+
+  const date = new Date(timestamp.seconds * 1000);
+
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${hours}:${minutes}`;
+};
+
 // MM:SS 형식으로 시간 포맷
 export const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60);

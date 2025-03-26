@@ -3,6 +3,7 @@ import React from 'react';
 const ProductDescription = ({ product }) => {
   return (
     <div className="px-4 py-6 gap-4 sm:px-0 text-sm/6 text-gray-70">
+      <h1 className="mb-4 text-xl font-semibold">숙소 소개</h1>
       {/* 숙소 설명 */}
       <div className="mb-4 line-clamp-3">{product.description}</div>
 

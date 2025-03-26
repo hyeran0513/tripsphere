@@ -9,7 +9,7 @@ import {
 import useAuthStore from '../../../stores/useAuthStore';
 import ToastMessage from '../../common/ToastMessage';
 
-const ProductHeader = ({ product, productId }) => {
+const ProductHeader = ({ product, productId, hideFavorite }) => {
   const [toast, setToast] = useState(null);
   const { user } = useAuthStore();
 
@@ -33,7 +33,7 @@ const ProductHeader = ({ product, productId }) => {
 
   return (
     <>
-      <div className="lg:flex lg:items-center lg:justify-between">
+      <div className="flex items-center justify-between pt-10">
         {/* 숙소명 */}
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
@@ -46,35 +46,39 @@ const ProductHeader = ({ product, productId }) => {
           <div className="mt-5 flex lg:mt-0 lg:ml-4">
             {/* 카카오 공유하기 버튼 */}
             <span className="hidden sm:block">
-              <KakaoShareButton
-                hasText
-                title={product.name}
-                description={product.description}
-                imageUrl={product.images[0]}
-                pageUrl={window.location.origin + '/product/' + productId}
-              />
+              {product?.images.length > 0 && (
+                <KakaoShareButton
+                  hasText
+                  title={product.name}
+                  description={product.description}
+                  imageUrl={product?.images[0]}
+                  pageUrl={window.location.origin + '/product/' + productId}
+                />
+              )}
             </span>
 
             {/* 찜하기 버튼 */}
-            <span className="ml-3 hidden sm:block">
-              <button
-                onClick={handleFavorite}
-                type="button"
-                className="dark:text-white inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
-                {isFavorite ? (
-                  <BiSolidHeart
-                    aria-hidden="true"
-                    className="mr-1.5 -ml-0.5 size-5 text-red-400"
-                  />
-                ) : (
-                  <BiHeart
-                    aria-hidden="false"
-                    className="mr-1.5 -ml-0.5 size-5 text-gray-400"
-                  />
-                )}
-                찜하기
-              </button>
-            </span>
+            {!hideFavorite && (
+              <span className="ml-3 hidden sm:block">
+                <button
+                  onClick={handleFavorite}
+                  type="button"
+                  className="dark:text-white inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
+                  {isFavorite ? (
+                    <BiSolidHeart
+                      aria-hidden="true"
+                      className="mr-1.5 -ml-0.5 size-5 text-red-400"
+                    />
+                  ) : (
+                    <BiHeart
+                      aria-hidden="false"
+                      className="mr-1.5 -ml-0.5 size-5 text-gray-400"
+                    />
+                  )}
+                  찜하기
+                </button>
+              </span>
+            )}
           </div>
         )}
       </div>

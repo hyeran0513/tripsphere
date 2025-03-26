@@ -4,7 +4,7 @@ import ImageGallery from './ImageGallery';
 
 const ProductGallery = ({ product }) => {
   return (
-    <div className="relative pt-6">
+    <div className="relative">
       {/* 모달 버튼 */}
       <button
         className="btn absolute bottom-5 right-5"
@@ -17,9 +17,9 @@ const ProductGallery = ({ product }) => {
         id="my_modal_4"
         className="modal">
         <div className="modal-box w-11/12 max-w-5xl">
-          <h3 className="font-bold text-lg">{product.name}</h3>
+          <h3 className="font-bold text-lg">{product?.name}</h3>
           <div className="py-4">
-            <ImageGallery images={product.images} />
+            <ImageGallery images={product?.images} />
           </div>
           <div className="modal-action">
             <form method="dialog">
@@ -32,76 +32,76 @@ const ProductGallery = ({ product }) => {
       </dialog>
 
       {/* 이미지 영역 (1개일 경우) */}
-      {product.images.length === 1 && (
-        <div className="mx-auto mt-6 max-w-2xl lg:grid lg:max-w-7xl h-[500px] overflow-hidden rounded-l-lg rounded-r-lg">
+      {product?.images?.length === 1 && (
+        <div className="mx-auto max-w-2xl lg:grid lg:max-w-7xl h-[500px] overflow-hidden rounded-l-lg rounded-r-lg">
           <img
-            alt={product.name}
-            src={product.images[0]}
+            alt={product?.name}
+            src={product?.images[0]}
             className="hidden size-full object-cover lg:block"
           />
         </div>
       )}
 
       {/* 이미지 영역 (2개일 경우) */}
-      {product.images.length === 2 && (
-        <div className="mx-auto mt-6 max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-2">
+      {product?.images?.length === 2 && (
+        <div className="mx-auto max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-2 h-[500px] overflow-hidden rounded-l-lg rounded-r-lg">
           <img
-            alt={product.name}
-            src={product.images[0]}
+            alt={product?.name}
+            src={product?.images[0]}
             className="hidden size-full rounded-l-lg object-cover lg:block h-[500px]"
           />
           <img
-            alt={product.name}
-            src={product.images[1]}
+            alt={product?.name}
+            src={product?.images[1]}
             className="hidden size-full rounded-r-lg object-cover lg:block h-[500px]"
           />
         </div>
       )}
 
       {/* 이미지 영역 (3개일 경우) */}
-      {product.images.length === 3 && (
-        <div className="mx-auto mt-6 max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-2">
+      {product?.images?.length === 3 && (
+        <div className="mx-auto max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-2 h-[500px] overflow-hidden rounded-l-lg rounded-r-lg">
           <img
-            alt={product.name}
-            src={product.images[0]}
+            alt={product?.name}
+            src={product?.images[0]}
             className="hidden size-full rounded-l-lg object-cover lg:block h-[500px]"
           />
           <img
-            alt={product.name}
-            src={product.images[1]}
+            alt={product?.name}
+            src={product?.images[1]}
             className="hidden size-full object-cover lg:block h-[500px]"
           />
           <img
-            alt={product.name}
-            src={product.images[2]}
+            alt={product?.name}
+            src={product?.images[2]}
             className="aspect-3/2 w-full rounded-r-lg object-cover h-[500px]"
           />
         </div>
       )}
 
       {/* 이미지 영역 (4개일 경우) */}
-      {product.images.length >= 4 && (
-        <div className="mx-auto mt-6 max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-2 h-[500px]">
+      {product?.images?.length >= 4 && (
+        <div className="mx-auto max-w-2xl lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-2 h-[500px] overflow-hidden rounded-l-lg rounded-r-lg">
           <img
-            alt={product.name}
-            src={product.images[0]}
+            alt={product?.name}
+            src={product?.images[0]}
             className="hidden size-full rounded-l-lg object-cover lg:block "
           />
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-2">
             <img
-              alt={product.name}
-              src={product.images[1]}
+              alt={product?.name}
+              src={product?.images[1]}
               className="aspect-3/2 w-full object-cover"
             />
             <img
-              alt={product.name}
-              src={product.images[2]}
+              alt={product?.name}
+              src={product?.images[2]}
               className="aspect-3/2 w-full object-cover"
             />
           </div>
           <img
-            alt={product.name}
-            src={product.images[3]}
+            alt={product?.name}
+            src={product?.images[3]}
             className="aspect-4/5 size-full object-cover sm:rounded-r-lg lg:aspect-auto"
           />
         </div>

@@ -2,33 +2,19 @@ import { useEffect, useState } from 'react';
 import Pagination from '../../components/productlist/Pagination';
 import PageHeader from '../../components/common/PageHeader';
 import ProductCard from '../../components/favorite/ProductCard';
-import {
-  useControlFavorite,
-  useFavoriteAccommData,
-} from '../../hooks/useFavoriteData';
-
+import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
 import Loading from '../../components/common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
-import ToastMessage from '../../components/common/ToastMessage';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
   { link: '/favorite', text: '찜 목록' },
 ];
 
-const Favorite = ({ index }) => {
+const Favorite = () => {
   const { user } = useAuthStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
-  const [toast, setToast] = useState(null);
-
-  // 토스트 메시지
-  const showToast = (type, message) => {
-    setToast({ type, message });
-    setTimeout(() => setToast(null), 3000);
-  };
-  const { mutate: favoriteMutation, isLoading: isFavoriteLoading } =
-    useControlFavorite(showToast);
 
   const typeMapping = {
     hotel: '호텔',
@@ -53,6 +39,7 @@ const Favorite = ({ index }) => {
     if (data) {
       console.log('찜 목록 내역:', JSON.stringify(data));
     }
+
     setFilteredData(data);
   }, [data]);
 
@@ -95,11 +82,6 @@ const Favorite = ({ index }) => {
     }
   };
 
-  const handleDelete = (e) => {
-    if (e) e.preventDefault();
-    favoriteMutation(index);
-  };
-
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">
       <PageHeader
@@ -116,7 +98,7 @@ const Favorite = ({ index }) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyUp={handleKeyUp}
-          className="input border border-blue-400 p-4 rounded-l-2xl "
+          className="input border border-gray-400 p-4 rounded-l-2xl "
         />
         <button
           type="submit"
@@ -133,22 +115,14 @@ const Favorite = ({ index }) => {
             <ProductCard
               key={index}
               favorite={favorite}
-              handleDelete={handleDelete}
             />
           ))
         ) : (
-          <p>일치하는 결과가 없습니다.</p>
+          <p>일치하는 숙소가 없습니다.</p>
         )}
       </div>
 
       <Pagination data={data} />
-      {/* 토스트 메시지 */}
-      {toast && (
-        <ToastMessage
-          toast={toast}
-          setToast={setToast}
-        />
-      )}
     </div>
   );
 };

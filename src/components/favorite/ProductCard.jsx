@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BiCalendarAlt, BiTrash, BiHeart } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { calculateDiscountedPrice } from '../../utils/discountedPrice';
 import { formatNumber, formatDate } from '../../utils/format';
 import TypeMapping from '../common/TypeMapping';
+import { useControlFavorite } from '../../hooks/useFavoriteData';
+import ToastMessage from '../common/ToastMessage';
+import useAuthStore from '../../stores/useAuthStore';
 
-const ProductCard = ({ favorite, handleDelete }) => {
+const ProductCard = ({ favorite }) => {
+  const [toast, setToast] = useState(null);
+  const { user } = useAuthStore();
+  // 토스트 메시지
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => setToast(null), 3000);
+  };
+  const { mutate: favoriteDelMutation, isLoading: isFavoriteLoading } =
+    useControlFavorite(showToast, user?.uid);
+
+  const handleDelete = (e) => {
+    if (e) e.preventDefault();
+    favoriteDelMutation(favorite.accomId);
+  };
+
   return (
-    <Link to="/product/0">
+    <Link to={`/prodect/${favorite.accomId}`}>
       <div className="flex flex-col items-start group card bg-base-100 transition-shadow gap-[20px]">
         <div className="h-full relative">
           <div className="h-[200px] rounded-md overflow-hidden">
@@ -21,7 +39,8 @@ const ProductCard = ({ favorite, handleDelete }) => {
 
         <button
           className="btn btn-square btn-ghost indicator-item badge absolute top-2 right-2 transition opacity-0 hover:scale-110 group-hover:opacity-100 "
-          onClick={handleDelete}>
+          onClick={handleDelete}
+          disabled={isFavoriteLoading}>
           <BiTrash className="size-[1.2em]" />
         </button>
 
@@ -91,6 +110,12 @@ const ProductCard = ({ favorite, handleDelete }) => {
             </div>
           </div>
         </div>
+        {toast && (
+          <ToastMessage
+            toast={toast}
+            setToast={setToast}
+          />
+        )}
       </div>
     </Link>
   );

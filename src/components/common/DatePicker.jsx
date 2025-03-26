@@ -5,7 +5,13 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { useClickAway } from 'react-use';
 
-const DatePicker = ({ openDate, setOpenDate, date, setDate }) => {
+const DatePicker = ({
+  openDate,
+  setOpenDate,
+  date,
+  setDate,
+  disabledDates,
+}) => {
   const ref = useRef(null);
 
   useClickAway(ref, () => setOpenDate(false));
@@ -28,6 +34,8 @@ const DatePicker = ({ openDate, setOpenDate, date, setDate }) => {
           ranges={[date]}
           onChange={(ranges) => setDate(ranges.selection)}
           locale={ko}
+          disabledDates={disabledDates}
+          minDate={new Date()}
         />
       )}
     </div>

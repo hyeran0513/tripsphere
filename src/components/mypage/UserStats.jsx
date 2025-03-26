@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BiHeart } from 'react-icons/bi';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
@@ -14,7 +14,13 @@ import useAuthStore from '../../stores/useAuthStore';
 const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
   const { user } = useAuthStore();
   const { data: orderInfo } = useUserOrders(user?.uid);
-  const { data, isLoading, error } = useUserData(user?.uid);
+  const { data, isLoading, error, refetch } = useUserData(user?.uid);
+
+  useEffect(() => {
+    if (data) {
+      refetch();
+    }
+  }, [data]);
 
   if (isLoading) return <Loading />;
   if (error) return <>에러</>;
@@ -28,7 +34,9 @@ const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
             <LiaCoinsSolid size={30} />
             <div>포인트</div>
           </div>
-          <div className="stat-value text-center">{data && data.points}</div>
+          <div className="stat-value text-center">
+            {data && (data.points || 0)}
+          </div>
         </Link>
 
         {/* 포인트 충전 버튼 */}

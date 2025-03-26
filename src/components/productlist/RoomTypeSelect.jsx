@@ -27,9 +27,10 @@ const RoomTypeSelector = () => {
           key={ele}>
           <input
             aria-label={
-              roomTypes.includes(ele)
-                ? `${getKor(ele)} 선택해제`
-                : `${getKor(ele)} 선택하기`
+              `${getKor(ele)}`
+              // roomTypes.includes(ele)
+              //   ? `${getKor(ele)} 선택취소하기`
+              //   : `${getKor(ele)} 선택하기`
             }
             type="checkbox"
             className="checkbox"

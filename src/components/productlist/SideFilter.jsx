@@ -4,6 +4,7 @@ import { getAllAccomData } from '../../services/productListService';
 import useFilterStore from '../../stores/useFilterStore.js';
 import usePriceStore from '../../stores/usePriceStore.js';
 import useProductListStore from '../../stores/useProductListStore.js';
+import useRoomType from '../../stores/useRoomType.js';
 import CitySelector from '../common/CitySelector';
 import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
@@ -23,15 +24,53 @@ const SideFilter = ({ setLoading, setError }) => {
     checkOut,
   } = useFilterStore();
 
-  const { range } = usePriceStore();
+  const moveScroll = () => {
+    scroll({ top: 0, behavior: 'smooth' });
+  };
+
+  const { range, resetPriceRange } = usePriceStore();
+  const { roomTypes, resetRoomTypes } = useRoomType();
   const { list, setList, resetList } = useProductListStore();
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
   };
 
-  useEffect(() => {
-    console.log('쿼리요청이 필요한 옵션 변경');
+  useEffect(
+    () => {
+      console.log('쿼리요청이 필요한 옵션 변경');
+      resetList();
+      let listInfo = async () => {
+        setLoading(true);
+        try {
+          const data = await getAllAccomData(useFilterStore);
+          setList(data);
+        } catch (error) {
+          console.error('상품정보 로딩 중 오류 ', error);
+          setError(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      listInfo();
+      // resetPriceRange();
+      // resetRoomTypes();
+    },
+    [
+      // selectedCity,
+      // selectedSubCity,
+      // adultCount,
+      // childrenCount,
+      // checkIn,
+      // checkOut,
+    ],
+  );
+
+  // 검색 옵션 변경 버튼 클릭시 DB 쿼리
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log('옵션 수정 적용 버튼 클릭');
     resetList();
 
     let listInfo = async () => {
@@ -47,14 +86,10 @@ const SideFilter = ({ setLoading, setError }) => {
       }
     };
     listInfo();
-  }, [
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-  ]);
+    // resetPriceRange();
+    // resetRoomTypes();
+    moveScroll();
+  };
 
   return (
     <aside
@@ -128,8 +163,9 @@ const SideFilter = ({ setLoading, setError }) => {
           </fieldset>
 
           <button
-            aria-label="검색 옵션 변경을 적용하기"
+            aria-label="검색 옵션 수정 적용"
             type="submit"
+            onClick={(e) => handleSubmit(e)}
             className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             옵션 수정 적용
           </button>

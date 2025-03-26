@@ -65,7 +65,7 @@ const RoomCard = ({ room, index }) => {
           </div>
 
           <div className="font-semibold text-lg text-gray-900">
-            {formatNumber(30000)}원
+            {formatNumber(room.original_price * (1 - room.discount_rate))}원
           </div>
         </div>
 

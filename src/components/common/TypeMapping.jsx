@@ -11,7 +11,7 @@ const typeMapping = {
 
 const TypeMapping = ({ type }) => {
   return (
-    <div className="badge bg-transparent border border-gray-300 dark:border-indigo-200 text-gray-900 dark:text-indigo-200 text-xs ">
+    <div className="badge bg-transparent border border-gray-300 dark:border-indigo-200 text-gray-900 dark:text-indigo-200 text-xs">
       {typeMapping[type]}
     </div>
   );

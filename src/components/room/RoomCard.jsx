@@ -11,16 +11,36 @@ import { BiChevronRight } from 'react-icons/bi';
 import Modal from '../common/Modal';
 import CartButton from '../detail/reservation/CartButton';
 import ToastMessage from '../common/ToastMessage';
+import { BiCart } from 'react-icons/bi';
+import { serverTimestamp } from 'firebase/firestore';
+import { useAddCarts } from '../../hooks/useCartData';
+import useAuthStore from '../../stores/useAuthStore';
 
 const RoomCard = ({ room, index }) => {
   const navigate = useNavigate();
   const [toast, setToast] = useState(null);
   const [selectedRange, setSelectedRange] = useState([]);
   const [selectedRoomData, setSelectedRoomData] = useState(null);
+  const [selectedType, setSelectedType] = useState(null);
+  const { user } = useAuthStore();
 
   const showToast = (type, message) => {
     setToast({ type, message });
     setTimeout(() => setToast(null), 3000);
+  };
+
+  // firebase에 장바구니 추가
+  const { mutate } = useAddCarts(user?.uid, showToast);
+
+  // 장바구니 추가
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+
+    mutate({
+      user_id: user?.uid,
+      room_id: selectedRoomData.roomId,
+      created_at: serverTimestamp(),
+    });
   };
 
   // 11:00 - 19:00 생성
@@ -56,9 +76,15 @@ const RoomCard = ({ room, index }) => {
   };
 
   // 대실 예약 버튼 핸들러
-  const handleDayUse = (roomData) => {
+  const handleDayUse = (roomData, type) => {
+    if (type === 'cart') {
+      setSelectedType('cart');
+    } else {
+      setSelectedType('');
+    }
     document.getElementById('dayUse').showModal();
     setSelectedRoomData(roomData);
+    console.log('???' + JSON.stringify(selectedRoomData));
     setSelectedRange([]);
   };
 
@@ -121,27 +147,36 @@ const RoomCard = ({ room, index }) => {
           </p>
 
           <div className="flex items-center gap-2">
-            <CartButton
-              productId={room.roomId}
-              showToast={showToast}
-              checkIn={convertTimestampToDate(room.check_in)}
-              checkOut={convertTimestampToDate(room.check_out)}
-              adultCount={room.capacity.adults}
-              childrenCount={room.capacity.children}
-              totalPrice={room.original_price * (1 - room.discount_rate)}
-            />
-
             {room.stay_type === 'stay' && (
-              <button
-                type="button"
-                onClick={() => navigate('/checkout')}
-                className="h-[38px] text-indigo-600 hover:text-white border border-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-500 dark:focus:ring-indigo-800 cursor-pointer">
-                숙박 예약
-              </button>
+              <>
+                <CartButton
+                  productId={room.roomId}
+                  showToast={showToast}
+                  checkIn={convertTimestampToDate(room.check_in)}
+                  checkOut={convertTimestampToDate(room.check_out)}
+                  adultCount={room.capacity.adults}
+                  childrenCount={room.capacity.children}
+                  totalPrice={room.original_price * (1 - room.discount_rate)}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/checkout')}
+                  className="h-[38px] text-indigo-600 hover:text-white border border-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-500 dark:focus:ring-indigo-800 cursor-pointer">
+                  숙박 예약
+                </button>
+              </>
             )}
 
             {room.stay_type === 'day_use' && (
               <>
+                <button
+                  type="button"
+                  onClick={() => handleDayUse(room, 'cart')}
+                  className="flex items-center justify-center w-[38px] h-[38px] text-gray-600 hover:text-white border border-gray-600 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm text-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 cursor-pointer">
+                  <BiCart className="text-lg" />
+                </button>
+
                 <button
                   type="button"
                   className="h-[38px] text-indigo-600 hover:text-white border border-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-500 dark:focus:ring-indigo-800 cursor-pointer"
@@ -187,13 +222,23 @@ const RoomCard = ({ room, index }) => {
                     ))}
                   </ul>
 
-                  <button
-                    aria-label="예약하기"
-                    type="button"
-                    onClick={() => navigate('/checkout')}
-                    className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    예약하기
-                  </button>
+                  {selectedType === 'cart' ? (
+                    <button
+                      aria-label="장바구니"
+                      type="button"
+                      onClick={handleAddToCart}
+                      className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      장바구니
+                    </button>
+                  ) : (
+                    <button
+                      aria-label="예약하기"
+                      type="button"
+                      onClick={() => navigate('/checkout')}
+                      className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      예약하기
+                    </button>
+                  )}
                 </Modal>
               </>
             )}

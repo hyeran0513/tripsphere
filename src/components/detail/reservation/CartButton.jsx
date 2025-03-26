@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAddCarts } from '../../../hooks/useCartData';
-import { serverTimestamp, Timestamp } from 'firebase/firestore';
+import { serverTimestamp } from 'firebase/firestore';
 import useAuthStore from '../../../stores/useAuthStore';
 import { BiCart } from 'react-icons/bi';
 

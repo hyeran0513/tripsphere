@@ -47,7 +47,6 @@ export const addCartItem = async (cartItem) => {
 };
 
 // 장바구니 데이터 조회
-// 장바구니 데이터 조회
 export const getCartItems = async (userId) => {
   if (!userId) return null;
 
@@ -78,12 +77,10 @@ export const getCartItems = async (userId) => {
     }),
   );
 
-  console.log('cartItems:', cartItems);
-
   return cartItems;
 };
 
-// 장바구니 데이터 조회
+// 장바구니 데이터 조회 (기존)
 export const fetchCartItems = async () => {
   const user = auth.currentUser;
   if (!user) return [];

@@ -6,14 +6,14 @@ import { LiaCoinsSolid } from 'react-icons/lia';
 
 import PointModal from './PointModal';
 import { useUserData } from '../../hooks/useUserData';
-import { useUserOrders } from '../../hooks/useOrderData';
+import { useOrderData } from '../../hooks/useOrderData';
 import Loading from '../common/Loading';
 import Modal from '../common/Modal';
 import useAuthStore from '../../stores/useAuthStore';
 
 const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
   const { user } = useAuthStore();
-  const { data: orderInfo } = useUserOrders(user?.uid);
+  const { data: orderInfo } = useOrderData(user?.uid);
   const { data, isLoading, error, refetch } = useUserData(user?.uid);
 
   useEffect(() => {

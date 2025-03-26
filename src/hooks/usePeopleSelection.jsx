@@ -51,11 +51,7 @@ const usePeopleSelection = (stateType, capacity, setAdults, setChildren) => {
 
   // reservation 상태인 경우, setChildren 함수 호출
   useEffect(() => {
-    console.log('타나?' + childrenCount);
-    console.log(setChildren);
-    console.log(stateType);
     if (stateType === 'reservation' && setChildren) {
-      console.log('타dy?' + childrenCount);
       setChildren(childrenCount);
     }
   }, [childrenCount, stateType, setChildren]);

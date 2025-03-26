@@ -148,7 +148,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                           {/* 객실 유형 및 기간 */}
                           <div className="flex-1">
                             <div className="flex gap-2 items-center text-xs text-gray-500">
-                              <span>
+                              <span className="font-semibold text-gray-900">
                                 {item.room.stay_type === 'stay'
                                   ? '숙박'
                                   : '대실'}

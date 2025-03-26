@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
-// 유저의 주문 내역 조회
+// 유저의 주문 내역 조회 (기존)
 export const fetchUserOrders = async (userId) => {
   if (!userId) return [];
 
@@ -113,4 +113,41 @@ export const createUserOrder = async ({
       });
     }
   }
+};
+
+// 주문 내역 조회
+export const getOrderData = async (userId) => {
+  if (!userId) return [];
+
+  const q = query(collection(db, 'orders'), where('user_id', '==', userId));
+  const cartSnapshot = await getDocs(q);
+
+  const cartItems = await Promise.all(
+    cartSnapshot.docs.map(async (docSnap) => {
+      const data = docSnap.data();
+
+      const roomRef = doc(db, 'rooms', data.room_id);
+      const roomSnap = await getDoc(roomRef);
+      const roomData = roomSnap.exists() ? roomSnap.data() : null;
+
+      let accomData = null;
+
+      if (roomData) {
+        const accomRef = doc(db, 'accommodations', roomData.accommodation_id);
+        const accomSnap = await getDoc(accomRef);
+        accomData = accomSnap.exists() ? accomSnap.data() : null;
+      }
+
+      return {
+        id: docSnap.id,
+        ...data,
+        room: roomData,
+        accom: accomData,
+      };
+    }),
+  );
+
+  console.log('orders:', cartItems);
+
+  return cartItems;
 };

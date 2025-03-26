@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { BiCalendarAlt, BiChevronRight, BiUser } from 'react-icons/bi';
+import {
+  BiCalendarAlt,
+  BiChevronRight,
+  BiUser,
+  BiBuildings,
+} from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { compareToday, formatNumber, formatDate } from '../../utils/format';
 import CancelOrderModal from './CancelOrderModal';
@@ -50,7 +55,9 @@ const OrderList = ({ orderInfo }) => {
               <div> {formatDate(order.order_date)}</div>
               <button
                 type="button"
-                onClick={() => navigate(`/product/${order.accommodation_id}`)}>
+                onClick={() =>
+                  navigate(`/product/${order.room.accommodation_id}`)
+                }>
                 <BiChevronRight className="size-6" />
               </button>
             </div>
@@ -60,19 +67,23 @@ const OrderList = ({ orderInfo }) => {
                 <img
                   className="size-24 rounded-box"
                   src={
-                    order.accommodation?.images?.[0] ||
-                    'https://via.placeholder.com/100'
+                    order.room?.images?.[0] || 'https://via.placeholder.com/100'
                   }
-                  alt={order.accommodation?.name || '숙소 정보 없음'}
+                  alt={order.room?.name || '숙소 정보 없음'}
                 />
                 <div className="flex flex-col">
                   <h2 className="text-lg font-bold">
-                    {compareToday(order.check_in) && (
+                    {compareToday(order.room.check_in) && (
                       <div class="mr-2 badge badge-soft badge-primary text-[10px]">
-                        {compareToday(order.check_in)}
+                        {compareToday(order.room.check_in)}
                       </div>
                     )}
-                    {order.accommodation?.name || '숙소 정보 없음'}
+
+                    {order.room?.name || '숙소 정보 없음'}
+                    <p className="flex items-center gap-1 text-gray-500 text-xs">
+                      <BiBuildings />
+                      {order.accom.name}
+                    </p>
                   </h2>
                   <div className="text-xs uppercase opacity-60 pt-1">
                     예약번호 : {order.id}
@@ -82,8 +93,8 @@ const OrderList = ({ orderInfo }) => {
                   <div className="flex items-center gap-2 mt-2">
                     <BiUser />
                     <div className="mr-1 text-sm">
-                      성인: {order.guest_count?.adults ?? 0}명, 어린이:{' '}
-                      {order.guest_count?.children ?? 0}명
+                      성인: {order.room.capacity?.adults ?? 0}명, 어린이:{' '}
+                      {order.room.capacity.children ?? 0}명
                     </div>
                   </div>
 
@@ -92,12 +103,16 @@ const OrderList = ({ orderInfo }) => {
                     <div className="flex items-center gap-2">
                       <BiCalendarAlt />
                       <span className="font-bold">체크인:</span>{' '}
-                      <span>{formatDate(order.check_in) || '날짜 없음'}</span>
+                      <span>
+                        {formatDate(order.room.check_in) || '날짜 없음'}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <BiCalendarAlt />
                       <span className="font-bold">체크아웃:</span>{' '}
-                      <span>{formatDate(order.check_out) || '날짜 없음'}</span>
+                      <span>
+                        {formatDate(order.room.check_out) || '날짜 없음'}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -106,22 +121,28 @@ const OrderList = ({ orderInfo }) => {
               {/* 주문 취소버튼 */}
               <div className="flex flex-col justify-between">
                 <div className="text-lg">
-                  {formatNumber(order.total_price)}원
+                  {formatNumber(
+                    order.room.original_price * (1 - order.room.discount_rate),
+                  )}
+                  원
                 </div>
                 {order.payment_status === '결제 취소' ? (
                   <span className="text-red-500 font-bold">결제 취소</span>
                 ) : (
                   <button
                     className={`px-3 py-1 rounded-md transition ${
-                      compareToday(order.check_in)
+                      compareToday(order.room.check_in)
                         ? 'bg-gray-400 text-white cursor-not-allowed'
                         : 'bg-red-500 text-white hover:bg-red-700'
                     }`}
                     onClick={() =>
-                      !compareToday(order.check_in) && handleCancelClick(order)
+                      !compareToday(order.room.check_in) &&
+                      handleCancelClick(order)
                     }
-                    disabled={compareToday(order.check_in)}>
-                    {compareToday(order.check_in) ? '취소 불가' : '주문 취소'}
+                    disabled={compareToday(order.room.check_in)}>
+                    {compareToday(order.room.check_in)
+                      ? '취소 불가'
+                      : '주문 취소'}
                   </button>
                 )}
               </div>

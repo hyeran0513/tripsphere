@@ -27,7 +27,7 @@ const ProductsList = ({ loading, error }) => {
 
   const [filterLoading, setFilterLoading] = useState(true);
 
-  const notEnough = <NoData text={'조건에 맞는 숙소가 없습니다.'} />;
+  const notEnoughCondition = <NoData text={'조건에 맞는 숙소가 없습니다.'} />;
 
   useEffect(() => {
     let array = [];
@@ -39,21 +39,20 @@ const ProductsList = ({ loading, error }) => {
       setFilterLoading(false);
     }
     filterWaiting();
-    // setFiltered(array);
-    // console.log('pageperitem : ', pagePerItem);
-    // console.log('filtered:', filtered);
   }, [range.min, range.max, roomTypes, pagePerItem, list]);
 
-  useEffect(() => {
-    // console.log('pageperitem : ', pagePerItem);
-  }, [filterLoading, pagePerItem]);
+  useEffect(() => {}, [filterLoading, pagePerItem]);
 
+  // 향후 접근성 향상용
+  // 동작 : 탭으로 페이지 버튼선택후 엔터 -> 상품목록 첫번째 요소 선택
   const focus = useRef();
 
+  // 가격 정보 매칭
   const getPrice = useCallback((val) => {
     return val * 10000;
   });
 
+  // 숙소 형태 조건
   const typeCheck = (array) => {
     return array.filter((ele) => roomTypes.includes(ele.type));
   };
@@ -104,18 +103,23 @@ const ProductsList = ({ loading, error }) => {
     }
   };
 
+  // 상품목록의 상품 표출 갯수 조절
   const changePagePerItem = (e) => {
     setPagePerItem(Number(e.target.value));
   };
 
+  // 상품(숙소) 정보 조건 필터링
   const accomCheck = (array) => {
     list.map((ele) => {
+      // 가격 범위 필터링
       if (
         getPrice(range.min) <= ele.final_price &&
         ele.final_price <=
           (range.max < rangeLimit.max ? getPrice(range.max) : Number.MAX_VALUE)
       ) {
+        // 숙소 타입 필터링 정보가 있는지 확인
         if (roomTypes.length > 0 && roomTypes !== null) {
+          // 숙소 타입 필터링에 해당
           if (roomTypes.includes(ele.type)) {
             duplicatedCheck(array, ele);
           }
@@ -126,6 +130,7 @@ const ProductsList = ({ loading, error }) => {
     });
   };
 
+  // 표출 정보 중복 방지
   const duplicatedCheck = (array, item) => {
     let isContain = false;
 
@@ -151,8 +156,9 @@ const ProductsList = ({ loading, error }) => {
     );
 
   if (loading) return <Loading />;
-  if (list.length <= 0) return notEnough;
-  // if (filtered.length === 0 || filtered === null) return notEnough;
+
+  // 쿼리결과가 없으면 필터링 UI 출력 중지
+  if (list.length <= 0) return notEnoughCondition;
 
   return (
     <>
@@ -181,7 +187,8 @@ const ProductsList = ({ loading, error }) => {
         </div>
       )}
 
-      {(filtered.length === 0 || filtered === null) && notEnough}
+      {/* 필터링 결과로 인해 결과가 없을때 필터링 UI는 출력*/}
+      {(filtered.length === 0 || filtered === null) && notEnoughCondition}
 
       {/* 할인률 , 평점 , 리뷰수 정렬, 목록 5,10,15 개씩 보기 UI 추가 예정 */}
       {filtered.length > 0 && (

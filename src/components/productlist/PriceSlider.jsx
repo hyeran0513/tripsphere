@@ -66,7 +66,7 @@ const PriceSlider = ({ step = 5 }) => {
         <label className="flex items-center gap-x-3">
           <span className="max-lg:hidden">최소</span>
           <input
-            aria-label={`숙소 최소가격 설정. 현재가격 ${range.min} 만원`}
+            aria-label={`숙소 최소가격 설정하기 현재가격 ${range.min} 만원`}
             type="number"
             value={range.min}
             min={rangeLimit.min}
@@ -76,11 +76,11 @@ const PriceSlider = ({ step = 5 }) => {
             className="border bg-base-200 border-gray-300 dark:border-gray-200 rounded-md px-1 py-1  text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </label>
-        ~
+        <span>~</span>
         <label className="flex items-center gap-x-3">
           <span className="max-lg:hidden">최대</span>
           <input
-            aria-label={`숙소 최대가격 설정. 현재 ${
+            aria-label={`숙소 최대가격 설정하기 현재 ${
               range.max === rangeLimit.max
                 ? '최대가격 제한 없음'
                 : (range.max, '만원')

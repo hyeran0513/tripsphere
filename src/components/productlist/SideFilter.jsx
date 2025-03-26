@@ -95,15 +95,17 @@ const SideFilter = ({ setLoading, setError }) => {
 
   return (
     <aside
-      aria-label="숙소 검색 옵션 변경하기"
+      aria-label="숙소 검색 옵션"
       className={`sidebar z-10 sticky top-5 ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
       <div className="flex mb-4 items-center justify-between">
-        {isFormOpen && <div>검색 옵션 영역</div>}
+        {isFormOpen && (
+          <div className="pl-3 font-extrabold">검색 옵션 영역</div>
+        )}
         <button
           type="button"
           onClick={toggleForm}
           aria-label={
-            isFormOpen ? '숙소 검색 옵션 열림' : '숙소 검색 옵션 닫힘'
+            isFormOpen ? '숙소 검색 옵션 닫기' : '숙소 검색 옵션 열기'
           }
           className={`border border-gray-200 px-0.5 py-2 ${
             isFormOpen ? 'rounded-l-md' : 'rounded-r-md'
@@ -165,7 +167,7 @@ const SideFilter = ({ setLoading, setError }) => {
           </fieldset> */}
 
           <button
-            aria-label="검색 옵션 수정 적용"
+            aria-label="수정한 검색 옵션 적용"
             type="submit"
             onClick={(e) => handleSubmit(e)}
             className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

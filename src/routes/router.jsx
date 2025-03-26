@@ -15,6 +15,7 @@ import MyPage from '../pages/user/MyPage';
 import PointHistory from '../pages/user/PointHistory';
 import Profile from '../pages/user/Profile';
 import ResetPassword from '../pages/auth/ResetPassword';
+import Dummy from '../pages/Dummy';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
       { path: 'signin', element: <SignIn /> },
       { path: 'signup', element: <SignUp /> },
       { path: 'resetpassword', element: <ResetPassword /> },
+      { path: 'dummy', element: <Dummy /> },
     ],
   },
   { path: '*', element: <NotFound /> },

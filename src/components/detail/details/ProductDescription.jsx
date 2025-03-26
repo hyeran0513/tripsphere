@@ -22,7 +22,11 @@ const ProductDescription = ({ product }) => {
           <h3 className="font-bold text-lg">{product.name}</h3>
 
           {/* 숙소 설명 */}
-          <p className="py-4">{product.description}</p>
+          <p
+            className="py-4"
+            style={{ whiteSpace: 'pre-line' }}>
+            {product.description}
+          </p>
 
           {/* 버튼 영역 */}
           <div className="modal-action">

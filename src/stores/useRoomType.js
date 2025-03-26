@@ -1,8 +1,15 @@
 import { create } from 'zustand';
 
 const useRoomType = create((set) => ({
-  roomTypes: ['hotel', 'motel', 'pension', 'resort', 'camping', 'guest'],
-  defaultOption: ['hotel', 'motel', 'pension', 'resort', 'camping', 'guest'],
+  roomTypes: ['hotel', 'motel', 'pension', 'resort', 'camping', 'guesthouse'],
+  defaultOption: [
+    'hotel',
+    'motel',
+    'pension',
+    'resort',
+    'camping',
+    'guesthouse',
+  ],
   addRoomTypes: (data) =>
     set((state) => ({
       roomTypes: [...state.roomTypes, data],
@@ -29,7 +36,7 @@ const useRoomType = create((set) => ({
         return '리조트';
       case 'camping':
         return '캠핑';
-      case 'guest':
+      case 'guesthouse':
         return '게스트하우스';
       default:
         return '';

@@ -24,6 +24,8 @@ const ProductsList = ({ loading, error }) => {
 
   const [filterLoading, setFilterLoading] = useState(true);
 
+  let count = 0;
+
   useEffect(() => {
     let array = [];
     async function filterWaiting() {
@@ -38,7 +40,7 @@ const ProductsList = ({ loading, error }) => {
     // setFiltered(array);
     // console.log('pageperitem : ', pagePerItem);
     // console.log('filtered:', filtered);
-  }, [range.min, range.max, roomTypes, pagePerItem]);
+  }, [range.min, range.max, roomTypes, pagePerItem, list]);
 
   useEffect(() => {
     // console.log('pageperitem : ', pagePerItem);
@@ -111,13 +113,21 @@ const ProductsList = ({ loading, error }) => {
         ele.final_price <=
           (range.max < rangeLimit.max ? getPrice(range.max) : Number.MAX_VALUE)
       ) {
+        // console.log('가격통과O : ', ele);
         if (roomTypes.length > 0 && roomTypes !== null) {
+          // console.log('유형있음 : ', ele);
           if (roomTypes.includes(ele.type)) {
+            // console.log('유형통과O : ', ele);
             duplicatedCheck(array, ele);
+          } else {
+            console.log('유형통과X : ', ele);
           }
         } else {
+          // console.log('유형없음 : ', ele);
           duplicatedCheck(array, ele);
         }
+      } else {
+        console.log('가격통과X : ', ele);
       }
     });
   };
@@ -132,11 +142,15 @@ const ProductsList = ({ loading, error }) => {
 
     array.map((ele) => {
       if (ele.id == item.id) {
+        console.log('필터링 ', count, ' : ', ele);
+        count = count + 1;
         isContain = true;
       }
     });
 
     if (!isContain) {
+      // console.log('없었음 ', count, ': ', item);
+      count = count + 1;
       array.push(item);
     }
   };
@@ -162,9 +176,10 @@ const ProductsList = ({ loading, error }) => {
         // console.log(
         //   '정렬순서(오름차순, 내림차순), 정렬항목(가격, 평점, 할인률, 리뷰수) , 보이는 목록갯수 설정',)
 
-        <div className="rounded-full">
+        <div className="pb-3.5">
           <select
             aria-label="보이는 상품 목록 갯수 선택하기"
+            className="rounded-full border-2 border-gray-200 px-2 py-0.5"
             value={pagePerItem}
             onChange={changePagePerItem}>
             <option value="15">15개씩 보기</option>

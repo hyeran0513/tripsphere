@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BiChevronLeft } from 'react-icons/bi';
+import useDateSelection from '../../hooks/useDateSelection';
 import { getAllAccomData } from '../../services/productListService';
 import useFilterStore from '../../stores/useFilterStore.js';
 import usePriceStore from '../../stores/usePriceStore.js';
@@ -14,6 +15,7 @@ import RoomTypeSelector from './RoomTypeSelect.jsx';
 const SideFilter = ({ setLoading, setError }) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
   const [openDate, setOpenDate] = useState(false);
+  const { date } = useDateSelection('filter');
 
   const {
     selectedCity,
@@ -39,22 +41,7 @@ const SideFilter = ({ setLoading, setError }) => {
   useEffect(
     () => {
       console.log('쿼리요청이 필요한 옵션 변경');
-      resetList();
-      let listInfo = async () => {
-        setLoading(true);
-        try {
-          const data = await getAllAccomData(useFilterStore);
-          setList(data);
-        } catch (error) {
-          console.error('상품정보 로딩 중 오류 ', error);
-          setError(error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      listInfo();
-      // resetPriceRange();
-      // resetRoomTypes();
+      listInfoSetting();
     },
     [
       // selectedCity,
@@ -71,12 +58,33 @@ const SideFilter = ({ setLoading, setError }) => {
     e.preventDefault();
 
     console.log('옵션 수정 적용 버튼 클릭');
+    listInfoSetting();
+    moveScroll();
+  };
+
+  const listInfoSetting = () => {
     resetList();
 
     let listInfo = async () => {
       setLoading(true);
       try {
-        const data = await getAllAccomData(useFilterStore);
+        console.log('sideFilter checkIn : ', date.startDate);
+        console.log(date);
+        console.log(checkIn);
+        console.log(new Date(checkIn));
+        console.log(new Date(checkOut));
+        const data = await getAllAccomData(
+          {
+            selectedCity,
+            selectedSubCity,
+            adultCount,
+            childrenCount,
+            checkIn,
+            checkOut,
+          },
+          //useFilterStore
+        );
+        console.log('쿼리 결과 데이터 길이 : ', data.length);
         setList(data);
       } catch (error) {
         console.error('상품정보 로딩 중 오류 ', error);
@@ -88,7 +96,6 @@ const SideFilter = ({ setLoading, setError }) => {
     listInfo();
     // resetPriceRange();
     // resetRoomTypes();
-    moveScroll();
   };
 
   return (

@@ -61,10 +61,10 @@ const PriceSlider = ({ step = 5 }) => {
   }, [range.min, range.max]);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="flex flex-col items-center">
       <div className="flex justify-between items-center mb-4 gap-4">
         <label className="flex items-center gap-x-3">
-          <span>최소</span>
+          <span className="max-lg:hidden">최소</span>
           <input
             aria-label={`숙소 최소가격 설정. 현재가격 ${range.min} 만원`}
             type="number"
@@ -78,7 +78,7 @@ const PriceSlider = ({ step = 5 }) => {
         </label>
         ~
         <label className="flex items-center gap-x-3">
-          <span>최대</span>
+          <span className="max-lg:hidden">최대</span>
           <input
             aria-label={`숙소 최대가격 설정. 현재 ${
               range.max === rangeLimit.max

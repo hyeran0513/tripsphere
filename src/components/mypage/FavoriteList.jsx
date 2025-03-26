@@ -21,8 +21,8 @@ const FavoriteList = () => {
   if (error) return <>오류</>;
 
   return (
-    <div>
-      <div className="my-8 p-4 pb-2 text-xs opacity-60 tracking-wide flex justify-between">
+    <>
+      <div className="mt-8 p-4 pb-2 text-xs opacity-60 tracking-wide flex justify-between">
         <h2 className="flex items-center gap-2 font-bold text-xl">
           <BiHeart size={20} /> 찜 목록
         </h2>
@@ -34,7 +34,7 @@ const FavoriteList = () => {
         </Link>
       </div>
 
-      <ul className="mt-8 list bg-base-100 rounded-box shadow-md mb-10">
+      <ul className="list bg-base-100 rounded-box shadow-md mb-10">
         {data &&
           data.map((favorite, index) => (
             <li
@@ -80,7 +80,7 @@ const FavoriteList = () => {
             </li>
           ))}
       </ul>
-    </div>
+    </>
   );
 };
 

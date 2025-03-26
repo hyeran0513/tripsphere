@@ -1,4 +1,4 @@
-import { differenceInDays, parse } from 'date-fns';
+import { differenceInDays, differenceInMinutes, parse } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 
 // 숫자 3자리마다 콤마를 추가
@@ -119,4 +119,20 @@ export const convertTimestampToDate = (timestamp) => {
 export const formatToTimestamp2 = (date) => {
   if (!date) return null;
   return Timestamp.fromDate(date);
+};
+
+// 시간 차이 구하기
+export const getTimeDiff = (checkInTimestamp, checkOutTimestamp) => {
+  if (!checkInTimestamp?.seconds || !checkOutTimestamp?.seconds) {
+    return { hours: 0, minutes: 0 };
+  }
+
+  const checkInDate = new Date(checkInTimestamp.seconds * 1000);
+  const checkOutDate = new Date(checkOutTimestamp.seconds * 1000);
+
+  const totalMinutes = differenceInMinutes(checkOutDate, checkInDate);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return { hours, minutes };
 };

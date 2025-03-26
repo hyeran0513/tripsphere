@@ -3,13 +3,14 @@ import { BiHotel } from 'react-icons/bi';
 import { FaMapLocationDot } from 'react-icons/fa6';
 import DateSelector from '../../components/common/DateSelector';
 import KakaoMap from '../../components/common/KakaoMap';
+import Loading from '../../components/common/Loading';
+import NoData from '../../components/common/NoData';
 import PeopleSelector from '../../components/common/PeopleSelector';
 import ServiceList from '../../components/common/ServiceList';
 import OrderList from '../../components/order/checkout/OrderList';
 import OrderSummaryChart from '../../components/order/checkout/OrderSummaryChart';
 import { useAccomData } from '../../hooks/useProductData';
 import useReservationStore from '../../stores/useReservationStore';
-
 // const accommodation = {
 //   id: '1',
 //   type: 'pension',
@@ -96,13 +97,13 @@ const Checkout = () => {
 
   return (
     <div className="max-w-[1200px] mx-auto px-[20px] py-[40px] dark:text-gray-200">
-      {reservationData.map((item) => {
+      {/* {reservationData.map((item, index) => {
         const { data, isLoading, error } = useAccomData(item.accommodationId);
 
         return (
           <div
             className="inline-block py-4 px-4 bg-gray-100 rounded-md"
-            key={item.accommodationId}>
+            key={index}>
             checkIn: {item.checkIn}
             <br />
             checkOut: {item.checkOut}
@@ -123,7 +124,7 @@ const Checkout = () => {
             <br />
           </div>
         );
-      })}
+      })} */}
 
       <div className="flex space-y-6 gap-10 py-[30px] max-lg:flex-col max-lg:items-center">
         {/* 주문 결제 정보 */}
@@ -137,7 +138,7 @@ const Checkout = () => {
 
           <ul>
             {reservationData.length > 0 &&
-              reservationData.map((ele) => {
+              reservationData.map((ele, index) => {
                 const { data, isLoading, error } = useAccomData(
                   ele.accommodationId,
                 );
@@ -151,12 +152,18 @@ const Checkout = () => {
                 if (isLoading) return <Loading />;
 
                 if (error) {
-                  return <>에러 : 숙소정보를 확인 할 수 없습니다.</>;
+                  return (
+                    <NoData
+                      text={
+                        '숙소정보를 확인 할 수 없습니다. <br / >주문하기/예약하기 버튼을 이용해주세요'
+                      }
+                    />
+                  );
                 }
                 return (
                   <li
                     className="mt-6 border-t "
-                    key={ele.accommodationId}>
+                    key={index}>
                     <dl className="divide-y divide-gray-100">
                       <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm/6 font-medium">숙소명</dt>

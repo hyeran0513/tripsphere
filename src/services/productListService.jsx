@@ -7,60 +7,75 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
-// 여러 숙소들 정보 쿼리
-// 지역과, 가격을 조건으로 쿼리를 날려야함.
-// export const fetchAccomListData = async (accomRegion, priceRange) => {
-//   const querySnapshot = await getDocs(collection(db, 'accommodations')); // 조건 없이 모든 숙소 정보를 쿼리함
-
-//   let array = [];
-//   querySnapshot.forEach((doc) => {
-//     // console.log(doc.data());
-//     array.push(doc.data());
-//   });
-
-//   return array.length > 0 ? array : null;
-// };
-
-export const getAllAccomData = async (filters) => {
+export const getAllAccomData = async ({
+  selectedCity = '전체',
+  selectedSubCity = '전체',
+  adultCount = 0,
+  childrenCount = 0,
+  checkIn = '',
+  checkOut = '',
+  // filter,
+}) => {
   const accomDoc = collection(db, 'accommodations');
   let constraints = [];
-  // 성인 수 필터
-  if (filters.adultCount > 0) {
-    constraints.push(where('capacity.adults', '>=', filters.adultCount));
-  }
+
+  // filters로 filterStore의 내용을 사용하려 했으나
+  // console.log 출력 결과 undefined 없음
+  // console.log('필터 내용 : ', filters);
+  // console.log(
+  //   'selectedCity ,  selectedSubCity ,  adultCount ,  childrenCount,  checkIn ,  checkOut,',
+  //   selectedCity,
+  //   selectedSubCity,
+  //   adultCount,
+  //   childrenCount,
+  //   checkIn,
+  //   checkOut,
+  // );
+  constraints.push(where('capacity.adults', '>=', adultCount));
+  constraints.push(where('capacity.children', '>=', childrenCount));
 
   // 도시 대분류 필터
-  if (filters.selectedCity) {
-    constraints.push(where('location.city', '==', filters.selectedCity));
+  if (selectedCity === '전체' || selectedCity === '') {
+  } else {
+    constraints.push(where('location.city', '==', selectedCity));
   }
 
   // 도시 소분류 지역 필터
-  if (filters.selectedSubCity) {
-    constraints.push(where('location.sub_city', '==', filters.selectedSubCity));
+  if (selectedSubCity === '전체' || selectedSubCity === '') {
+  } else {
+    constraints.push(where('location.sub_city', '==', selectedSubCity));
   }
-
-  // 체크인 날짜 필터
-  if (filters.checkIn) {
-    let checkInTimestamp = Timestamp.fromDate(new Date(filters.checkIn));
-    constraints.push(where('check_in', '>=', checkInTimestamp));
+  // 쿼리조건에서 시간은 설정 제대로 됨
+  // console.log('checkIn,  new Date(checkIn)', checkIn, ' : ', new Date(checkIn));
+  // console.log(
+  //   'Timestamp.fromDate(new Date(checkIn)) :',
+  //   Timestamp.fromDate(new Date(checkIn)),
+  // );
+  if (checkIn === '') {
+    const today = new Date();
+    console.log('DATE is null. initialize : ', today);
+    constraints.push(where('check_in', '>=', Timestamp.fromDate(today)));
+  } else {
+    constraints.push(
+      where('check_in', '>=', Timestamp.fromDate(new Date(checkIn))),
+    );
   }
   let checkOutTimestamp;
   // 체크아웃 날짜 필터
   // Firestore에서 필터링하지 않고, 이후 클라이언트에서 필터링
-  if (filters.checkOut) {
-    checkOutTimestamp = Timestamp.fromDate(new Date(filters.checkOut));
+  if (checkOut) {
+    checkOutTimestamp = Timestamp.fromDate(new Date(checkOut));
   }
 
-  const q = query(accomDoc, ...constraints);
+  // console.log('쿼리 조건 : ', ...constraints);
 
+  const q = query(accomDoc, ...constraints);
+  // console.log('쿼리 내용 : ', JSON.stringify(q));
   try {
     const accomSnap = await getDocs(q);
+    // console.log('쿼리 결과', accomSnap);
     let results = accomSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-    // 체크아웃 날짜 필터 적용
-    // 클라이언트 측 필터링
-    // 임시 데이터의 시간들이 과거로 들어가있어서
-    // 필터링 중지후 일괄 호출.
     if (checkOutTimestamp) {
       results = results.filter(
         (accom) => accom.check_out.toMillis() <= checkOutTimestamp.toMillis(),

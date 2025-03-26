@@ -8,6 +8,8 @@ import Loading from '../common/Loading';
 // 상품목록 하단 페이지 목록 컴포넌트
 const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // 상태를 이용해서 저장하면 즉각 처리 안됌
   const currentPage = Number(searchParams.get('page')) || 1;
   const [itemsPerPage, setItemsPerPage] = useState(pagePerItem);
   const [currentItems, setCurrentItems] = useState([]);
@@ -45,7 +47,7 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
 
   // 페이지 변경
   const handlePageChange = (page) => {
-    // console.log('page : ', page);
+    console.log('page : ', page);
 
     if (page > 0 && page <= Math.ceil(data?.length / itemsPerPage)) {
       setSearchParams((prevParams) => {
@@ -61,7 +63,13 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
     }
   };
 
-  if (!data || data.length === 0) {
+  // 필터링 결과로 인해서 데이터 길이가 없다면 로딩창 유지됨
+  if (data.length === 0) {
+    return;
+  }
+
+  // 상품이 1개만 있어도 표출
+  if (!data) {
     return <Loading />;
   }
 
@@ -91,15 +99,16 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
+          {/* 총 몇개의 페이지 중 몇번째 라고 출력 가능*/}
           {/* <p className="text-sm text-gray-700 dark:text-gray-400">
-            Showing{' '}
+            Showing
             <span className="font-medium">
               {(currentPage - 1) * itemsPerPage + 1}
-            </span>{' '}
-            to{' '}
+            </span>
+            to
             <span className="font-medium">
               {Math.min(currentPage * itemsPerPage, data.length)}
-            </span>{' '}
+            </span>
             of <span className="font-medium">{data.length}</span> results
           </p> */}
         </div>

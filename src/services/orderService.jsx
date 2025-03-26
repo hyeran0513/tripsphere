@@ -76,7 +76,7 @@ export const cancelUserOrder = async ({
   }
 };
 
-// 주문 결과 생성 (firebase)
+// 주문 완료 생성 (firebase)
 export const createUserOrder = async ({
   orderId,
   userId,
@@ -87,7 +87,7 @@ export const createUserOrder = async ({
 
   // 주문 상태 업데이트
   await updateDoc(orderRef, {
-    payment_status: '결제 취소',
+    payment_status: '결제 완료',
     cancel_reason: reason,
   });
 
@@ -96,8 +96,8 @@ export const createUserOrder = async ({
     await addDoc(collection(db, 'points'), {
       user_id: userId,
       points: usedPoints,
-      type: 'refund',
-      reason: `주문 취소 - ${reason}`,
+      type: 'success',
+      reason: `주문 완료`,
       created_at: new Date(),
     });
 

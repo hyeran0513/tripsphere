@@ -1,14 +1,8 @@
 import { useEffect, useState } from 'react';
-import { fetchUserData } from '../../../services/userService';
-import useAuthStore from '../../../stores/useAuthStore';
 
-const OrderSummary = ({ orderInfo }) => {
+const OrderSummary = ({ orderInfo, commissionPercent, userPoint }) => {
   const [price, setPrice] = useState(0);
-  const [commision, setCommision] = useState(0);
-  const [userInfo, setUserInfo] = useState(null);
-  const { user } = useAuthStore();
-
-  const { email, uid, token } = user;
+  const [commission, setCommission] = useState(0);
 
   useEffect(() => {
     let sum = 0;
@@ -16,16 +10,8 @@ const OrderSummary = ({ orderInfo }) => {
       sum += parseInt(ele.totalPrice);
     });
     setPrice(sum);
-    setCommision(Math.ceil(sum / 10));
-
-    console.log('userInfo : ', JSON.stringify(userInfo));
-    console.log(JSON.stringify(setUserInfo(fetchUserData(uid))));
-    console.log(userDataWait(uid));
+    setCommission(Math.ceil((sum * commissionPercent) / 100));
   }, []);
-
-  const userDataWait = async (a) => {
-    return await fetchUserData(uid);
-  };
 
   return (
     <div className="dark:font-bold">
@@ -35,28 +21,30 @@ const OrderSummary = ({ orderInfo }) => {
         <p>주문 금액</p>
         <p className="flex justify-end">{price}원</p>
       </div>
-
+      {/* 일반적으로 수수료 금액을 표현하는게 아니라 각 상품의 정보들을 표시해주는데
+  여기는 수수료가 아니라 상품 항목별 정보가 들어가는게 맞지않나 싶지만
+  DB 설계에 커미션 내용이 있으니 커미션이 맞는듯.  */}
       <div className="flex justify-between py-2">
         <p>수수료</p>
-        <p className="flex justify-end">{commision}원</p>
+        <p className="flex justify-end">{commission}원</p>
       </div>
 
       <div className="border-t border-gray-200">
         <div className="flex justify-between py-4">
           <p>주문 총액</p>
-          <p className="flex justify-end">{price + commision}원</p>
+          <p className="flex justify-end">{price + commission}원</p>
         </div>
 
         <div className="flex justify-between py-4 text-red-600 dark:text-red-400">
           <p>사용 포인트</p>
-          <p className="flex justify-end">{price + commision}원</p>
+          <p className="flex justify-end">{price + commission}원</p>
         </div>
       </div>
 
       <div className="border-t border-gray-200">
         <div className="flex justify-between py-4">
           <p>결제 후 잔여 포인트</p>
-          <p className="flex justify-end">{price + commision}원</p>
+          <p className="flex justify-end">{userPoint - price + commission}원</p>
         </div>
       </div>
     </div>

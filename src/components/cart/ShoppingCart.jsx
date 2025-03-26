@@ -75,6 +75,7 @@ import useUpdateGuestCount from '../../hooks/useUpdateGuestCount';
 //     },
 //   },
 // ];
+
 const accommodations = [
   {
     id: '1',

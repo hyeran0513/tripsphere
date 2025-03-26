@@ -11,7 +11,7 @@ export const getAccomData = async (filters) => {
   const accomCol = collection(db, 'accommodations');
   let accomConstraints = [];
 
-  console.log(JSON.stringify(filters));
+  console.log('getAccomData: ' + JSON.stringify(filters));
 
   // 도시 대분류
   if (filters.selectedCity) {
@@ -40,6 +40,7 @@ export const getAccomData = async (filters) => {
     }));
 
     const accomIds = accommodations.map((accom) => accom.id);
+    console.log('accomIds before room query:', accomIds); // 디버깅용 로그 추가
 
     // 객실에 대한 필터링 쿼리
     let roomConstraints = [];
@@ -77,8 +78,11 @@ export const getAccomData = async (filters) => {
     const roomSnap = await getDocs(roomQuery);
     const rooms = roomSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
+    console.log('rooms before filtering: ', rooms);
+
     // 숙소마다 연결된 객실 정보 붙이기
     const results = accommodations.map((accom) => {
+      // 각 숙소에 맞는 객실들을 필터링하여 매칭
       const accomRooms = rooms.filter(
         (room) => room.accommodation_id === accom.id,
       );
@@ -88,6 +92,8 @@ export const getAccomData = async (filters) => {
         rooms: accomRooms,
       };
     });
+
+    console.log('getAccomData 최종: ' + JSON.stringify(results));
 
     return results;
   } catch (error) {

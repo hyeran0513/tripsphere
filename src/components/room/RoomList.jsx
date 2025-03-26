@@ -24,7 +24,7 @@ const RoomList = ({ rooms }) => {
 
   return (
     <div className="flex-1 divide-y divide-gray-200">
-      {Object.values(roomsGroupedById).map((roomGroup, index) => (
+      {Object.values(roomsGroupedById)?.map((roomGroup, index) => (
         <div
           key={roomGroup.room_id}
           className={`flex gap-6 ${index === 0 ? 'pt-0' : 'pt-[40px]'} ${index === roomGroup.length - 1 ? 'pb-0' : 'pb-[40px]'}`}>
@@ -66,10 +66,11 @@ const RoomList = ({ rooms }) => {
 
           <div className="flex-1">
             <div className="border border-gray-200 rounded-md">
-              {roomGroup.rooms.map((room, index) => (
+              {roomGroup?.rooms?.map((room, index) => (
                 <RoomCard
                   room={room}
                   index={index}
+                  key={index}
                 />
               ))}
             </div>

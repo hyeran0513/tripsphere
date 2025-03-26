@@ -10,15 +10,42 @@ import { PiBabyLight } from 'react-icons/pi';
 import { BiX, BiTrash, BiUser, BiMap } from 'react-icons/bi';
 import ServiceList from '../../components/common/ServiceList';
 import RoomTypeMapping from '../../components/common/RoomTypeMapping';
+import ToggleJson from '../../components/common/ToggleJson';
 
 const CheckoutExample = () => {
   const { reservationInfo } = useRoomSelectionStore();
+  const [saveRoomId, setSaveRoomId] = useState(null);
+  const { data } = useRoomData(saveRoomId);
 
-  const { data } = useRoomData(reservationInfo.roomId);
+  useEffect(() => {
+    if (reservationInfo?.roomId) {
+      setSaveRoomId(reservationInfo.roomId);
+    }
+  }, [reservationInfo?.roomId]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  if (!reservationInfo || !reservationInfo.roomId) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="max-w-[1200px] mx-auto px-[20px] py-[40px] dark:text-gray-200">
-      {reservationInfo && <pre>{JSON.stringify(reservationInfo, null, 2)}</pre>}
+      <ToggleJson>
+        <p className="text-lg font-semibold">store에 저장된 값</p>
+        {reservationInfo && (
+          <pre className="text-sm">
+            {JSON.stringify(reservationInfo, null, 2)}
+          </pre>
+        )}{' '}
+        <br />
+        <p className="text-lg font-semibold">
+          store의 roomId를 이용해서 가져온 숙소 및 객실 값
+        </p>
+        {data && <pre className="text-sm">{JSON.stringify(data, null, 2)}</pre>}
+      </ToggleJson>
 
       <div className="flex space-y-6 gap-10 py-[30px] max-lg:flex-col max-lg:items-center">
         {/* 주문 결제 정보 */}

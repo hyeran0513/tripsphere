@@ -27,7 +27,7 @@ const ProductDetail = () => {
   const [datePickerDate, setDatePickerDate] = useState(null);
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState(null);
 
   const { data: filteredRooms } = useFilteredRoomData(id, filters);
 
@@ -86,7 +86,7 @@ const ProductDetail = () => {
         <div
           id="container"
           className="flex items-start gap-10 mt-6">
-          <RoomList rooms={filteredRooms} />
+          <RoomList rooms={filters ? filteredRooms : rooms} />
 
           <SearchForm
             openDate={openDate}

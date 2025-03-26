@@ -33,7 +33,7 @@ const addNewCartItem = async (cartItem, cartId) => {
 // 장바구니에 항목 추가 및 업데이트
 export const addCartItem = async (cartItem) => {
   try {
-    const cartId = `${cartItem.accommodation_id}_${cartItem.user_id}`;
+    const cartId = `${cartItem.room_id}_${cartItem.user_id}`;
     const cartExists = await checkCartItemExist(cartId);
 
     if (cartExists) {

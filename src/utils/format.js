@@ -105,3 +105,18 @@ export const convertToDate = (dateStr) => {
 
   return new Date(`${year}-${month}-${day}`);
 };
+
+// 날짜와 시간을 포함한 문자열을 Date 객체로 변환
+export const convertTimestampToDate = (timestamp) => {
+  if (timestamp instanceof Timestamp) {
+    return new Date(timestamp.seconds * 1000);
+  }
+
+  return null;
+};
+
+// Date 객체를 Timestamp로 변환
+export const formatToTimestamp2 = (date) => {
+  if (!date) return null;
+  return Timestamp.fromDate(date);
+};

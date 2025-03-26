@@ -82,6 +82,71 @@ const Favorite = () => {
     }
   };
 
+  // 찜내역이 없을때
+  if (data.length === 0 || data === null) {
+    return (
+      <div className="max-w-[1200px] mx-auto py-[40px]">
+        <PageHeader
+          title="찜 목록"
+          breadcrumb={breadcrumb}
+          hasBackButton={true}
+        />
+        {/* 검색영역  */}
+        <div className="my-8 flex justify-end rounded-2xl">
+          <input
+            type="text"
+            placeholder="검색어를 입력하세요"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyUp={handleKeyUp}
+            className="input border border-gray-400 p-4 rounded-l-2xl "
+          />
+          <button
+            type="submit"
+            onClick={handleSearchButton}
+            className="btn">
+            검색
+          </button>
+        </div>
+        <div className="mb-10 ">
+          <div></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (filteredData.length === 0 || filteredData === null) {
+    return (
+      <div className="max-w-[1200px] mx-auto py-[40px]">
+        <PageHeader
+          title="찜 목록"
+          breadcrumb={breadcrumb}
+          hasBackButton={true}
+        />
+        {/* 검색영역  */}
+        <div className="my-8 flex justify-end rounded-2xl">
+          <input
+            type="text"
+            placeholder="검색어를 입력하세요"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyUp={handleKeyUp}
+            className="input border border-gray-400 p-4 rounded-l-2xl "
+          />
+          <button
+            type="submit"
+            onClick={handleSearchButton}
+            className="btn">
+            검색
+          </button>
+        </div>
+        <div className="mb-10 ">
+          <div>검색하신 조건에 맞는 숙소가 없습니다 </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">
       <PageHeader
@@ -110,19 +175,17 @@ const Favorite = () => {
 
       {/* 찜목록 출력 && 검색어로 검색결과  */}
       <div className="mb-10 grid grid-cols-4 gap-10">
-        {filteredData && filteredData.length > 0 ? (
+        {filteredData &&
+          filteredData.length > 0 &&
           filteredData.map((favorite, index) => (
             <ProductCard
               key={index}
               favorite={favorite}
             />
-          ))
-        ) : (
-          <p>일치하는 숙소가 없습니다.</p>
-        )}
+          ))}
       </div>
 
-      <Pagination data={data} />
+      <Pagination data={filteredData} />
     </div>
   );
 };

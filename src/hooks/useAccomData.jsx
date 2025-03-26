@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAccomData } from '../services/accomService';
 
-export const useAccomData = () => {
+export const useAccomData = (filters) => {
   return useQuery({
-    queryKey: ['accom'],
-    queryFn: () => getAccomData(),
+    queryKey: ['accom', filters.selectedType],
+    queryFn: () => getAccomData(filters),
   });
 };

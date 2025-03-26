@@ -66,7 +66,7 @@ const SideFilter = () => {
             <PeopleSelector stateType="filter" />
           </fieldset>
 
-          <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
+          {/* <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
             <legend className="fieldset-legend px-2 font-medium">가격</legend>
             <div className="flex items-center gap-2">
               <input
@@ -79,7 +79,7 @@ const SideFilter = () => {
                 className="input bg-base-200 dark:border-gray-200 dark:placeholder:text-gray-200"
               />
             </div>
-          </fieldset>
+          </fieldset> */}
 
           <button
             aria-label="수정한 검색 옵션 적용"

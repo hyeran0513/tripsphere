@@ -7,7 +7,7 @@ const PointHistory = ({ points }) => {
   const { isAuthenticated } = useAuthStore();
   return (
     <>
-      <div className="mt-8 p-4 pb-2 text-xs opacity-60 tracking-wide flex justify-between ">
+      <div className="mt-8 p-4 pb-2 text-xs opacity-60 tracking-wide flex justify-between">
         <h2 className="flex items-center gap-2 font-bold text-xl">
           <LiaCoinsSolid size={20} /> 포인트 내역
         </h2>
@@ -19,7 +19,7 @@ const PointHistory = ({ points }) => {
         </Link>
       </div>
 
-      <ul className="  list bg-base-100 rounded-box shadow-md mb-10">
+      <ul className="list bg-base-100 rounded-box shadow-md mb-10">
         {isAuthenticated &&
           points?.map((point, index) => (
             <li

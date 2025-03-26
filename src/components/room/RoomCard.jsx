@@ -35,13 +35,14 @@ const RoomCard = ({ room, index }) => {
   const { mutate } = useAddCarts(user?.uid, showToast);
 
   // 장바구니 추가
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-
+  const handleAddToCart = (type, duration, selectedTime) => {
     mutate({
       user_id: user?.uid,
       room_id: selectedRoomData.roomId,
       created_at: serverTimestamp(),
+      type,
+      duration,
+      selectedTime,
     });
   };
 
@@ -61,8 +62,8 @@ const RoomCard = ({ room, index }) => {
   };
 
   // 타임 선택 시 실행
-  const handleChange = (startId) => {
-    const startIndex = items.findIndex((item) => item.id === startId);
+  const handleChange = (startLabel) => {
+    const startIndex = items.findIndex((item) => item.label === startLabel);
     const startMinutes = timeLabelToMinutes(items[startIndex].label);
     const durationMinutes = hours * 60 + minutes;
     const endMinutes = startMinutes + durationMinutes;
@@ -72,7 +73,7 @@ const RoomCard = ({ room, index }) => {
         const time = timeLabelToMinutes(item.label);
         return time >= startMinutes && time <= endMinutes;
       })
-      .map((item) => item.id);
+      .map((item) => item.label);
 
     setSelectedRange(newSelectedRange);
   };
@@ -105,6 +106,7 @@ const RoomCard = ({ room, index }) => {
             {room.stay_type === 'stay' ? '숙박' : '대실'}
           </h4>
 
+          {/* 객실 상세 정보 보기 */}
           <button
             className="flex items-center text-xs font-semibold cursor-pointer"
             onClick={() =>
@@ -113,6 +115,7 @@ const RoomCard = ({ room, index }) => {
             상세보기 <BiChevronRight className="text-lg" />
           </button>
 
+          {/* 객실 상세 정보 */}
           <Modal
             buttonTitle={room.name}
             modalId={`room${index}_${room.roomId}`}
@@ -122,6 +125,7 @@ const RoomCard = ({ room, index }) => {
           </Modal>
         </div>
 
+        {/* 체크인 체크아웃 */}
         <p className="mt-1 text-xs text-gray-500">
           체크인: {formatTimeStampTime(room.check_in)} ~ 체크아웃:{' '}
           {formatTimeStampTime(room.check_out)}
@@ -143,11 +147,13 @@ const RoomCard = ({ room, index }) => {
         </div>
 
         <div className="mt-6 flex items-center justify-between">
+          {/* 남은 객실 개수 */}
           <p className="flex items-center gap-1 text-sm font-semibold text-red-400">
             <IoBedOutline /> 남은 객실 {room.stock}개
           </p>
 
           <div className="flex items-center gap-2">
+            {/* 숙박 예약일 경우 */}
             {room.stay_type === 'stay' && (
               <>
                 <CartButton
@@ -175,6 +181,7 @@ const RoomCard = ({ room, index }) => {
               </>
             )}
 
+            {/* 대실 예약일 경우 */}
             {room.stay_type === 'day_use' && (
               <>
                 <button
@@ -204,19 +211,19 @@ const RoomCard = ({ room, index }) => {
                       <li
                         key={item.id}
                         className={`flex items-center justify-center text-center rounded-lg border border-gray-300 ${
-                          selectedRange.includes(item.id)
+                          selectedRange.includes(item.label)
                             ? 'bg-indigo-100 border-indigo-600 text-indigo-600 font-semibold'
                             : ''
                         }`}
-                        onClick={() => handleChange(item.id)}>
+                        onClick={() => handleChange(item.label)}>
                         <div className="flex items-center w-full">
                           <input
                             id={item.id}
                             type="radio"
-                            value={item.id}
+                            value={item.label}
                             name="list-radio"
                             className="hidden"
-                            checked={selectedRange.includes(item.id)}
+                            checked={selectedRange.includes(item.label)}
                             onChange={() => {}}
                           />
                           <label
@@ -233,7 +240,13 @@ const RoomCard = ({ room, index }) => {
                     <button
                       aria-label="장바구니"
                       type="button"
-                      onClick={handleAddToCart}
+                      onClick={() =>
+                        handleAddToCart(
+                          'day_use',
+                          { hours, minutes },
+                          selectedRange,
+                        )
+                      }
                       className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                       장바구니
                     </button>

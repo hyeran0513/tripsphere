@@ -162,13 +162,32 @@ const ShoppingCart = ({ open, setOpen }) => {
 
                             {/* 체크인 체크아웃 */}
                             <div className="my-1 flex items-center gap-2 text-xs text-gray-600">
-                              <span>
-                                체크인 {formatTimeStampTime(item.room.check_in)}
-                              </span>
-                              <span>
-                                체크아웃{' '}
-                                {formatTimeStampTime(item.room.check_out)}
-                              </span>
+                              {item.room.stay_type === 'day_use' ? (
+                                <>
+                                  {item.duration?.hours}시간{' '}
+                                  {item.duration?.minutes}분 /{' '}
+                                  <span>체크인 {item.selectedTime?.[0]}</span>
+                                  <span>
+                                    체크인{' '}
+                                    {
+                                      item.selectedTime?.[
+                                        item.selectedTime.length - 1
+                                      ]
+                                    }
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <span>
+                                    체크인{' '}
+                                    {formatTimeStampTime(item.room.check_in)}
+                                  </span>
+                                  <span>
+                                    체크아웃
+                                    {formatTimeStampTime(item.room.check_out)}
+                                  </span>
+                                </>
+                              )}
                             </div>
 
                             {/* 인원 수 */}

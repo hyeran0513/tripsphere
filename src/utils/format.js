@@ -71,3 +71,23 @@ export const compareToday = (timestamp) => {
     return '지난 예약 내역';
   }
 };
+
+// 두 날짜 사이의 모든 날짜를 배열로 반환
+export const getDatesInRange = (startDate, endDate) => {
+  const dates = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    dates.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+};
+
+// YYYY.MM.DD로 변환한 날짜를 Date 객체(YYYY-MM-DD)로 변환
+export const convertToDate = (dateStr) => {
+  const [year, month, day] = formatDate(dateStr).split('.');
+
+  return new Date(`${year}-${month}-${day}`);
+};

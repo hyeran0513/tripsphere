@@ -14,6 +14,7 @@ const ReservationForm = ({
       stateType="reservation"
       openDate={openDate}
       setOpenDate={setOpenDate}
+      bookedDates={product?.booked_dates}
     />
 
     {/* 인원수 */}

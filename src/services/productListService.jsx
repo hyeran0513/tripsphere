@@ -67,13 +67,13 @@ export const getAllAccomData = async ({
     checkOutTimestamp = Timestamp.fromDate(new Date(checkOut));
   }
 
-  console.log('쿼리 조건 : ', ...constraints);
+  // console.log('쿼리 조건 : ', ...constraints);
 
   const q = query(accomDoc, ...constraints);
   // console.log('쿼리 내용 : ', JSON.stringify(q));
   try {
     const accomSnap = await getDocs(q);
-    console.log('쿼리 결과', accomSnap);
+    // console.log('쿼리 결과', accomSnap);
     let results = accomSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     if (checkOutTimestamp) {

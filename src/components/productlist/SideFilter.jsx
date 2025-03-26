@@ -9,8 +9,8 @@ import useRoomType from '../../stores/useRoomType.js';
 import CitySelector from '../common/CitySelector';
 import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
-import PriceSlider from './PriceSlider.jsx';
-import RoomTypeSelector from './RoomTypeSelect.jsx';
+// import PriceSlider from './PriceSlider.jsx';
+// import RoomTypeSelector from './RoomTypeSelect.jsx';
 
 const SideFilter = ({ setLoading, setError }) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
@@ -68,11 +68,6 @@ const SideFilter = ({ setLoading, setError }) => {
     let listInfo = async () => {
       setLoading(true);
       try {
-        console.log('sideFilter checkIn : ', date.startDate);
-        console.log(date);
-        console.log(checkIn);
-        console.log(new Date(checkIn));
-        console.log(new Date(checkOut));
         const data = await getAllAccomData(
           {
             selectedCity,
@@ -84,7 +79,7 @@ const SideFilter = ({ setLoading, setError }) => {
           },
           //useFilterStore
         );
-        console.log('쿼리 결과 데이터 길이 : ', data.length);
+        // console.log('쿼리 결과 데이터 길이 : ', data.length);
         setList(data);
       } catch (error) {
         console.error('상품정보 로딩 중 오류 ', error);
@@ -147,7 +142,7 @@ const SideFilter = ({ setLoading, setError }) => {
           </fieldset>
 
           {/* 예산 범위 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 px-3">
+          {/* <fieldset className="rounded-lg border border-gray-200 px-3">
             <legend className="fieldset-legend px-2 font-medium">가격</legend>
             <div className="flex items-center justify-between">
               <div className="w-full p-3 max-w-xs">
@@ -157,17 +152,17 @@ const SideFilter = ({ setLoading, setError }) => {
                 />
               </div>
             </div>
-          </fieldset>
+          </fieldset> */}
 
           {/* 숙박 장소 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 p-3">
+          {/* <fieldset className="rounded-lg border border-gray-200 p-3">
             <legend className="fieldset-legend px-2 font-medium">
               숙박 장소
             </legend>
             <div className="grid grid-cols-2 gap-x-3 gap-y-2">
               <RoomTypeSelector />
             </div>
-          </fieldset>
+          </fieldset> */}
 
           <button
             aria-label="검색 옵션 수정 적용"

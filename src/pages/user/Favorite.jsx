@@ -83,7 +83,7 @@ const Favorite = () => {
   };
 
   // 찜내역이 없을때
-  if (data.length === 0 || data === null) {
+  if (data?.length === 0 || data === null) {
     return (
       <div className="max-w-[1200px] mx-auto py-[40px]">
         <PageHeader
@@ -115,7 +115,7 @@ const Favorite = () => {
     );
   }
 
-  if (filteredData.length === 0 || filteredData === null) {
+  if (filteredData?.length === 0 || filteredData === null) {
     return (
       <div className="max-w-[1200px] mx-auto py-[40px]">
         <PageHeader

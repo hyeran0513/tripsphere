@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccomData } from '../../../hooks/useProductData';
+import { fetchUserData } from '../../../services/userService';
 import useAuthStore from '../../../stores/useAuthStore';
 import NoData from '../../common/NoData';
 import OrderSummary from './OrderSummary';
@@ -10,20 +11,26 @@ const OrderSummaryChart = ({ reservationData }) => {
   console.log(JSON.stringify(reservationData));
   const [userInfo, setUserInfo] = useState(null);
   const { user } = useAuthStore();
+
+  console.log('user : ', JSON.stringify(user));
+
   const { uid } = user;
+  console.log('uid : ', uid);
 
   let isValid = true;
+
   reservationData.map((ele) => {
     const { data } = useAccomData(ele.accommodationId);
     if (data === undefined) isValid = false;
   });
 
   useEffect(() => {
-    // const userDataWait = async (a) => {
-    //   const data = await fetchUserData(uid);
-    //   setUserInfo(data);
-    // };
-    // userDataWait();
+    const userDataWait = async (a) => {
+      const data = await fetchUserData(uid);
+      // console.log('fetchUserData : ', JSON.stringify(data));
+      setUserInfo(data);
+    };
+    userDataWait();
 
     // console.log(userInfo);
 
@@ -33,13 +40,13 @@ const OrderSummaryChart = ({ reservationData }) => {
   // 상품페이지 -> 결제정보 -> 뒤로가기 -> 앞으로가기
   // 브라우저가 히스토리를 추적해서 이동하여 전달정보가 없는경우
   if (isValid === false)
-    return <NoData text={'주문하기/예약하기 버튼을 클릭해주세요'} />;
+    return <NoData text={'주문하기/예약하기 버튼을 이용해주세요'} />;
 
   return (
-    <form className="card-body">
+    <aside className="card-body">
       <OrderSummary
         orderInfo={reservationData}
-        // userInfo={userInfo}
+        userPoint={userInfo.points}
       />
 
       <div className="card-actions justify-end">
@@ -50,7 +57,7 @@ const OrderSummaryChart = ({ reservationData }) => {
           결제하기
         </button>
       </div>
-    </form>
+    </aside>
   );
 };
 

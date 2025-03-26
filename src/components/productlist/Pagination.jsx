@@ -27,7 +27,6 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
 
   // 데이터 셋팅
   useEffect(() => {
-    // 페이지 목록 순차변경
     if (data && data.length) {
       const startIdx = (currentPage - 1) * itemsPerPage;
       const endIdx = startIdx + itemsPerPage;
@@ -64,7 +63,7 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
     }
   };
 
-  // 필터링 결과로 인해서 길이 없다면 로딩창 유지됨
+  // 필터링 결과로 인해서 데이터 길이가 없다면 로딩창 유지됨
   if (data.length === 0) {
     return;
   }

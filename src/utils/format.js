@@ -33,6 +33,20 @@ export const formatDate = (timestamp) => {
   return `${year}.${month}.${day}`;
 };
 
+// timestamp에서 시간 추출 후 포맷
+export const formatTimeStampTime = (timestamp) => {
+  if (!timestamp || !timestamp.seconds) {
+    return '';
+  }
+
+  const date = new Date(timestamp.seconds * 1000);
+
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${hours}:${minutes}`;
+};
+
 // MM:SS 형식으로 시간 포맷
 export const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60);
@@ -70,4 +84,24 @@ export const compareToday = (timestamp) => {
   if (today > checkoutDate) {
     return '지난 예약 내역';
   }
+};
+
+// 두 날짜 사이의 모든 날짜를 배열로 반환
+export const getDatesInRange = (startDate, endDate) => {
+  const dates = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    dates.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+};
+
+// YYYY.MM.DD로 변환한 날짜를 Date 객체(YYYY-MM-DD)로 변환
+export const convertToDate = (dateStr) => {
+  const [year, month, day] = formatDate(dateStr).split('.');
+
+  return new Date(`${year}-${month}-${day}`);
 };

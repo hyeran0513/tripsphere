@@ -1,6 +1,7 @@
 import { auth, db } from '../firebase/firebaseConfig';
 import {
   createUserWithEmailAndPassword,
+  getAuth,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -78,4 +79,18 @@ export const signInUser = async ({ email, password, dispatch }) => {
 // 비밀번호 재설정
 export const resetPassword = async (email) => {
   await sendPasswordResetEmail(auth, email);
+};
+
+// 이메일 인증되지 않은 유저 삭제
+export const deleteUnverifiedUser = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (user && !user.emailVerified) {
+    try {
+      await user.delete();
+    } catch (error) {
+      console.error('유저 삭제 실패:', error.message);
+    }
+  }
 };

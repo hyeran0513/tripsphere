@@ -1,11 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import {
+  deleteUnverifiedUser,
   resetPassword,
   saveUserInfo,
   signInUser,
   signupUser,
 } from '../services/authService';
 import useAuthStore from '../stores/useAuthStore';
+import { useEffect } from 'react';
+import { getAuth } from 'firebase/auth';
 
 // 이메일 & 비밀번호
 export const useSignupMutation = (showToast) => {
@@ -89,4 +92,38 @@ export const useResetPassword = (showModal) => {
       showModal('error', '비밀번호 재설정 실패', errorMsg);
     },
   });
+};
+
+// 이메일 인증되지 않은 유저 삭제
+export const useDeleteUnverifiedUser = () => {
+  const { user, initializeAuth } = useAuthStore();
+  const auth = getAuth();
+
+  // 유저 초기화
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
+  // 30분 후 자동 삭제 타이머
+  useEffect(() => {
+    if (user && !user.emailVerified) {
+      const timer = setTimeout(
+        () => {
+          deleteUnverifiedUser();
+        },
+        30 * 60 * 1000,
+      );
+
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
+
+  // 페이지 벗어날 때 삭제
+  useEffect(() => {
+    return () => {
+      if (user && !user.emailVerified && auth.currentUser) {
+        deleteUnverifiedUser();
+      }
+    };
+  }, [user, auth]);
 };

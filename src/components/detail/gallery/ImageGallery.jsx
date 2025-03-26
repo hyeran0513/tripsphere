@@ -24,7 +24,7 @@ const ImageGallery = ({ images }) => {
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2 max-h-[500px]">
-        {images.map((image, index) => (
+        {images?.map((image, index) => (
           <SwiperSlide key={`parent-${index}`}>
             <img
               src={image}
@@ -43,7 +43,7 @@ const ImageGallery = ({ images }) => {
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper mt-4">
-        {images.map((image, index) => (
+        {images?.map((image, index) => (
           <SwiperSlide key={`children-${index}`}>
             <div className="h-[140px] border overflow-hidden rounded-lg">
               <img

@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
 import { BiChevronLeft } from 'react-icons/bi';
+import useDateSelection from '../../hooks/useDateSelection';
 import { getAllAccomData } from '../../services/productListService';
 import useFilterStore from '../../stores/useFilterStore.js';
 import usePriceStore from '../../stores/usePriceStore.js';
 import useProductListStore from '../../stores/useProductListStore.js';
+import useRoomType from '../../stores/useRoomType.js';
 import CitySelector from '../common/CitySelector';
 import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
-import PriceSlider from './PriceSlider.jsx';
-import RoomTypeSelector from './RoomTypeSelect.jsx';
+// import PriceSlider from './PriceSlider.jsx';
+// import RoomTypeSelector from './RoomTypeSelect.jsx';
 
 const SideFilter = ({ setLoading, setError }) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
   const [openDate, setOpenDate] = useState(false);
+  const { date } = useDateSelection('filter');
 
   const {
     selectedCity,
@@ -23,21 +26,60 @@ const SideFilter = ({ setLoading, setError }) => {
     checkOut,
   } = useFilterStore();
 
-  const { range } = usePriceStore();
+  const moveScroll = () => {
+    scroll({ top: 0, behavior: 'smooth' });
+  };
+
+  const { range, resetPriceRange } = usePriceStore();
+  const { roomTypes, resetRoomTypes } = useRoomType();
   const { list, setList, resetList } = useProductListStore();
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
   };
 
-  useEffect(() => {
-    console.log('쿼리요청이 필요한 옵션 변경');
+  useEffect(
+    () => {
+      console.log('쿼리요청이 필요한 옵션 변경');
+      listInfoSetting();
+    },
+    [
+      // selectedCity,
+      // selectedSubCity,
+      // adultCount,
+      // childrenCount,
+      // checkIn,
+      // checkOut,
+    ],
+  );
+
+  // 검색 옵션 변경 버튼 클릭시 DB 쿼리
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log('옵션 수정 적용 버튼 클릭');
+    listInfoSetting();
+    moveScroll();
+  };
+
+  const listInfoSetting = () => {
     resetList();
 
     let listInfo = async () => {
       setLoading(true);
       try {
-        const data = await getAllAccomData(useFilterStore);
+        const data = await getAllAccomData(
+          {
+            selectedCity,
+            selectedSubCity,
+            adultCount,
+            childrenCount,
+            checkIn,
+            checkOut,
+          },
+          //useFilterStore
+        );
+        // console.log('쿼리 결과 데이터 길이 : ', data.length);
         setList(data);
       } catch (error) {
         console.error('상품정보 로딩 중 오류 ', error);
@@ -47,26 +89,23 @@ const SideFilter = ({ setLoading, setError }) => {
       }
     };
     listInfo();
-  }, [
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-  ]);
+    // resetPriceRange();
+    // resetRoomTypes();
+  };
 
   return (
     <aside
-      aria-label="숙소 검색 옵션 변경하기"
+      aria-label="숙소 검색 옵션"
       className={`sidebar z-10 sticky top-5 ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
       <div className="flex mb-4 items-center justify-between">
-        {isFormOpen && <div>검색 옵션 영역</div>}
+        {isFormOpen && (
+          <div className="pl-3 font-extrabold">검색 옵션 영역</div>
+        )}
         <button
           type="button"
           onClick={toggleForm}
           aria-label={
-            isFormOpen ? '숙소 검색 옵션 열림' : '숙소 검색 옵션 닫힘'
+            isFormOpen ? '숙소 검색 옵션 닫기' : '숙소 검색 옵션 열기'
           }
           className={`border border-gray-200 px-0.5 py-2 ${
             isFormOpen ? 'rounded-l-md' : 'rounded-r-md'
@@ -105,7 +144,7 @@ const SideFilter = ({ setLoading, setError }) => {
           </fieldset>
 
           {/* 예산 범위 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 px-3">
+          {/* <fieldset className="rounded-lg border border-gray-200 px-3">
             <legend className="fieldset-legend px-2 font-medium">가격</legend>
             <div className="flex items-center justify-between">
               <div className="w-full p-3 max-w-xs">
@@ -115,21 +154,22 @@ const SideFilter = ({ setLoading, setError }) => {
                 />
               </div>
             </div>
-          </fieldset>
+          </fieldset> */}
 
           {/* 숙박 장소 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 p-3">
+          {/* <fieldset className="rounded-lg border border-gray-200 p-3">
             <legend className="fieldset-legend px-2 font-medium">
               숙박 장소
             </legend>
             <div className="grid grid-cols-2 gap-x-3 gap-y-2">
               <RoomTypeSelector />
             </div>
-          </fieldset>
+          </fieldset> */}
 
           <button
-            aria-label="검색 옵션 변경을 적용하기"
+            aria-label="수정한 검색 옵션 적용"
             type="submit"
+            onClick={(e) => handleSubmit(e)}
             className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             옵션 수정 적용
           </button>

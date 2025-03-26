@@ -3,6 +3,7 @@ import { BiHotel } from 'react-icons/bi';
 import { FaMapLocationDot } from 'react-icons/fa6';
 import DateSelector from '../../components/common/DateSelector';
 import KakaoMap from '../../components/common/KakaoMap';
+import NoData from '../../components/common/NoData';
 import PeopleSelector from '../../components/common/PeopleSelector';
 import ServiceList from '../../components/common/ServiceList';
 import OrderList from '../../components/order/checkout/OrderList';
@@ -96,13 +97,13 @@ const Checkout = () => {
 
   return (
     <div className="max-w-[1200px] mx-auto px-[20px] py-[40px] dark:text-gray-200">
-      {reservationData.map((item) => {
+      {reservationData.map((item, index) => {
         const { data, isLoading, error } = useAccomData(item.accommodationId);
 
         return (
           <div
             className="inline-block py-4 px-4 bg-gray-100 rounded-md"
-            key={item.accommodationId}>
+            key={index}>
             checkIn: {item.checkIn}
             <br />
             checkOut: {item.checkOut}
@@ -151,7 +152,13 @@ const Checkout = () => {
                 if (isLoading) return <Loading />;
 
                 if (error) {
-                  return <>에러 : 숙소정보를 확인 할 수 없습니다.</>;
+                  return (
+                    <NoData
+                      text={
+                        '숙소정보를 확인 할 수 없습니다. <br / >주문하기/예약하기 버튼을 이용해주세요'
+                      }
+                    />
+                  );
                 }
                 return (
                   <li

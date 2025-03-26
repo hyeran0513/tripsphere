@@ -50,7 +50,7 @@ const ProductCard = ({ favorite }) => {
               <TypeMapping type={favorite.type} />
 
               <div className="badge badge-soft badge-info text-xs">
-                {favorite.location.place_name}
+                {favorite.location.city} {favorite.location.sub_city}
               </div>
             </div>
           </div>
@@ -61,7 +61,9 @@ const ProductCard = ({ favorite }) => {
 
           <div className="flex flex-col border-b-1 border-gray-200 pb-3.5">
             <div className="flex items-center gap-2">
-              <div className="text-gray-400">{favorite.discount_rate}%</div>
+              <div className="text-gray-600 font-semibold">
+                {favorite.discount_rate * 100}%
+              </div>
               <div
                 className="line-through text-gray-400"
                 title="정가">

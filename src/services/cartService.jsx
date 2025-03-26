@@ -1,5 +1,15 @@
-import { getDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase/firebaseConfig';
+import {
+  getDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  query,
+  collection,
+  getDocs,
+  where,
+  deleteDoc,
+} from 'firebase/firestore';
+import { db, auth } from '../firebase/firebaseConfig';
 
 // 장바구니에 이미 있는지 확인
 const checkCartItemExist = async (cartId) => {
@@ -23,13 +33,9 @@ const addNewCartItem = async (cartItem, cartId) => {
 // 장바구니에 항목 추가 및 업데이트
 export const addCartItem = async (cartItem) => {
   try {
-    // 숙소 ID, 유저 ID를 조합한 cartId
     const cartId = `${cartItem.accommodation_id}_${cartItem.user_id}`;
-
-    // 장바구니에 아이템이 이미 있는지 확인
     const cartExists = await checkCartItemExist(cartId);
 
-    // 데이터가 있으면 업데이트, 없으면 추가
     if (cartExists) {
       await updateCartItem(cartItem, cartId);
     } else {
@@ -38,4 +44,35 @@ export const addCartItem = async (cartItem) => {
   } catch (error) {
     console.error('장바구니 항목 추가 오류: ' + error.message);
   }
+};
+
+// 장바구니 데이터 조회 (현재 로그인 유저 기준)
+export const fetchCartItems = async () => {
+  const user = auth.currentUser;
+  if (!user) return [];
+
+  const q = query(collection(db, 'carts'), where('user_id', '==', user.uid));
+  const cartSnapshot = await getDocs(q);
+
+  const cartItems = await Promise.all(
+    cartSnapshot.docs.map(async (docSnap) => {
+      const data = docSnap.data();
+      const accomRef = doc(db, 'accommodations', data.accommodation_id);
+      const accomSnap = await getDoc(accomRef);
+
+      return {
+        id: docSnap.id,
+        ...data,
+        accommodation: accomSnap.exists() ? accomSnap.data() : null,
+      };
+    }),
+  );
+
+  return cartItems;
+};
+
+// 장바구니 항목 삭제
+export const delCartItem = async (cartId) => {
+  const cartRef = doc(db, 'carts', cartId);
+  await deleteDoc(cartRef);
 };

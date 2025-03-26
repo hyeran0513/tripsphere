@@ -91,15 +91,16 @@ const Pagination = ({ data, pagePerItem = 10, ref = '' }) => {
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
+          {/* 차후 총 몇개의 페이지 중 몇번째 라고 출력 가능 있음 */}
           {/* <p className="text-sm text-gray-700 dark:text-gray-400">
-            Showing{' '}
+            Showing
             <span className="font-medium">
               {(currentPage - 1) * itemsPerPage + 1}
-            </span>{' '}
-            to{' '}
+            </span>
+            to
             <span className="font-medium">
               {Math.min(currentPage * itemsPerPage, data.length)}
-            </span>{' '}
+            </span>
             of <span className="font-medium">{data.length}</span> results
           </p> */}
         </div>

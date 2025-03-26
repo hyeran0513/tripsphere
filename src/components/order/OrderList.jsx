@@ -67,9 +67,14 @@ const OrderList = ({ orderInfo }) => {
                 />
                 <div className="flex flex-col">
                   <h2 className="text-lg font-bold">
+                    {compareToday(order.check_in) && (
+                      <div class="mr-2 badge badge-soft badge-primary text-[10px]">
+                        {compareToday(order.check_in)}
+                      </div>
+                    )}
                     {order.accommodation?.name || '숙소 정보 없음'}
                   </h2>
-                  <div className="text-xs uppercase opacity-60">
+                  <div className="text-xs uppercase opacity-60 pt-1">
                     예약번호 : {order.id}
                   </div>
 
@@ -95,11 +100,6 @@ const OrderList = ({ orderInfo }) => {
                       <span>{formatDate(order.check_out) || '날짜 없음'}</span>
                     </div>
                   </div>
-                  {compareToday(order.check_in) && (
-                    <div className="badge badge-soft badge-primary text-xs">
-                      {compareToday(order.check_in)}
-                    </div>
-                  )}
                 </div>
               </div>
 

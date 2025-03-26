@@ -11,6 +11,7 @@ const CartButton = ({
   checkOut,
   adultCount,
   childrenCount,
+  totalPrice,
 }) => {
   const { user } = useAuthStore();
 
@@ -28,6 +29,7 @@ const CartButton = ({
       guest_count: { adults: adultCount, children: childrenCount },
       cart_date: serverTimestamp(),
       user_id: user?.uid,
+      total_price: totalPrice,
     });
   };
 

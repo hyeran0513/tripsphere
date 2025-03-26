@@ -11,16 +11,56 @@ import {
   formatNumber,
   formatTimeStampTime,
 } from '../../utils/format';
-import { useCartItems } from '../../hooks/useCartData';
+import { useCartItems, useDelCartItem } from '../../hooks/useCartData';
 import RoomTypeMapping from '../common/RoomTypeMapping';
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
 import { PiBabyLight } from 'react-icons/pi';
 import { IoBedOutline } from 'react-icons/io5';
+import { useEffect, useState } from 'react';
 
 const ShoppingCart = ({ open, setOpen }) => {
   const { user } = useAuthStore();
   const { data, isLoading } = useCartItems(user?.uid);
+  const { mutate } = useDelCartItem();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  // 전체 선택에 따른 선택된 항목
+  useEffect(() => {
+    if (selectAll && data) {
+      setSelectedItems(data.map((item) => item.id));
+    } else {
+      setSelectedItems([]);
+    }
+  }, [selectAll, data]);
+
+  // 개별 항목 선택/해제 토글
+  const toggleItemSelection = (id) => {
+    setSelectedItems((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((itemId) => itemId !== id)
+        : [...prevSelected, id],
+    );
+  };
+
+  // 선택된 항목들의 총 금액을 계산
+  const calculateTotal = () => {
+    if (!data) return 0;
+    return data
+      .filter((item) => selectedItems.includes(item.id))
+      .reduce(
+        (sum, item) =>
+          sum + item.room.original_price * (1 - item.room.discount_rate),
+        0,
+      );
+  };
+
+  // 장바구니 항목 삭제
+  const deleteItem = (e, cartId) => {
+    e.preventDefault();
+    mutate(cartId);
+  };
 
   if (isLoading) return <Loading />;
 
@@ -29,16 +69,16 @@ const ShoppingCart = ({ open, setOpen }) => {
       open={open}
       onClose={setOpen}
       className="relative z-101">
-      <DialogBackdrop className="fixed inset-0 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-closed:opacity-0 " />
+      <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
       <div className="fixed inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="fixed inset-0 flex items-center justify-center">
-            <DialogPanel className="w-[70%] h-[90%] bg-white dark:bg-gray-900 shadow-xl rounded-lg transform transition duration-500 ease-in-out">
-              <div className="flex h-full flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-xl">
+            <DialogPanel className="w-[70%] h-[90%] bg-white dark:bg-gray-900 shadow-xl rounded-lg">
+              <div className="flex h-full flex-col text-gray-900 dark:text-white">
                 <div className="px-4 py-6 sm:px-6 overflow-y-scroll">
-                  {/* Dialog 헤더 영역 */}
+                  {/* 헤더 */}
                   <div className="flex items-start justify-between">
-                    <DialogTitle className="text-lg font-medium">
+                    <DialogTitle className="text-lg font-semibold">
                       장바구니
                     </DialogTitle>
                     <button
@@ -52,17 +92,19 @@ const ShoppingCart = ({ open, setOpen }) => {
                   <div className="my-4 flex items-center">
                     <input
                       type="checkbox"
-                      // checked={selectAll}
-                      // onChange={handleSelectAll}
+                      checked={selectAll}
+                      onChange={(e) => setSelectAll(e.target.checked)}
                       className="checkbox checkbox-primary mr-2"
                     />
                     <span className="text-sm">전체 선택</span>
                   </div>
 
                   {/* 장바구니 목록 */}
-                  <ul className="grid grid-cols-2">
+                  <ul className="grid grid-cols-2 gap-6">
                     {data?.map((item) => (
-                      <li className="p-4 border border-gray-200 rounded-lg">
+                      <li
+                        key={item.id}
+                        className="p-4 border border-gray-200 rounded-lg">
                         <div className="border-b border-gray-200 mb-4 pb-4">
                           <p className="font-semibold">{item?.accom?.name}</p>
                           <div className="mt-1 text-xs text-gray-500 flex items-center gap-1">
@@ -71,7 +113,6 @@ const ShoppingCart = ({ open, setOpen }) => {
                           </div>
                         </div>
 
-                        {/* 객실명 */}
                         <div className="flex items-center justify-between">
                           <h3 className="mb-4 flex items-center gap-2 font-semibold">
                             {item.room?.name}
@@ -80,6 +121,7 @@ const ShoppingCart = ({ open, setOpen }) => {
 
                           <button
                             type="button"
+                            onClick={(e) => deleteItem(e, item?.id)}
                             className="cursor-pointer">
                             <BiTrash />
                           </button>
@@ -89,11 +131,12 @@ const ShoppingCart = ({ open, setOpen }) => {
                           {/* 체크박스 */}
                           <input
                             type="checkbox"
-                            onChange={() => {}}
+                            checked={selectedItems.includes(item.id)}
+                            onChange={() => toggleItemSelection(item.id)}
                             className="checkbox checkbox-primary mb-3"
                           />
 
-                          {/* 이미지 영역 */}
+                          {/* 객실 이미지 */}
                           <div className="w-[130px] h-[100px] overflow-hidden border border-gray-400 rounded-lg">
                             <img
                               src={item.room?.images?.[0]}
@@ -102,18 +145,15 @@ const ShoppingCart = ({ open, setOpen }) => {
                             />
                           </div>
 
-                          {/* 객실 정보 */}
+                          {/* 객실 유형 및 기간 */}
                           <div className="flex-1">
-                            {/* 숙박 기간 */}
                             <div className="flex gap-2 items-center text-xs text-gray-500">
                               <span>
                                 {item.room.stay_type === 'stay'
                                   ? '숙박'
                                   : '대실'}
                               </span>
-
                               <span>/</span>
-
                               <span>
                                 {formatDate(item.room.check_in)} ~{' '}
                                 {formatDate(item.room.check_out)}
@@ -126,7 +166,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                                 체크인 {formatTimeStampTime(item.room.check_in)}
                               </span>
                               <span>
-                                체크아웃
+                                체크아웃{' '}
                                 {formatTimeStampTime(item.room.check_out)}
                               </span>
                             </div>
@@ -143,23 +183,24 @@ const ShoppingCart = ({ open, setOpen }) => {
                               </span>
                             </div>
 
-                            <div class="mt-4 flex flex-col items-end">
-                              <div class="flex items-center gap-2">
-                                <span class="text-sm font-semibold text-gray-900">
+                            {/* 가격 정보 */}
+                            <div className="mt-4 flex flex-col items-end">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-semibold text-gray-900">
                                   {item.room.discount_rate * 100}%
                                 </span>
-                                <span class="line-through text-sm text-gray-300">
+                                <span className="line-through text-sm text-gray-300">
                                   {formatNumber(item.room.original_price)}원
                                 </span>
                               </div>
-                              <div class="font-semibold text-lg text-gray-900">
+                              <div className="font-semibold text-lg text-gray-900">
                                 {formatNumber(
                                   item.room.original_price *
                                     (1 - item.room.discount_rate),
                                 )}
                                 원
                               </div>
-                              <p className="mt-2 flex items-center gap-1 text-sm font-semibold text-red-400">
+                              <p className="mt-2 flex items-center gap-1 text-xs font-semibold text-red-400">
                                 <IoBedOutline /> 남은 객실 {item.room.stock}개
                               </p>
                             </div>
@@ -170,11 +211,12 @@ const ShoppingCart = ({ open, setOpen }) => {
                   </ul>
                 </div>
 
+                {/* 주문 합계 금액 */}
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium">
                     <p>주문 합계 금액</p>
                     <p className="text-indigo-600 font-bold">
-                      {/* {totalPrice.toLocaleString()}원 */}
+                      {formatNumber(calculateTotal())}원
                     </p>
                   </div>
 

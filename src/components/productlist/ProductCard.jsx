@@ -167,20 +167,35 @@ const ProductCard = ({ index, product, arrayLength, ref = null }) => {
                 title="가격정보"
                 className="flex flex-col justify-around items-start">
                 <div title="숙소 가격 정보">
-                  <p
-                    className="line-through text-red-600"
-                    aria-label="정가">
-                    {formatNumber(product.original_price)}원
-                  </p>
+                  {product.discount_rate > 0 && (
+                    <>
+                      <p
+                        className="line-through text-red-600"
+                        aria-label="정가">
+                        {formatNumber(product.original_price)}원
+                      </p>
 
-                  <p
-                    className="underline font-bold text-2xl transition-colors"
-                    aria-label="할인가">
-                    {formatNumber(product.final_price)}원
-                  </p>
+                      <p
+                        className="underline font-bold text-2xl transition-colors"
+                        aria-label="할인가">
+                        {formatNumber(product.final_price)}원
+                      </p>
+                      <span aria-label="할인율">
+                        {' '}
+                        {product.discount_rate}%{' '}
+                      </span>
+                    </>
+                  )}
+                  {product.discount_rate == 0 && (
+                    <>
+                      <p
+                        className="underline font-bold text-2xl transition-colors"
+                        aria-label="정가">
+                        {formatNumber(product.final_price)}원
+                      </p>
+                    </>
+                  )}
                 </div>
-
-                <span aria-label="할인율"> {product.discount_rate}% </span>
               </div>
             </div>
           </div>

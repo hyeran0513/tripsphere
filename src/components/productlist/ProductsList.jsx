@@ -24,8 +24,6 @@ const ProductsList = ({ loading, error }) => {
 
   const [filterLoading, setFilterLoading] = useState(true);
 
-  let count = 0;
-
   useEffect(() => {
     let array = [];
     async function filterWaiting() {
@@ -113,21 +111,13 @@ const ProductsList = ({ loading, error }) => {
         ele.final_price <=
           (range.max < rangeLimit.max ? getPrice(range.max) : Number.MAX_VALUE)
       ) {
-        // console.log('가격통과O : ', ele);
         if (roomTypes.length > 0 && roomTypes !== null) {
-          // console.log('유형있음 : ', ele);
           if (roomTypes.includes(ele.type)) {
-            // console.log('유형통과O : ', ele);
             duplicatedCheck(array, ele);
-          } else {
-            console.log('유형통과X : ', ele);
           }
         } else {
-          // console.log('유형없음 : ', ele);
           duplicatedCheck(array, ele);
         }
-      } else {
-        console.log('가격통과X : ', ele);
       }
     });
   };
@@ -141,18 +131,10 @@ const ProductsList = ({ loading, error }) => {
     }
 
     array.map((ele) => {
-      if (ele.id == item.id) {
-        console.log('필터링 ', count, ' : ', ele);
-        count = count + 1;
-        isContain = true;
-      }
+      if (ele.id == item.id) isContain = true;
     });
 
-    if (!isContain) {
-      // console.log('없었음 ', count, ': ', item);
-      count = count + 1;
-      array.push(item);
-    }
+    if (!isContain) array.push(item);
   };
 
   if (loading) return <div>로딩중입니다...</div>;

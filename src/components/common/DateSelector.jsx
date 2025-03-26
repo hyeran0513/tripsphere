@@ -13,7 +13,9 @@ const DateSelector = ({
   const { date, setDate } = useDateSelection(stateType);
 
   useEffect(() => {
-    setDatePickerDate(date);
+    if (setDatePickerDate) {
+      setDatePickerDate(date);
+    }
   }, [date]);
 
   // 비활성화할 날짜들 (예약된 날짜들)

@@ -46,7 +46,44 @@ export const addCartItem = async (cartItem) => {
   }
 };
 
-// 장바구니 데이터 조회 (현재 로그인 유저 기준)
+// 장바구니 데이터 조회
+// 장바구니 데이터 조회
+export const getCartItems = async (userId) => {
+  if (!userId) return null;
+
+  const q = query(collection(db, 'carts'), where('user_id', '==', userId));
+  const cartSnapshot = await getDocs(q);
+
+  const cartItems = await Promise.all(
+    cartSnapshot.docs.map(async (docSnap) => {
+      const data = docSnap.data();
+
+      const roomRef = doc(db, 'rooms', data.room_id);
+      const roomSnap = await getDoc(roomRef);
+      const roomData = roomSnap.exists() ? roomSnap.data() : null;
+
+      let accomData = null;
+      if (roomData) {
+        const accomRef = doc(db, 'accommodations', roomData.accommodation_id);
+        const accomSnap = await getDoc(accomRef);
+        accomData = accomSnap.exists() ? accomSnap.data() : null;
+      }
+
+      return {
+        id: docSnap.id,
+        ...data,
+        room: roomData,
+        accom: accomData,
+      };
+    }),
+  );
+
+  console.log('cartItems:', cartItems);
+
+  return cartItems;
+};
+
+// 장바구니 데이터 조회
 export const fetchCartItems = async () => {
   const user = auth.currentUser;
   if (!user) return [];

@@ -4,6 +4,7 @@ import {
   addCartItem,
   fetchCartItems,
   delCartItem,
+  getCartItems,
 } from '../services/cartService';
 
 // 장바구니 추가 훅
@@ -37,14 +38,23 @@ export const useDelCartItem = () => {
   });
 };
 
+// 장바구니 데이터 조회
+export const useCartItems = (userId) => {
+  return useQuery({
+    queryKey: ['carts', userId],
+    queryFn: () => getCartItems(userId),
+    enabled: !!userId,
+  });
+};
+
 // 장바구니 데이터 조회 훅
 export const useUserCart = () => {
   const user = auth.currentUser;
 
   return useQuery({
     queryKey: ['carts'],
-    queryFn: fetchCartItems,
-    enabled: !!user, // 로그인된 경우에만 실행
+    queryFn: () => fetchCartItems,
+    enabled: !!user,
     staleTime: 0,
   });
 };

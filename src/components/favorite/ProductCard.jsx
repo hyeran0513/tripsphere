@@ -46,10 +46,10 @@ const ProductCard = ({ favorite }) => {
 
         <div className="card-body w-full py-0 px-0 gap-0">
           <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full">
               <TypeMapping type={favorite.type} />
 
-              <div className="badge badge-soft badge-info text-xs">
+              <div className="badge badge-soft badge-info text-xs truncate line-clamp-1 leading-6">
                 {favorite.location.city} {favorite.location.sub_city}
               </div>
             </div>

@@ -15,6 +15,7 @@ const Favorite = () => {
   const { user } = useAuthStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  const [searchOption, setSearchOption] = useState('name');
 
   const typeMapping = {
     hotel: '호텔',
@@ -25,19 +26,12 @@ const Favorite = () => {
     camping: '캠핑',
   };
 
-  const servicesMapping = {
-    wifi: '와이파이',
-    parking: '주차장',
-    tv: '텔레비전',
-    breakfast: '조식',
-    barbecue: '바베큐',
-  };
-
   const { data, isLoading, error } = useFavoriteAccommData(user?.uid);
 
   useEffect(() => {
     if (data) {
       setFilteredData(data);
+      console.log(JSON.stringify(data));
     }
   }, [data]);
 
@@ -51,27 +45,22 @@ const Favorite = () => {
     }
 
     const results = data.filter((item) => {
-      const servicesInKorean = item.services
-        .map((service) => servicesMapping[service] || service)
-        .join(', ');
+      let searchableField = '';
 
-      const searchableContent = [
-        item.name,
-        item.host.name,
-        item.type,
-        typeMapping[item.type] || item.type,
-        item.description,
-        item.location.city,
-        item.location.sub_city,
-        item.original_price,
-        item.final_price,
-        servicesInKorean,
-        item.services.join(', '),
-      ]
-        .join(' ')
-        .toLowerCase();
-
-      return searchableContent.includes(searchTerm.toLowerCase());
+      switch (searchOption) {
+        case 'name':
+          searchableField = item.name;
+          break;
+        case 'location':
+          searchableField = `${item.location.city} ${item.location.sub_city}`;
+          break;
+        case 'type':
+          searchableField = typeMapping[item.type] || item.type;
+          break;
+        default:
+          searchableField = '';
+      }
+      return searchableField.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
     setFilteredData(results);
@@ -92,14 +81,24 @@ const Favorite = () => {
         hasBackButton={true}
       />
       <div className="my-8 flex justify-end rounded-2xl">
+        <select
+          value={searchOption}
+          onChange={(e) => setSearchOption(e.target.value)}
+          className="select border border-gray-400 rounded-l-2xl w-40">
+          <option value="name">숙소명</option>
+          <option value="location">장소명</option>
+          <option value="type">도시명</option>
+        </select>
+
         <input
           type="text"
           placeholder="검색어를 입력하세요"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyUp={handleKeyUp}
-          className="input border border-gray-400 p-4 rounded-l-2xl"
+          className="input border border-gray-400 p-4"
         />
+
         <button
           type="submit"
           onClick={handleSearchButton}
@@ -126,14 +125,24 @@ const Favorite = () => {
         hasBackButton={true}
       />
       <div className="my-8 flex justify-end rounded-2xl">
+        <select
+          value={searchOption}
+          onChange={(e) => setSearchOption(e.target.value)}
+          className="select border border-gray-400 rounded-l-2xl w-40">
+          <option value="name">숙소명</option>
+          <option value="location">장소명</option>
+          <option value="type">도시명</option>
+        </select>
+
         <input
           type="text"
           placeholder="검색어를 입력하세요"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyUp={handleKeyUp}
-          className="input border border-gray-400 p-4 rounded-l-2xl"
+          className="input border border-gray-400 p-4"
         />
+
         <button
           type="submit"
           onClick={handleSearchButton}

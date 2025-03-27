@@ -8,6 +8,10 @@ const useReservationStore = create((set) => ({
   totalPrice: 0,
   accommodationId: '',
 
+  // 장바구니
+  reservationList: [],
+  setReservationList: (list) => set({ reservationList: list }),
+
   // 어른 수 변경
   setAdultCount: (num) => set({ adultCount: num }),
 

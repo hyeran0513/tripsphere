@@ -10,14 +10,14 @@ import Home from '../pages/Home';
 import CheckoutExample from '../pages/order/CheckoutExample';
 import OrderConfirmation from '../pages/order/OrderConfirmation';
 import OrderHistory from '../pages/order/OrderHistory';
-// import AccomList from '../pages/product/AccomList';
+import AccomList from '../pages/product/AccomList';
 import ProductDetail from '../pages/product/ProductDetail';
 import Favorite from '../pages/user/Favorite';
 import MyPage from '../pages/user/MyPage';
 import PointHistory from '../pages/user/PointHistory';
 import Profile from '../pages/user/Profile';
 // import Checkout from '../pages/order/Checkout';
-import ProductList from '../pages/product/ProductList';
+//import ProductList from '../pages/product/ProductList';
 
 const router = createBrowserRouter([
   {
@@ -25,8 +25,8 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { path: '', element: <Home /> },
-      { path: 'products', element: <ProductList /> },
-      // { path: 'products', element: <AccomList /> },
+      // { path: 'products', element: <ProductList /> },
+      { path: 'products', element: <AccomList /> },
       { path: 'product/:id', element: <ProductDetail /> },
       { path: 'profile', element: <Profile /> },
       { path: 'mypage', element: <MyPage /> },

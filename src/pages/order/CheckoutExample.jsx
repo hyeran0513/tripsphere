@@ -1,21 +1,42 @@
 import { useEffect, useState } from 'react';
-import { BiHotel } from 'react-icons/bi';
+import { BiHotel, BiUser } from 'react-icons/bi';
 import { FaMapLocationDot } from 'react-icons/fa6';
+import { PiBabyLight } from 'react-icons/pi';
+import { useNavigate } from 'react-router-dom';
 import KakaoMap from '../../components/common/KakaoMap';
+import RoomTypeMapping from '../../components/common/RoomTypeMapping';
+import ServiceList from '../../components/common/ServiceList';
+import ToggleJson from '../../components/common/ToggleJson';
 import OrderList from '../../components/order/checkout/OrderList';
 import { useRoomData } from '../../hooks/useProductData';
+import { fetchUserData } from '../../services/userService';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 import { formatNumber, formatTimeStampTime } from '../../utils/format';
-import { PiBabyLight } from 'react-icons/pi';
-import { BiX, BiTrash, BiUser, BiMap } from 'react-icons/bi';
-import ServiceList from '../../components/common/ServiceList';
-import RoomTypeMapping from '../../components/common/RoomTypeMapping';
-import ToggleJson from '../../components/common/ToggleJson';
 
 const CheckoutExample = () => {
   const { reservationInfo } = useRoomSelectionStore();
   const [saveRoomId, setSaveRoomId] = useState(null);
   const { data } = useRoomData(saveRoomId);
+  const [roomDataArray, setRoomDataArray] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    console.log(user.uid);
+
+    const userDataWait = async (uid) => {
+      const data = await fetchUserData(uid);
+      console.log(data);
+      setUserInfo(data);
+      setLoading(false);
+    };
+    userDataWait(user.uid);
+  }, []);
 
   useEffect(() => {
     if (reservationInfo?.roomId) {
@@ -23,12 +44,69 @@ const CheckoutExample = () => {
     }
   }, [reservationInfo?.roomId]);
 
+  // 데이터가 로드되면 roomDataArray에 추가
   useEffect(() => {
-    console.log(data);
+    if (data) {
+      // 이미 배열에 있는지 확인
+      const exists = roomDataArray.some((room) => room.id === data.id);
+      if (!exists) {
+        setRoomDataArray((prev) => [...prev, data]);
+      }
+    }
   }, [data]);
 
-  if (!reservationInfo || !reservationInfo.roomId) {
+  // 여러 객실 ID 처리
+  useEffect(() => {
+    if (reservationInfo?.roomIds && reservationInfo.roomIds.length > 0) {
+      // 이미 처리된 roomId는 제외하고 하나씩 처리
+      const processRoomIds = async () => {
+        for (const roomId of reservationInfo.roomIds) {
+          // 이미 처리된 roomId인지 확인
+          const exists = roomDataArray.some((room) => room.id === roomId);
+          if (!exists) {
+            setSaveRoomId(roomId);
+            // 각 roomId 설정 후 약간의 지연을 줘서 데이터가 로드될 시간을 확보
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
+        }
+      };
+
+      processRoomIds();
+    }
+  }, [reservationInfo?.roomIds, roomDataArray]);
+
+  // 총 가격 계산
+  useEffect(() => {
+    if (roomDataArray.length > 0) {
+      const total = roomDataArray.reduce(
+        (sum, room) =>
+          sum +
+          room.accomData.original_price * (1 - room.accomData.discount_rate),
+        0,
+      );
+      setTotalPrice(total);
+    }
+  }, [roomDataArray]);
+
+  useEffect(() => {
+    console.log('roomDataArray:', roomDataArray);
+  }, [roomDataArray, userInfo]);
+
+  if (
+    !reservationInfo ||
+    (!reservationInfo.roomId &&
+      (!reservationInfo.roomIds || reservationInfo.roomIds.length === 0))
+  ) {
     return <div>Loading...</div>;
+  }
+
+  if (loading) {
+    return <div>유저 정보를 로드 중...</div>;
+  }
+
+  // 데이터가 아직 로드되지 않았거나 roomDataArray가 비어있는 경우
+  if (roomDataArray.length === 0) {
+    return <div>객실 정보를 로드 중...</div>;
   }
 
   return (
@@ -58,91 +136,95 @@ const CheckoutExample = () => {
           </div>
 
           <ul>
-            <li className="mt-6 border-t ">
-              <dl className="divide-y divide-gray-100">
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">숙소명</dt>
-                  <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0">
-                    {data?.accomData?.name}
-                  </dd>
-                </div>
+            {roomDataArray.map((data, index) => (
+              <li
+                className="mt-6 border-t "
+                key={index}>
+                <dl className="divide-y divide-gray-100">
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium">숙소명</dt>
+                    <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0">
+                      {data?.accomData?.name}
+                    </dd>
+                  </div>
 
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">객실명</dt>
-                  <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0 flex items-center gap-2">
-                    {data?.name} <RoomTypeMapping type={data?.type} />
-                  </dd>
-                </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium">객실명</dt>
+                    <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0 flex items-center gap-2">
+                      {data?.name} <RoomTypeMapping type={data?.type} />
+                    </dd>
+                  </div>
 
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium ">예약 정보</dt>
-                  <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                    <ul
-                      role="list"
-                      className="divide-y divide-gray-200 rounded-md border border-gray-200">
-                      <OrderList
-                        IconComponent={FaMapLocationDot}
-                        Title={'숙소 위치'}
-                        description={`${data?.accomData?.location?.city}
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium ">예약 정보</dt>
+                    <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
+                      <ul
+                        role="list"
+                        className="divide-y divide-gray-200 rounded-md border border-gray-200">
+                        <OrderList
+                          IconComponent={FaMapLocationDot}
+                          Title={'숙소 위치'}
+                          description={`${data?.accomData?.location?.city}
                                 ${data?.accomData?.location?.sub_city}`}
-                      />
-                      <div className="border-t border-gray-100 h-">
-                        <div className="divide-y divide-gray-100">
-                          <KakaoMap
-                            latitude={data?.accomData?.location?.latitude}
-                            longitude={data?.accomData?.location?.longitude}
-                          />
+                        />
+                        <div className="border-t border-gray-100 h-">
+                          <div className="divide-y divide-gray-100">
+                            <KakaoMap
+                              latitude={data?.accomData?.location?.latitude}
+                              longitude={data?.accomData?.location?.longitude}
+                            />
+                          </div>
                         </div>
-                      </div>
 
-                      <OrderList
-                        IconComponent={BiHotel}
-                        Title={'숙박 시설'}
-                        type={data?.accomData?.type}
-                      />
+                        <OrderList
+                          IconComponent={BiHotel}
+                          Title={'숙박 시설'}
+                          type={data?.accomData?.type}
+                        />
 
-                      <li>
-                        <div className="py-4 px-6 flex flex-col gap-3">
-                          {/* 체크인 · 체크아웃 */}
-                          체크인: {formatTimeStampTime(data?.check_in)} ~
-                          체크아웃: {formatTimeStampTime(data?.check_out)}
-                          <span className="flex items-center gap-1">
-                            <BiUser /> 성인 {data?.capacity?.adults || 0}명
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <PiBabyLight /> 미성년자{' '}
-                            {data?.capacity?.children || 0}명
-                          </span>
-                        </div>
-                      </li>
-                    </ul>
-                  </dd>
-                </div>
+                        <li>
+                          <div className="py-4 px-6 flex flex-col gap-3">
+                            {/* 체크인 · 체크아웃 */}
+                            체크인: {formatTimeStampTime(data?.check_in)} ~
+                            체크아웃: {formatTimeStampTime(data?.check_out)}
+                            <span className="flex items-center gap-1">
+                              <BiUser /> 성인 {data?.capacity?.adults || 0}명
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <PiBabyLight /> 미성년자{' '}
+                              {data?.capacity?.children || 0}명
+                            </span>
+                          </div>
+                        </li>
+                      </ul>
+                    </dd>
+                  </div>
 
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 ">
-                  <dt className="text-sm/6 font-medium">호스트 연락처</dt>
-                  <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
-                    {data?.accomData?.host?.contact}
-                  </dd>
-                </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 ">
+                    <dt className="text-sm/6 font-medium">호스트 연락처</dt>
+                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
+                      {data?.accomData?.host?.contact}
+                    </dd>
+                  </div>
 
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium ">객실 소개</dt>
-                  <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
-                    {data?.description}
-                  </dd>
-                </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium ">객실 소개</dt>
+                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
+                      {data?.description}
+                    </dd>
+                  </div>
 
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">서비스</dt>
-                  <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                    {data?.services && (
-                      <ServiceList services={data?.services} />
-                    )}
-                  </dd>
-                </div>
-              </dl>
-            </li>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium">서비스</dt>
+                    <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
+                      {data?.services && (
+                        <ServiceList services={data?.services} />
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -154,23 +236,38 @@ const CheckoutExample = () => {
                 <h2 className="card-title mb-2">최종 결제 금액</h2>
 
                 <div className="flex justify-between py-2">
-                  <p>주문 금액</p>
-                  <p className="flex justify-end">
-                    {formatNumber(
+                  {/* <p>주문 정보</p>
+                  <p className="flex justify-end"> */}
+                  {/* {formatNumber(
                       data?.original_price * (1 - data?.discount_rate),
                     )}
-                    원
-                  </p>
+                    원 */}
+                  {/* </p> */}
                 </div>
+                {roomDataArray.map((data, index) => {
+                  return (
+                    <div
+                      className="flex justify-between py-2"
+                      key={index}>
+                      <p>
+                        {data.accomData.name} - {data.name}
+                      </p>
+                      <p className="flex justify-end">
+                        {formatNumber(
+                          data.accomData.original_price *
+                            (1 - data.accomData.discount_rate),
+                        )}
+                        원
+                      </p>
+                    </div>
+                  );
+                })}
 
                 <div className="border-t border-gray-200">
                   <div className="flex justify-between py-4">
                     <p>주문 총액</p>
                     <p className="flex justify-end">
-                      {formatNumber(
-                        data?.original_price * (1 - data?.discount_rate),
-                      )}
-                      원
+                      {formatNumber(totalPrice)}원
                     </p>
                   </div>
 
@@ -178,7 +275,8 @@ const CheckoutExample = () => {
                     <p>사용 포인트</p>
                     <p className="flex justify-end">
                       {formatNumber(
-                        data?.original_price * (1 - data?.discount_rate),
+                        data?.accomData.original_price *
+                          (1 - data?.accomData.discount_rate),
                       )}
                       원
                     </p>
@@ -189,11 +287,7 @@ const CheckoutExample = () => {
                   <div className="flex justify-between py-4">
                     <p>결제 후 잔여 포인트</p>
                     <p className="flex justify-end">
-                      {formatNumber(
-                        1000000 -
-                          data?.original_price * (1 - data?.discount_rate),
-                      )}
-                      원
+                      {formatNumber(userInfo.points - totalPrice)}원
                     </p>
                   </div>
                 </div>

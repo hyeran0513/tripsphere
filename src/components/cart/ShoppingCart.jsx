@@ -18,6 +18,8 @@ import useAuthStore from '../../stores/useAuthStore';
 import { PiBabyLight } from 'react-icons/pi';
 import { IoBedOutline } from 'react-icons/io5';
 import { useEffect, useState } from 'react';
+import useReservationStore from '../../stores/useReservationStore';
+import { useNavigate } from 'react-router-dom';
 
 const ShoppingCart = ({ open, setOpen }) => {
   const { user } = useAuthStore();
@@ -25,6 +27,8 @@ const ShoppingCart = ({ open, setOpen }) => {
   const { mutate } = useDelCartItem();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const { setReservationList } = useReservationStore();
+  const navigate = useNavigate();
 
   // 전체 선택에 따른 선택된 항목
   useEffect(() => {
@@ -60,6 +64,27 @@ const ShoppingCart = ({ open, setOpen }) => {
   const deleteItem = (e, cartId) => {
     e.preventDefault();
     mutate(cartId);
+  };
+
+  // 주문하기기
+  const handleOrder = () => {
+    const selectedData = data
+      .filter((item) => selectedItems.includes(item.id))
+      .map((item) => ({
+        accommodationId: item.room.accommodation_id,
+        checkIn: item.room.check_in,
+        checkOut: item.room.check_out,
+        adultCount: item.room.capacity.adults,
+        childrenCount: item.room.capacity.children,
+        totalPrice: item.room.original_price * (1 - item.room.discount_rate),
+      }));
+
+    console.log('숙소 데이터 ', selectedData);
+    setReservationList(selectedData);
+
+    setTimeout(() => {
+      navigate('/checkout');
+    }, 100);
   };
 
   if (isLoading) return <Loading />;
@@ -240,11 +265,12 @@ const ShoppingCart = ({ open, setOpen }) => {
                   </div>
 
                   <div className="mt-6">
-                    <Link
-                      to="/checkout"
-                      className="flex justify-center rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700">
+                    <button
+                      onClick={handleOrder}
+                      disabled={selectedItems.length === 0}
+                      className="flex justify-center w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700 disabled:bg-gray-400">
                       주문하기
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>

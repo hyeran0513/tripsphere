@@ -81,7 +81,7 @@ export const cities = [
     ],
   },
   {
-    name: '강원',
+    name: '강원도',
     subCities: [
       '전체',
       '강릉시',

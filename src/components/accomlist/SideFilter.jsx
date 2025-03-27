@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiChevronLeft } from 'react-icons/bi';
 import CitySelector from '../common/CitySelector';
 import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
+import useFilterStore from '../../stores/useFilterStore';
 
-const SideFilter = () => {
+const SideFilter = ({ onSearch }) => {
   const [openDate, setOpenDate] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(true);
 
@@ -12,8 +13,49 @@ const SideFilter = () => {
     setIsFormOpen((prevState) => !prevState);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const store = useFilterStore();
+
+  const {
+    selectedCity,
+    selectedSubCity,
+    adultCount,
+    childrenCount,
+    checkIn,
+    checkOut,
+  } = store;
+
+  const [localFilters, setLocalFilters] = useState({
+    type: '전체',
+    city: selectedCity,
+    sub_city: selectedSubCity,
+    checkIn,
+    checkOut,
+    adults: adultCount,
+    children: childrenCount,
+  });
+
+  useEffect(() => {
+    setLocalFilters({
+      type: '전체',
+      city: selectedCity,
+      sub_city: selectedSubCity,
+      checkIn,
+      checkOut,
+      adults: adultCount,
+      children: childrenCount,
+    });
+  }, [
+    selectedCity,
+    selectedSubCity,
+    checkIn,
+    checkOut,
+    adultCount,
+    childrenCount,
+  ]);
+
+  // 검색 핸들러
+  const handleSearch = () => {
+    onSearch(localFilters);
   };
 
   return (
@@ -46,10 +88,11 @@ const SideFilter = () => {
           aria-label="검색 옵션 변경창"
           className="flex flex-col gap-y-5 p-2.5">
           {/* 여행 장소 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 p-3">
+          <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
             <legend className="fieldset-legend px-2 font-medium">
               여행 장소
             </legend>
+
             <CitySelector isGlobal={true} />
           </fieldset>
 
@@ -66,25 +109,10 @@ const SideFilter = () => {
             <PeopleSelector stateType="filter" />
           </fieldset>
 
-          {/* <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
-            <legend className="fieldset-legend px-2 font-medium">가격</legend>
-            <div className="flex items-center gap-2">
-              <input
-                placeholder="최소"
-                className="input bg-base-200 dark:border-gray-200 dark:placeholder:text-gray-200"
-              />
-              <span>~</span>
-              <input
-                placeholder="최대"
-                className="input bg-base-200 dark:border-gray-200 dark:placeholder:text-gray-200"
-              />
-            </div>
-          </fieldset> */}
-
           <button
             aria-label="수정한 검색 옵션 적용"
-            type="submit"
-            onClick={(e) => handleSubmit(e)}
+            type="button"
+            onClick={handleSearch}
             className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             옵션 수정 적용
           </button>

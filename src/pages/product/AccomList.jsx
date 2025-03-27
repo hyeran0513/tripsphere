@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import SideFilter from '../../components/accomlist/SideFilter';
-import { useAccomData } from '../../hooks/useAccomData';
 import Loading from '../../components/common/Loading';
 import AccomCard from '../../components/accomlist/AccomCard';
-import useFilterStore from '../../stores/useFilterStore';
+import { useAccommodations } from '../../hooks/useAccomData';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -45,38 +44,23 @@ const typeMapping = [
 ];
 
 const AccomList = () => {
-  const [selectedType, setSelectedType] = useState('');
+  const [filters, setFilters] = useState({
+    type: '전체',
+  });
 
-  const {
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-  } = useFilterStore();
-
-  const filters = {
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-    selectedType,
-  };
-
-  // 숙소 유형 선택
-  const handleTypeChange = (event) => {
-    setSelectedType(event.target.value);
-    console.log('선택한 숙소 유형 선택:', event.target.value);
-  };
-
-  const { data, isLoading } = useAccomData(filters);
+  const { data, isLoading } = useAccommodations(filters);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    console.log('@@@' + JSON.stringify(data));
-  }, [data]);
+    if (data) {
+      const filtered = data.filter((item) => {
+        const typeMatch = filters.type === '전체' || item.type === filters.type;
+
+        return typeMatch;
+      });
+      setFilteredData(filtered);
+    }
+  }, [data, filters]);
 
   if (isLoading) return <Loading />;
 
@@ -84,9 +68,10 @@ const AccomList = () => {
     <div className="max-w-[1200px] mx-auto py-[40px]">
       {/* 페이지 헤더 */}
       <PageHeader
-        title="여행 숙소 검색 결과"
+        title={`여행 숙소 검색 결과 (${filteredData.length}건)`}
         breadcrumb={breadcrumb}
       />
+
       {/* 숙소 유형 선택 영역 */}
       <div className="flex gap-4 mb-10">
         {typeMapping.map((item) => (
@@ -97,8 +82,10 @@ const AccomList = () => {
               type="radio"
               name="type"
               value={item.value}
-              checked={selectedType === item.value}
-              onChange={handleTypeChange}
+              checked={filters.type === item.value}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, type: e.target.value }))
+              }
               className="hidden"
             />
             <div className="flex flex-col items-center gap-2">
@@ -108,21 +95,25 @@ const AccomList = () => {
                 alt={item.text}
               />
               <span
-                className={`text-sm ${selectedType === item.value ? 'text-indigo-600 font-bold' : ''}`}>
+                className={`text-sm ${filters.type === item.value ? 'text-indigo-600 font-bold' : ''}`}>
                 {item.text}
               </span>
             </div>
           </label>
         ))}
       </div>
+
       {/* 필터 및 숙소 리스트 */}
       <div
         id="container"
         className="flex items-start gap-10">
-        <SideFilter />
+        <SideFilter
+          onSearch={setFilters}
+          filters={filters}
+        />
 
         <ul className="flex-1 flex flex-col gap-6">
-          {data?.map((item, index) => (
+          {filteredData.map((item, index) => (
             <AccomCard
               accommodation={item}
               key={index}

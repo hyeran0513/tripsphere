@@ -5,11 +5,18 @@ import { compareToday, formatDate, formatNumber } from '../../utils/format';
 import { useOrderData } from '../../hooks/useOrderData';
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
+import { useEffect } from 'react';
 
 const OrderHistory = () => {
   const { user } = useAuthStore();
   const { data: orderInfo, isLoading, error } = useOrderData(user?.uid);
+  console.log(orderInfo);
 
+  useEffect(() => {
+    if (orderInfo) {
+      console.log(JSON.stringify(orderInfo));
+    }
+  }, [orderInfo]);
   if (isLoading) return <Loading />;
   if (error) return <>{error.message}</>;
 
@@ -32,13 +39,19 @@ const OrderHistory = () => {
           <li
             className="list-row flex-col flex"
             key={index}>
-            <div className="text-xs uppercase font-bold flex items-center justify-between">
+            <div className="text-xs uppercase font-bold flex items-center justify-start gap-4">
               {compareToday(order.room.check_in) && (
                 <div className="badge badge-soft badge-primary text-xs">
                   {compareToday(order.room.check_in)}
                 </div>
               )}
-              <div> 예약번호 : {order.id} </div>
+              <h4 className="text-md opacity-60 flex gap-2">
+                {formatDate(order.order_date)}
+                <div>
+                  {order.payment_status === 'completed' ? '결제완료' : '취소'}
+                </div>
+              </h4>
+              <div className="ml-auto"> 예약번호 : {order.id} </div>
             </div>
             <div className="flex justify-between">
               <div className="flex gap-6">
@@ -51,18 +64,9 @@ const OrderHistory = () => {
                 />
 
                 <div className="flex flex-col">
-                  <h4 className="text-md opacity-60 flex gap-2">
-                    {formatDate(order.room.order_date)}
-                    <div>
-                      {order.room.payment_status === 'completed'
-                        ? '결제완료'
-                        : '취소'}
-                    </div>
-                  </h4>
-
-                  <div className="mb-2 text-md uppercase font-bold">
+                  <div className=" text-md uppercase font-bold text-2xl">
                     {order.room?.name}
-                    <p className="flex items-center gap-1 text-gray-500 text-xs">
+                    <p className="flex items-center gap-1 text-gray-500 text-xs mt-2">
                       <BiBuildings />
                       {order.accom.name}
                     </p>

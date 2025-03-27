@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BiHeart, BiCalendarAlt } from 'react-icons/bi';
+import { BiHeart, BiCalendarAlt, BiSolidStar } from 'react-icons/bi';
 import { formatDate, formatNumber } from '../../utils/format';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
-import TypeMapping from '../common/TypeMapping';
+
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
-
+import Rating from '../common/Rating';
+import TypeMapping from '../common/TypeMapping';
+Rating;
 const FavoriteList = () => {
   const { user } = useAuthStore();
   const { data, isLoading, error } = useFavoriteAccommData(user?.uid);
 
   useEffect(() => {
     if (data) {
-      //console.log('찜 목록 내역:', JSON.stringify(data));
+      console.log('찜 목록 내역:', JSON.stringify(data));
     }
   }, [data]);
 
@@ -55,6 +57,11 @@ const FavoriteList = () => {
 
                       <div className="badge badge-soft badge-info text-xs">
                         {favorite.location.city} {favorite.location.sub_city}
+                      </div>
+
+                      <div className="badge bg-yellow-500 text-xs gap-0.5">
+                        <BiSolidStar />
+                        {favorite.rating}
                       </div>
                     </div>
 

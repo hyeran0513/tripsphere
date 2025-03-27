@@ -78,7 +78,6 @@ const SideFilter = ({ setLoading, setError }) => {
           checkIn,
           checkOut,
         );
-        // console.log('쿼리 결과 데이터 길이 : ', data.length);
         setList(data);
       } catch (error) {
         console.error('상품정보 로딩 중 오류 ', error);

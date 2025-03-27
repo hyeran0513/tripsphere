@@ -34,16 +34,16 @@ export const getAllAccomData = async ({
   }
 
   // 체크인 값 확인 및 조건 걸기
-  const today = new Date();
-  if (checkIn === '') {
-    console.log('DATE is null. initialize : ', today);
-    // constraints.push(where('check_in', '>=', Timestamp.fromDate(today)));
-  } else {
-    // 기본값 설정
-    // constraints.push(
-    //   where('check_in', '>=', Timestamp.fromDate(new Date(checkIn))),
-    // );
-  }
+  // const today = new Date();
+  // if (checkIn === '') {
+  //   console.log('DATE is null. initialize : ', today);
+  //   constraints.push(where('check_in', '>=', Timestamp.fromDate(today)));
+  // } else {
+  //   기본값 설정
+  //   constraints.push(
+  //     where('check_in', '>=', Timestamp.fromDate(new Date(checkIn))),
+  //   );
+  // }
 
   // 체크아웃 기본값 설정
   // let checkOutTimestamp;
@@ -72,8 +72,8 @@ export const getAllAccomData = async ({
       return { id: doc.id, ...doc.data() };
     });
 
-    console.log(' 숙소정보 조회 결과 : ', results);
-    console.log(' 숙소 조회 결과 아이디들 : ', accomIds);
+    // console.log(' 숙소정보 조회 결과 : ', results);
+    // console.log(' 숙소 조회 결과 아이디들 : ', accomIds);
   } catch (error) {
     console.error('숙소 정보 조회 오류', error);
     return [];
@@ -115,7 +115,7 @@ export const getAllAccomData = async ({
       checkOutTimestamp = Timestamp.fromDate(new Date(checkOut));
     }
 
-    // 어른 수
+    // 인원 수
     roomConstraints.push(where('capacity.adults', '>=', adultCount));
     roomConstraints.push(where('capacity.children', '>=', childrenCount));
 
@@ -123,8 +123,6 @@ export const getAllAccomData = async ({
     const roomQuery = query(collection(db, 'rooms'), ...roomConstraints);
     const roomSnap = await getDocs(roomQuery);
     const rooms = roomSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-    console.log('rooms before filtering: ', rooms);
 
     // 숙소마다 연결된 객실 정보 붙이기
     const accomList = results.map((accom) => {
@@ -147,7 +145,7 @@ export const getAllAccomData = async ({
 };
 
 /*
- 테스트 데이터 쿼리 결과 확인
+ 테스트 데이터 쿼리 결과 확인 (전체데이터인 배열의 일부 발췌)
   {
     "id": "testhotel1",
     "description": "example",

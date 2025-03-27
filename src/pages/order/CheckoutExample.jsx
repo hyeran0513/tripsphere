@@ -9,6 +9,8 @@ import ServiceList from '../../components/common/ServiceList';
 import ToggleJson from '../../components/common/ToggleJson';
 import OrderList from '../../components/order/checkout/OrderList';
 import { useRoomData } from '../../hooks/useProductData';
+import { createUserOrder } from '../../services/orderService';
+import { usedPoints } from '../../services/pointService';
 import { fetchUserData } from '../../services/userService';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 import { formatNumber, formatTimeStampTime } from '../../utils/format';
@@ -37,6 +39,33 @@ const CheckoutExample = () => {
     };
     userDataWait(user.uid);
   }, []);
+
+  const payment = (event) => {
+    event.preventDefault();
+    console.log('payPoint : ', totalPrice);
+    // 1. DB에서 불러온 유저의 포인트와 상품목록의 금액 합산을 비교
+    if (user.points < totalPrice) {
+    } else {
+      createUserOrder({
+        userId: user.uid,
+        usedPoints: totalPrice,
+      });
+      usedPoints({
+        userId: user.uid,
+        points: totalPrice,
+        rooms: roomDataArray,
+      });
+    }
+    // 2-1. 비교결과 유저의 포인트가 적다면
+    // 유저의 포인트는 처리하지 않고,
+    // 결제 내역 (컬랙션 order)에 주문 취소 or 주문 실패로 남긴다
+
+    // 2-2. 비교결과 상품 합계가 적다면
+    // 유저의 포인트 감소시킨 쿼리 결과 반영후
+    // 결제 내역 (컬랙션 order)을 생성한다.
+
+    navigate('/orderconfirmation');
+  };
 
   useEffect(() => {
     if (reservationInfo?.roomId) {
@@ -296,7 +325,9 @@ const CheckoutExample = () => {
               <div className="card-actions justify-end">
                 <button
                   type="button"
-                  onClick={(e) => {}}
+                  onClick={(e) => {
+                    payment(e);
+                  }}
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
                   결제하기
                 </button>

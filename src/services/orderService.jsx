@@ -77,36 +77,31 @@ export const cancelUserOrder = async ({
 };
 
 // 주문 완료 생성 (firebase)
-export const createUserOrder = async ({ userId, usedPoints }) => {
-  const orderRef = doc(db, 'orders', orderId);
+export const createUserOrder = async ({
+  userId,
+  room,
+  status = 'completed',
+  points,
+  selectedTime,
+}) => {
+  const orderRef = doc(db, 'orders');
 
   // 주문 상태 업데이트
-  await updateDoc(orderRef, {
-    payment_status: 'completed',
-    cancel_reason: reason,
+  return await updateDoc(orderRef, {
     user_id: userId,
-    points: usedPoints,
-    type: 'success',
-    reason: `주문 완료`,
-    created_at: new Date(),
-  });
-
-  // 포인트 환불 처리
-  if (usedPoints > 0) {
-    await addDoc(collection(db, 'points'), {});
-
-    // users 컬렉션의 포인트 업데이트
-    const userRef = doc(db, 'users', userId);
-    const userSnap = await getDoc(userRef);
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      const newPoints = (userData.points || 0) + usedPoints;
-
-      await updateDoc(userRef, {
-        points: newPoints, // 유저의 포인트에 환불된 포인트 추가
-      });
-    }
-  }
+    room_id: room,
+    payment_status: status,
+    used_points: points,
+    duration: serverTimestamp(),
+    selectedTime: selectedTime,
+  })
+    .then(function (docRef) {
+      console.log('Document written with ID: ', docRef.id);
+      return docRef.id;
+    })
+    .catch(function (error) {
+      console.error('Error adding document: ', error);
+    });
 };
 
 // 주문 내역 조회

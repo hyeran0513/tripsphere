@@ -67,6 +67,7 @@ export const usedPoints = async ({ userId, points }) => {
   try {
     const pointsRef = collection(db, 'points');
     const userRef = doc(db, 'users', userId);
+    const orderRef = doc(db, 'order');
 
     // 유저 포인트 감소
     await updateDoc(userRef, {
@@ -76,9 +77,9 @@ export const usedPoints = async ({ userId, points }) => {
     // 포인트 내역 추가
     await addDoc(pointsRef, {
       user_id: userId,
-      title: '포인트 사용',
-      description: `${points} 포인트가 결제에 사용되었습니다!`,
       points: points,
+      title: '포인트 사용',
+      description: `${points} 포인트가 결제에 사용되었습니다.`,
       received_date: serverTimestamp(),
     });
   } catch (error) {

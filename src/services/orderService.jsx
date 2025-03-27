@@ -77,29 +77,23 @@ export const cancelUserOrder = async ({
 };
 
 // 주문 완료 생성 (firebase)
-export const createUserOrder = async ({
-  orderId,
-  userId,
-  usedPoints,
-  reason,
-}) => {
+export const createUserOrder = async ({ userId, usedPoints }) => {
   const orderRef = doc(db, 'orders', orderId);
 
   // 주문 상태 업데이트
   await updateDoc(orderRef, {
-    payment_status: '결제 완료',
+    payment_status: 'completed',
     cancel_reason: reason,
+    user_id: userId,
+    points: usedPoints,
+    type: 'success',
+    reason: `주문 완료`,
+    created_at: new Date(),
   });
 
   // 포인트 환불 처리
   if (usedPoints > 0) {
-    await addDoc(collection(db, 'points'), {
-      user_id: userId,
-      points: usedPoints,
-      type: 'success',
-      reason: `주문 완료`,
-      created_at: new Date(),
-    });
+    await addDoc(collection(db, 'points'), {});
 
     // users 컬렉션의 포인트 업데이트
     const userRef = doc(db, 'users', userId);

@@ -63,23 +63,23 @@ export const addPoints = async (userId, points) => {
 };
 
 // 포인트 사용 및 포인트 사용 내역 추가
-export const usedPoints = async (userId, points) => {
+export const usedPoints = async ({ userId, points }) => {
   try {
     const pointsRef = collection(db, 'points');
     const userRef = doc(db, 'users', userId);
+
+    // 유저 포인트 감소
+    await updateDoc(userRef, {
+      points: increment(-points),
+    });
 
     // 포인트 내역 추가
     await addDoc(pointsRef, {
       user_id: userId,
       title: '포인트 사용',
-      description: `${points} 포인트가 사용되었습니다!`,
+      description: `${points} 포인트가 결제에 사용되었습니다!`,
       points: points,
       received_date: serverTimestamp(),
-    });
-
-    // 유저 포인트 감소
-    await updateDoc(userRef, {
-      points: increment(-points),
     });
   } catch (error) {
     console.error('포인트 사용 오류:', error.message);

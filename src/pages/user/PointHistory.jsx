@@ -10,7 +10,8 @@ const breadcrumb = [
 ];
 
 const PointHistory = () => {
-  const { user } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
+
   // 포인트 내역 조회
   const { data, isLoading, error } = usePointData(user?.uid);
 
@@ -26,31 +27,32 @@ const PointHistory = () => {
       />
 
       <ul className="list bg-base-100 rounded-box shadow-md">
-        {data?.map((point, index) => (
-          <li
-            className="list-row flex-col flex"
-            key={index}>
-            <div className="py-2 border-b border-stone-200 flex justify-between items-center">
-              <div>{formatDate(point.received_date)}</div>
-            </div>
+        {isAuthenticated &&
+          data?.map((point, index) => (
+            <li
+              className="list-row flex-col flex"
+              key={index}>
+              <div className="py-2 border-b border-stone-200 flex justify-between items-center">
+                <div>{formatDate(point.received_date)}</div>
+              </div>
 
-            <div className="flex justify-between">
-              <div className="flex gap-6">
-                <div className="flex flex-col">
-                  <h2 className="text-md font-bold">{point.title}</h2>
-                  <div className="mb-4 text-xs uppercase opacity-60">
-                    {point.description}
+              <div className="flex justify-between">
+                <div className="flex gap-6">
+                  <div className="flex flex-col">
+                    <h2 className="text-md font-bold">{point.title}</h2>
+                    <div className="mb-4 text-xs uppercase opacity-60">
+                      {point.description}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="text-secondary">
-                {point.points > 0 ? '+' : '-'}
-                {point.points} 포인트
+                <div className="text-secondary">
+                  {point.points > 0 ? '+' : '-'}
+                  {point.points} 포인트
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          ))}
       </ul>
     </div>
   );

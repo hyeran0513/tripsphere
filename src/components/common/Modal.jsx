@@ -1,13 +1,15 @@
 import React from 'react';
 
-const Modal = ({ modalId, buttonTitle, title, children }) => {
+const Modal = ({ modalId, buttonTitle, title, children, hideButton }) => {
   return (
     <>
-      <button
-        className="btn"
-        onClick={() => document.getElementById(`${modalId}`).showModal()}>
-        {buttonTitle}
-      </button>
+      {!hideButton && (
+        <button
+          className="btn"
+          onClick={() => document.getElementById(`${modalId}`).showModal()}>
+          {buttonTitle}
+        </button>
+      )}
 
       <dialog
         id={modalId}

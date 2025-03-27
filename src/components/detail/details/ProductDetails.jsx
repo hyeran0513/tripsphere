@@ -94,6 +94,7 @@ const ProductDetails = ({ product, productId }) => {
                   checkOut={checkOut}
                   adultCount={adultCount}
                   childrenCount={childrenCount}
+                  totalPrice={totalPrice}
                 />
 
                 {/* 예약하기 버튼 */}

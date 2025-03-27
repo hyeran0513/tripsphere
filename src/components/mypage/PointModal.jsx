@@ -58,7 +58,7 @@ const PointModal = ({ points, setPoints, pointHistoryRefetch }) => {
         error={state.errors.point}
       />
       <div className="mt-2 text-indigo-500 text-sm">
-        보유 포인트: <span className="font-bold">{points}</span> 포인트
+        보유 포인트: <span className="font-bold">{points || 0}</span> 포인트
       </div>
 
       <div className="modal-action">

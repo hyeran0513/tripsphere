@@ -1,17 +1,10 @@
 import React from 'react';
 import { useAddCarts } from '../../../hooks/useCartData';
-import { formatToTimestamp } from '../../../utils/format';
 import { serverTimestamp } from 'firebase/firestore';
 import useAuthStore from '../../../stores/useAuthStore';
+import { BiCart } from 'react-icons/bi';
 
-const CartButton = ({
-  productId,
-  showToast,
-  checkIn,
-  checkOut,
-  adultCount,
-  childrenCount,
-}) => {
+const CartButton = ({ productId, showToast }) => {
   const { user } = useAuthStore();
 
   // firebase에 장바구니 추가
@@ -22,12 +15,9 @@ const CartButton = ({
     e.preventDefault();
 
     mutate({
-      accommodation_id: productId,
-      check_in: formatToTimestamp(checkIn),
-      check_out: formatToTimestamp(checkOut),
-      guest_count: { adults: adultCount, children: childrenCount },
-      cart_date: serverTimestamp(),
       user_id: user?.uid,
+      room_id: productId,
+      created_at: serverTimestamp(),
     });
   };
 
@@ -35,8 +25,8 @@ const CartButton = ({
     <button
       type="button"
       onClick={handleAddToCart}
-      className="text-base font-medium flex-1 border border-gray-300 px-8 py-3 rounded hover:bg-gray-100 cursor-pointer">
-      장바구니
+      className="flex items-center justify-center w-[38px] h-[38px] text-gray-600 hover:text-white border border-gray-600 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm text-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800 cursor-pointer">
+      <BiCart className="text-lg" />
     </button>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import OrderList from '../../components/order/OrderList';
 import PageHeader from '../../components/common/PageHeader';
-import { useUserOrders } from '../../hooks/useOrderData';
+import { useOrderData } from '../../hooks/useOrderData';
 import useAuthStore from '../../stores/useAuthStore';
 
 const breadcrumb = [
@@ -11,7 +11,7 @@ const breadcrumb = [
 
 const OrderHistory = () => {
   const { user } = useAuthStore();
-  const { data: orderInfo, isLoading, error } = useUserOrders(user?.uid);
+  const { data: orderInfo, isLoading, error } = useOrderData(user?.uid);
 
   if (isLoading) {
     return (

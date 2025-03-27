@@ -34,7 +34,7 @@ export const cities = [
     ],
   },
   {
-    name: '경기',
+    name: '경기도',
     subCities: [
       '전체',
       '가평군',

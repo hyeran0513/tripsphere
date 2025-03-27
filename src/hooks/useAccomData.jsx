@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAccomData } from '../services/accomService';
+import { getFilteredAccommodations } from '../services/accomService';
 
-export const useAccomData = (filters) => {
+export const useAccommodations = (filters) => {
   return useQuery({
-    queryKey: ['accom'],
-    queryFn: () => getAccomData(filters),
+    queryKey: ['accommodations', filters],
+    queryFn: getFilteredAccommodations,
+    staleTime: 1000 * 60 * 3,
+    enabled: !!filters,
   });
 };

@@ -1,94 +1,104 @@
-import {
-  collection,
-  getDocs,
-  query,
-  Timestamp,
-  where,
-} from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
-export const getAccomData = async (filters) => {
-  const accomCol = collection(db, 'accommodations');
-  let accomConstraints = [];
+// room 조건을 기반으로 가능한 숙소 ID만 필터링
+const getAccommodationIds = async (accommodationIds, filters) => {
+  if (!filters?.checkIn || !filters?.checkOut) return accommodationIds;
+
+  const allRoomDocs = await getDocs(collection(db, 'rooms'));
+
+  const checkIn = new Date(filters.checkIn);
+  const checkOut = new Date(filters.checkOut);
+  const filterAdults = Number(filters.adults ?? 0);
+  const filterChildren = Number(filters.children ?? 0);
+
+  const result = new Set();
+
+  allRoomDocs.forEach((doc) => {
+    const room = doc.data();
+
+    if (!accommodationIds.includes(room.accommodation_id)) return;
+    if (!room.availability || Number(room.stock) <= 0) return;
+
+    const maxAdults = room.capacity?.adults ?? 0;
+    const maxChildren = room.capacity?.children ?? 0;
+    if (maxAdults < filterAdults || maxChildren < filterChildren) return;
+
+    const roomAvailableFrom =
+      room.check_in?.toDate?.() || new Date(room.check_in);
+    const roomAvailableTo =
+      room.check_out?.toDate?.() || new Date(room.check_out);
+
+    // 날짜만 비교하고 시간은 무시하도록 처리
+    const roomAvailableFromDate = new Date(
+      roomAvailableFrom.setHours(0, 0, 0, 0),
+    );
+    const roomAvailableToDate = new Date(roomAvailableTo.setHours(0, 0, 0, 0));
+    const checkInDate = new Date(checkIn.setHours(0, 0, 0, 0));
+    const checkOutDate = new Date(checkOut.setHours(0, 0, 0, 0));
+
+    // 날짜 범위가 겹치는지 확인
+    const isWithinAvailablePeriod =
+      checkInDate >= roomAvailableFromDate &&
+      checkOutDate <= roomAvailableToDate;
+
+    if (isWithinAvailablePeriod) {
+      result.add(room.accommodation_id);
+    }
+  });
+
+  return [...result];
+};
+
+// 숙소 전체 조회 및 조건 필터
+export const getFilteredAccommodations = async ({ queryKey }) => {
+  const [_key, filters] = queryKey;
+
+  // 숙소 데이터 조회
+  const accomSnapshot = await getDocs(collection(db, 'accommodations'));
+  let docs = accomSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 
   // 도시 대분류
-  if (filters.selectedCity) {
-    accomConstraints.push(where('location.city', '==', filters.selectedCity));
+  if (filters.city && filters.city !== '전체') {
+    docs = docs.filter((item) => item.location.city === filters.city);
   }
 
   // 도시 소분류
-  if (filters.selectedSubCity) {
-    accomConstraints.push(
-      where('location.sub_city', '==', filters.selectedSubCity),
+  if (filters.sub_city && filters.sub_city !== '전체') {
+    docs = docs.filter((item) => item.location.sub_city === filters.sub_city);
+  }
+
+  // 체크인 / 체크아웃 / 인원
+  let validAccommodationIds = null;
+  if (filters.checkIn && filters.checkOut) {
+    validAccommodationIds = await getAccommodationIds(
+      docs.map((d) => d.id),
+      filters,
     );
+    docs = docs.filter((doc) => validAccommodationIds.includes(doc.id));
   }
 
-  // 숙소 유형
-  if (filters.selectedType) {
-    accomConstraints.push(where('type', '==', filters.selectedType));
-  }
+  // rooms 가져와서 숙소에 붙이기
+  const roomSnapshot = await getDocs(collection(db, 'rooms'));
+  const roomMap = {};
 
-  try {
-    const accomQuery = query(accomCol, ...accomConstraints);
-    const accomSnap = await getDocs(accomQuery);
-    const accommodations = accomSnap.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    const accomIds = accommodations.map((accom) => accom.id);
-
-    // 객실에 대한 필터링 쿼리
-    let roomConstraints = [];
-
-    // 숙소 아이디 기반 필터링
-    if (accomIds.length > 0) {
-      roomConstraints.push(where('accommodation_id', 'in', accomIds));
+  roomSnapshot.forEach((doc) => {
+    const room = doc.data();
+    const accomId = room.accommodation_id;
+    if (!roomMap[accomId]) {
+      roomMap[accomId] = [];
     }
+    roomMap[accomId].push({ id: doc.id, ...room });
+  });
 
-    // 체크인
-    if (filters.checkIn) {
-      let checkInTimestamp = Timestamp.fromDate(new Date(filters.checkIn));
-      roomConstraints.push(where('check_in', '<=', checkInTimestamp));
-    }
+  docs = docs.map((doc) => ({
+    ...doc,
+    rooms: roomMap[doc.id] || [],
+  }));
 
-    // 체크아웃
-    if (filters.checkOut) {
-      let checkOutTimestamp = Timestamp.fromDate(new Date(filters.checkOut));
-      roomConstraints.push(where('check_out', '>=', checkOutTimestamp));
-    }
-
-    // 어른 수
-    if (filters.adultCount > 0) {
-      roomConstraints.push(where('capacity.adults', '>=', filters.adultCount));
-    }
-
-    // 미성년자 수
-    if (filters.childrenCount > 0) {
-      roomConstraints.push(
-        where('capacity.children', '>=', filters.childrenCount),
-      );
-    }
-
-    // 객실 쿼리
-    const roomQuery = query(collection(db, 'rooms'), ...roomConstraints);
-    const roomSnap = await getDocs(roomQuery);
-    const rooms = roomSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-    const results = accommodations.map((accom) => {
-      const accomRooms = rooms.filter(
-        (room) => room.accommodation_id === accom.id,
-      );
-
-      return {
-        ...accom,
-        rooms: accomRooms,
-      };
-    });
-
-    return results;
-  } catch (error) {
-    console.error('숙소 및 객실 정보 조회 오류:', error);
-    return [];
-  }
+  console.log('최종:', docs);
+  return docs;
 };

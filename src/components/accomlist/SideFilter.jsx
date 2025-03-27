@@ -1,19 +1,35 @@
 import React, { useState } from 'react';
 import { BiChevronLeft } from 'react-icons/bi';
-import CitySelector from '../common/CitySelector';
-import DateSelector from '../common/DateSelector';
-import PeopleSelector from '../common/PeopleSelector';
 
-const SideFilter = () => {
-  const [openDate, setOpenDate] = useState(false);
+const SideFilter = ({ onSearch }) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [localFilters, setLocalFilters] = useState({
+    type: '전체',
+    stay_type: '전체',
+    city: '전체',
+    sub_city: '전체',
+    checkIn: '',
+    checkOut: '',
+    adults: 0,
+    children: 0,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    const updatedValue =
+      name === 'adults' || name === 'children' ? parseInt(value, 10) : value;
+
+    setLocalFilters((prev) => ({ ...prev, [name]: updatedValue }));
+  };
+
+  const handleSearch = () => {
+    onSearch(localFilters);
   };
 
   return (
@@ -50,41 +66,58 @@ const SideFilter = () => {
             <legend className="fieldset-legend px-2 font-medium">
               여행 장소
             </legend>
-            <CitySelector isGlobal={true} />
+
+            <input
+              type="text"
+              name="city"
+              placeholder="도시"
+              value={localFilters.city}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="sub_city"
+              placeholder="지역"
+              value={localFilters.sub_city}
+              onChange={handleChange}
+            />
           </fieldset>
 
           <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
             <legend className="fieldset-legend px-2 font-medium">일정</legend>
             {/* 체크인 · 체크아웃 */}
-            <DateSelector
-              stateType="filter"
-              openDate={openDate}
-              setOpenDate={setOpenDate}
+            <input
+              type="date"
+              name="checkIn"
+              value={localFilters.checkIn}
+              onChange={handleChange}
+            />
+            <input
+              type="date"
+              name="checkOut"
+              value={localFilters.checkOut}
+              onChange={handleChange}
             />
 
             {/* 인원수 */}
-            <PeopleSelector stateType="filter" />
+            <input
+              type="number"
+              name="adults"
+              value={localFilters.adults}
+              onChange={handleChange}
+            />
+            <input
+              type="number"
+              name="children"
+              value={localFilters.children}
+              onChange={handleChange}
+            />
           </fieldset>
-
-          {/* <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
-            <legend className="fieldset-legend px-2 font-medium">가격</legend>
-            <div className="flex items-center gap-2">
-              <input
-                placeholder="최소"
-                className="input bg-base-200 dark:border-gray-200 dark:placeholder:text-gray-200"
-              />
-              <span>~</span>
-              <input
-                placeholder="최대"
-                className="input bg-base-200 dark:border-gray-200 dark:placeholder:text-gray-200"
-              />
-            </div>
-          </fieldset> */}
 
           <button
             aria-label="수정한 검색 옵션 적용"
-            type="submit"
-            onClick={(e) => handleSubmit(e)}
+            type="button"
+            onClick={handleSearch}
             className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             옵션 수정 적용
           </button>

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import SideFilter from '../../components/accomlist/SideFilter';
-import { useAccomData } from '../../hooks/useAccomData';
 import Loading from '../../components/common/Loading';
 import AccomCard from '../../components/accomlist/AccomCard';
-import useFilterStore from '../../stores/useFilterStore';
+import { useAccommodations } from '../../hooks/useAccomData';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -45,41 +44,26 @@ const typeMapping = [
 ];
 
 const AccomList = () => {
-  const {
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-  } = useFilterStore();
-  const filters = {
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-  };
-  const { data, isLoading } = useAccomData(filters);
-  const [selectedType, setSelectedType] = useState('');
+  const [filters, setFilters] = useState({
+    type: '전체',
+    stay_type: '전체',
+  });
+
+  const { data, isLoading } = useAccommodations(filters);
+
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     if (data) {
-      if (selectedType === '') {
-        setFilteredData(data);
-      } else {
-        const filtered = data.filter((item) => item.type === selectedType);
-        setFilteredData(filtered);
-      }
+      const filtered = data.filter((item) => {
+        const typeMatch = filters.type === '전체' || item.type === filters.type;
+        const stayTypeMatch =
+          filters.stay_type === '전체' || item.stay_type === filters.stay_type;
+        return typeMatch && stayTypeMatch;
+      });
+      setFilteredData(filtered);
     }
-  }, [selectedType, data]);
-
-  // 숙소 유형 선택
-  const handleTypeChange = (e) => {
-    setSelectedType(e.target.value);
-  };
+  }, [data, filters]);
 
   if (isLoading) return <Loading />;
 
@@ -90,6 +74,7 @@ const AccomList = () => {
         title="여행 숙소 검색 결과"
         breadcrumb={breadcrumb}
       />
+      <p>검색 결과: {filteredData.length}건</p>
 
       {/* 숙소 유형 선택 영역 */}
       <div className="flex gap-4 mb-10">
@@ -101,8 +86,10 @@ const AccomList = () => {
               type="radio"
               name="type"
               value={item.value}
-              checked={selectedType === item.value}
-              onChange={(e) => handleTypeChange(e)}
+              checked={filters.type === item.value}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, type: e.target.value }))
+              }
               className="hidden"
             />
             <div className="flex flex-col items-center gap-2">
@@ -112,7 +99,7 @@ const AccomList = () => {
                 alt={item.text}
               />
               <span
-                className={`text-sm ${selectedType === item.value ? 'text-indigo-600 font-bold' : ''}`}>
+                className={`text-sm ${filters.type === item.value ? 'text-indigo-600 font-bold' : ''}`}>
                 {item.text}
               </span>
             </div>
@@ -124,7 +111,10 @@ const AccomList = () => {
       <div
         id="container"
         className="flex items-start gap-10">
-        <SideFilter />
+        <SideFilter
+          onSearch={setFilters}
+          filters={filters}
+        />
 
         <ul className="flex-1 flex flex-col gap-6">
           {filteredData.map((item, index) => (

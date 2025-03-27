@@ -45,8 +45,6 @@ const typeMapping = [
 ];
 
 const AccomList = () => {
-  const [selectedType, setSelectedType] = useState('');
-
   const {
     selectedCity,
     selectedSubCity,
@@ -55,7 +53,6 @@ const AccomList = () => {
     checkIn,
     checkOut,
   } = useFilterStore();
-
   const filters = {
     selectedCity,
     selectedSubCity,
@@ -63,20 +60,26 @@ const AccomList = () => {
     childrenCount,
     checkIn,
     checkOut,
-    selectedType,
   };
-
-  // 숙소 유형 선택
-  const handleTypeChange = (event) => {
-    setSelectedType(event.target.value);
-    console.log('선택한 숙소 유형 선택:', event.target.value);
-  };
-
   const { data, isLoading } = useAccomData(filters);
+  const [selectedType, setSelectedType] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    console.log('@@@' + JSON.stringify(data));
-  }, [data]);
+    if (data) {
+      if (selectedType === '') {
+        setFilteredData(data);
+      } else {
+        const filtered = data.filter((item) => item.type === selectedType);
+        setFilteredData(filtered);
+      }
+    }
+  }, [selectedType, data]);
+
+  // 숙소 유형 선택
+  const handleTypeChange = (e) => {
+    setSelectedType(e.target.value);
+  };
 
   if (isLoading) return <Loading />;
 
@@ -87,6 +90,7 @@ const AccomList = () => {
         title="여행 숙소 검색 결과"
         breadcrumb={breadcrumb}
       />
+
       {/* 숙소 유형 선택 영역 */}
       <div className="flex gap-4 mb-10">
         {typeMapping.map((item) => (
@@ -98,7 +102,7 @@ const AccomList = () => {
               name="type"
               value={item.value}
               checked={selectedType === item.value}
-              onChange={handleTypeChange}
+              onChange={(e) => handleTypeChange(e)}
               className="hidden"
             />
             <div className="flex flex-col items-center gap-2">
@@ -115,6 +119,7 @@ const AccomList = () => {
           </label>
         ))}
       </div>
+
       {/* 필터 및 숙소 리스트 */}
       <div
         id="container"
@@ -122,7 +127,7 @@ const AccomList = () => {
         <SideFilter />
 
         <ul className="flex-1 flex flex-col gap-6">
-          {data?.map((item, index) => (
+          {filteredData.map((item, index) => (
             <AccomCard
               accommodation={item}
               key={index}

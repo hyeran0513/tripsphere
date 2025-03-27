@@ -3,7 +3,7 @@ import { getAccomData } from '../services/accomService';
 
 export const useAccomData = (filters) => {
   return useQuery({
-    queryKey: ['accom', filters.selectedType],
+    queryKey: ['accom'],
     queryFn: () => getAccomData(filters),
   });
 };

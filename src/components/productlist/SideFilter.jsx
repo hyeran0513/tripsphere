@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BiChevronLeft } from 'react-icons/bi';
 import useDateSelection from '../../hooks/useDateSelection';
-import { getAllAccomData } from '../../services/productListService';
+import { getAllAccomData } from '../../services/productListService.jsx';
 import useFilterStore from '../../stores/useFilterStore.js';
 import usePriceStore from '../../stores/usePriceStore.js';
 import useProductListStore from '../../stores/useProductListStore.js';
@@ -25,6 +25,8 @@ const SideFilter = ({ setLoading, setError }) => {
     checkIn,
     checkOut,
   } = useFilterStore();
+
+  const filter = useFilterStore();
 
   const moveScroll = () => {
     scroll({ top: 0, behavior: 'smooth' });
@@ -69,15 +71,12 @@ const SideFilter = ({ setLoading, setError }) => {
       setLoading(true);
       try {
         const data = await getAllAccomData(
-          {
-            selectedCity,
-            selectedSubCity,
-            adultCount,
-            childrenCount,
-            checkIn,
-            checkOut,
-          },
-          //useFilterStore
+          selectedCity,
+          selectedSubCity,
+          adultCount,
+          childrenCount,
+          checkIn,
+          checkOut,
         );
         // console.log('쿼리 결과 데이터 길이 : ', data.length);
         setList(data);

@@ -5,8 +5,8 @@ const useFilterStore = create((set) => ({
   selectedSubCity: '',
   adultCount: 0,
   childrenCount: 0,
-  checkIn: '',
-  checkOut: '',
+  checkIn: new Date().toLocaleDateString(),
+  checkOut: new Date().toLocaleDateString(),
 
   // 지역 대분류(시·도) 변경
   setSelectedCity: (city) => set({ selectedCity: city }),
@@ -33,8 +33,8 @@ const useFilterStore = create((set) => ({
       selectedSubCity: '',
       adultCount: 0,
       childrenCount: 0,
-      checkIn: '',
-      checkOut: '',
+      checkIn: new Date().toLocaleDateString(),
+      checkOut: new Date().toLocaleDateString(),
     }),
 }));
 

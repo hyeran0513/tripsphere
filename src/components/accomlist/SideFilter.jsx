@@ -1,33 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiChevronLeft } from 'react-icons/bi';
+import CitySelector from '../common/CitySelector';
+import DateSelector from '../common/DateSelector';
+import PeopleSelector from '../common/PeopleSelector';
+import useFilterStore from '../../stores/useFilterStore';
 
 const SideFilter = ({ onSearch }) => {
+  const [openDate, setOpenDate] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(true);
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
   };
 
+  const store = useFilterStore();
+
+  const {
+    selectedCity,
+    selectedSubCity,
+    adultCount,
+    childrenCount,
+    checkIn,
+    checkOut,
+  } = store;
+
   const [localFilters, setLocalFilters] = useState({
     type: '전체',
-    stay_type: '전체',
-    city: '전체',
-    sub_city: '전체',
-    checkIn: '',
-    checkOut: '',
-    adults: 0,
-    children: 0,
+    city: selectedCity,
+    sub_city: selectedSubCity,
+    checkIn,
+    checkOut,
+    adults: adultCount,
+    children: childrenCount,
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  useEffect(() => {
+    setLocalFilters({
+      type: '전체',
+      city: selectedCity,
+      sub_city: selectedSubCity,
+      checkIn,
+      checkOut,
+      adults: adultCount,
+      children: childrenCount,
+    });
+  }, [
+    selectedCity,
+    selectedSubCity,
+    checkIn,
+    checkOut,
+    adultCount,
+    childrenCount,
+  ]);
 
-    const updatedValue =
-      name === 'adults' || name === 'children' ? parseInt(value, 10) : value;
-
-    setLocalFilters((prev) => ({ ...prev, [name]: updatedValue }));
-  };
-
+  // 검색 핸들러
   const handleSearch = () => {
     onSearch(localFilters);
   };
@@ -62,56 +88,25 @@ const SideFilter = ({ onSearch }) => {
           aria-label="검색 옵션 변경창"
           className="flex flex-col gap-y-5 p-2.5">
           {/* 여행 장소 선택 */}
-          <fieldset className="rounded-lg border border-gray-200 p-3">
+          <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
             <legend className="fieldset-legend px-2 font-medium">
               여행 장소
             </legend>
 
-            <input
-              type="text"
-              name="city"
-              placeholder="도시"
-              value={localFilters.city}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="sub_city"
-              placeholder="지역"
-              value={localFilters.sub_city}
-              onChange={handleChange}
-            />
+            <CitySelector isGlobal={true} />
           </fieldset>
 
           <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
             <legend className="fieldset-legend px-2 font-medium">일정</legend>
             {/* 체크인 · 체크아웃 */}
-            <input
-              type="date"
-              name="checkIn"
-              value={localFilters.checkIn}
-              onChange={handleChange}
-            />
-            <input
-              type="date"
-              name="checkOut"
-              value={localFilters.checkOut}
-              onChange={handleChange}
+            <DateSelector
+              stateType="filter"
+              openDate={openDate}
+              setOpenDate={setOpenDate}
             />
 
             {/* 인원수 */}
-            <input
-              type="number"
-              name="adults"
-              value={localFilters.adults}
-              onChange={handleChange}
-            />
-            <input
-              type="number"
-              name="children"
-              value={localFilters.children}
-              onChange={handleChange}
-            />
+            <PeopleSelector stateType="filter" />
           </fieldset>
 
           <button

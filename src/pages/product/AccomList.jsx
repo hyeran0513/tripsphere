@@ -46,20 +46,17 @@ const typeMapping = [
 const AccomList = () => {
   const [filters, setFilters] = useState({
     type: '전체',
-    stay_type: '전체',
   });
 
   const { data, isLoading } = useAccommodations(filters);
-
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     if (data) {
       const filtered = data.filter((item) => {
         const typeMatch = filters.type === '전체' || item.type === filters.type;
-        const stayTypeMatch =
-          filters.stay_type === '전체' || item.stay_type === filters.stay_type;
-        return typeMatch && stayTypeMatch;
+
+        return typeMatch;
       });
       setFilteredData(filtered);
     }
@@ -71,10 +68,9 @@ const AccomList = () => {
     <div className="max-w-[1200px] mx-auto py-[40px]">
       {/* 페이지 헤더 */}
       <PageHeader
-        title="여행 숙소 검색 결과"
+        title={`여행 숙소 검색 결과 (${filteredData.length}건)`}
         breadcrumb={breadcrumb}
       />
-      <p>검색 결과: {filteredData.length}건</p>
 
       {/* 숙소 유형 선택 영역 */}
       <div className="flex gap-4 mb-10">

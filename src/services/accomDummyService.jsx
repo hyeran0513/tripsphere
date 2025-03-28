@@ -207,7 +207,7 @@ export const addAccommodations = async () => {
         email: 'sm201407@staymg.com',
       },
       location: {
-        city: '경기도',
+        city: '경기',
         latitude: 37.814842,
         longitude: 127.4481589,
         place_name: '경기도 가평군 가평읍 태봉두밀로 494-37',
@@ -231,7 +231,7 @@ export const addAccommodations = async () => {
         email: 'shinsg1115@hanmail.net',
       },
       location: {
-        city: '경기도',
+        city: '경기',
         latitude: 37.8146562,
         longitude: 127.450749,
         place_name: '경기도 가평군 가평읍 태봉두밀로 475',
@@ -256,7 +256,7 @@ export const addAccommodations = async () => {
         email: '01197775359@naver.com',
       },
       location: {
-        city: '경기도',
+        city: '경기',
         latitude: 37.797005,
         longitude: 127.5076597,
         place_name: '경기도 가평군 가평읍 호반로 2329-61',
@@ -280,7 +280,7 @@ export const addAccommodations = async () => {
         email: 'venus762003@naver.com',
       },
       location: {
-        city: '경기도',
+        city: '경기',
         latitude: 37.804918,
         longitude: 127.448853,
         place_name: '경기도 가평군 가평읍 북한강변로 481-25',
@@ -324,7 +324,7 @@ export const addAccommodations = async () => {
         email: 'albang2002@naver.com',
       },
       location: {
-        city: '경기도',
+        city: '경기',
         latitude: 37.5861539,
         longitude: 127.6775904,
         place_name: '경기도 양평군 단월면 단월로 600',
@@ -349,7 +349,7 @@ export const addAccommodations = async () => {
         email: 'lkh99111@naver.com',
       },
       location: {
-        city: '경기도',
+        city: '경기',
         latitude: 37.748393,
         longitude: 127.360105,
         place_name: '경기도 가평군 상면 임초밤안골로 313',
@@ -374,7 +374,7 @@ export const addAccommodations = async () => {
         email: 'kcheol7976@naver.com',
       },
       location: {
-        city: '경기도',
+        city: '경기',
         latitude: 37.3522787,
         longitude: 128.2791835,
         place_name: '강원특별자치도 영월군 무릉도원면 무릉법흥로 1078-16',
@@ -398,7 +398,7 @@ export const addAccommodations = async () => {
         email: 'nayoukj@naver.com',
       },
       location: {
-        city: '강원도',
+        city: '강원',
         latitude: 37.2360516,
         longitude: 128.5076514,
         place_name: '강원도 영월군 영월읍 동강로 871-19',
@@ -423,7 +423,7 @@ export const addAccommodations = async () => {
         email: 'loginteam@hanmail.net',
       },
       location: {
-        city: '강원도',
+        city: '강원',
         latitude: 38.2146146,
         longitude: 128.5475587,
         place_name: '강원도 속초시 장성천길 151',
@@ -445,7 +445,7 @@ export const addAccommodations = async () => {
         email: 'yooniguy@naver.com',
       },
       location: {
-        city: '강원도',
+        city: '강원',
         latitude: 38.0071328,
         longitude: 128.7301559,
         place_name: '강원도 양양군 현북면 기사문길 21',
@@ -468,7 +468,7 @@ export const addAccommodations = async () => {
         email: 'jmms8181@naver.com',
       },
       location: {
-        city: '강원도',
+        city: '강원',
         latitude: 38.1288689,
         longitude: 128.5822228,
         place_name: '강원도 양양군 강현면 진미로 348-10',
@@ -490,7 +490,7 @@ export const addAccommodations = async () => {
         email: 'aassdd351125@gmail.com',
       },
       location: {
-        city: '강원도',
+        city: '강원',
         latitude: 38.1549249,
         longitude: 128.6076207,
         place_name: '강원도 양양군 강현면 물치1길 22-1',
@@ -513,7 +513,7 @@ export const addAccommodations = async () => {
         email: 'goldcw123@hanmail.net',
       },
       location: {
-        city: '충청북도',
+        city: '충북',
         latitude: 36.9688417,
         longitude: 127.9354852,
         place_name: '충청북도 충주시 성남2길 18-1',
@@ -537,7 +537,7 @@ export const addAccommodations = async () => {
         email: 'jaejuharu@naver.com',
       },
       location: {
-        city: '제주특별자치도',
+        city: '제주',
         latitude: 33.4911208,
         longitude: 126.4895521,
         place_name: '제주특별자치도 제주시 삼무로1길 3',
@@ -561,7 +561,7 @@ export const addAccommodations = async () => {
         email: 'agh1882@naver.com',
       },
       location: {
-        city: '제주특별자치도',
+        city: '제주',
         latitude: 35.8196952,
         longitude: 127.1522039,
         place_name: '전라북도 전주시 완산구 은행로 5-9',
@@ -585,11 +585,11 @@ export const addAccommodations = async () => {
         email: 'starmaru798@naver.com',
       },
       location: {
-        city: '제주특별자치도',
+        city: '전북',
         latitude: 35.8176774,
         longitude: 127.1494163,
         place_name: '전라북도 전주시 완산구 전동성당길 33-9',
-        sub_city: '전주시',
+        sub_city: '전주시 완산구',
       },
       rating: 3.5,
       type: 'guesthouse',
@@ -610,11 +610,11 @@ export const addAccommodations = async () => {
         email: 'bos95@naver.com',
       },
       location: {
-        city: '전라북도',
+        city: '전북',
         latitude: 35.8166144,
         longitude: 127.1557394,
         place_name: '전라북도 전주시 완산구 간납로 10',
-        sub_city: '전주시',
+        sub_city: '전주시 완산구',
       },
       rating: 3.5,
       type: 'guesthouse',
@@ -633,7 +633,7 @@ export const addAccommodations = async () => {
         email: 'webmaster@daemyungsono.com',
       },
       location: {
-        city: '부산광역시',
+        city: '부산',
         latitude: 35.1599213,
         longitude: 129.15796,
         place_name: '부산광역시 해운대구 해운대해변로237번길 12',
@@ -672,52 +672,40 @@ export const addRooms = async (accommodationIds) => {
     {
       availability: true,
       capacity: { adults: 4, children: 5 },
-      check_in: new Date('2025-03-27T14:52:09+09:00'),
-      check_out: new Date('2025-03-28T14:52:36+09:00'),
-      description: '객실 설명',
+      check_in: new Date('2025-03-29T14:52:09+09:00'),
+      check_out: new Date('2025-04-05T14:52:36+09:00'),
+      description:
+        '만 19세 미만 청소년 혼숙은 법적으로 불가하며, 이에 대한 숙소의 입실 거부 시 취소/환불이 불가합니다.\n만 19세 미만 청소년 예약에 대한 숙소의 입실 거부 시 취소/환불이 불가하오니, 예약 전 반드시 숙소에 확인하시기 바랍니다.',
       discount_rate: 0.5,
       images: [
         'https://yaimg.yanolja.com/v5/2022/06/08/17/1280/62a0dbaf2e94a2.34117913.jpg',
       ],
-      location: {
-        city: '강원도',
-        latitude: 38.1549249,
-        longitude: 128.6076207,
-        place_name: '강원도 양양군 강현면 물치1길 22-1',
-        sub_city: '양양군',
-      },
-      name: '일반실2',
+      name: 'A-타입',
       original_price: 40000,
-      room_id: 'room_002',
-      services: ['wifi'],
+      services: ['wifi', 'parking', 'barbecue'],
       stay_type: 'stay',
       stock: 3,
       type: 'double',
+      room_group_id: 'room_002',
     },
     {
       availability: true,
       capacity: { adults: 4, children: 2 },
-      check_in: new Date('2025-03-27T14:00:00+09:00'),
-      check_out: new Date('2025-03-27T16:30:00+09:00'),
-      description: '객실 설명',
+      check_in: new Date('2025-03-29T14:00:00+09:00'),
+      check_out: new Date('2025-04-04T16:30:00+09:00'),
+      description:
+        '주차 시설을 보유한 숙소입니다. (차량 이용 시 숙소에 문의해 주세요.)\n객실은 체크인 시 배정되며 사진과 다를 수 있습니다.',
       discount_rate: 0.1,
       images: [
         'https://yaimg.yanolja.com/v5/2022/06/08/17/1280/62a0dba4473fe8.39177492.jpg',
       ],
-      location: {
-        city: '강원도',
-        latitude: 38.1549249,
-        longitude: 128.6076207,
-        place_name: '강원도 양양군 강현면 물치1길 22-1',
-        sub_city: '양양군',
-      },
-      name: '일반실',
+      name: 'B-타입',
       original_price: 40000,
-      room_id: 'room_001',
-      services: ['wifi'],
+      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       stay_type: 'day_use',
       stock: 2,
       type: 'single',
+      room_group_id: 'room_001',
     },
   ];
 

@@ -6,6 +6,7 @@ import {
   getDocs,
   query,
   serverTimestamp,
+  setDoc,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -77,7 +78,7 @@ export const cancelUserOrder = async ({
   }
 };
 
-// 주문 완료 생성 (firebase)
+// 주문 완료 생성
 export const createUserOrder = async ({
   userId,
   room,
@@ -98,9 +99,7 @@ export const createUserOrder = async ({
     const updateRooms = [
       ...(roomData.booked_dates || []),
       {
-        // check_in: Timestamp.fromDate(new Date(checkin)),
         check_in: checkin,
-        // check_out: Timestamp.fromDate(new Date(checkout)),
         check_out: checkout,
       },
     ];
@@ -115,9 +114,7 @@ export const createUserOrder = async ({
     const updateAccom = [
       ...(accomData.booked_dates || []),
       {
-        // check_in: Timestamp.fromDate(new Date(checkin)),
         check_in: checkin,
-        // check_out: Timestamp.fromDate(new Date(checkout)),
         check_out: checkout,
       },
     ];
@@ -183,7 +180,7 @@ export const getOrderData = async (userId) => {
   const q = query(collection(db, 'orders'), where('user_id', '==', userId));
   const cartSnapshot = await getDocs(q);
 
-  const cartItems = await Promise.all(
+  const orderItems = await Promise.all(
     cartSnapshot.docs.map(async (docSnap) => {
       const data = docSnap.data();
 
@@ -208,7 +205,13 @@ export const getOrderData = async (userId) => {
     }),
   );
 
-  console.log('orders:', cartItems);
+  console.log('orders:', orderItems);
 
-  return cartItems;
+  return orderItems;
+};
+
+// 결제하기
+export const checkout = async (orderItem) => {
+  const ordersCollection = collection(db, 'orders');
+  await addDoc(ordersCollection, orderItem);
 };

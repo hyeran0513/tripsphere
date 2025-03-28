@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import {
   cancelUserOrder,
+  checkout,
   fetchUserOrders,
   getOrderData,
   orderQuery,
@@ -60,4 +61,20 @@ export const useOrderDataGetByOrderID = (orderID) => {
         }))
       : [],
   );
+};
+
+// 결제하기
+export const useCheckout = (userId, showToast) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (orderItem) => checkout(orderItem),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['orders', userId]);
+      showToast('success', '주문 목록에 항목을 추가했습니다.');
+    },
+    onError: () => {
+      showToast('error', '주문 목록에 항목 추가가 실패했습니다.');
+    },
+  });
 };

@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { formatNumber } from '../../../utils/format';
 import useAuthStore from '../../../stores/useAuthStore';
 import { useUserData } from '../../../hooks/useUserData';
+import { useNavigate } from 'react-router-dom';
+import { useCheckout } from '../../../hooks/useOrderData';
+import { serverTimestamp } from 'firebase/firestore';
 
 const OrderPriceForm = ({ data }) => {
   const { user } = useAuthStore();
   const { data: userData } = useUserData(user?.uid);
+  const navigate = useNavigate();
+  const [toast, setToast] = useState(null);
+
+  // 토스트 보여주기
+  const showToast = (type, message) => {
+    setToast({ type, message });
+    setTimeout(() => setToast(null), 3000);
+  };
+  const { mutate } = useCheckout(user?.uid, showToast);
 
   // 총합 구하기
   const getTotalPrice = (data) => {
@@ -17,6 +29,43 @@ const OrderPriceForm = ({ data }) => {
   // 남은 포인트
   const getRemainingPoints = (userPoints, data) => {
     return userPoints - getTotalPrice(data);
+  };
+
+  // 결제하기 버튼 클릭
+  const handleCheckOut = async (e) => {
+    e.preventDefault();
+
+    // 포인트 부족 시 결제 불가
+    if (getRemainingPoints(userData.points, data) < 0) {
+      showToast('error', '포인트가 부족합니다.');
+      return;
+    }
+
+    const orderPromises = data.map(
+      (item) =>
+        new Promise((resolve, reject) => {
+          mutate(
+            {
+              user_id: user?.uid,
+              room_id: item.roomId,
+              order_date: serverTimestamp(),
+              payment_status: 'completed',
+              used_points: item.original_price * (1 - item.discount_rate),
+            },
+            {
+              onSuccess: resolve,
+              onError: reject,
+            },
+          );
+        }),
+    );
+
+    try {
+      await Promise.all(orderPromises);
+      navigate('/orderconfirmation');
+    } catch (error) {
+      showToast('error', '결제 처리 중 오류가 발생했습니다.', error.message);
+    }
   };
 
   return (
@@ -45,7 +94,9 @@ const OrderPriceForm = ({ data }) => {
             <div className="flex flex-col gap-4 border-t border-gray-200 py-4">
               <div className="flex justify-between text-indigo-600">
                 <p>보유 포인트</p>
-                <p className="flex justify-end">{userData.points}원</p>
+                <p className="flex justify-end">
+                  {formatNumber(userData.points)}원
+                </p>
               </div>
 
               <div className="flex justify-between">
@@ -70,7 +121,7 @@ const OrderPriceForm = ({ data }) => {
           <div className="card-actions justify-end">
             <button
               type="button"
-              onClick={(e) => {}}
+              onClick={(e) => handleCheckOut(e)}
               className="cursor-pointer flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
               결제하기
             </button>

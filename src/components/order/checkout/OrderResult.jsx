@@ -11,9 +11,7 @@ import ServiceList from '../../common/ServiceList';
 
 const OrderResult = ({ room, isOpen, toggleContent }) => {
   return (
-    <div
-      key={room.accommodation_id}
-      className="border-b border-base-300 mb-4">
+    <div className="border-b border-base-300 mb-4">
       <button
         onClick={toggleContent}
         className="flex justify-between items-center w-full text-left p-4 bg-base-200 rounded-lg">

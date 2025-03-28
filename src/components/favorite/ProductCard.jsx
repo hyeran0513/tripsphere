@@ -62,7 +62,7 @@ const ProductCard = ({ favorite }) => {
           <div className="flex flex-col border-b-1 border-gray-200 pb-3.5">
             <div className="flex items-center gap-2">
               <div className="text-gray-600 font-semibold">
-                {favorite.discount_rate * 100}%
+                {(favorite.discount_rate * 100).toFixed(0)}%
               </div>
               <div
                 className="line-through text-gray-400"

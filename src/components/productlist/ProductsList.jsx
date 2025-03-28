@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import usePriceStore from '../../stores/usePriceStore';
 import useProductListStore from '../../stores/useProductListStore';
@@ -30,15 +30,7 @@ const ProductsList = ({ loading, error }) => {
   const notEnoughCondition = <NoData text={'조건에 맞는 숙소가 없습니다.'} />;
 
   useEffect(() => {
-    let array = [];
-    async function filterWaiting() {
-      setFilterLoading(true);
-      await accomCheck(array);
-      array = sortProduct(array);
-      setFiltered(typeCheck(array));
-      setFilterLoading(false);
-    }
-    filterWaiting();
+    setFiltered(typeCheck(list));
   }, [range.min, range.max, roomTypes, pagePerItem, list]);
 
   useEffect(() => {}, [filterLoading, pagePerItem]);
@@ -47,103 +39,17 @@ const ProductsList = ({ loading, error }) => {
   // 동작 : 탭으로 페이지 버튼선택후 엔터 -> 상품목록 첫번째 요소 선택
   const focus = useRef();
 
-  // 가격 정보 매칭
-  const getPrice = useCallback((val) => {
-    return val * 10000;
-  });
-
   // 숙소 형태 조건
   const typeCheck = (array) => {
+    if (array === null) console.error('array is null');
+    else if (array === undefined) console.error('array === undefined');
+    else if (array.length === 0) console.error('array.length === 0');
     return array.filter((ele) => roomTypes.includes(ele.type));
-  };
-
-  // 출력전 상품 기본 정렬.
-  const sortProduct = (array, category = 'price', orderBy = 'asc') => {
-    switch (category) {
-      case 'price':
-        // 기본설정 오름차순
-        switch (orderBy) {
-          case 'desc':
-            return array.sort((a, b) => b.final_price - a.final_price);
-          default:
-            return array.sort((a, b) => a.final_price - b.final_price);
-        }
-      // 기본설정 내림차순
-      case 'discount':
-        switch (orderBy) {
-          case 'desc':
-            return array.sort((a, b) => b.discount_rate - a.discount_rate);
-          default:
-            return array.sort((a, b) => a.discount_rate - b.discount_rate);
-        }
-      // 기본설정 내림차순
-      case 'rating':
-        switch (orderBy) {
-          case 'asc':
-            return array.sort((a, b) => a.rating - b.rating);
-          default:
-            return array.sort((a, b) => b.rating - a.rating);
-        }
-      case 'reviewsCount':
-        switch (orderBy) {
-          // 기본설정 내림차순
-          default:
-            return array.sort((a, b) => b.reviews_count - a.reviews_count);
-          case 'asc':
-            return array.sort((a, b) => a.reviews_count - b.reviews_count);
-        }
-      // 기본설정 가격, 오름차순
-      default:
-        switch (orderBy) {
-          case 'desc':
-            return array.sort((a, b) => b.final_price - a.final_price);
-          default:
-            return array.sort((a, b) => a.final_price - b.final_price);
-        }
-    }
   };
 
   // 상품목록의 상품 표출 갯수 조절
   const changePagePerItem = (e) => {
     setPagePerItem(Number(e.target.value));
-  };
-
-  // 상품(숙소) 정보 조건 필터링
-  const accomCheck = (array) => {
-    list.map((ele) => {
-      // 가격 범위 필터링
-      if (
-        getPrice(range.min) <= ele.final_price &&
-        ele.final_price <=
-          (range.max < rangeLimit.max ? getPrice(range.max) : Number.MAX_VALUE)
-      ) {
-        // 숙소 타입 필터링 정보가 있는지 확인
-        if (roomTypes.length > 0 && roomTypes !== null) {
-          // 숙소 타입 필터링에 해당
-          if (roomTypes.includes(ele.type)) {
-            duplicatedCheck(array, ele);
-          }
-        } else {
-          duplicatedCheck(array, ele);
-        }
-      }
-    });
-  };
-
-  // 표출 정보 중복 방지
-  const duplicatedCheck = (array, item) => {
-    let isContain = false;
-
-    if (array.length < 1) {
-      array.push(item);
-      return;
-    }
-
-    array.map((ele) => {
-      if (ele.id == item.id) isContain = true;
-    });
-
-    if (!isContain) array.push(item);
   };
 
   if (loading) return <div>로딩중입니다...</div>;

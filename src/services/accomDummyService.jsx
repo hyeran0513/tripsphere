@@ -692,7 +692,7 @@ export const addRooms = async (accommodationIds) => {
       availability: true,
       capacity: { adults: 4, children: 2 },
       check_in: new Date('2025-03-29T14:00:00+09:00'),
-      check_out: new Date('2025-04-04T16:30:00+09:00'),
+      check_out: new Date('2025-03-29T16:30:00+09:00'),
       description:
         '주차 시설을 보유한 숙소입니다. (차량 이용 시 숙소에 문의해 주세요.)\n객실은 체크인 시 배정되며 사진과 다를 수 있습니다.',
       discount_rate: 0.1,

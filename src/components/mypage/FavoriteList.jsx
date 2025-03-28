@@ -37,7 +37,7 @@ const FavoriteList = () => {
       </div>
 
       <ul className="list bg-base-100 rounded-box shadow-md mb-10">
-        {data.slice(0, 3).map((favorite, index) => (
+        {data?.slice(0, 3).map((favorite, index) => (
           <li
             key={index}
             className="list-row flex-col flex">

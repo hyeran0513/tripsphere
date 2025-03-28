@@ -19,8 +19,6 @@ const OrderPriceForm = ({ data }) => {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const { mutate } = useCheckout(data, showToast);
-
   // 총합 구하기
   const getTotalPrice = (data) => {
     return data?.reduce((total, item) => {
@@ -32,6 +30,13 @@ const OrderPriceForm = ({ data }) => {
   const getRemainingPoints = (userPoints, data) => {
     return userPoints - getTotalPrice(data);
   };
+
+  const { mutate } = useCheckout(
+    user?.uid,
+    data,
+    getTotalPrice(data),
+    showToast,
+  );
 
   // 결제하기 버튼 클릭
   const handleCheckOut = async (e) => {

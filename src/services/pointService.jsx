@@ -2,7 +2,6 @@ import {
   addDoc,
   collection,
   doc,
-  limit as firestoreLimit,
   getDocs,
   increment,
   orderBy,
@@ -63,17 +62,18 @@ export const usedPoints = async ({ userId, points }) => {
     const pointsRef = collection(db, 'points');
     const userRef = doc(db, 'users', userId);
 
-    // 유저 포인트 감소
+    const numberPoints = Math.abs(Number(points));
+
     await updateDoc(userRef, {
-      points: increment(-points),
+      points: increment(-numberPoints),
     });
 
     // 포인트 내역 추가
     await addDoc(pointsRef, {
       user_id: userId,
-      points: points,
+      points: numberPoints,
       title: '포인트 사용',
-      description: `${points} 포인트가 결제에 사용되었습니다.`,
+      description: `${numberPoints} 포인트가 결제에 사용되었습니다.`,
       received_date: serverTimestamp(),
     });
   } catch (error) {

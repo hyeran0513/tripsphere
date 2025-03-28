@@ -12,6 +12,8 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import { usedPoints } from './pointService';
+import { delCartItemOfroomId } from './cartService';
 
 // 유저의 주문 내역 조회 (기존)
 export const fetchUserOrders = async (userId) => {
@@ -212,9 +214,10 @@ export const getOrderData = async (userId) => {
 };
 
 // 결제하기
-export const checkout = async (orderItem) => {
+export const checkout = async (orderItem, totalPrice, userId) => {
   const ordersCollection = collection(db, 'orders');
-  const cartsCollection = collection(db, 'carts');
+
+  console.log('전체ㅔ' + totalPrice);
 
   const q = query(
     ordersCollection,
@@ -233,14 +236,8 @@ export const checkout = async (orderItem) => {
   await addDoc(ordersCollection, orderItem);
 
   // carts 컬렉션에서 해당 room_id를 가진 항목 삭제
-  const cartsQuery = query(
-    cartsCollection,
-    where('room_id', '==', orderItem.room_id),
-  );
-  const cartsSnapshot = await getDocs(cartsQuery);
+  await delCartItemOfroomId(orderItem.room_id);
 
-  cartsSnapshot.forEach(async (docSnap) => {
-    await deleteDoc(doc(db, 'carts', docSnap.id));
-    console.log('삭제된 카트 항목 ID:', docSnap.id);
-  });
+  // 포인트 사용
+  await usedPoints({ userId, points: totalPrice });
 };

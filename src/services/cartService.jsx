@@ -110,3 +110,16 @@ export const delCartItem = async (cartId) => {
   const cartRef = doc(db, 'carts', cartId);
   await deleteDoc(cartRef);
 };
+
+// room_id 기준으로 장바구니 항목 삭제
+export const delCartItemOfroomId = async (roomId) => {
+  const cartsCollection = collection(db, 'carts');
+
+  const cartsQuery = query(cartsCollection, where('room_id', '==', roomId));
+  const cartsSnapshot = await getDocs(cartsQuery);
+
+  cartsSnapshot.forEach(async (docSnap) => {
+    await deleteDoc(doc(db, 'carts', docSnap.id));
+    console.log('삭제된 카트 항목 ID:', docSnap.id);
+  });
+};

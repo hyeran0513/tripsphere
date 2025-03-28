@@ -10,13 +10,13 @@ import { useEffect } from 'react';
 const OrderHistory = () => {
   const { user } = useAuthStore();
   const { data: orderInfo, isLoading, error } = useOrderData(user?.uid);
-  console.log(orderInfo);
 
   useEffect(() => {
     if (orderInfo) {
       console.log(JSON.stringify(orderInfo));
     }
   }, [orderInfo]);
+
   if (isLoading) return <Loading />;
   if (error) return <>{error.message}</>;
 

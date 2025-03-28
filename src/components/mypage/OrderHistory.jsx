@@ -64,7 +64,7 @@ const OrderHistory = () => {
                 <div className="flex flex-col">
                   <div className=" text-md uppercase font-bold text-2xl">
                     {order.room?.name}
-                    <p className="flex items-center gap-1 text-gray-500 text-xs mt-2">
+                    <p className="flex items-center gap-2 text-gray-500 text-xs mt-2">
                       <BiBuildings />
                       {order.accom.name}
                     </p>

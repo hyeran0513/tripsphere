@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import { BiHotel, BiUser } from 'react-icons/bi';
 import { FaMapLocationDot } from 'react-icons/fa6';
 import { PiBabyLight } from 'react-icons/pi';
@@ -9,13 +8,11 @@ import RoomTypeMapping from '../../components/common/RoomTypeMapping';
 import ServiceList from '../../components/common/ServiceList';
 import ToggleJson from '../../components/common/ToggleJson';
 import OrderList from '../../components/order/checkout/OrderList';
-
 import { useRoomData } from '../../hooks/useProductData';
 import { createUserOrder } from '../../services/orderService';
 import { usedPoints } from '../../services/pointService';
 import { fetchUserData } from '../../services/userService';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
-
 import { formatNumber, formatTimeStampTime } from '../../utils/format';
 
 // 1. 카트 상품 동시 결제 테스트

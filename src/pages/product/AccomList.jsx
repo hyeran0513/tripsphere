@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import SideFilter from '../../components/accomlist/SideFilter';
 import Loading from '../../components/common/Loading';
@@ -6,7 +6,8 @@ import AccomCard from '../../components/accomlist/AccomCard';
 import { useAccommodations } from '../../hooks/useAccomData';
 import useFilterStore from '../../stores/useFilterStore';
 import AccomTypeSelector from '../../components/accomlist/AccomTypeSelector';
-import Pagination from '../../components/productlist/Pagination';
+import Pagination from '../../components/common/Pagination';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -70,12 +71,15 @@ const AccomList = () => {
     adults: adultCount,
     children: childrenCount,
   });
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const { data, isLoading } = useAccommodations(filters);
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedPerOption, setSelectedPerOption] = useState(10);
+  const [selectedPerOption, setSelectedPerOption] = useState(5);
+  const [currentPageData, setCurrentPageData] = useState([]);
 
   const perOptions = [
+    { id: 1, value: 5, name: '5개씩 보기' },
     { id: 2, value: 10, name: '10개씩 보기' },
     { id: 3, value: 15, name: '15개씩 보기' },
     { id: 4, value: 20, name: '20개씩 보기' },
@@ -105,10 +109,15 @@ const AccomList = () => {
   };
 
   // 페이지 옵션 선택 핸들러
-  const handlePagePerOptionSelect = useCallback((event) => {
-    const perPage = Number(event.target.value);
-    setSelectedPerOption(perPage);
-  }, []);
+  const handlePagePerOptionSelect = useCallback(
+    (event) => {
+      const perPage = Number(event.target.value);
+      setSelectedPerOption(perPage);
+
+      navigate(location.pathname);
+    },
+    [navigate, location],
+  );
 
   if (isLoading) return <Loading />;
 
@@ -152,7 +161,7 @@ const AccomList = () => {
 
           {/* 숙소 목록 */}
           <ul className="flex flex-col gap-6">
-            {filteredData.map((item, index) => (
+            {currentPageData.map((item, index) => (
               <AccomCard
                 accommodation={item}
                 key={index}
@@ -160,9 +169,11 @@ const AccomList = () => {
             ))}
           </ul>
 
+          {/* 페이지네이션 */}
           <Pagination
             data={filteredData}
             pagePerItem={selectedPerOption}
+            setCurrentPageData={setCurrentPageData}
           />
         </div>
       </div>

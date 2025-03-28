@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -213,6 +214,7 @@ export const getOrderData = async (userId) => {
 // 결제하기
 export const checkout = async (orderItem) => {
   const ordersCollection = collection(db, 'orders');
+  const cartsCollection = collection(db, 'carts');
 
   const q = query(
     ordersCollection,
@@ -221,10 +223,24 @@ export const checkout = async (orderItem) => {
   );
   const querySnapshot = await getDocs(q);
 
-  // if (!querySnapshot.empty) {
-  //   console.log('이미 존재하는 주문입니다. room_id:', orderItem.room_id);
-  //   return;
-  // }
+  // 이미 존재하는 주문이 있으면 종료
+  if (!querySnapshot.empty) {
+    console.error('이미 존재하는 주문입니다. room_id:', orderItem.room_id);
+    return;
+  }
 
+  // 주문을 orders 컬렉션에 추가
   await addDoc(ordersCollection, orderItem);
+
+  // carts 컬렉션에서 해당 room_id를 가진 항목 삭제
+  const cartsQuery = query(
+    cartsCollection,
+    where('room_id', '==', orderItem.room_id),
+  );
+  const cartsSnapshot = await getDocs(cartsQuery);
+
+  cartsSnapshot.forEach(async (docSnap) => {
+    await deleteDoc(doc(db, 'carts', docSnap.id));
+    console.log('삭제된 카트 항목 ID:', docSnap.id);
+  });
 };

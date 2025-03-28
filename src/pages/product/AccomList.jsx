@@ -157,7 +157,7 @@ const AccomList = () => {
           <div className="flex justify-end mb-10">
             <select
               id="perPage"
-              className="rounded-lg border border-gray-300 px-4 py-2"
+              className="select border border-gray-400 rounded-lg w-40"
               value={selectedPerOption}
               onChange={handlePagePerOptionSelect}>
               {perOptions.map((item) => (

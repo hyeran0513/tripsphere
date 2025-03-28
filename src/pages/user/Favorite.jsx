@@ -83,12 +83,12 @@ const Favorite = () => {
         breadcrumb={breadcrumb}
         hasBackButton={true}
       />
-      <div className="my-8 flex justify-end rounded-2xl">
+      <div className="my-8 flex gap-2 justify-end rounded-2xl">
         <select
           value={searchOption}
           id="searchOption"
           onChange={(e) => setSearchOption(e.target.value)}
-          className="select border border-gray-400 rounded-l-2xl w-40">
+          className="select border border-gray-400 rounded-lg w-40">
           <option value="name">숙소명</option>
           <option value="location">도시명</option>
           <option value="place">장소명</option>
@@ -104,7 +104,6 @@ const Favorite = () => {
           onKeyUp={handleKeyUp}
           className="input border border-gray-400 p-4"
         />
-
         <button
           type="submit"
           onClick={handleSearchButton}
@@ -130,12 +129,12 @@ const Favorite = () => {
         breadcrumb={breadcrumb}
         hasBackButton={true}
       />
-      <div className="my-8 flex justify-end rounded-2xl">
+      <div className="my-8 flex gap-2 justify-end rounded-2xl">
         <select
           value={searchOption}
           id="searchOption"
           onChange={(e) => setSearchOption(e.target.value)}
-          className="select border border-gray-400 rounded-l-2xl w-40">
+          className="select border border-gray-400 rounded-lg w-40">
           <option value="name">숙소명</option>
           <option value="location">도시명</option>
           <option value="place">장소명</option>

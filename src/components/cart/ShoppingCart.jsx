@@ -147,7 +147,12 @@ const ShoppingCart = ({ open, setOpen }) => {
                         key={item.id}
                         className="p-4 border border-gray-200 rounded-lg">
                         <div className="border-b border-gray-200 mb-4 pb-4">
-                          <p className="font-semibold">{item?.accom?.name}</p>
+                          <Link
+                            to={`/product/${item.room.accommodation_id}`}
+                            onClick={() => setOpen(false)}
+                            className="font-semibold  hover:text-indigo-600">
+                            {item?.accom?.name}
+                          </Link>
                           <div className="mt-1 text-xs text-gray-500 flex items-center gap-1">
                             <BiMap />
                             {item?.accom?.location.place_name}
@@ -283,7 +288,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                     <button
                       onClick={handleOrder}
                       disabled={selectedItems.length === 0}
-                      className="flex justify-center w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700 disabled:bg-gray-400">
+                      className="flex justify-center w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium cursor-pointer hover:bg-indigo-700 disabled:bg-gray-400">
                       주문하기
                     </button>
                   </div>

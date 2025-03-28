@@ -63,7 +63,7 @@ const OrderList = ({ orderInfo }) => {
             </div>
             <div className="flex justify-between">
               {compareToday(order.room.check_in) && (
-                <div class="mr-2 badge badge-soft badge-primary text-[10px]">
+                <div className="mr-2 badge badge-soft badge-primary text-[10px]">
                   {compareToday(order.room.check_in)}
                 </div>
               )}

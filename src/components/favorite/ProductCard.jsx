@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { BiCalendarAlt, BiTrash, BiHeart } from 'react-icons/bi';
+import React, { useEffect, useState } from 'react';
+import { BiSolidStar, BiSolidMap, BiTrash } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-import { calculateDiscountedPrice } from '../../utils/discountedPrice';
-import { formatNumber, formatDate } from '../../utils/format';
-import TypeMapping from '../common/TypeMapping';
+import { formatNumber } from '../../utils/format';
 import { useControlFavorite } from '../../hooks/useFavoriteData';
 import ToastMessage from '../common/ToastMessage';
 import useAuthStore from '../../stores/useAuthStore';
+import TypeMapping from '../common/TypeMapping';
 
 const ProductCard = ({ favorite }) => {
   const [toast, setToast] = useState(null);
@@ -21,105 +20,135 @@ const ProductCard = ({ favorite }) => {
 
   const handleDelete = (e) => {
     if (e) e.preventDefault();
-    favoriteDelMutation(favorite.accomId);
+    favoriteDelMutation(favorite.id);
   };
 
-  return (
-    <Link to={`/product/${favorite.accomId}`}>
-      <div className="flex flex-col items-start group card bg-base-100 transition-shadow gap-[20px]">
-        <div className="h-full relative">
-          <div className="h-[200px] rounded-md overflow-hidden">
-            <img
-              src={favorite.images[0]}
-              alt={favorite.name}
-              className="h-full object-cover"
-            />
-          </div>
-        </div>
+  useEffect(() => {
+    console.log('favorite' + JSON.stringify(favorite));
+  }, [favorite]);
 
+  return (
+    <>
+      <Link
+        to={`/product/${favorite.id}`}
+        className="flex flex-col gap-6 relative group">
         <button
-          className="btn btn-square btn-ghost indicator-item badge absolute top-2 right-2 transition opacity-0 hover:scale-110 group-hover:opacity-100 "
+          className="btn btn-square btn-ghost indicator-item badge absolute top-2 right-2 transition opacity-0 hover:scale-110 group-hover:opacity-100"
           onClick={handleDelete}
           disabled={isFavoriteLoading}>
           <BiTrash className="size-[1.2em]" />
         </button>
 
-        <div className="card-body w-full py-0 px-0 gap-0">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2 w-full">
-              <TypeMapping type={favorite.type} />
-
-              <div className="badge badge-soft badge-info text-xs truncate line-clamp-1 leading-6">
-                {favorite.location.city} {favorite.location.sub_city}
-              </div>
-            </div>
-          </div>
-
-          <h2 className="mt-2 transition-colors card-title text-lg pb-3.5">
-            <div className="line-clamp-1">{favorite.name}</div>
-          </h2>
-
-          <div className="flex flex-col border-b-1 border-gray-200 pb-3.5">
-            <div className="flex items-center gap-2">
-              <div className="text-gray-600 font-semibold">
-                {(favorite.discount_rate * 100).toFixed(0)}%
-              </div>
-              <div
-                className="line-through text-gray-400"
-                title="정가">
-                {formatNumber(favorite.original_price)}원
-              </div>
-            </div>
-
-            <div
-              className="font-bold text-lg text-red-600"
-              title="할인가">
-              {formatNumber(
-                calculateDiscountedPrice(
-                  favorite.original_price,
-                  favorite.discount,
-                ),
-              )}
-              원
-            </div>
-          </div>
-
-          <div
-            className=""
-            title="패키지 상세정보들">
-            <div className="py-4 pr-4">
-              <div className="">
-                <div className="flex gap-4 items-center">
-                  <div className="flex items-center gap-2 min-w-[90px]">
-                    <BiCalendarAlt className="text-base" />
-                    <p className="font-bold">체크인</p>
-                  </div>
-                  <time dateTime={favorite.check_in}>
-                    {formatDate(favorite.check_in)}
-                  </time>
-                </div>
-
-                <div className="flex gap-4 items-center">
-                  <div className="flex items-center gap-2 min-w-[90px]">
-                    <BiCalendarAlt className="text-base" />
-                    <p className="font-bold">체크아웃</p>
-                  </div>
-                  <time dateTime={favorite.check_out}>
-                    {formatDate(favorite.check_out)}
-                  </time>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {toast && (
-          <ToastMessage
-            toast={toast}
-            setToast={setToast}
+        <div className="w-[100%] h-[200px] rounded-md overflow-hidden">
+          <img
+            src={favorite.images[0]}
+            alt={favorite.name}
+            className="w-full h-full object-cover"
           />
-        )}
-      </div>
-    </Link>
+        </div>
+
+        <div className="flex-1">
+          <div className="flex justify-between">
+            <div>
+              <div className="flex gap-2 mb-2">
+                {/* 숙소 유형 */}
+                <TypeMapping type={favorite.type} />
+
+                <div className="badge bg-yellow-500 text-xs gap-0.5">
+                  <BiSolidStar />
+                  {favorite.rating}
+                </div>
+              </div>
+
+              {/* 숙소명 */}
+              <div className="mb-0.5 transition-colors card-title text-lg">
+                {favorite.name}
+              </div>
+
+              {/* 위치 */}
+              <div
+                aria-label={`숙소 위치 ${favorite.rating}`}
+                className="flex items-center gap-1 text-xs text-gray-500">
+                <BiSolidMap /> {favorite.location.city}{' '}
+                {favorite.location.sub_city}
+              </div>
+            </div>
+          </div>
+
+          {favorite.rooms.map((room) => {
+            // 숙박과 대실을 각각 하나씩만 선택
+            const stayRoom = favorite.rooms.find(
+              (room) => room.stay_type === 'stay',
+            );
+            const dayUseRoom = favorite.rooms.find(
+              (room) => room.stay_type === 'day_use',
+            );
+
+            // 조건에 맞는 객실을 출력
+            return (
+              <>
+                {stayRoom && room.id === stayRoom.id && (
+                  <div
+                    key={stayRoom.id}
+                    className="mt-4 pl-2 flex justify-between border-l-3 border-gray-200">
+                    <h3 className="text-xs font-semibold">숙박</h3>
+                    <div className="flex flex-col items-end">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-gray-900">
+                          {stayRoom.discount_rate * 100}%
+                        </span>
+                        <span className="line-through text-sm text-gray-300">
+                          {formatNumber(stayRoom.original_price)}원
+                        </span>
+                      </div>
+                      <div className="font-semibold text-lg text-gray-900">
+                        {formatNumber(
+                          stayRoom.original_price *
+                            (1 - stayRoom.discount_rate),
+                        )}{' '}
+                        원
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {dayUseRoom && room.id === dayUseRoom.id && (
+                  <div
+                    key={dayUseRoom.id}
+                    className="mt-4 pl-2 flex justify-between border-l-3 border-gray-200">
+                    <h3 className="text-xs font-semibold">대실</h3>
+                    <div className="mt-4 flex flex-col items-end">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-gray-900">
+                          {dayUseRoom.discount_rate * 100}%
+                        </span>
+                        <span className="line-through text-sm text-gray-300">
+                          {formatNumber(dayUseRoom.original_price)}원
+                        </span>
+                      </div>
+                      <div className="font-semibold text-lg text-gray-900">
+                        {formatNumber(
+                          dayUseRoom.original_price *
+                            (1 - dayUseRoom.discount_rate),
+                        )}{' '}
+                        원
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            );
+          })}
+        </div>
+      </Link>
+
+      {toast && (
+        <ToastMessage
+          toast={toast}
+          setToast={setToast}
+        />
+      )}
+    </>
   );
 };
 

@@ -4,6 +4,8 @@ import {
   arrayUnion,
   arrayRemove,
   getDoc,
+  getDocs,
+  collection,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { fetchAccomData } from './productService.';
@@ -60,11 +62,42 @@ export const checkFavorite = async (userId, accommodationId) => {
 export const getFavoriteAccomm = async (userId) => {
   const userData = await getUserWishlist(userId);
 
+  // 숙소
   const accomPromises = userData.wishlist.map(async (item) => {
-    return fetchAccomData(item);
+    const accomDoc = doc(db, 'accommodations', item);
+    const accomSnap = await getDoc(accomDoc);
+
+    if (accomSnap.exists()) {
+      const data = accomSnap.data();
+      return { ...data, id: accomSnap.id };
+    } else {
+      return null;
+    }
   });
 
+  // 객실
   const accommodations = await Promise.all(accomPromises);
+  const filteredAccommodations = accommodations.filter(
+    (accom) => accom !== null,
+  );
 
-  return accommodations.filter((accom) => accom !== null);
+  const roomSnapshot = await getDocs(collection(db, 'rooms'));
+  const roomMap = {};
+
+  roomSnapshot.forEach((doc) => {
+    const room = doc.data();
+    const accomId = room.accommodation_id;
+    if (!roomMap[accomId]) {
+      roomMap[accomId] = [];
+    }
+    roomMap[accomId].push({ id: doc.id, ...room });
+  });
+
+  const favoriteItems = filteredAccommodations.map((accom) => ({
+    ...accom,
+    rooms: roomMap[accom.id] || [],
+  }));
+
+  console.log('최종:', favoriteItems);
+  return favoriteItems;
 };

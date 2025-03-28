@@ -4,6 +4,7 @@ import SideFilter from '../../components/accomlist/SideFilter';
 import Loading from '../../components/common/Loading';
 import AccomCard from '../../components/accomlist/AccomCard';
 import { useAccommodations } from '../../hooks/useAccomData';
+import useFilterStore from '../../stores/useFilterStore';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -44,8 +45,23 @@ const typeMapping = [
 ];
 
 const AccomList = () => {
+  const {
+    selectedCity,
+    selectedSubCity,
+    adultCount,
+    childrenCount,
+    checkIn,
+    checkOut,
+  } = useFilterStore();
+
   const [filters, setFilters] = useState({
     type: '전체',
+    city: selectedCity,
+    sub_city: selectedSubCity,
+    checkIn,
+    checkOut,
+    adults: adultCount,
+    children: childrenCount,
   });
 
   const { data, isLoading } = useAccommodations(filters);
@@ -55,18 +71,28 @@ const AccomList = () => {
     if (data) {
       const filtered = data.filter((item) => {
         const typeMatch = filters.type === '전체' || item.type === filters.type;
-
         return typeMatch;
       });
       setFilteredData(filtered);
     }
   }, [data, filters]);
 
+  const handleSearch = () => {
+    setFilters((prev) => ({
+      ...prev,
+      city: selectedCity,
+      sub_city: selectedSubCity,
+      checkIn,
+      checkOut,
+      adults: adultCount,
+      children: childrenCount,
+    }));
+  };
+
   if (isLoading) return <Loading />;
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">
-      {/* 페이지 헤더 */}
       <PageHeader
         title={`여행 숙소 검색 결과 (${filteredData.length}건)`}
         breadcrumb={breadcrumb}
@@ -95,7 +121,9 @@ const AccomList = () => {
                 alt={item.text}
               />
               <span
-                className={`text-sm ${filters.type === item.value ? 'text-indigo-600 font-bold' : ''}`}>
+                className={`text-sm ${
+                  filters.type === item.value ? 'text-indigo-600 font-bold' : ''
+                }`}>
                 {item.text}
               </span>
             </div>
@@ -103,14 +131,10 @@ const AccomList = () => {
         ))}
       </div>
 
-      {/* 필터 및 숙소 리스트 */}
       <div
         id="container"
         className="flex items-start gap-10">
-        <SideFilter
-          onSearch={setFilters}
-          filters={filters}
-        />
+        <SideFilter handleSearch={handleSearch} />
 
         <ul className="flex-1 flex flex-col gap-6">
           {filteredData.map((item, index) => (

@@ -51,9 +51,7 @@ const getAccommodationIds = async (accommodationIds, filters) => {
 };
 
 // 숙소 전체 조회 및 조건 필터
-export const getFilteredAccommodations = async ({ queryKey }) => {
-  const [_key, filters] = queryKey;
-
+export const getFilteredAccommodations = async (filters) => {
   // 숙소 데이터 조회
   const accomSnapshot = await getDocs(collection(db, 'accommodations'));
   let docs = accomSnapshot.docs.map((doc) => ({

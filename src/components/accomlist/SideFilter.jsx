@@ -5,57 +5,12 @@ import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
 import useFilterStore from '../../stores/useFilterStore';
 
-const SideFilter = ({ onSearch }) => {
+const SideFilter = ({ handleSearch }) => {
   const [openDate, setOpenDate] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(true);
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
-  };
-
-  const store = useFilterStore();
-
-  const {
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-  } = store;
-
-  const [localFilters, setLocalFilters] = useState({
-    type: '전체',
-    city: selectedCity,
-    sub_city: selectedSubCity,
-    checkIn,
-    checkOut,
-    adults: adultCount,
-    children: childrenCount,
-  });
-
-  useEffect(() => {
-    setLocalFilters({
-      type: '전체',
-      city: selectedCity,
-      sub_city: selectedSubCity,
-      checkIn,
-      checkOut,
-      adults: adultCount,
-      children: childrenCount,
-    });
-  }, [
-    selectedCity,
-    selectedSubCity,
-    checkIn,
-    checkOut,
-    adultCount,
-    childrenCount,
-  ]);
-
-  // 검색 핸들러
-  const handleSearch = () => {
-    onSearch(localFilters);
   };
 
   return (

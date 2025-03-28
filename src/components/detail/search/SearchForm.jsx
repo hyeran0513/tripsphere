@@ -35,13 +35,6 @@ const SearchForm = ({
       adults,
       children,
     });
-
-    console.log('필터:' + JSON.stringify(filters));
-
-    console.log('?@@@@@ 검색');
-    console.log(datePickerDate);
-    console.log('어른:' + adults);
-    console.log('어린이:' + children);
   };
 
   return (

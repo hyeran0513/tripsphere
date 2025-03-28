@@ -135,6 +135,7 @@ export const createUserOrder = async ({
     used_points: points,
     duration: serverTimestamp(),
     selectedTime: selectedTime,
+    order_date: serverTimestamp(),
   });
 
   console.log('docRef.id : ', docRef.id);

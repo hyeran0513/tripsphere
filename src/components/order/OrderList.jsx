@@ -21,78 +21,72 @@ import CancelOrderModal from './CancelOrderModal';
   accomId: room.accommodation_id, 숙소 아이디
   reservationInfo: reservationInfoEle, (예약정보)
 */
-const OrderList = ({ orderList }) => {
+const OrderList = ({ orderInfo }) => {
   const navigate = useNavigate();
-  const { reservationInfo } = useRoomSelectionStore();
-  const cancelOrderMutation = useCancelOrder();
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  // const { reservationInfo } = useRoomSelectionStore();
+  // const cancelOrderMutation = useCancelOrder();
+  // const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const [orderIDList, setOrderIDList] = useState(null);
+  // const [orderIDList, setOrderIDList] = useState(null);
 
-  console.log('orderList - orderList: ', orderList.flat());
-  console.log('orderList - reservationInfo : ', reservationInfo);
+  // // console.log('orderList - orderList: ', orderList.flat());
+  // // console.log('orderList - reservationInfo : ', reservationInfo);
 
-  const [orderInfo, setOrderInfo] = useState(orderList);
-  const [forOrderTimes, setForOrderTime] = useState();
+  // console.log('@@' + JSON.stringify(orderList));
 
-  console.log('orderInfo : ', orderInfo);
+  // const [orderInfo, setOrderInfo] = useState(orderList);
+  // const [forOrderTimes, setForOrderTime] = useState();
+
+  // console.log('orderInfo : ', orderInfo);
+
+  // useEffect(() => {
+  //   // console.log('OrderList data : ', orderList.flat());
+  // }, []);
+
+  // // 주문정보의 아이디들 관리
+  // useEffect(() => {
+  //   let arr = orderList.map((ele) => ele.orderId);
+  //   console.log('orderIDList : ', arr);
+  //   setOrderIDList(arr);
+  // }, [orderList]);
+
+  // useEffect(() => {
+  //   const getOrder = async () => {
+  //     const orders = await orderQuery(orderIDList);
+  //     setForOrderTime(orders);
+  //     console.log('orders :', orders);
+  //   };
+  //   getOrder();
+  // }, [orderIDList]);
+
+  // useEffect(() => {
+  //   console.log('forOrderTimes : ', forOrderTimes);
+  // }, [forOrderTimes]);
+
+  // // 주문 취소 처리
+  // const handleCancelClick = (order) => {
+  //   setSelectedOrder(order);
+  // };
+
+  // // 주문 취소 요청 -> firebase
+  // const handleCancelConfirm = (reason) => {
+  //   if (selectedOrder) {
+  //     cancelOrderMutation.mutate({
+  //       orderId: selectedOrder.id,
+  //       userId: selectedOrder.user_id,
+  //       usedPoints: selectedOrder.used_points,
+  //       reason,
+  //     });
+  //   }
+  // };
+
+  // if (!orderInfo) return <Loading />;
+  // if (!forOrderTimes) return <>주문결과 불러오는 중</>;
+  // if (orderInfo.length === 0) return <p>주문 결과 정보가 없습니다.</p>;
 
   useEffect(() => {
-    console.log('OrderList data : ', orderList.flat());
+    console.log('???' + JSON.stringify(orderInfo));
   }, []);
-
-  // 주문정보의 아이디들 관리
-  useEffect(() => {
-    let arr = orderList.map((ele) => ele.orderId);
-    console.log('orderIDList : ', arr);
-    setOrderIDList(arr);
-  }, [orderList]);
-
-  useEffect(() => {
-    const getOrder = async () => {
-      const orders = await orderQuery(orderIDList);
-      setForOrderTime(orders);
-      console.log('orders :', orders);
-    };
-    getOrder();
-  }, [orderIDList]);
-
-  useEffect(() => {
-    console.log('forOrderTimes : ', forOrderTimes);
-  }, [forOrderTimes]);
-
-  // 주문 취소 처리
-  const handleCancelClick = (order) => {
-    setSelectedOrder(order);
-  };
-
-  // 주문 취소 요청 -> firebase
-  const handleCancelConfirm = (reason) => {
-    if (selectedOrder) {
-      cancelOrderMutation.mutate({
-        orderId: selectedOrder.id,
-        userId: selectedOrder.user_id,
-        usedPoints: selectedOrder.used_points,
-        reason,
-      });
-    }
-  };
-
-  // 오늘 날짜 가져오기
-  // const today = new Date();
-  // today.setHours(0, 0, 0, 0);
-
-  // // 체크인 날짜 지나면 주문 내역에서 제외
-  // const validOrders = orderInfo
-  //   ? orderInfo.filter((order) => {
-  //       const checkInDate = new Date(order.check_in);
-  //       return checkInDate >= today; // 체크인 날짜가 오늘 이후인 주문만 표시
-  //     })
-  //   : [];
-
-  if (!orderInfo) return <Loading />;
-  if (!forOrderTimes) return <>주문결과 불러오는 중</>;
-  if (orderInfo.length === 0) return <p>주문 결과 정보가 없습니다.</p>;
 
   return (
     <>
@@ -102,19 +96,12 @@ const OrderList = ({ orderList }) => {
             key={index}
             className="list-row flex-col flex my-3 mx-5 border-gray-200">
             <div className="border-b border-stone-200 flex justify-between items-center">
-              <div>
-                {' '}
-                {forOrderTimes.find((ele) => ele.id === order.orderId)
-                  ? formatDate(
-                      forOrderTimes.find((ele) => ele.id === order.orderId)
-                        .duration,
-                    )
-                  : 'N/A'}
-              </div>
+              <div>{formatDate(order.order_date)}</div>
               <button
                 type="button"
+                className="cursor-pointer"
                 onClick={() =>
-                  navigate(`/product/${order.room.accomData.accommodation_id}`)
+                  navigate(`/product/${order.room.accommodation_id}`)
                 }>
                 <BiChevronRight className="size-6" />
               </button>
@@ -127,7 +114,7 @@ const OrderList = ({ orderList }) => {
                   src={
                     order.room?.images?.[0] || 'https://via.placeholder.com/100'
                   }
-                  alt={order.room?.accomData.name || '숙소 정보 없음'}
+                  alt={order.accom.name || '숙소 정보 없음'}
                 />
                 <div className="flex flex-col">
                   <h2 className="text-lg font-bold">
@@ -137,7 +124,7 @@ const OrderList = ({ orderList }) => {
                       </div>
                     )}
 
-                    {order.room?.accomData.name || '숙소 정보 없음'}
+                    {order.accom.name || '숙소 정보 없음'}
                     <p className="flex items-center gap-1 text-gray-500 text-xs">
                       <BiBuildings />
                       {order.room.name}
@@ -151,7 +138,7 @@ const OrderList = ({ orderList }) => {
                   <div className="flex items-center gap-2 mt-2">
                     <BiUser />
                     <div className="mr-1 text-sm">
-                      성인: {order.room.capacity?.adults ?? 0}명, 어린이:{' '}
+                      성인: {order.room.capacity?.adults ?? 0}명, 미성년자:{' '}
                       {order.room.capacity.children ?? 0}명
                     </div>
                   </div>
@@ -180,8 +167,7 @@ const OrderList = ({ orderList }) => {
               <div className="flex flex-col justify-between">
                 <div className="text-lg">
                   {formatNumber(
-                    order.room.original_price *
-                      (1 - order.room.accomData.discount_rate),
+                    order.room.original_price * (1 - order.accom.discount_rate),
                   )}
                   원
                 </div>
@@ -194,10 +180,10 @@ const OrderList = ({ orderList }) => {
                         ? 'bg-gray-400 text-white cursor-not-allowed'
                         : 'bg-red-500 text-white hover:bg-red-700'
                     }`}
-                    onClick={() =>
-                      !compareToday(order.room.check_in) &&
-                      handleCancelClick(order)
-                    }
+                    // onClick={() =>
+                    //   !compareToday(order.room.check_in) &&
+                    //   handleCancelClick(order)
+                    // }
                     disabled={compareToday(order.room.check_in)}>
                     {compareToday(order.room.check_in)
                       ? '취소 불가'
@@ -210,13 +196,13 @@ const OrderList = ({ orderList }) => {
         ))}
       </ul>
 
-      {selectedOrder && (
+      {/* {selectedOrder && (
         <CancelOrderModal
           isOpen={!!selectedOrder}
           onClose={() => setSelectedOrder(null)}
           onConfirm={handleCancelConfirm}
         />
-      )}
+      )} */}
     </>
   );
 };

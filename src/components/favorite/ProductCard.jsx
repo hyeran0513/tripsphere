@@ -25,7 +25,7 @@ const ProductCard = ({ favorite }) => {
   };
 
   return (
-    <Link to={`/prodect/${favorite.accomId}`}>
+    <Link to={`/product/${favorite.accomId}`}>
       <div className="flex flex-col items-start group card bg-base-100 transition-shadow gap-[20px]">
         <div className="h-full relative">
           <div className="h-[200px] rounded-md overflow-hidden">
@@ -46,10 +46,10 @@ const ProductCard = ({ favorite }) => {
 
         <div className="card-body w-full py-0 px-0 gap-0">
           <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full">
               <TypeMapping type={favorite.type} />
 
-              <div className="badge badge-soft badge-info text-xs">
+              <div className="badge badge-soft badge-info text-xs truncate line-clamp-1 leading-6">
                 {favorite.location.city} {favorite.location.sub_city}
               </div>
             </div>
@@ -62,7 +62,7 @@ const ProductCard = ({ favorite }) => {
           <div className="flex flex-col border-b-1 border-gray-200 pb-3.5">
             <div className="flex items-center gap-2">
               <div className="text-gray-600 font-semibold">
-                {favorite.discount_rate * 100}%
+                {(favorite.discount_rate * 100).toFixed(0)}%
               </div>
               <div
                 className="line-through text-gray-400"

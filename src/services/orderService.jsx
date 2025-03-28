@@ -141,7 +141,7 @@ export const createUserOrder = async ({
   return docRef.id;
 };
 
-// 주문아이디로 주문조회
+// 주문아이디 배열로 주문조회
 export const orderQuery = async (orderIds) => {
   if (!Array.isArray(orderIds) || orderIds.length === 0) return [];
 

@@ -15,10 +15,19 @@ import { fetchUserData } from '../../services/userService';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 import { formatNumber, formatTimeStampTime } from '../../utils/format';
 
+// 1. 카트 상품 동시 결제 테스트
+// 1-1. 카트 상품 동시 결제시 카트 정보 비우기 필요.
+// 2. 상품 결제 페이지 벗어날때 예약정보 초기화 필요?
+// 3. 잔액부족으로 인한 결제 실패 테스트 필요
+
 const CheckoutExample = () => {
   const { reservationInfo } = useRoomSelectionStore();
+
+  console.log('reservationInfo : ', reservationInfo);
+  // 방 아이디 일괄저장할 상태
   const [saveRoomId, setSaveRoomId] = useState(null);
-  const { data } = useRoomData(saveRoomId);
+  // 객실정보 조회 결과를 저장할 상태
+  const { data, isLoading, error } = useRoomData(saveRoomId);
   const [roomDataArray, setRoomDataArray] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
@@ -27,19 +36,7 @@ const CheckoutExample = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const [userInfo, setUserInfo] = useState(null);
 
-  useEffect(() => {
-    setLoading(true);
-    console.log(user.uid);
-
-    const userDataWait = async (uid) => {
-      const data = await fetchUserData(uid);
-      console.log(data);
-      setUserInfo(data);
-      setLoading(false);
-    };
-    userDataWait(user.uid);
-  }, []);
-
+  // 버튼 클릭시 동작
   const payment = async (event) => {
     event.preventDefault();
     console.log('payPoint : ', totalPrice);
@@ -57,8 +54,21 @@ const CheckoutExample = () => {
       // 2-1. 비교결과 유저의 포인트가 적다면
       // 유저의 포인트는 처리하지 않고,
       // 결제 내역 (컬랙션 order)에 주문 취소 or 주문 실패로 남긴다
-      for (let room of roomDataArray) {
-        console.log('room.accommodation_id : ', room.accommodation_id);
+      for (let room of roomDataArray.flat()) {
+        console.log(
+          'let room of roomDataArray roomDataArray: ',
+          roomDataArray.flat(),
+        );
+        console.log('let room of roomDataArray room: ', room);
+        console.log(
+          'let room of roomDataArray room.accommodation_id : ',
+          room.accommodation_id,
+        );
+
+        const reservationInfoEle = reservationInfo.filter((ele) => {
+          console.log(ele);
+          ele.id === room.id;
+        });
 
         const orderId = await createUserOrder({
           userId: user.uid,
@@ -68,71 +78,111 @@ const CheckoutExample = () => {
           checkout: room.check_out,
           status: 'canceled',
           points: 0,
-          selectedTime: reservationInfo?.selectedTime,
+          selectedTime: reservationInfoEle.selectedTime
+            ? reservationInfoEle.selectedTime
+            : [],
         });
 
-        // 주문아이디, 유저아이디, 방 정보, 숙소아이디 전달
+        // 주문아이디, 유저아이디, 방 정보, 숙소아이디, 주문정보 전달
         console.log('orderReulst :: ', {
           orderId,
           userId: user.uid,
           room: room,
           accomId: room.accommodation_id,
+          reservationInfo: reservationInfoEle,
         });
         orderResult.push({
           orderId,
           userId: user.uid,
           room: room,
           accomId: room.accommodation_id,
+          reservationInfo: reservationInfoEle,
         });
       }
     } else {
       // 2-2. 비교결과 상품 합계가 적다면
       // 유저의 포인트 감소시킨 쿼리 결과 반영후
       // 결제 내역 (컬랙션 order)을 생성한다.
-      for (let room of roomDataArray) {
-        console.log('room.accommodation_id : ', room.accommodation_id);
+      for (let room of roomDataArray.flat()) {
+        console.log(
+          'let room of roomDataArray roomDataArray: ',
+          roomDataArray.flat(),
+        );
+        console.log('let room of roomDataArray room: ', room);
+        console.log(
+          'let room of roomDataArray room.accommodation_id : ',
+          room.accommodation_id,
+        );
 
         usedPoints({
           userId: user.uid,
-          points:
-            room.accomData.original_price * (1 - room.accomData.discount_rate),
+          points: room.original_price * (1 - room.accomData.discount_rate),
         });
+
+        console.log('room info for compare reservation : ', room);
+        const reservationInfoEle = reservationInfo.filter((ele) => {
+          console.log(ele);
+          ele.id === room.id;
+        });
+        console.log('reservationInfoEle : ', reservationInfoEle);
+
+        // 주문정보 입력
         const orderId = await createUserOrder({
           userId: user.uid,
           room: room.roomId,
           accomId: room.accommodation_id,
           checkin: room.check_in,
           checkout: room.check_out,
-          points:
-            room.accomData.original_price * (1 - room.accomData.discount_rate),
-          selectedTime: reservationInfo.selectedTime
-            ? reservationInfo.selectedTime
+          points: room.original_price * (1 - room.accomData.discount_rate),
+          selectedTime: reservationInfoEle.selectedTime
+            ? reservationInfoEle.selectedTime
             : [],
         });
 
-        // 주문아이디, 유저아이디, 방 정보, 숙소아이디 전달
+        // 주문아이디, 유저아이디, 방 정보, 숙소아이디, 주문정보 전달
         console.log('orderReulst :: ', {
           orderId,
           userId: user.uid,
           room: room,
           accomId: room.accommodation_id,
+          reservationInfo: reservationInfoEle,
         });
         orderResult.push({
           orderId,
           userId: user.uid,
           room: room,
           accomId: room.accommodation_id,
+          reservationInfo: reservationInfoEle,
         });
       }
     }
     navigate('/orderconfirmation', { state: { orderList: [...orderResult] } });
   };
 
+  // 유저의 아이디, 포인트 정보 호출용
+  useEffect(() => {
+    setLoading(true);
+    console.log(user.uid);
+
+    const userDataWait = async (uid) => {
+      const data = await fetchUserData(uid);
+      console.log(data);
+      setUserInfo(data);
+      setLoading(false);
+    };
+    userDataWait(user.uid);
+  }, []);
+
+  // 방 아이디 일괄저장
   useEffect(() => {
     if (reservationInfo) {
-      const newRoomIds = reservationInfo.map((info) => info.room_id);
-      setRoomIds(newRoomIds);
+      const newRoomIds = reservationInfo.map((info) => {
+        return info.room_id;
+      });
+      setSaveRoomId(newRoomIds);
     }
+
+    console.log('SaveRoomId : ', saveRoomId);
   }, [reservationInfo]);
 
   // 데이터가 로드되면 roomDataArray에 추가
@@ -144,38 +194,65 @@ const CheckoutExample = () => {
         setRoomDataArray((prev) => [...prev, data]);
       }
     }
+    console.log('checkout - data : ', data);
   }, [data]);
 
-  // 여러 객실 ID 처리
   useEffect(() => {
-    if (reservationInfo?.roomIds && reservationInfo.roomIds.length > 0) {
-      // 이미 처리된 roomId는 제외하고 하나씩 처리
-      const processRoomIds = async () => {
-        for (const roomId of reservationInfo.roomIds) {
-          // 이미 처리된 roomId인지 확인
-          const exists = roomDataArray.some((room) => room.id === roomId);
-          if (!exists) {
-            setSaveRoomId(roomId);
-            // 각 roomId 설정 후 약간의 지연을 줘서 데이터가 로드될 시간을 확보
-            await new Promise((resolve) => setTimeout(resolve, 100));
-          }
-        }
-      };
+    console.log('saveRoomId, isLoading, error :', saveRoomId, isLoading, error);
+  }, [saveRoomId, isLoading, error]);
 
-      processRoomIds();
-    }
-  }, [reservationInfo?.roomIds, roomDataArray]);
+  // // 여러 객실 ID 처리
+  // useEffect(() => {
+  //   if (reservationInfo && reservationInfo.length > 0) {
+  //     reservationInfo.map((ele) => {
+  //       // 이미 처리된 roomId는 제외하고 하나씩 처리
+  //       const processRoomIds = async () => {
+  //         for (const roomId of ele.room_id) {
+  //           // 이미 처리된 roomId인지 확인
+  //           const exists = roomDataArray.some((room) => room.id === roomId);
+  //           if (!exists) {
+  //             setSaveRoomId(roomId);
+  //             // 각 roomId 설정 후 약간의 지연을 줘서 데이터가 로드될 시간을 확보
+  //             await new Promise((resolve) => setTimeout(resolve, 100));
+  //           }
+  //         }
+  //       };
+
+  //       processRoomIds();
+  //     });
+  //   }
+
+  //   console.log(saveRoomId);
+  // }, [reservationInfo, roomDataArray]);
 
   // 총 가격 계산
   useEffect(() => {
     if (roomDataArray.length > 0) {
-      const total = roomDataArray.reduce(
-        (sum, room) =>
-          sum +
-          room.accomData.original_price * (1 - room.accomData.discount_rate),
-        0,
-      );
+      console.log('roomDataArray : ', roomDataArray);
+      // const total = roomDataArray.reduce((sum, room) => {
+      //   console.log('room : ', room);
+
+      //   room.map((ele, index) => {
+      //     ele.original_price;
+      //     console.log(`room[${index}].original_price : `, ele.original_price);
+      //     console.log(`room[${index}].original_price: `, ele.original_price);
+      //     console.log(`room[${index}].accomData : `, ele.accomData);
+      //     console.log(
+      //       'sum + ele.original_price * (1 - ele.accomData.discount_rate) :',
+      //       sum + ele.original_price * (1 - ele.accomData.discount_rate),
+      //     );
+      //     return sum + ele.original_price * (1 - ele.accomData.discount_rate);
+      //   });
+      // }, 0);
+      const total = roomDataArray.flat().reduce((sum, room) => {
+        console.log('room : ', room);
+        console.log('room.original_price: ', room.original_price);
+        console.log('room.accomData : ', room.accomData);
+
+        return sum + room.original_price * (1 - room.accomData.discount_rate);
+      }, 0);
       setTotalPrice(total);
+      console.log('total : ', total);
     }
   }, [roomDataArray]);
 
@@ -183,11 +260,7 @@ const CheckoutExample = () => {
     console.log('roomDataArray:', roomDataArray);
   }, [roomDataArray, userInfo]);
 
-  if (
-    !reservationInfo ||
-    (!reservationInfo.roomId &&
-      (!reservationInfo.roomIds || reservationInfo.roomIds.length === 0))
-  ) {
+  if (!reservationInfo || reservationInfo.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -198,6 +271,8 @@ const CheckoutExample = () => {
   // 데이터가 아직 로드되지 않았거나 roomDataArray가 비어있는 경우
   if (roomDataArray.length === 0) {
     return <div>객실 정보를 로드 중...</div>;
+  } else {
+    console.log('roomDataArray : ', roomDataArray);
   }
 
   return (
@@ -227,95 +302,98 @@ const CheckoutExample = () => {
           </div>
 
           <ul>
-            {roomDataArray.map((data, index) => (
-              <li
-                className="mt-6 border-t "
-                key={index}>
-                <dl className="divide-y divide-gray-100">
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm/6 font-medium">숙소명</dt>
-                    <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0">
-                      {data?.accomData?.name}
-                    </dd>
-                  </div>
+            {roomDataArray.flat().map((data, index) => {
+              console.log('roomDataArray.flat().map((data : ', data);
+              return (
+                <li
+                  className="mt-6 border-t "
+                  key={index}>
+                  <dl className="divide-y divide-gray-100">
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm/6 font-medium">숙소명</dt>
+                      <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0">
+                        {data?.accomData?.name}
+                      </dd>
+                    </div>
 
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm/6 font-medium">객실명</dt>
-                    <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0 flex items-center gap-2">
-                      {data?.name} <RoomTypeMapping type={data?.type} />
-                    </dd>
-                  </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm/6 font-medium">객실명</dt>
+                      <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0 flex items-center gap-2">
+                        {data?.name} <RoomTypeMapping type={data?.type} />
+                      </dd>
+                    </div>
 
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm/6 font-medium ">예약 정보</dt>
-                    <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                      <ul
-                        role="list"
-                        className="divide-y divide-gray-200 rounded-md border border-gray-200">
-                        <OrderList
-                          IconComponent={FaMapLocationDot}
-                          Title={'숙소 위치'}
-                          description={`${data?.accomData?.location?.city}
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm/6 font-medium ">예약 정보</dt>
+                      <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
+                        <ul
+                          role="list"
+                          className="divide-y divide-gray-200 rounded-md border border-gray-200">
+                          <OrderList
+                            IconComponent={FaMapLocationDot}
+                            Title={'숙소 위치'}
+                            description={`${data?.accomData?.location?.city}
                                 ${data?.accomData?.location?.sub_city}`}
-                        />
-                        <div className="border-t border-gray-100 h-">
-                          <div className="divide-y divide-gray-100">
-                            <KakaoMap
-                              latitude={data?.accomData?.location?.latitude}
-                              longitude={data?.accomData?.location?.longitude}
-                            />
+                          />
+                          <div className="border-t border-gray-100 h-">
+                            <div className="divide-y divide-gray-100">
+                              <KakaoMap
+                                latitude={data?.accomData?.location?.latitude}
+                                longitude={data?.accomData?.location?.longitude}
+                              />
+                            </div>
                           </div>
-                        </div>
 
-                        <OrderList
-                          IconComponent={BiHotel}
-                          Title={'숙박 시설'}
-                          type={data?.accomData?.type}
-                        />
+                          <OrderList
+                            IconComponent={BiHotel}
+                            Title={'숙박 시설'}
+                            type={data?.accomData?.type}
+                          />
 
-                        <li>
-                          <div className="py-4 px-6 flex flex-col gap-3">
-                            {/* 체크인 · 체크아웃 */}
-                            체크인: {formatTimeStampTime(data?.check_in)} ~
-                            체크아웃: {formatTimeStampTime(data?.check_out)}
-                            <span className="flex items-center gap-1">
-                              <BiUser /> 성인 {data?.capacity?.adults || 0}명
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <PiBabyLight /> 미성년자{' '}
-                              {data?.capacity?.children || 0}명
-                            </span>
-                          </div>
-                        </li>
-                      </ul>
-                    </dd>
-                  </div>
+                          <li>
+                            <div className="py-4 px-6 flex flex-col gap-3">
+                              {/* 체크인 · 체크아웃 */}
+                              체크인: {formatTimeStampTime(data?.check_in)} ~
+                              체크아웃: {formatTimeStampTime(data?.check_out)}
+                              <span className="flex items-center gap-1">
+                                <BiUser /> 성인 {data?.capacity?.adults || 0}명
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <PiBabyLight /> 미성년자{' '}
+                                {data?.capacity?.children || 0}명
+                              </span>
+                            </div>
+                          </li>
+                        </ul>
+                      </dd>
+                    </div>
 
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 ">
-                    <dt className="text-sm/6 font-medium">호스트 연락처</dt>
-                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
-                      {data?.accomData?.host?.contact}
-                    </dd>
-                  </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 ">
+                      <dt className="text-sm/6 font-medium">호스트 연락처</dt>
+                      <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
+                        {data?.accomData?.host?.contact}
+                      </dd>
+                    </div>
 
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm/6 font-medium ">객실 소개</dt>
-                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
-                      {data?.description}
-                    </dd>
-                  </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm/6 font-medium ">객실 소개</dt>
+                      <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
+                        {data?.description}
+                      </dd>
+                    </div>
 
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm/6 font-medium">서비스</dt>
-                    <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                      {data?.services && (
-                        <ServiceList services={data?.services} />
-                      )}
-                    </dd>
-                  </div>
-                </dl>
-              </li>
-            ))}
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm/6 font-medium">서비스</dt>
+                      <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
+                        {data?.services && (
+                          <ServiceList services={data?.services} />
+                        )}
+                      </dd>
+                    </div>
+                  </dl>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
@@ -335,7 +413,11 @@ const CheckoutExample = () => {
                     원 */}
                   {/* </p> */}
                 </div>
-                {roomDataArray.map((data, index) => {
+                {roomDataArray.flat().map((data, index) => {
+                  console.log(
+                    '주문정보 roomDataArray.flat().map((data :',
+                    data,
+                  );
                   return (
                     <div
                       className="flex justify-between py-2"
@@ -345,7 +427,7 @@ const CheckoutExample = () => {
                       </p>
                       <p className="flex justify-end">
                         {formatNumber(
-                          data.accomData.original_price *
+                          data.original_price *
                             (1 - data.accomData.discount_rate),
                         )}
                         원
@@ -365,11 +447,7 @@ const CheckoutExample = () => {
                   <div className="flex justify-between py-4 text-red-600 dark:text-red-400">
                     <p>사용 포인트</p>
                     <p className="flex justify-end">
-                      {formatNumber(
-                        data?.accomData.original_price *
-                          (1 - data?.accomData.discount_rate),
-                      )}
-                      원
+                      {formatNumber(totalPrice)}원
                     </p>
                   </div>
                 </div>

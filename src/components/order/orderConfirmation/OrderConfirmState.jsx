@@ -77,7 +77,14 @@ const OrderState = ({ orderInfo }) => {
 
       <h1 className="text-4xl font-semibold tracking-tight">{message}</h1>
 
-      {data ? <OrderList orderList={data} /> : 'data 없음'}
+      {orderInfo ? (
+        <OrderList
+          orderDetailInfo={data}
+          orderList={orderInfo}
+        />
+      ) : (
+        '주문정보 없음'
+      )}
     </div>
   );
 };

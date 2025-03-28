@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { BiHotel, BiUser } from 'react-icons/bi';
 import { FaMapLocationDot } from 'react-icons/fa6';
 import { PiBabyLight } from 'react-icons/pi';
@@ -8,17 +9,25 @@ import RoomTypeMapping from '../../components/common/RoomTypeMapping';
 import ServiceList from '../../components/common/ServiceList';
 import ToggleJson from '../../components/common/ToggleJson';
 import OrderList from '../../components/order/checkout/OrderList';
+
 import { useRoomData } from '../../hooks/useProductData';
 import { createUserOrder } from '../../services/orderService';
 import { usedPoints } from '../../services/pointService';
 import { fetchUserData } from '../../services/userService';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
+
 import { formatNumber, formatTimeStampTime } from '../../utils/format';
 
 // 1. 카트 상품 동시 결제 테스트
 // 1-1. 카트 상품 동시 결제시 카트 정보 비우기 필요.
 // 2. 상품 결제 페이지 벗어날때 예약정보 초기화 필요?
 // 3. 잔액부족으로 인한 결제 실패 테스트 필요
+
+import { formatNumber } from '../../utils/format';
+import ToggleJson from '../../components/common/ToggleJson';
+import Loading from '../../components/common/Loading';
+import ToggleOrderList from '../../components/order/checkout/ToggleOrderList';
+
 
 const CheckoutExample = () => {
   const { reservationInfo } = useRoomSelectionStore();
@@ -301,6 +310,7 @@ const CheckoutExample = () => {
             </p>
           </div>
 
+
           <ul>
             {roomDataArray.flat().map((data, index) => {
               console.log('roomDataArray.flat().map((data : ', data);
@@ -395,6 +405,9 @@ const CheckoutExample = () => {
               );
             })}
           </ul>
+
+          <ToggleOrderList data={data} />
+
         </div>
 
         {/* 최종 결제 금액 */}

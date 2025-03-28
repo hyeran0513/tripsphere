@@ -214,10 +214,8 @@ export const getOrderData = async (userId) => {
 };
 
 // 결제하기
-export const checkout = async (orderItem, totalPrice, userId) => {
+export const checkout = async (orderItem, userId) => {
   const ordersCollection = collection(db, 'orders');
-
-  console.log('전체ㅔ' + totalPrice);
 
   const q = query(
     ordersCollection,
@@ -239,5 +237,5 @@ export const checkout = async (orderItem, totalPrice, userId) => {
   await delCartItemOfroomId(orderItem.room_id);
 
   // 포인트 사용
-  await usedPoints({ userId, points: totalPrice });
+  await usedPoints({ userId, points: orderItem.used_points });
 };

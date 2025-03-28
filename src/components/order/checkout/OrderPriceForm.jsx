@@ -31,12 +31,7 @@ const OrderPriceForm = ({ data }) => {
     return userPoints - getTotalPrice(data);
   };
 
-  const { mutate } = useCheckout(
-    user?.uid,
-    data,
-    getTotalPrice(data),
-    showToast,
-  );
+  const { mutate } = useCheckout(user?.uid, data, showToast);
 
   // 결제하기 버튼 클릭
   const handleCheckOut = async (e) => {
@@ -47,8 +42,6 @@ const OrderPriceForm = ({ data }) => {
       showToast('error', '포인트가 부족합니다.');
       return;
     }
-
-    console.log('보내주기' + JSON.stringify(data));
 
     navigate('/orderconfirmation', { state: data });
 

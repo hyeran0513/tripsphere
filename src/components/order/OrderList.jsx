@@ -6,31 +6,28 @@ import {
   BiUser,
 } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import {
-  useCancelOrder,
-  useOrderDataGetByOrderID,
-} from '../../hooks/useOrderData';
+import { useCancelOrder } from '../../hooks/useOrderData';
+import { useRoomData } from '../../hooks/useProductData';
+import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 import { compareToday, formatDate, formatNumber } from '../../utils/format';
 import Loading from '../common/Loading';
 import CancelOrderModal from './CancelOrderModal';
 
 const OrderList = ({ orderList }) => {
   const navigate = useNavigate();
+  const { reservationInfo } = useRoomSelectionStore();
   const cancelOrderMutation = useCancelOrder();
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  console.log('orderList : ', orderList);
-  const [orderInfo, setOrderInfo] = useState(null);
+  console.log('orderList - orderList: ', orderList);
+  console.log('orderList - reservationInfo : ', reservationInfo);
+  const [orderInfo, setOrderInfo] = useState(orderList);
 
-  const { data } = useOrderDataGetByOrderID(orderList);
-  const isLoading = data.some((query) => query.isLoading);
-  const error = data.find((query) => query.error)?.error;
+  useRoomData();
 
   useEffect(() => {
-    console.log('OrderList data : ', data);
+    console.log('OrderList data : ', orderList);
   }, []);
-
-  useEffect(() => {}, [isLoading, error, data]);
 
   // 주문 취소 처리
   const handleCancelClick = (order) => {
@@ -61,8 +58,8 @@ const OrderList = ({ orderList }) => {
   //     })
   //   : [];
 
-  if (isLoading) return <Loading />;
-  if (error) return <p>Error: {error.message}</p>;
+  if (!orderInfo) return <Loading />;
+  if (orderInfo.length === 0) return <p>주문 결과 정보가 없습니다.</p>;
   return (
     <>
       <ul className="list bg-base-100 dark:bg-gray-800 rounded-box shadow-md py-">

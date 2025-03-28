@@ -70,8 +70,20 @@ const CheckoutExample = () => {
           points: 0,
           selectedTime: reservationInfo?.selectedTime,
         });
-        console.log('orderId :: ', orderId);
-        orderResult.push(orderId);
+
+        // 주문아이디, 유저아이디, 방 정보, 숙소아이디 전달
+        console.log('orderReulst :: ', {
+          orderId,
+          userId: user.uid,
+          room: room,
+          accomId: room.accommodation_id,
+        });
+        orderResult.push({
+          orderId,
+          userId: user.uid,
+          room: room,
+          accomId: room.accommodation_id,
+        });
       }
     } else {
       // 2-2. 비교결과 상품 합계가 적다면
@@ -98,8 +110,19 @@ const CheckoutExample = () => {
             : [],
         });
 
-        console.log('orderId :: ', orderId);
-        orderResult.push(orderId);
+        // 주문아이디, 유저아이디, 방 정보, 숙소아이디 전달
+        console.log('orderReulst :: ', {
+          orderId,
+          userId: user.uid,
+          room: room,
+          accomId: room.accommodation_id,
+        });
+        orderResult.push({
+          orderId,
+          userId: user.uid,
+          room: room,
+          accomId: room.accommodation_id,
+        });
       }
     }
     navigate('/orderconfirmation', { state: { orderList: [...orderResult] } });

@@ -7,7 +7,7 @@ import { useAccommodations } from '../../hooks/useAccomData';
 import useFilterStore from '../../stores/useFilterStore';
 import AccomTypeSelector from '../../components/accomlist/AccomTypeSelector';
 import Pagination from '../../components/common/Pagination';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -77,6 +77,7 @@ const AccomList = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [selectedPerOption, setSelectedPerOption] = useState(5);
   const [currentPageData, setCurrentPageData] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const perOptions = [
     { id: 1, value: 5, name: '5개씩 보기' },
@@ -94,6 +95,16 @@ const AccomList = () => {
       setFilteredData(filtered);
     }
   }, [data, filters]);
+
+  useEffect(() => {
+    if (filteredData.length > 0) {
+      setSearchParams((prev) => {
+        const newParams = new URLSearchParams(prev.toString());
+        newParams.set('page', 1);
+        return newParams;
+      });
+    }
+  }, [filteredData]);
 
   // 검색 핸들러
   const handleSearch = () => {

@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import {
   addAccommodations,
+  addRooms,
   deleteAllAccommodations,
+  deleteAllCarts,
+  deleteAllFavorites,
+  deleteAllRooms,
 } from '../services/accomDummyService';
 
 const useExampleData = () => {
@@ -12,7 +16,12 @@ const useExampleData = () => {
     setLoading(true);
     try {
       await deleteAllAccommodations();
-      await addAccommodations();
+      await deleteAllRooms();
+      await deleteAllCarts();
+      await deleteAllFavorites();
+
+      const accommodationIds = await addAccommodations();
+      await addRooms(accommodationIds);
     } catch (err) {
       setError(err.message);
     } finally {

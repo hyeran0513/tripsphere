@@ -129,10 +129,11 @@ const CheckoutExample = () => {
   };
 
   useEffect(() => {
-    if (reservationInfo?.roomId) {
-      setSaveRoomId(reservationInfo.roomId);
+    if (reservationInfo) {
+      const newRoomIds = reservationInfo.map((info) => info.room_id);
+      setRoomIds(newRoomIds);
     }
-  }, [reservationInfo?.roomId]);
+  }, [reservationInfo]);
 
   // 데이터가 로드되면 roomDataArray에 추가
   useEffect(() => {

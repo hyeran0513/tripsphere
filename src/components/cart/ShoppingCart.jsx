@@ -4,8 +4,11 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/react';
-import { Link } from 'react-router-dom';
 import { BiX, BiTrash, BiUser, BiMap } from 'react-icons/bi';
+import { PiBabyLight } from 'react-icons/pi';
+import { IoBedOutline } from 'react-icons/io5';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import {
   formatDate,
   formatNumber,
@@ -15,11 +18,7 @@ import { useCartItems, useDelCartItem } from '../../hooks/useCartData';
 import RoomTypeMapping from '../common/RoomTypeMapping';
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
-import { PiBabyLight } from 'react-icons/pi';
-import { IoBedOutline } from 'react-icons/io5';
-import { useEffect, useState } from 'react';
-import useReservationStore from '../../stores/useReservationStore';
-import { useNavigate } from 'react-router-dom';
+import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 
 const ShoppingCart = ({ open, setOpen }) => {
   const { user } = useAuthStore();
@@ -27,7 +26,7 @@ const ShoppingCart = ({ open, setOpen }) => {
   const { mutate } = useDelCartItem();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const { setReservationList } = useReservationStore();
+  const { setReservationInfo } = useRoomSelectionStore();
   const navigate = useNavigate();
 
   // 전체 선택에 따른 선택된 항목
@@ -66,25 +65,42 @@ const ShoppingCart = ({ open, setOpen }) => {
     mutate(cartId);
   };
 
-  // 주문하기기
+  // 주문하기
   const handleOrder = () => {
     const selectedData = data
       .filter((item) => selectedItems.includes(item.id))
-      .map((item) => ({
-        accommodationId: item.room.accommodation_id,
-        checkIn: item.room.check_in,
-        checkOut: item.room.check_out,
-        adultCount: item.room.capacity.adults,
-        childrenCount: item.room.capacity.children,
-        totalPrice: item.room.original_price * (1 - item.room.discount_rate),
-      }));
+      .map((item) => {
+        console.log('hey:' + JSON.stringify(item));
+        const {
+          accommodation_id,
+          check_in,
+          check_out,
+          capacity,
+          original_price,
+          discount_rate,
+          stay_type,
+        } = item.room;
 
-    console.log('숙소 데이터 ', selectedData);
-    setReservationList(selectedData);
+        const { room_id } = item;
 
-    setTimeout(() => {
-      navigate('/checkout');
-    }, 100);
+        return {
+          accommodationId: accommodation_id,
+          checkIn: check_in,
+          checkOut: check_out,
+          adultCount: capacity.adults,
+          childrenCount: capacity.children,
+          totalPrice: original_price * (1 - discount_rate),
+          stayType: stay_type,
+          duration: item.duration,
+          room_id: room_id,
+          selectedTime: item.selectedTime,
+        };
+      });
+
+    setReservationInfo(selectedData);
+
+    navigate('/checkout');
+    setOpen(false);
   };
 
   if (isLoading) return <Loading />;
@@ -100,8 +116,8 @@ const ShoppingCart = ({ open, setOpen }) => {
           <div className="fixed inset-0 flex items-center justify-center">
             <DialogPanel className="w-[70%] h-[90%] bg-white dark:bg-gray-900 shadow-xl rounded-lg">
               <div className="flex h-full flex-col text-gray-900 dark:text-white">
-                <div className="px-4 py-6 sm:px-6 overflow-y-scroll">
-                  {/* 헤더 */}
+                {/* Header */}
+                <div className="px-4 py-4 sm:px-6 border-b border-gray-200">
                   <div className="flex items-start justify-between">
                     <DialogTitle className="text-lg font-semibold">
                       장바구니
@@ -112,9 +128,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                       <BiX className="size-6" />
                     </button>
                   </div>
-
-                  {/* 전체 선택 */}
-                  <div className="my-4 flex items-center">
+                  <div className="mt-4 flex items-center">
                     <input
                       type="checkbox"
                       checked={selectAll}
@@ -123,8 +137,10 @@ const ShoppingCart = ({ open, setOpen }) => {
                     />
                     <span className="text-sm">전체 선택</span>
                   </div>
+                </div>
 
-                  {/* 장바구니 목록 */}
+                {/* 장바구니 목록 */}
+                <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">
                   <ul className="grid grid-cols-2 gap-6">
                     {data?.map((item) => (
                       <li
@@ -143,7 +159,6 @@ const ShoppingCart = ({ open, setOpen }) => {
                             {item.room?.name}
                             <RoomTypeMapping type={item.room.type} />
                           </h3>
-
                           <button
                             type="button"
                             onClick={(e) => deleteItem(e, item?.id)}
@@ -166,7 +181,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                             <img
                               src={item.room?.images?.[0]}
                               alt={item.room?.name}
-                              className="w-[100%] h-[100%]"
+                              className="w-full h-full object-cover"
                             />
                           </div>
 
@@ -193,7 +208,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                                   {item.duration?.minutes}분 /{' '}
                                   <span>체크인 {item.selectedTime?.[0]}</span>
                                   <span>
-                                    체크인{' '}
+                                    체크아웃{' '}
                                     {
                                       item.selectedTime?.[
                                         item.selectedTime.length - 1
@@ -208,7 +223,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                                     {formatTimeStampTime(item.room.check_in)}
                                   </span>
                                   <span>
-                                    체크아웃
+                                    체크아웃{' '}
                                     {formatTimeStampTime(item.room.check_out)}
                                   </span>
                                 </>

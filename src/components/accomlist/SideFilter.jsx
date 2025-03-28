@@ -5,7 +5,7 @@ import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
 import useFilterStore from '../../stores/useFilterStore';
 
-const SideFilter = ({ onSearch }) => {
+const SideFilter = ({ handleSearch }) => {
   const [openDate, setOpenDate] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(true);
 
@@ -13,55 +13,10 @@ const SideFilter = ({ onSearch }) => {
     setIsFormOpen((prevState) => !prevState);
   };
 
-  const store = useFilterStore();
-
-  const {
-    selectedCity,
-    selectedSubCity,
-    adultCount,
-    childrenCount,
-    checkIn,
-    checkOut,
-  } = store;
-
-  const [localFilters, setLocalFilters] = useState({
-    type: '전체',
-    city: selectedCity,
-    sub_city: selectedSubCity,
-    checkIn,
-    checkOut,
-    adults: adultCount,
-    children: childrenCount,
-  });
-
-  useEffect(() => {
-    setLocalFilters({
-      type: '전체',
-      city: selectedCity,
-      sub_city: selectedSubCity,
-      checkIn,
-      checkOut,
-      adults: adultCount,
-      children: childrenCount,
-    });
-  }, [
-    selectedCity,
-    selectedSubCity,
-    checkIn,
-    checkOut,
-    adultCount,
-    childrenCount,
-  ]);
-
-  // 검색 핸들러
-  const handleSearch = () => {
-    onSearch(localFilters);
-  };
-
   return (
     <aside
       aria-label="숙소 검색 옵션"
-      className={`sidebar z-10 sticky top-5 ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
+      className={`sidebar z-10 sticky top-[100px] ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
       <div className="flex mb-4 items-center justify-between">
         {isFormOpen && (
           <div className="pl-3 font-extrabold">검색 옵션 영역</div>
@@ -113,7 +68,7 @@ const SideFilter = ({ onSearch }) => {
             aria-label="수정한 검색 옵션 적용"
             type="button"
             onClick={handleSearch}
-            className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            className="cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             옵션 수정 적용
           </button>
         </form>

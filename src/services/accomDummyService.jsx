@@ -1,13 +1,16 @@
 import {
+  arrayRemove,
   collection,
   deleteDoc,
   doc,
   getDocs,
   serverTimestamp,
+  updateDoc,
   writeBatch,
 } from 'firebase/firestore';
-import { db } from '../firebase/firebaseConfig';
+import { auth, db } from '../firebase/firebaseConfig';
 
+// 모든 숙소 데이터 제거
 export const deleteAllAccommodations = async () => {
   const accommodationsRef = collection(db, 'accommodations');
   const snapshot = await getDocs(accommodationsRef);
@@ -19,6 +22,40 @@ export const deleteAllAccommodations = async () => {
   console.log('모든 accommodations 데이터 삭제');
 };
 
+// 모든 객체 데이터 제거
+export const deleteAllRooms = async () => {
+  const roomsRef = collection(db, 'rooms');
+  const snapshot = await getDocs(roomsRef);
+
+  snapshot.forEach(async (docSnapshot) => {
+    await deleteDoc(doc(db, 'rooms', docSnapshot.id));
+  });
+
+  console.log('모든 rooms 데이터 삭제');
+};
+
+// 모든 장바구니 데이터 제거
+export const deleteAllCarts = async () => {
+  const cartsRef = collection(db, 'carts');
+  const snapshot = await getDocs(cartsRef);
+
+  snapshot.forEach(async (docSnapshot) => {
+    await deleteDoc(doc(db, 'carts', docSnapshot.id));
+  });
+
+  console.log('모든 carts 데이터 삭제');
+};
+
+// 모든 찜 데이터 제거
+export const deleteAllFavorites = async () => {
+  const user = auth.currentUser;
+  const userDocRef = doc(db, 'users', user?.uid);
+
+  await updateDoc(userDocRef, { wishlist: [] });
+
+  console.log('모든 users의 wishlist 데이터 삭제');
+};
+// 숙소 더미 데이터 추가
 export const addAccommodations = async () => {
   const accommodationsRef = collection(db, 'accommodations');
   const batch = writeBatch(db);
@@ -770,11 +807,85 @@ export const addAccommodations = async () => {
     },
   );
 
-  newAccommodations.forEach((data) => {
+  const accommodationIds = [];
+
+  for (const data of newAccommodations) {
     const docRef = doc(accommodationsRef);
     batch.set(docRef, data);
-  });
+    accommodationIds.push(docRef.id);
+  }
 
   await batch.commit();
   console.log('새 숙소 데이터 생성');
+  return accommodationIds;
+};
+
+// 객체 더미 데이터 추가
+export const addRooms = async (accommodationIds) => {
+  const roomsRef = collection(db, 'rooms');
+  const batch = writeBatch(db);
+
+  const newRooms = [
+    {
+      availability: true,
+      capacity: { adults: 4, children: 5 },
+      check_in: new Date('2025-03-27T14:52:09+09:00'),
+      check_out: new Date('2025-03-28T14:52:36+09:00'),
+      description: '객실 설명',
+      discount_rate: 0.5,
+      images: [
+        'https://yaimg.yanolja.com/v5/2022/06/08/17/1280/62a0dbaf2e94a2.34117913.jpg',
+      ],
+      location: {
+        city: '강원도',
+        latitude: 38.1549249,
+        longitude: 128.6076207,
+        place_name: '강원도 양양군 강현면 물치1길 22-1',
+        sub_city: '양양군',
+      },
+      name: '일반실2',
+      original_price: 40000,
+      room_id: 'room_002',
+      services: ['wifi'],
+      stay_type: 'stay',
+      stock: 3,
+    },
+    {
+      availability: true,
+      capacity: { adults: 4, children: 2 },
+      check_in: new Date('2025-03-27T14:00:00+09:00'),
+      check_out: new Date('2025-03-27T16:30:00+09:00'),
+      description: '객실 설명',
+      discount_rate: 0.1,
+      images: [
+        'https://yaimg.yanolja.com/v5/2022/06/08/17/1280/62a0dba4473fe8.39177492.jpg',
+      ],
+      location: {
+        city: '강원도',
+        latitude: 38.1549249,
+        longitude: 128.6076207,
+        place_name: '강원도 양양군 강현면 물치1길 22-1',
+        sub_city: '양양군',
+      },
+      name: '일반실',
+      original_price: 40000,
+      room_id: 'room_001',
+      services: ['wifi'],
+      stay_type: 'day_use',
+      stock: 2,
+      type: 'single',
+    },
+  ];
+
+  // 모든 숙소에 대해 객실을 추가
+  accommodationIds.forEach((accommodationId) => {
+    newRooms.forEach((room) => {
+      const roomData = { ...room, accommodation_id: accommodationId };
+      const docRef = doc(roomsRef);
+      batch.set(docRef, roomData);
+    });
+  });
+
+  await batch.commit();
+  console.log('새 객실 데이터 생성');
 };

@@ -169,10 +169,12 @@ const RoomCard = ({ room, index }) => {
                 <button
                   type="button"
                   onClick={() => {
-                    setReservationInfo({
-                      type: 'stay',
-                      roomId: room.roomId,
-                    });
+                    setReservationInfo([
+                      {
+                        type: 'stay',
+                        room_id: room.roomId,
+                      },
+                    ]);
                     navigate('/checkout');
                   }}
                   className="h-[38px] text-indigo-600 hover:text-white border border-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-500 dark:focus:ring-indigo-800 cursor-pointer">
@@ -255,12 +257,14 @@ const RoomCard = ({ room, index }) => {
                       aria-label="예약하기"
                       type="button"
                       onClick={() => {
-                        setReservationInfo({
-                          type: 'day_use',
-                          roomId: selectedRoomData.roomId,
-                          duration: { hours, minutes },
-                          selectedTime: selectedRange,
-                        });
+                        setReservationInfo([
+                          {
+                            type: 'day_use',
+                            room_id: selectedRoomData.roomId,
+                            duration: { hours, minutes },
+                            selectedTime: selectedRange,
+                          },
+                        ]);
                         navigate('/checkout');
                       }}
                       className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

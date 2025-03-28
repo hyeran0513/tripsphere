@@ -1,17 +1,10 @@
 import { useEffect, useState } from 'react';
-import { BiHotel } from 'react-icons/bi';
-import { FaMapLocationDot } from 'react-icons/fa6';
-import KakaoMap from '../../components/common/KakaoMap';
-import OrderList from '../../components/order/checkout/OrderList';
 import { useRoomData } from '../../hooks/useProductData';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
-import { formatNumber, formatTimeStampTime } from '../../utils/format';
-import { PiBabyLight } from 'react-icons/pi';
-import { BiUser } from 'react-icons/bi';
-import ServiceList from '../../components/common/ServiceList';
-import RoomTypeMapping from '../../components/common/RoomTypeMapping';
+import { formatNumber } from '../../utils/format';
 import ToggleJson from '../../components/common/ToggleJson';
 import Loading from '../../components/common/Loading';
+import ToggleOrderList from '../../components/order/checkout/ToggleOrderList';
 
 const CheckoutExample = () => {
   const { reservationInfo } = useRoomSelectionStore();
@@ -60,93 +53,7 @@ const CheckoutExample = () => {
             </p>
           </div>
 
-          <ul>
-            <li className="mt-6 border-t ">
-              <dl className="divide-y divide-gray-100">
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">숙소명</dt>
-                  <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0">
-                    {data?.accomData?.name}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">객실명</dt>
-                  <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0 flex items-center gap-2">
-                    {data?.name} <RoomTypeMapping type={data?.type} />
-                  </dd>
-                </div>
-
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium ">예약 정보</dt>
-                  <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                    <ul
-                      role="list"
-                      className="divide-y divide-gray-200 rounded-md border border-gray-200">
-                      <OrderList
-                        IconComponent={FaMapLocationDot}
-                        Title={'숙소 위치'}
-                        description={`${data?.accomData?.location?.city}
-                                ${data?.accomData?.location?.sub_city}`}
-                      />
-                      <div className="border-t border-gray-100 h-">
-                        <div className="divide-y divide-gray-100">
-                          <KakaoMap
-                            latitude={data?.accomData?.location?.latitude}
-                            longitude={data?.accomData?.location?.longitude}
-                          />
-                        </div>
-                      </div>
-
-                      <OrderList
-                        IconComponent={BiHotel}
-                        Title={'숙박 시설'}
-                        type={data?.accomData?.type}
-                      />
-
-                      <li>
-                        <div className="py-4 px-6 flex flex-col gap-3">
-                          {/* 체크인 · 체크아웃 */}
-                          체크인: {formatTimeStampTime(data?.check_in)} ~
-                          체크아웃: {formatTimeStampTime(data?.check_out)}
-                          <span className="flex items-center gap-1">
-                            <BiUser /> 성인 {data?.capacity?.adults || 0}명
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <PiBabyLight /> 미성년자{' '}
-                            {data?.capacity?.children || 0}명
-                          </span>
-                        </div>
-                      </li>
-                    </ul>
-                  </dd>
-                </div>
-
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 ">
-                  <dt className="text-sm/6 font-medium">호스트 연락처</dt>
-                  <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
-                    {data?.accomData?.host?.contact}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium ">객실 소개</dt>
-                  <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
-                    {data?.description}
-                  </dd>
-                </div>
-
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">서비스</dt>
-                  <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                    {data?.services && (
-                      <ServiceList services={data?.services} />
-                    )}
-                  </dd>
-                </div>
-              </dl>
-            </li>
-          </ul>
+          <ToggleOrderList data={data} />
         </div>
 
         {/* 최종 결제 금액 */}

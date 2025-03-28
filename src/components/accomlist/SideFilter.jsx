@@ -68,7 +68,7 @@ const SideFilter = ({ handleSearch }) => {
             aria-label="수정한 검색 옵션 적용"
             type="button"
             onClick={handleSearch}
-            className="flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            className="cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             옵션 수정 적용
           </button>
         </form>

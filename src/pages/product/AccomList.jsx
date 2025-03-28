@@ -5,6 +5,7 @@ import Loading from '../../components/common/Loading';
 import AccomCard from '../../components/accomlist/AccomCard';
 import { useAccommodations } from '../../hooks/useAccomData';
 import useFilterStore from '../../stores/useFilterStore';
+import AccomTypeSelector from '../../components/accomlist/AccomTypeSelector';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -93,49 +94,26 @@ const AccomList = () => {
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">
+      {/* 페이지 헤더 */}
       <PageHeader
         title={`여행 숙소 검색 결과 (${filteredData.length}건)`}
         breadcrumb={breadcrumb}
       />
 
-      {/* 숙소 유형 선택 영역 */}
-      <div className="flex gap-4 mb-10">
-        {typeMapping.map((item) => (
-          <label
-            key={item.value}
-            className="flex flex-col flex-1 items-center gap-1 cursor-pointer">
-            <input
-              type="radio"
-              name="type"
-              value={item.value}
-              checked={filters.type === item.value}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, type: e.target.value }))
-              }
-              className="hidden"
-            />
-            <div className="flex flex-col items-center gap-2">
-              <img
-                className="w-[30px]"
-                src={item.icon}
-                alt={item.text}
-              />
-              <span
-                className={`text-sm ${
-                  filters.type === item.value ? 'text-indigo-600 font-bold' : ''
-                }`}>
-                {item.text}
-              </span>
-            </div>
-          </label>
-        ))}
-      </div>
+      {/* 숙소 유형 선택 */}
+      <AccomTypeSelector
+        filters={filters}
+        setFilters={setFilters}
+        typeMapping={typeMapping}
+      />
 
       <div
         id="container"
         className="flex items-start gap-10">
+        {/* 숙소 필터 */}
         <SideFilter handleSearch={handleSearch} />
 
+        {/* 숙소 목록 */}
         <ul className="flex-1 flex flex-col gap-6">
           {filteredData.map((item, index) => (
             <AccomCard

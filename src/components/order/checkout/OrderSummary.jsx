@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
+import Loading from '../../common/Loading';
 
-const OrderSummary = ({ orderInfo, commissionPercent, userPoint }) => {
+const OrderSummary = ({
+  orderInfo,
+  commissionPercent,
+  userPoint,
+  setPayPoint,
+}) => {
   const [price, setPrice] = useState(0);
-  const [commission, setCommission] = useState(0);
+  const [commission, setCommission] = useState(null);
 
   useEffect(() => {
     let sum = 0;
@@ -11,7 +17,13 @@ const OrderSummary = ({ orderInfo, commissionPercent, userPoint }) => {
     });
     setPrice(sum);
     setCommission(Math.ceil((sum * commissionPercent) / 100));
-  }, []);
+    console.log('price : ' + price);
+    console.log('commissionPercent : ', commissionPercent);
+    console.log('commission : ' + commission);
+    setPayPoint(price + commission);
+  }, [price, commission]);
+
+  if (commission === null || commission === undefined) return <Loading />;
 
   return (
     <div className="dark:font-bold">

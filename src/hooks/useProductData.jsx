@@ -25,11 +25,11 @@ export const useRoomOfAccomData = (accomId) => {
 };
 
 // 객실 정보 조회
-export const useRoomData = (roomId) => {
+export const useRoomData = (roomIds) => {
   return useQuery({
-    queryKey: ['room', roomId],
-    queryFn: () => getRoomData(roomId),
-    enabled: !!roomId,
+    queryKey: ['rooms', roomIds],
+    queryFn: () => getRoomData(roomIds),
+    enabled: Array.isArray(roomIds) && roomIds.length > 0,
   });
 };
 

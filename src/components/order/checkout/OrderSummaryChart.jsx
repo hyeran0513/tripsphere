@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccomData } from '../../../hooks/useProductData';
+import { createUserOrder } from '../../../services/orderService';
+import { usedPoints } from '../../../services/pointService';
 import { fetchUserData } from '../../../services/userService';
 import useAuthStore from '../../../stores/useAuthStore';
 import Loading from '../../common/Loading';
@@ -11,15 +13,23 @@ const OrderSummaryChart = ({ reservationData }) => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
   const [commissionPercentage, setCommissionPercentage] = useState(10);
+  const [payPoint, setPayPoint] = useState(0);
   const { user } = useAuthStore();
 
   let isValid = true;
 
   const payment = (event) => {
     event.preventDefault();
-
+    console.log('payPoint : ', payPoint);
     // 1. DB에서 불러온 유저의 포인트와 상품목록의 금액 합산을 비교
-
+    if (user.points < payPoint) {
+    } else {
+      createUserOrder({
+        userId: user.uid,
+        usedPoints: payPoint,
+      });
+      usedPoints({ userId: user.uid, points: payPoint });
+    }
     // 2-1. 비교결과 유저의 포인트가 적다면
     // 유저의 포인트는 처리하지 않고,
     // 결제 내역 (컬랙션 order)에 주문 취소 or 주문 실패로 남긴다
@@ -59,8 +69,9 @@ const OrderSummaryChart = ({ reservationData }) => {
     <aside className="card-body">
       <OrderSummary
         orderInfo={reservationData}
-        commitionPercent={commissionPercentage}
+        commissionPercent={commissionPercentage}
         userPoint={userInfo.points}
+        setPayPoint={setPayPoint}
       />
 
       <div className="card-actions justify-end">

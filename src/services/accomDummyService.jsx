@@ -880,7 +880,7 @@ export const addRooms = async (accommodationIds) => {
   // 모든 숙소에 대해 객실을 추가
   accommodationIds.forEach((accommodationId) => {
     newRooms.forEach((room) => {
-      const roomData = { ...room, accommodation_id: accommodationId }; // 숙소 ID 추가
+      const roomData = { ...room, accommodation_id: accommodationId };
       const docRef = doc(roomsRef);
       batch.set(docRef, roomData);
     });

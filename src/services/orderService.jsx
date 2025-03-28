@@ -142,7 +142,7 @@ export const createUserOrder = async ({
   return docRef.id;
 };
 
-// 주문아이디 배열로 주문조회
+// 주문아이디 배열로 주문조회 수정 기존 OrderList 에 맞게 수정
 export const orderQuery = async (orderIds) => {
   if (!Array.isArray(orderIds) || orderIds.length === 0) return [];
 
@@ -150,9 +150,26 @@ export const orderQuery = async (orderIds) => {
     orderIds.map(async (orderId) => {
       const orderRef = doc(db, 'orders', orderId);
       const orderSnap = await getDoc(orderRef);
-      return orderSnap.exists()
-        ? { id: orderSnap.id, ...orderSnap.data() }
-        : null;
+      const orderByRoomInfo = orderSnap.data();
+
+      const roomRef = doc(db, 'rooms', orderByRoomInfo.room_id);
+      const roomSnap = await getDoc(roomRef);
+      const roomData = roomSnap.exists() ? roomSnap.data() : null;
+
+      let accomData = null;
+
+      if (roomData) {
+        const accomRef = doc(db, 'accommodations', roomData.accommodation_id);
+        const accomSnap = await getDoc(accomRef);
+        accomData = accomSnap.exists() ? accomSnap.data() : null;
+      }
+
+      return {
+        id: orderId,
+        ...orderByRoomInfo,
+        room: roomData,
+        accom: accomData,
+      };
     }),
   );
 

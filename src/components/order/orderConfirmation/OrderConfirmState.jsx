@@ -12,37 +12,41 @@ const OrderState = ({ orderInfo }) => {
   let message;
 
   const [orderResult, setOrderResult] = useState(null);
-
-  console.log('전달받은 주문정보 OrderConfirmState -OrderState: ', orderInfo);
-  // const { data, isLoading, error } = useOrderDataID(orderInfo[0]);
-
-  // 주문 아이디로 주문 결과를 DB 조회 결과 저장
+  const [orderIds, setOrderIds] = useState([]);
   const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  console.log('전달받은 주문정보 OrderConfirmState -OrderState: ', orderInfo);
 
   useEffect(() => {
     const fetchOrder = async () => {
-      setIsLoading(true);
       try {
-        if (!orderInfo || orderInfo.length === 0) {
-          console.log('전달받은 주문정보 없음 : ', orderInfo);
-          return;
-        }
-        const tmp = await orderQuery(orderInfo.orderId);
-        setData(tmp);
+        console.log('orderInfo : ', orderInfo);
+        console.log('orderInfo type :', typeof orderInfo);
+
+        const tmp = [];
+        orderInfo.map((ele) => tmp.push(ele.orderId));
+
+        console.log('tmp :', tmp);
+        console.log('tmp type :', typeof tmp);
+        setOrderIds(tmp);
       } catch (error) {
         console.error('Error fetching order:', error);
-        setError(error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
     fetchOrder();
   }, [orderInfo]);
 
-  useEffect(() => {}, [isLoading, error]);
+  useEffect(() => {
+    const start = async () => {
+      const test = await orderQuery(orderIds);
+      setData(test);
+    };
+    start();
+  }, [orderIds]);
+  // const { data, isLoading, error } = useOrderDataGetByOrderID([...orderIds]);
+
+  useEffect(() => {}, [orderIds]);
+  // useEffect(() => {}, [isLoading, error]);
 
   useEffect(() => {}, [data]);
 
@@ -50,6 +54,9 @@ const OrderState = ({ orderInfo }) => {
   // const hasCanceled = orderInfo.some((order) => order.payment_status === 'canceled');
   // const allCompleted = data.every((order) => order.payment_status === 'completed');
 
+  if (!data || data === null) return <Loading />;
+
+  if (data?.length === 0) return <Loading />;
   const hasPending = false;
   const hasCanceled = data?.some((ele) => ele.payment_status == 'canceled');
   const allCompleted = data?.every((ele) => ele.payment_status == 'completed');
@@ -67,9 +74,6 @@ const OrderState = ({ orderInfo }) => {
     State = FcQuestions;
     message = '정보를 확인할 수 없습니다.';
   }
-  if (isLoading) return <Loading />;
-  if (!data) return <Loading />;
-  else if (error) return <>{error.message}</>;
 
   return (
     <div className="flex flex-col justify-center items-center gap-4">
@@ -77,14 +81,9 @@ const OrderState = ({ orderInfo }) => {
 
       <h1 className="text-4xl font-semibold tracking-tight">{message}</h1>
 
-      {orderInfo ? (
-        <OrderList
-          orderDetailInfo={data}
-          orderList={orderInfo}
-        />
-      ) : (
-        '주문정보 없음'
-      )}
+      {/* {isLoading && <Loading />} */}
+      {/* {error && <>{error.message}</>} */}
+      {orderInfo ? <OrderList orderInfo={data} /> : '주문정보 없음'}
     </div>
   );
 };

@@ -40,31 +40,69 @@ const CheckoutExample = () => {
     userDataWait(user.uid);
   }, []);
 
-  const payment = (event) => {
+  const payment = async (event) => {
     event.preventDefault();
     console.log('payPoint : ', totalPrice);
+
+    const orderResult = [];
+    console.log('roomDataArray :: ', roomDataArray);
+    console.log('reservationInfo :: ', reservationInfo);
+
+    for (let room of roomDataArray) {
+      console.log('room : ', room);
+    }
+
     // 1. DB에서 불러온 유저의 포인트와 상품목록의 금액 합산을 비교
     if (user.points < totalPrice) {
+      // 2-1. 비교결과 유저의 포인트가 적다면
+      // 유저의 포인트는 처리하지 않고,
+      // 결제 내역 (컬랙션 order)에 주문 취소 or 주문 실패로 남긴다
+      for (let room of roomDataArray) {
+        console.log('room.accommodation_id : ', room.accommodation_id);
+
+        const orderId = await createUserOrder({
+          userId: user.uid,
+          room: room.roomId,
+          accomId: room.accommodation_id,
+          checkin: room.check_in,
+          checkout: room.check_out,
+          status: 'canceled',
+          points: 0,
+          selectedTime: reservationInfo?.selectedTime,
+        });
+        console.log('orderId :: ', orderId);
+        orderResult.push(orderId);
+      }
     } else {
-      createUserOrder({
-        userId: user.uid,
-        usedPoints: totalPrice,
-      });
-      usedPoints({
-        userId: user.uid,
-        points: totalPrice,
-        rooms: roomDataArray,
-      });
+      // 2-2. 비교결과 상품 합계가 적다면
+      // 유저의 포인트 감소시킨 쿼리 결과 반영후
+      // 결제 내역 (컬랙션 order)을 생성한다.
+      for (let room of roomDataArray) {
+        console.log('room.accommodation_id : ', room.accommodation_id);
+
+        usedPoints({
+          userId: user.uid,
+          points:
+            room.accomData.original_price * (1 - room.accomData.discount_rate),
+        });
+        const orderId = await createUserOrder({
+          userId: user.uid,
+          room: room.roomId,
+          accomId: room.accommodation_id,
+          checkin: room.check_in,
+          checkout: room.check_out,
+          points:
+            room.accomData.original_price * (1 - room.accomData.discount_rate),
+          selectedTime: reservationInfo.selectedTime
+            ? reservationInfo.selectedTime
+            : [],
+        });
+
+        console.log('orderId :: ', orderId);
+        orderResult.push(orderId);
+      }
     }
-    // 2-1. 비교결과 유저의 포인트가 적다면
-    // 유저의 포인트는 처리하지 않고,
-    // 결제 내역 (컬랙션 order)에 주문 취소 or 주문 실패로 남긴다
-
-    // 2-2. 비교결과 상품 합계가 적다면
-    // 유저의 포인트 감소시킨 쿼리 결과 반영후
-    // 결제 내역 (컬랙션 order)을 생성한다.
-
-    navigate('/orderconfirmation');
+    navigate('/orderconfirmation', { state: { orderList: [...orderResult] } });
   };
 
   useEffect(() => {

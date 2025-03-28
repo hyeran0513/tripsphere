@@ -67,7 +67,6 @@ export const usedPoints = async ({ userId, points }) => {
   try {
     const pointsRef = collection(db, 'points');
     const userRef = doc(db, 'users', userId);
-    const orderRef = doc(db, 'order');
 
     // 유저 포인트 감소
     await updateDoc(userRef, {

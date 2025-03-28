@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  BiBuildings,
   BiCalendarAlt,
   BiChevronRight,
   BiUser,
-  BiBuildings,
 } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { compareToday, formatNumber, formatDate } from '../../utils/format';
+import {
+  useCancelOrder,
+  useOrderDataGetByOrderID,
+} from '../../hooks/useOrderData';
+import { compareToday, formatDate, formatNumber } from '../../utils/format';
+import Loading from '../common/Loading';
 import CancelOrderModal from './CancelOrderModal';
-import { useCancelOrder } from '../../hooks/useOrderData';
 
-const OrderList = ({ orderInfo }) => {
+const OrderList = ({ orderList }) => {
   const navigate = useNavigate();
   const cancelOrderMutation = useCancelOrder();
   const [selectedOrder, setSelectedOrder] = useState(null);
+
+  console.log('orderList : ', orderList);
+  const [orderInfo, setOrderInfo] = useState(null);
+
+  const { data } = useOrderDataGetByOrderID(orderList);
+  const isLoading = data.some((query) => query.isLoading);
+  const error = data.find((query) => query.error)?.error;
+
+  useEffect(() => {
+    console.log('OrderList data : ', data);
+  }, []);
+
+  useEffect(() => {}, [isLoading, error, data]);
 
   // 주문 취소 처리
   const handleCancelClick = (order) => {
@@ -44,6 +61,8 @@ const OrderList = ({ orderInfo }) => {
   //     })
   //   : [];
 
+  if (isLoading) return <Loading />;
+  if (error) return <p>Error: {error.message}</p>;
   return (
     <>
       <ul className="list bg-base-100 dark:bg-gray-800 rounded-box shadow-md py-">

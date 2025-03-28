@@ -1,8 +1,14 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   cancelUserOrder,
   fetchUserOrders,
   getOrderData,
+  orderQuery,
 } from '../services/orderService';
 
 // 주문내역 조회 (기존)
@@ -35,5 +41,14 @@ export const useOrderData = (userId) => {
     queryKey: ['orders', userId],
     queryFn: () => getOrderData(userId),
     enabled: !!userId,
+  });
+};
+
+// 주문아이디로 내역 조회
+export const useOrderDataGetByOrderID = (orderID) => {
+  return useQueries({
+    queryKey: ['orders', orderID],
+    queryFn: () => orderQuery(orderID),
+    enabled: !!orderID,
   });
 };

@@ -55,6 +55,19 @@ export const deleteAllFavorites = async () => {
 
   console.log('모든 users의 wishlist 데이터 삭제');
 };
+
+// 모든 주문 데이터 제거
+export const deleteAllOrders = async () => {
+  const ordersRef = collection(db, 'orders');
+  const snapshot = await getDocs(ordersRef);
+
+  snapshot.forEach(async (docSnapshot) => {
+    await deleteDoc(doc(db, 'orders', docSnapshot.id));
+  });
+
+  console.log('모든 orders 데이터 삭제');
+};
+
 // 숙소 더미 데이터 추가
 export const addAccommodations = async () => {
   const accommodationsRef = collection(db, 'accommodations');
@@ -66,12 +79,6 @@ export const addAccommodations = async () => {
       name: '역삼 아르누보씨티 호텔 앤 레지던스',
       description:
         '최고급 가구와 주방시설을 갖춘 럭셔리한 레지던스형 호텔입니다.\n역삼역과 선릉역 사이에 위치해 강남 어디로든 이동이 편리합니다.',
-      capacity: { adults: 3, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '200000',
-      discount_rate: 0.62,
-      final_price: '75990',
       host: {
         name: '박기범',
         contact: '16443184',
@@ -85,7 +92,6 @@ export const addAccommodations = async () => {
         sub_city: '강남구',
       },
       rating: 4.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/06/28/16/1280/62bb331b64efe8.30673986.jpg',
@@ -97,12 +103,6 @@ export const addAccommodations = async () => {
       name: '글래드 강남 코엑스센터',
       description:
         '한국소비자포럼 주최의 2022 올해의 브랜드 대상 어워드에서 글래드 호텔이 올해의 라이프 스타일 호텔 부문 1위로 선정되었습니다.\nGLAD 체인호텔로, 모던한 디자인의 객실을 보유하고 있습니다.\n삼성역 1번 출구 도보 10초 거리에 위치한, COEX 인근 가장 합리적인 가격의 호텔 입니다.\n코엑스, 도심 공항 터미널, SM Theater, 잠실 종합운동장 등 편의시설이 모두 차량 5분 이내 거리에 위치하고 있습니다.',
-      capacity: { adults: 2, children: 0 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '385000',
-      discount_rate: 0.65,
-      final_price: '132000',
       host: {
         name: '김택중',
         contact: '0264745000',
@@ -116,7 +116,6 @@ export const addAccommodations = async () => {
         sub_city: '강남구',
       },
       rating: 4.6,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/10/26/14/1280/6359424d363cb1.59078840.jpg',
@@ -130,12 +129,6 @@ export const addAccommodations = async () => {
       name: '호텔 소울하다',
       description:
         '서울의 HOT PLACE인 강남에서 심플, 모던, 고급스러움을 컨셉으로 고객님께 다가갑니다.\n숙박을 넘어 새로운 경험을 제공하는 호텔로 소울하다라는 우리말 이름을 사용하여 차별성을 보여줍니다.\n세련되면서 개성과 젊음의 가득한 호텔에서 답답함을 풀어헤치고 진정성을 담은 휴식을 느껴보세요.',
-      capacity: { adults: 2, children: 0 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '130000',
-      discount_rate: 0.23,
-      final_price: '99000',
       host: {
         name: '오성덕',
         contact: '0232881100',
@@ -149,7 +142,6 @@ export const addAccommodations = async () => {
         sub_city: '강남구',
       },
       rating: 4.6,
-      services: ['wifi', 'parking', 'tv'],
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/10/26/09/1280/6359010f6cb429.36101357.jpg',
@@ -161,12 +153,6 @@ export const addAccommodations = async () => {
       name: '노보텔 앰배서더 강남',
       description:
         '조식 PKG 이용 시, (동반 자녀 소인 최대 2인까지 조식 무료제공)\n강남권에 위치한 아코르 계열의 특1급 호텔로서 교통이 편리하고 코엑스에 인접한 최고의 비즈니스 호텔입니다!\n9개의 스위트룸과 332개의 안락한 객실, 최고급 뷔페 등 특1급 호텔에서만 느낄 수 있는 최고급 품격의 완성 :)\n최첨단 시설을 갖춘 수영장, 골프 연습장, 체련장, 사우나, 에어로빅 룸과 조깅 트랙 등이 완비되어 있습니다.',
-      capacity: { adults: 2, children: 0 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '495000',
-      discount_rate: 0.02,
-      final_price: '485000',
       host: {
         name: '서정호',
         contact: '025316000',
@@ -180,7 +166,6 @@ export const addAccommodations = async () => {
         sub_city: '강남구',
       },
       rating: 4.6,
-      services: ['wifi', 'parking', 'tv'],
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/08/25/15/1280/6307957c193de7.66392039.jpg',
@@ -193,12 +178,6 @@ export const addAccommodations = async () => {
       name: '호텔 인 나인 강남',
       description:
         "비즈니스의 중심, 코엑스 인근에 위치한 4성급 호텔 '9'는 완벽에 가까운 숫자처럼 최상의 서비스로 모시겠습니다.\n\nHotel in 9은 지하철 봉은사역 3번 출구에서 도보로 1분 거리에 위치한 4성급 호텔입니다. 주변 관광지로는 코엑스몰, 서울 코엑스 컨벤션 센터, 코엑스 아쿠아리움, 압구정 로데오 등이 있습니다. 또한, 삼성역 7번 출구에서 도보로 약 7분 거리에 위치하여 서울의 다른 지역으로의 이동이 편리합니다. \n\n객실은 총 152개로 구성되어 있으며, 43인치 TV, 개인 금고, 냉장고, 에어컨, 캡슐 커피와 커피 머신이 완비되어 있습니다. 모든 객실에는 유무선 인터넷이 제공되며, 비데, 샤워부스, 목욕 가운도 구비되어 있습니다. \n\n21층 스카이라운지에 위치한 FESTIVA 레스토랑에서는 아름다운 전망을 보며 식사를 즐기실 수 있습니다.",
-      capacity: { adults: 2, children: 0 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '200000',
-      discount_rate: 0.43,
-      final_price: '114000',
       host: {
         name: '최홍윤',
         contact: '023119000',
@@ -212,7 +191,6 @@ export const addAccommodations = async () => {
         sub_city: '강남구',
       },
       rating: 4.6,
-      services: ['wifi', 'parking', 'tv'],
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/08/25/15/1280/6307957c193de7.66392039.jpg',
@@ -225,12 +203,6 @@ export const addAccommodations = async () => {
       name: '가평 헬리오스풀빌라',
       description:
         '24년 신축 풀빌라입니다.\n2개 동으로 이루어져 있으며,\n1층에 수영장과 주방을 비롯한 거실과 화장실 2개와\n2층에 방3개와 화장실2개 별도의 세면대가 준비되어 있어\n고객님들에게 프라이빗하고 쾌적한 객실을 제공 합니다.',
-      capacity: { adults: 2, children: 0 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '900000',
-      discount_rate: 0.28,
-      final_price: '643000',
       host: {
         name: '김종영, 문성식',
         contact: '050350532287',
@@ -244,7 +216,6 @@ export const addAccommodations = async () => {
         sub_city: '가평군',
       },
       rating: 4.6,
-      services: ['wifi', 'parking', 'tv'],
       type: 'pension',
       images: [
         'https://yaimg.yanolja.com/v5/2025/01/04/01/1280/67788e31a68b35.12454781.jpg',
@@ -256,12 +227,6 @@ export const addAccommodations = async () => {
       name: '가평 하루가평펜션',
       description:
         '※ 에디터 TIP\n1. 하루가평 펜션의 고객은 낮 시간에 평상 무료 이용 가능합니다.\n2. 전 객실 개별BBQ가 가능하며 숯불 바베큐장(공용)이 별도 마련되어 있습니다.\n3. 전 객실 개별 야외 수영장 이용 가능 (겨울철 이용 불가)\n4. 수영장 커버 인클로저가 설치된 객실 (101.102. 202)\n5. 전 객실 개별 바베큐 및 OTT 서비스 이용 가능',
-      capacity: { adults: 2, children: 0 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '900000',
-      discount_rate: 0.28,
-      final_price: '643000',
       host: {
         name: '신효인',
         contact: '050350579127',
@@ -275,7 +240,6 @@ export const addAccommodations = async () => {
         sub_city: '가평군',
       },
       rating: 4.5,
-      services: ['wifi', 'parking', 'tv'],
       type: 'pension',
       images: [
         'https://yaimg.yanolja.com/v5/2024/12/26/04/1280/676ce1c257c322.79610863.jpg',
@@ -288,12 +252,6 @@ export const addAccommodations = async () => {
     {
       name: '가평 까사노블V풀빌라',
       description: '안녕하세요. 가평 까사노블V풀빌라입니다.',
-      capacity: { adults: 3, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '900000',
-      discount_rate: 0.28,
-      final_price: '643000',
       host: {
         name: '박광재',
         contact: '050350590267',
@@ -307,7 +265,6 @@ export const addAccommodations = async () => {
         sub_city: '가평군',
       },
       rating: 4.0,
-      services: ['wifi', 'parking', 'tv'],
       type: 'pension',
       images: [
         'https://yaimg.yanolja.com/v5/2025/01/25/10/1280/6794b916d7d944.07169048.jpg',
@@ -319,12 +276,6 @@ export const addAccommodations = async () => {
       name: '가평 와우키즈풀빌라',
       description:
         '사계절 언제나 따뜻한 물놀이가 가능한 와우키즈풀빌라입니다.\n* 23년 5월 정글짐 리뉴얼 완료(마,바,사,아 객실)\n* 아이들과 함께 불멍 가능~ (바 객실제외)\n* 아이들의 안전을 위한 안전매트 시공완료\n* 야외 놀이터 놀이시설 완비\n* 아이들을 위하여, 상비약 상시구비\n* 입실~퇴실까지 온도 유지되는 개별 미온수 수영장 보유',
-      capacity: { adults: 3, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '159000',
-      discount_rate: 0.28,
-      final_price: '114000',
       host: {
         name: '임명희',
         contact: '050350593138',
@@ -338,7 +289,6 @@ export const addAccommodations = async () => {
         sub_city: '가평군',
       },
       rating: 4.0,
-      services: ['wifi', 'parking', 'tv'],
       type: 'pension',
       images: [
         'https://yaimg.yanolja.com/v5/2024/12/06/07/1280/6752a310ca7368.92898056.jpg',
@@ -347,12 +297,6 @@ export const addAccommodations = async () => {
     {
       name: '가평 댕댕이애견펜션실버',
       description: '안녕하세요. 가평 댕댕이애견펜션실버입니다.',
-      capacity: { adults: 3, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '129000',
-      discount_rate: 0.15,
-      final_price: '109000',
       host: {
         name: '손기훈, 한복경',
         contact: '050350539864',
@@ -366,7 +310,6 @@ export const addAccommodations = async () => {
         sub_city: '강남구',
       },
       rating: 4.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2024/11/15/10/1280/67371fa0ea9ac3.01996822.jpg',
@@ -377,12 +320,6 @@ export const addAccommodations = async () => {
       name: '양평 글램핑&카라반',
       description:
         '경기도 양평에 위치한 실내 글램핑장과 독일 하비카라반에서 편히 쉬다 가실 수 있습니다.',
-      capacity: { adults: 4, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '109000',
-      discount_rate: 0,
-      final_price: '109000',
       host: {
         name: '안병구',
         contact: '050350529587',
@@ -396,7 +333,6 @@ export const addAccommodations = async () => {
         sub_city: '양평군',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2024/09/04/11/1280/66d8491cbc7502.50230503.jpg',
@@ -409,12 +345,6 @@ export const addAccommodations = async () => {
       name: '가평 동물카라반펜션',
       description:
         '아침고요수목원의 수려한 자연,펜션주변 잣나무 숲의 맑은공기,사계절 흐르는 계곡이 있는 곳\n저희 펜션은 주위가 잣나무숲으로 둘러싸여 맑은 공기를 마시며 계곡의 맑은 물과\n자연과 더불어 동화 될 수 있는 주변 여건을 갖춘 펜션입니다.',
-      capacity: { adults: 3, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '119000',
-      discount_rate: 0,
-      final_price: '119000',
       host: {
         name: '이경희',
         contact: '050350529819',
@@ -428,7 +358,6 @@ export const addAccommodations = async () => {
         sub_city: '가평군',
       },
       rating: 4.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2020/02/25/16/1280/5e54d0b2ef95a5.44638934.jpg',
@@ -441,12 +370,6 @@ export const addAccommodations = async () => {
       name: '영월 스타글램핑',
       description:
         '저희 영월 Star 글램핑은 캠핑의 대명사로 불리는 청정 법흥계곡에 위치하고 있으며\n방문해 주시는 분들이 일상에 지친 몸과 마음을 편안한 휴식을 통해 마음껏 힐링하고\n돌아갈 수 있도록 다양한 편의시설을 제공하고 안전한 글램핑과 즐길꺼리를 제공하고 있습니다.',
-      capacity: { adults: 4, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '119000',
-      discount_rate: 0,
-      final_price: '119000',
       host: {
         name: '백경철',
         contact: '050350525796',
@@ -460,7 +383,6 @@ export const addAccommodations = async () => {
         sub_city: '가평군',
       },
       rating: 4.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2021/07/06/16/1280/60e480bb43a087.59238567.jpg',
@@ -472,12 +394,6 @@ export const addAccommodations = async () => {
       name: '영월 달콤하우스',
       description:
         '1,200평 넓은 공간을 먼저 예약한 한팀이 독채로 이용하시는 펜션입니다.\n밤하늘 별이 쏟아지는 달콤하우스에서 새소리와 물소리를 함께 들으며 자연에서 즐기는 진정한 휴식을 느껴보세요.\n주변 동강 전망이 좋고 앞마당에 메타세콰이어 길이 마음을 풍요롭게 합니다.\nA, B타입 모두 먼저 예약한 분이 독채로 이용하실 수 있습니다.',
-      capacity: { adults: 2, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '500000',
-      discount_rate: 0.1,
-      final_price: '450000',
       host: {
         name: '정선아',
         contact: '050350527116',
@@ -491,7 +407,6 @@ export const addAccommodations = async () => {
         sub_city: '영월군',
       },
       rating: 5.0,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2022/03/08/19/1280/6227ae5bd16857.12736285.jpg',
@@ -504,12 +419,6 @@ export const addAccommodations = async () => {
       name: '속초 밤하늘 글램핑',
       description:
         '속초밤하늘글램핑으로 두 마리 토끼를 잡으세요\n낮에는 즐길거리 가득한 속초여행을, 밤에는 속초밤하늘글램핑에서 편안하고 감성 가득한 글램핑의 추억을 만드세요.\n(동서울에서 2시간 10분대, 속초 IC에서 5분, 속초 주요 관광지 10분대 거리)',
-      capacity: { adults: 2, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '64000',
-      discount_rate: 0,
-      final_price: '64000',
       host: {
         name: '김민철',
         contact: '050305035052411350527116',
@@ -523,7 +432,6 @@ export const addAccommodations = async () => {
         sub_city: '속초시',
       },
       rating: 5.0,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2020/11/23/18/1280/5fbb81ad8087c3.44335588.jpg',
@@ -533,12 +441,6 @@ export const addAccommodations = async () => {
     {
       name: '양양(하조대) 원 리조트모텔',
       description: '하조대5분,인구해변7분거리 기사문해변 오션뷰 모텔.',
-      capacity: { adults: 2, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '60000',
-      discount_rate: 0.1,
-      final_price: '54000',
       host: {
         name: '김태윤',
         contact: '050350527729',
@@ -552,7 +454,6 @@ export const addAccommodations = async () => {
         sub_city: '양양군',
       },
       rating: 5.0,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2021/04/13/14/1280/6075a8362ee000.99543666.jpg',
@@ -563,12 +464,6 @@ export const addAccommodations = async () => {
     {
       name: '양양 JM 무인텔',
       description: '하조대5분,인구해변7분거리 기사문해변 오션뷰 모텔.',
-      capacity: { adults: 2, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '30000',
-      discount_rate: 0.2,
-      final_price: '24000',
       host: {
         name: '박승원',
         contact: '050350517785',
@@ -582,7 +477,6 @@ export const addAccommodations = async () => {
         sub_city: '양양군',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2024/11/18/06/1280/673ad895a182d5.49033304.jpg',
@@ -592,12 +486,6 @@ export const addAccommodations = async () => {
     {
       name: '양양 오렌지',
       description: '전객실 넷플릭스,왓차,티빙,유투브 프리미엄 무제한서비스',
-      capacity: { adults: 4, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '50000',
-      discount_rate: 0.2,
-      final_price: '40000',
       host: {
         name: '박순규',
         contact: '050350502782',
@@ -611,7 +499,6 @@ export const addAccommodations = async () => {
         sub_city: '양양군',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/06/08/17/1280/62a0dbf2ada053.38491851.jpg',
@@ -622,12 +509,6 @@ export const addAccommodations = async () => {
     {
       name: '충주 힐링 무인텔',
       description: '객실 내 최고사양 PC 보유',
-      capacity: { adults: 2, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '40000',
-      discount_rate: 0.12,
-      final_price: '35000',
       host: {
         name: '남천우',
         contact: '0438434010',
@@ -641,7 +522,6 @@ export const addAccommodations = async () => {
         sub_city: '충주시',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/09/13/11/1280/63206d25674330.91116082.jpg',
@@ -653,12 +533,6 @@ export const addAccommodations = async () => {
       name: '제주 하루',
       description:
         '호텔 HARU는 2022년 2월 22일 새롭게 리뉴얼 된 모습으로 고객님들께 찾아뵙게 되었습니다\n공항에서 5분 거리, 깨끗하고 안락한, 주변 맛집이 가득한, 가성비가 좋은,\n호텔 HARU는 전문 소독(방역) 업체와 계약을 맺어 주기적으로 소독 방역을 실시하고 있습니다\n스탠다드, 디럭스 타입별로 객실이미지와 배정된 객실은 인테리어가 상이 할수 있습니다',
-      capacity: { adults: 2, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '30000',
-      discount_rate: 0.13,
-      final_price: '26000',
       host: {
         name: '나승재',
         contact: '050350527067',
@@ -672,7 +546,6 @@ export const addAccommodations = async () => {
         sub_city: '제주시',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast', 'barbecue'],
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/03/15/13/1280/623097d9b83898.45434650.jpg',
@@ -684,12 +557,6 @@ export const addAccommodations = async () => {
     {
       name: '전주 한옥마을 인디고',
       description: '수제 유자차와 토스트.계란 무료제공',
-      capacity: { adults: 2, children: 2 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '46000',
-      discount_rate: 0.2,
-      final_price: '36800',
       host: {
         name: '안진하',
         contact: '050350529933',
@@ -703,7 +570,6 @@ export const addAccommodations = async () => {
         sub_city: '제주시',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast'],
       type: 'guesthouse',
       images: [
         'https://yaimg.yanolja.com/v5/2024/09/04/12/1280/66d84cb07279b8.71820674.jpg',
@@ -715,12 +581,6 @@ export const addAccommodations = async () => {
       name: '전주 안녕제제 게스트하우스',
       description:
         '전주한옥마을에 위치한 안녕제제는 자연친화적인 내추럴한 감성의 힐링 게스트하우스입니다.',
-      capacity: { adults: 4, children: 3 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '90000',
-      discount_rate: 0.2,
-      final_price: '72000',
       host: {
         name: '조희재',
         contact: '050350529385',
@@ -734,7 +594,6 @@ export const addAccommodations = async () => {
         sub_city: '전주시',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast'],
       type: 'guesthouse',
       images: [
         'https://yaimg.yanolja.com/v5/2023/03/23/17/1280/641c8864260dc3.33974343.jpg',
@@ -747,12 +606,6 @@ export const addAccommodations = async () => {
       name: '전주 한옥마을 덕수궁 한옥스테이',
       description:
         '전주 한옥마을을 도보 3분 내로 도착할 수 있는 신축 한옥입니다.\n한국관광품질인증을 받은 한옥스테이 입니다.\n＊덕수궁은 2인실 (1인 1침구 싱글+싱글), 2인실 (퀸침대) 객실있습니다.\n＊각종 어메니티 (칫솔, 치약, 클렌징폼, 바디타올 등) 구비되어 있습니다.\n＊덕수궁 전용 주차장이 있습니다. (입실 전 후 무료주차 가능합니다.)',
-      capacity: { adults: 4, children: 3 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '45000',
-      discount_rate: 0,
-      final_price: '45000',
       host: {
         name: '김경희',
         contact: '050350526677',
@@ -766,7 +619,6 @@ export const addAccommodations = async () => {
         sub_city: '전주시',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast'],
       type: 'guesthouse',
       images: [
         'https://yaimg.yanolja.com/v5/2023/03/29/15/1280/64245633dd5170.25551168.jpg',
@@ -777,12 +629,6 @@ export const addAccommodations = async () => {
     {
       name: '소노문 해운대(소노호텔앤리조트)',
       description: '★ 해운대 해수욕장 도보5분 거리 신규 호텔',
-      capacity: { adults: 4, children: 3 },
-      check_in: serverTimestamp(),
-      check_out: serverTimestamp(),
-      original_price: '66000',
-      discount_rate: 0.1,
-      final_price: '59400',
       host: {
         name: '이광수',
         contact: '15884888',
@@ -796,7 +642,6 @@ export const addAccommodations = async () => {
         sub_city: '해운대구',
       },
       rating: 3.5,
-      services: ['wifi', 'parking', 'tv', 'breakfast'],
       type: 'resort',
       images: [
         'https://yaimg.yanolja.com/v5/2024/05/29/14/1280/66573c91eb9d64.12010940.jpg',
@@ -849,6 +694,7 @@ export const addRooms = async (accommodationIds) => {
       services: ['wifi'],
       stay_type: 'stay',
       stock: 3,
+      type: 'double',
     },
     {
       availability: true,

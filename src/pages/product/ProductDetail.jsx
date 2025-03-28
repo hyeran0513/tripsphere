@@ -107,10 +107,9 @@ const ProductDetail = () => {
         ref={(el) => (tabRef.current[2] = el)}
         id="services"
         className="pt-[50px]">
-        <h1 className="text-xl font-semibold">서비스 및 부대시설</h1>
-        <ServiceList services={accommodation.services} />
-        <HostInfo product={accommodation} />
+        <h1 className="text-xl font-semibold">숙소 소개</h1>
         <ProductDescription product={accommodation} />
+        <HostInfo product={accommodation} />
       </section>
 
       <section

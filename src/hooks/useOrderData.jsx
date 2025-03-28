@@ -46,9 +46,18 @@ export const useOrderData = (userId) => {
 
 // 주문아이디로 내역 조회
 export const useOrderDataGetByOrderID = (orderID) => {
-  return useQueries({
-    queryKey: ['orders', orderID],
-    queryFn: () => orderQuery(orderID),
-    enabled: !!orderID,
-  });
+  console.log('orderID : ', orderID);
+  if (orderID === undefined || !orderID || orderID.length < 1) return [];
+
+  console.log('orderID length : ', orderID.length);
+  console.log('Array.isArray(orderID) :', Array.isArray(orderID));
+  return useQueries(
+    Array.isArray(orderID)
+      ? orderID.map((id) => ({
+          queryKey: ['orders', id],
+          queryFn: () => orderQuery(id),
+          enabled: !!id,
+        }))
+      : [],
+  );
 };

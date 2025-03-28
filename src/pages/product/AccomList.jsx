@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import SideFilter from '../../components/accomlist/SideFilter';
 import Loading from '../../components/common/Loading';
 import AccomCard from '../../components/accomlist/AccomCard';
 import { useAccommodations } from '../../hooks/useAccomData';
+import useFilterStore from '../../stores/useFilterStore';
+import AccomTypeSelector from '../../components/accomlist/AccomTypeSelector';
+import Pagination from '../../components/productlist/Pagination';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -11,6 +14,11 @@ const breadcrumb = [
 ];
 
 const typeMapping = [
+  {
+    value: '전체',
+    text: '전체',
+    icon: 'https://a0.muscache.com/pictures/9a2ca4df-ee90-4063-b15d-0de7e4ce210a.jpg',
+  },
   {
     value: 'hotel',
     text: '호텔',
@@ -44,23 +52,63 @@ const typeMapping = [
 ];
 
 const AccomList = () => {
+  const {
+    selectedCity,
+    selectedSubCity,
+    adultCount,
+    childrenCount,
+    checkIn,
+    checkOut,
+  } = useFilterStore();
+
   const [filters, setFilters] = useState({
     type: '전체',
+    city: selectedCity,
+    sub_city: selectedSubCity,
+    checkIn,
+    checkOut,
+    adults: adultCount,
+    children: childrenCount,
   });
 
   const { data, isLoading } = useAccommodations(filters);
   const [filteredData, setFilteredData] = useState([]);
+  const [selectedPerOption, setSelectedPerOption] = useState(10);
+
+  const perOptions = [
+    { id: 2, value: 10, name: '10개씩 보기' },
+    { id: 3, value: 15, name: '15개씩 보기' },
+    { id: 4, value: 20, name: '20개씩 보기' },
+  ];
 
   useEffect(() => {
     if (data) {
       const filtered = data.filter((item) => {
         const typeMatch = filters.type === '전체' || item.type === filters.type;
-
         return typeMatch;
       });
       setFilteredData(filtered);
     }
   }, [data, filters]);
+
+  // 검색 핸들러
+  const handleSearch = () => {
+    setFilters((prev) => ({
+      ...prev,
+      city: selectedCity,
+      sub_city: selectedSubCity,
+      checkIn,
+      checkOut,
+      adults: adultCount,
+      children: childrenCount,
+    }));
+  };
+
+  // 페이지 옵션 선택 핸들러
+  const handlePagePerOptionSelect = useCallback((event) => {
+    const perPage = Number(event.target.value);
+    setSelectedPerOption(perPage);
+  }, []);
 
   if (isLoading) return <Loading />;
 
@@ -72,54 +120,51 @@ const AccomList = () => {
         breadcrumb={breadcrumb}
       />
 
-      {/* 숙소 유형 선택 영역 */}
-      <div className="flex gap-4 mb-10">
-        {typeMapping.map((item) => (
-          <label
-            key={item.value}
-            className="flex flex-col flex-1 items-center gap-1 cursor-pointer">
-            <input
-              type="radio"
-              name="type"
-              value={item.value}
-              checked={filters.type === item.value}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, type: e.target.value }))
-              }
-              className="hidden"
-            />
-            <div className="flex flex-col items-center gap-2">
-              <img
-                className="w-[30px]"
-                src={item.icon}
-                alt={item.text}
-              />
-              <span
-                className={`text-sm ${filters.type === item.value ? 'text-indigo-600 font-bold' : ''}`}>
-                {item.text}
-              </span>
-            </div>
-          </label>
-        ))}
-      </div>
+      {/* 숙소 유형 선택 */}
+      <AccomTypeSelector
+        filters={filters}
+        setFilters={setFilters}
+        typeMapping={typeMapping}
+      />
 
-      {/* 필터 및 숙소 리스트 */}
       <div
         id="container"
         className="flex items-start gap-10">
-        <SideFilter
-          onSearch={setFilters}
-          filters={filters}
-        />
+        {/* 숙소 필터 */}
+        <SideFilter handleSearch={handleSearch} />
 
-        <ul className="flex-1 flex flex-col gap-6">
-          {filteredData.map((item, index) => (
-            <AccomCard
-              accommodation={item}
-              key={index}
-            />
-          ))}
-        </ul>
+        <div className="flex-1">
+          <div className="flex justify-end mb-10">
+            <select
+              id="perPage"
+              className="rounded-lg border border-gray-300 px-4 py-2"
+              value={selectedPerOption}
+              onChange={handlePagePerOptionSelect}>
+              {perOptions.map((item) => (
+                <option
+                  key={item.id}
+                  value={item.value}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 숙소 목록 */}
+          <ul className="flex flex-col gap-6">
+            {filteredData.map((item, index) => (
+              <AccomCard
+                accommodation={item}
+                key={index}
+              />
+            ))}
+          </ul>
+
+          <Pagination
+            data={filteredData}
+            pagePerItem={selectedPerOption}
+          />
+        </div>
       </div>
     </div>
   );

@@ -57,9 +57,7 @@ const OrderHistory = () => {
               <div className="flex gap-6">
                 <img
                   className="size-24 rounded-box"
-                  src={
-                    order.room?.images?.[0] || 'https://via.placeholder.com/100'
-                  }
+                  src={order.room?.images?.[0] || 'https://place-hold.it/96'}
                   alt={order.room?.name || '숙소 정보 없음'}
                 />
 

@@ -50,8 +50,8 @@ const OrderList = ({ orderInfo }) => {
         {orderInfo?.map((order, index) => (
           <li
             key={index}
-            className="list-row flex-col flex my-3 mx-5 border-gray-200">
-            <div className="border-b border-stone-200 flex justify-between items-center">
+            className="list-row flex-col flex my-3 border-gray-200">
+            <div className="border-b border-stone-200 flex justify-between items-center py-1">
               <div> {formatDate(order.order_date)}</div>
               <button
                 type="button"
@@ -61,55 +61,53 @@ const OrderList = ({ orderInfo }) => {
                 <BiChevronRight className="size-6" />
               </button>
             </div>
-
+            <div className="flex justify-between">
+              {compareToday(order.room.check_in) && (
+                <div class="mr-2 badge badge-soft badge-primary text-[10px]">
+                  {compareToday(order.room.check_in)}
+                </div>
+              )}
+              <div className="text-xs uppercase opacity-60 pt-1">
+                예약번호 : {order.id}
+              </div>
+            </div>
             <div className="flex justify-between">
               <div className="flex gap-6">
                 <img
-                  className="size-24 rounded-box"
-                  src={
-                    order.room?.images?.[0] || 'https://via.placeholder.com/100'
-                  }
+                  className="size-28 rounded-box"
+                  src={order.room?.images?.[0] || 'https://place-hold.it/112'}
                   alt={order.room?.name || '숙소 정보 없음'}
                 />
                 <div className="flex flex-col">
                   <h2 className="text-lg font-bold">
-                    {compareToday(order.room.check_in) && (
-                      <div class="mr-2 badge badge-soft badge-primary text-[10px]">
-                        {compareToday(order.room.check_in)}
-                      </div>
-                    )}
-
                     {order.room?.name || '숙소 정보 없음'}
-                    <p className="flex items-center gap-1 text-gray-500 text-xs">
-                      <BiBuildings />
-                      {order.accom.name}
-                    </p>
                   </h2>
-                  <div className="text-xs uppercase opacity-60 pt-1">
-                    예약번호 : {order.id}
+                  <div className="flex items-center gap-2 text-xs mt-auto font-bold">
+                    <BiBuildings />
+                    {order.accom.name}
                   </div>
 
                   {/* 인원 정보 */}
-                  <div className="flex items-center gap-2 mt-2">
+                  <div className="flex items-center gap-2 mt-2 text-xs">
                     <BiUser />
-                    <div className="mr-1 text-sm">
-                      성인: {order.room.capacity?.adults ?? 0}명, 어린이:{' '}
-                      {order.room.capacity.children ?? 0}명
-                    </div>
+                    <span className="font-bold">성인: </span>
+                    <span>{order.room.capacity?.adults ?? 0}명, </span>
+                    <span className="font-bold">어린이: </span>
+                    <span> {order.room.capacity.children ?? 0}명 </span>
                   </div>
 
                   {/* 체크인/체크아웃 날짜 */}
-                  <div className="flex items-center gap-10 mt-2">
+                  <div className="flex items-center gap-10 mt-2 text-xs">
                     <div className="flex items-center gap-2">
                       <BiCalendarAlt />
-                      <span className="font-bold">체크인:</span>{' '}
+                      <span className="font-bold">체크인:</span>
                       <span>
                         {formatDate(order.room.check_in) || '날짜 없음'}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <BiCalendarAlt />
-                      <span className="font-bold">체크아웃:</span>{' '}
+                      <span className="font-bold">체크아웃:</span>
                       <span>
                         {formatDate(order.room.check_out) || '날짜 없음'}
                       </span>

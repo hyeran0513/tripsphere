@@ -54,6 +54,9 @@ const Favorite = () => {
         case 'location':
           searchableField = `${item.location.city} ${item.location.sub_city}`;
           break;
+        case 'place':
+          searchableField = `${item.location.place_name}`;
+          break;
         case 'type':
           searchableField = typeMapping[item.type] || item.type;
           break;
@@ -86,8 +89,9 @@ const Favorite = () => {
           onChange={(e) => setSearchOption(e.target.value)}
           className="select border border-gray-400 rounded-l-2xl w-40">
           <option value="name">숙소명</option>
-          <option value="location">장소명</option>
-          <option value="type">도시명</option>
+          <option value="location">도시명</option>
+          <option value="place">장소명</option>
+          <option value="type">타입명</option>
         </select>
 
         <input
@@ -130,8 +134,9 @@ const Favorite = () => {
           onChange={(e) => setSearchOption(e.target.value)}
           className="select border border-gray-400 rounded-l-2xl w-40">
           <option value="name">숙소명</option>
-          <option value="location">장소명</option>
-          <option value="type">도시명</option>
+          <option value="location">도시명</option>
+          <option value="place">장소명</option>
+          <option value="type">타입명</option>
         </select>
 
         <input

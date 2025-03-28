@@ -28,6 +28,7 @@ const OrderResult = ({ room, isOpen, toggleContent }) => {
         <div className="mt-2 text-base-content">
           <div>
             <div className="divide-y divide-gray-100">
+              {/* 숙소명 */}
               <div className="px-4 py-6 grid grid-cols-2 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium">숙소명</dt>
                 <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0">
@@ -35,6 +36,7 @@ const OrderResult = ({ room, isOpen, toggleContent }) => {
                 </dd>
               </div>
 
+              {/* 객실명 */}
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium">객실명</dt>
                 <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0 flex items-center gap-2">
@@ -42,6 +44,7 @@ const OrderResult = ({ room, isOpen, toggleContent }) => {
                 </dd>
               </div>
 
+              {/* 예약 정보 */}
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium ">예약 정보</dt>
                 <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">

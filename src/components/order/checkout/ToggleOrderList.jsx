@@ -5,7 +5,9 @@ const ToggleOrderList = ({ data }) => {
   const [openIndexes, setOpenIndexes] = useState([]);
 
   useEffect(() => {
-    setOpenIndexes(new Array(data.length).fill(true));
+    if (data) {
+      setOpenIndexes(new Array(data.length).fill(true));
+    }
   }, [data]);
 
   const toggleContent = (index) => {

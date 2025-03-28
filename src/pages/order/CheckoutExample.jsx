@@ -54,7 +54,7 @@ const CheckoutExample = () => {
             <ToggleOrderList data={data} />
 
             {/* 최종 결제 금액 */}
-            <OrderPriceForm />
+            <OrderPriceForm data={data} />
           </div>
         </div>
       </div>

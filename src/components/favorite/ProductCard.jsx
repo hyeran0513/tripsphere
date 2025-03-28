@@ -25,7 +25,7 @@ const ProductCard = ({ favorite }) => {
   };
 
   return (
-    <Link to={`/prodect/${favorite.accomId}`}>
+    <Link to={`/product/${favorite.accomId}`}>
       <div className="flex flex-col items-start group card bg-base-100 transition-shadow gap-[20px]">
         <div className="h-full relative">
           <div className="h-[200px] rounded-md overflow-hidden">

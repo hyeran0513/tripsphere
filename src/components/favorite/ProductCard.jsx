@@ -84,7 +84,6 @@ const ProductCard = ({ favorite }) => {
               (room) => room.stay_type === 'day_use',
             );
 
-            // 조건에 맞는 객실을 출력
             return (
               <>
                 {stayRoom && room.id === stayRoom.id && (

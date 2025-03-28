@@ -7,7 +7,7 @@ import { useCheckout } from '../../../hooks/useOrderData';
 import { serverTimestamp } from 'firebase/firestore';
 import ToastMessage from '../../common/ToastMessage';
 
-const OrderPriceForm = ({ data }) => {
+const OrderPriceForm = ({ data, reservationInfo }) => {
   const { user } = useAuthStore();
   const { data: userData } = useUserData(user?.uid);
   const navigate = useNavigate();
@@ -37,30 +37,50 @@ const OrderPriceForm = ({ data }) => {
   const handleCheckOut = async (e) => {
     e.preventDefault();
 
+    const updatedData = data.map((item) => {
+      const matchedRoom = reservationInfo.find(
+        (room) => room.room_id === item.roomId,
+      );
+
+      if (matchedRoom && item.stay_type === 'day_use') {
+        return {
+          ...item,
+          duration: matchedRoom.duration,
+          selectedTime: matchedRoom.selectedTime,
+        };
+      }
+
+      return item;
+    });
+
     // 포인트 부족 시 결제 불가
-    if (getRemainingPoints(userData.points, data) < 0) {
+    if (getRemainingPoints(userData.points, updatedData) < 0) {
       showToast('error', '포인트가 부족합니다.');
       return;
     }
 
-    navigate('/orderconfirmation', { state: data });
+    navigate('/orderconfirmation', { state: updatedData });
 
-    const orderPromises = data.map(
+    const orderPromises = updatedData.map(
       (item) =>
         new Promise((resolve, reject) => {
-          mutate(
-            {
-              user_id: user?.uid,
-              room_id: item.roomId,
-              order_date: serverTimestamp(),
-              payment_status: 'completed',
-              used_points: item.original_price * (1 - item.discount_rate),
-            },
-            {
-              onSuccess: resolve,
-              onError: reject,
-            },
-          );
+          const orderData = {
+            user_id: user?.uid,
+            room_id: item.roomId,
+            order_date: serverTimestamp(),
+            payment_status: 'completed',
+            used_points: item.original_price * (1 - item.discount_rate),
+          };
+
+          if (item.stay_type === 'day_use') {
+            orderData.duration = item.duration;
+            orderData.selectedTime = item.selectedTime;
+          }
+
+          mutate(orderData, {
+            onSuccess: resolve,
+            onError: reject,
+          });
         }),
     );
 

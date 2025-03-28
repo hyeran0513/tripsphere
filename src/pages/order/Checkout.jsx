@@ -54,7 +54,10 @@ const Checkout = () => {
             <ToggleOrderList data={data} />
 
             {/* 최종 결제 금액 */}
-            <OrderPriceForm data={data} />
+            <OrderPriceForm
+              data={data}
+              reservationInfo={reservationInfo}
+            />
           </div>
         </div>
       </div>

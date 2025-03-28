@@ -12,6 +12,7 @@ import {
 import { db } from '../firebase/firebaseConfig';
 import { usedPoints } from './pointService';
 import { delCartItemOfroomId } from './cartService';
+import { decrementRoomStock } from './accomService';
 
 // 유저의 주문 내역 조회 (기존)
 export const fetchUserOrders = async (userId) => {
@@ -133,7 +134,6 @@ export const createUserOrder = async ({
     used_points: points,
     duration: serverTimestamp(),
     selectedTime: selectedTime,
-    order_date: serverTimestamp(),
   });
 
   return docRef.id;
@@ -233,4 +233,7 @@ export const checkout = async (orderItem, userId) => {
 
   // 포인트 사용
   await usedPoints({ userId, points: orderItem.used_points });
+
+  // 재고 차감
+  await decrementRoomStock(orderItem.room_id);
 };

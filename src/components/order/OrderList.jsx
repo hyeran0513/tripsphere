@@ -122,7 +122,7 @@ const OrderList = ({ orderInfo }) => {
                   <span className="text-red-500 font-bold">결제 취소</span>
                 ) : (
                   <button
-                    className={`px-3 py-1 rounded-md transition ${
+                    className={`cursor-pointer px-3 py-1 rounded-md transition ${
                       compareToday(order.room.check_in)
                         ? 'bg-gray-400 text-white cursor-not-allowed'
                         : 'bg-red-500 text-white hover:bg-red-700'

@@ -34,7 +34,6 @@ const OrderList = ({ orderInfo }) => {
   };
 
   if (!orderInfo) return <Loading />;
-  // if (!forOrderTimes) return <>주문결과 불러오는 중</>;
   if (orderInfo.length === 0) return <p>주문 결과 정보가 없습니다.</p>;
 
   return (
@@ -72,8 +71,7 @@ const OrderList = ({ orderInfo }) => {
                         {compareToday(order.room.check_in)}
                       </div>
                     )}
-
-                    {order.accom.name || '숙소 정보 없음'}
+                    {order.room.name || '숙소 정보 없음'}
                     <p className="flex items-center gap-1 text-gray-500 text-xs">
                       <BiBuildings />
                       {order.accom.name}

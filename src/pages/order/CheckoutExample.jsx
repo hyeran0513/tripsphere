@@ -7,29 +7,32 @@ import { useRoomData } from '../../hooks/useProductData';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 import { formatNumber, formatTimeStampTime } from '../../utils/format';
 import { PiBabyLight } from 'react-icons/pi';
-import { BiX, BiTrash, BiUser, BiMap } from 'react-icons/bi';
+import { BiUser } from 'react-icons/bi';
 import ServiceList from '../../components/common/ServiceList';
 import RoomTypeMapping from '../../components/common/RoomTypeMapping';
 import ToggleJson from '../../components/common/ToggleJson';
+import Loading from '../../components/common/Loading';
 
 const CheckoutExample = () => {
   const { reservationInfo } = useRoomSelectionStore();
-  const [saveRoomId, setSaveRoomId] = useState(null);
-  const { data } = useRoomData(saveRoomId);
+  const [roomIds, setRoomIds] = useState([]);
 
   useEffect(() => {
-    if (reservationInfo?.roomId) {
-      setSaveRoomId(reservationInfo.roomId);
+    if (reservationInfo) {
+      const newRoomIds = reservationInfo.map((info) => info.room_id);
+      setRoomIds(newRoomIds);
     }
-  }, [reservationInfo?.roomId]);
+  }, [reservationInfo]);
+
+  const { data } = useRoomData(roomIds);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    if (roomIds.length > 0) {
+      console.log('roomIds 변경됨:', roomIds);
+    }
+  }, [roomIds]);
 
-  if (!reservationInfo || !reservationInfo.roomId) {
-    return <div>Loading...</div>;
-  }
+  if (!data) return <Loading />;
 
   return (
     <div className="max-w-[1200px] mx-auto px-[20px] py-[40px] dark:text-gray-200">

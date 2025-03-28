@@ -18,7 +18,6 @@ import { useCartItems, useDelCartItem } from '../../hooks/useCartData';
 import RoomTypeMapping from '../common/RoomTypeMapping';
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
-import useReservationStore from '../../stores/useReservationStore';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 
 const ShoppingCart = ({ open, setOpen }) => {
@@ -27,7 +26,6 @@ const ShoppingCart = ({ open, setOpen }) => {
   const { mutate } = useDelCartItem();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const { setReservationList } = useReservationStore();
   const { setReservationInfo } = useRoomSelectionStore();
   const navigate = useNavigate();
 
@@ -72,6 +70,7 @@ const ShoppingCart = ({ open, setOpen }) => {
     const selectedData = data
       .filter((item) => selectedItems.includes(item.id))
       .map((item) => {
+        console.log('hey:' + JSON.stringify(item));
         const {
           accommodation_id,
           check_in,
@@ -79,9 +78,10 @@ const ShoppingCart = ({ open, setOpen }) => {
           capacity,
           original_price,
           discount_rate,
-          room_id,
           stay_type,
         } = item.room;
+
+        const { room_id } = item;
 
         return {
           accommodationId: accommodation_id,
@@ -90,23 +90,17 @@ const ShoppingCart = ({ open, setOpen }) => {
           adultCount: capacity.adults,
           childrenCount: capacity.children,
           totalPrice: original_price * (1 - discount_rate),
-          roomId: room_id,
           stayType: stay_type,
           duration: item.duration,
+          room_id: room_id,
           selectedTime: item.selectedTime,
         };
       });
 
-    setReservationList(selectedData);
-    console.log('숙소 데이터:', selectedData);
-    const { stayType, roomId, duration, selectedTime } = selectedData[0];
-    setReservationInfo(
-      stayType === 'stay'
-        ? { type: 'stay', roomId }
-        : { type: 'day_use', roomId, duration, selectedTime },
-    );
+    setReservationInfo(selectedData);
 
     navigate('/checkout');
+    setOpen(false);
   };
 
   if (isLoading) return <Loading />;

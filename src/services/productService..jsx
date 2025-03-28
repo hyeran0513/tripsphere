@@ -62,7 +62,7 @@ export const getRoomData = async (roomIds) => {
   });
 
   const roomData = await Promise.all(roomDataPromises);
-  console.log('최종 데이터:', JSON.stringify(roomData));
+  // console.log('최종 데이터:', JSON.stringify(roomData));
   return roomData.filter(Boolean);
 };
 

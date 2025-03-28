@@ -17,7 +17,8 @@ const OrderPriceForm = ({ data }) => {
     setToast({ type, message });
     setTimeout(() => setToast(null), 3000);
   };
-  const { mutate } = useCheckout(user?.uid, showToast);
+
+  const { mutate } = useCheckout(data, showToast);
 
   // 총합 구하기
   const getTotalPrice = (data) => {
@@ -41,6 +42,8 @@ const OrderPriceForm = ({ data }) => {
       return;
     }
 
+    navigate('/orderconfirmation', { state: { data } });
+
     const orderPromises = data.map(
       (item) =>
         new Promise((resolve, reject) => {
@@ -60,12 +63,7 @@ const OrderPriceForm = ({ data }) => {
         }),
     );
 
-    try {
-      await Promise.all(orderPromises);
-      navigate('/orderconfirmation');
-    } catch (error) {
-      showToast('error', '결제 처리 중 오류가 발생했습니다.', error.message);
-    }
+    await Promise.all(orderPromises);
   };
 
   return (
@@ -95,7 +93,7 @@ const OrderPriceForm = ({ data }) => {
               <div className="flex justify-between text-indigo-600">
                 <p>보유 포인트</p>
                 <p className="flex justify-end">
-                  {formatNumber(userData.points)}원
+                  {formatNumber(userData?.points)}원
                 </p>
               </div>
 
@@ -111,8 +109,8 @@ const OrderPriceForm = ({ data }) => {
               <div className="flex justify-between">
                 <p>결제 후 잔여 포인트</p>
                 <p
-                  className={`flex justify-end ${getRemainingPoints(userData.points, data) < 0 ? 'text-red-500' : 'text-indigo-500'}`}>
-                  {formatNumber(getRemainingPoints(userData.points, data))}원
+                  className={`flex justify-end ${getRemainingPoints(userData?.points, data) < 0 ? 'text-red-500' : 'text-indigo-500'}`}>
+                  {formatNumber(getRemainingPoints(userData?.points, data))}원
                 </p>
               </div>
             </div>

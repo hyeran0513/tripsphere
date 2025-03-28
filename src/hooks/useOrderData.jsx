@@ -64,13 +64,15 @@ export const useOrderDataGetByOrderID = (orderID) => {
 };
 
 // 결제하기
-export const useCheckout = (userId, showToast) => {
+export const useCheckout = (data, showToast) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (orderItem) => checkout(orderItem),
     onSuccess: () => {
-      queryClient.invalidateQueries(['orders', userId]);
+      data.forEach((item) => {
+        queryClient.invalidateQueries(['orders', item.roomId]);
+      });
       showToast('success', '주문 목록에 항목을 추가했습니다.');
     },
     onError: () => {

@@ -20,7 +20,7 @@ const ToggleOrderList = ({ data }) => {
     <div className="flex-1">
       {data?.map((room, index) => (
         <OrderResult
-          key={room.accommodation_id}
+          key={`${room.roomId}-${index}`}
           room={room}
           isOpen={openIndexes[index]}
           toggleContent={() => toggleContent(index)}

@@ -15,7 +15,7 @@ const FavoriteList = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('찜 목록 내역:', JSON.stringify(data));
+      // console.log('찜 목록 내역:', JSON.stringify(data));
     }
   }, [data]);
 

@@ -70,7 +70,6 @@ const ShoppingCart = ({ open, setOpen }) => {
     const selectedData = data
       .filter((item) => selectedItems.includes(item.id))
       .map((item) => {
-        console.log('hey:' + JSON.stringify(item));
         const {
           accommodation_id,
           check_in,

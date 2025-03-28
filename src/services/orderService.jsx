@@ -69,7 +69,7 @@ export const cancelUserOrder = async ({
     const userSnap = await getDoc(userRef);
     if (userSnap.exists()) {
       const userData = userSnap.data();
-      const newPoints = (userData.points || 0) + usedPoints;
+      const newPoints = (userData?.points || 0) + usedPoints;
 
       await updateDoc(userRef, {
         points: newPoints, // 유저의 포인트에 환불된 포인트 추가
@@ -205,7 +205,7 @@ export const getOrderData = async (userId) => {
     }),
   );
 
-  console.log('orders:', orderItems);
+  // console.log('orders:', orderItems);
 
   return orderItems;
 };
@@ -213,5 +213,18 @@ export const getOrderData = async (userId) => {
 // 결제하기
 export const checkout = async (orderItem) => {
   const ordersCollection = collection(db, 'orders');
+
+  const q = query(
+    ordersCollection,
+    where('user_id', '==', orderItem.user_id),
+    where('room_id', '==', orderItem.room_id),
+  );
+  const querySnapshot = await getDocs(q);
+
+  // if (!querySnapshot.empty) {
+  //   console.log('이미 존재하는 주문입니다. room_id:', orderItem.room_id);
+  //   return;
+  // }
+
   await addDoc(ordersCollection, orderItem);
 };

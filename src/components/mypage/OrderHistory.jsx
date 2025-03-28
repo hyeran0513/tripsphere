@@ -13,7 +13,7 @@ const OrderHistory = () => {
 
   useEffect(() => {
     if (orderInfo) {
-      console.log(JSON.stringify(orderInfo));
+      // console.log("주문 내역" + JSON.stringify(orderInfo));
     }
   }, [orderInfo]);
 

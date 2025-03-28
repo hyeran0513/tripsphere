@@ -68,7 +68,7 @@ const OrderList = ({ orderInfo }) => {
                 <div className="flex flex-col">
                   <h2 className="text-lg font-bold">
                     {compareToday(order.room.check_in) && (
-                      <div class="mr-2 badge badge-soft badge-primary text-[10px]">
+                      <div className="mr-2 badge badge-soft badge-primary text-[10px]">
                         {compareToday(order.room.check_in)}
                       </div>
                     )}

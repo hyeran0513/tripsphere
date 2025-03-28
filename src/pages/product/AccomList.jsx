@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import SideFilter from '../../components/accomlist/SideFilter';
 import Loading from '../../components/common/Loading';
@@ -78,6 +78,7 @@ const AccomList = () => {
     }
   }, [data, filters]);
 
+  // 검색 핸들러
   const handleSearch = () => {
     setFilters((prev) => ({
       ...prev,
@@ -89,6 +90,37 @@ const AccomList = () => {
       children: childrenCount,
     }));
   };
+
+  const [selectedPerOption, setSelectedPerOption] = useState(null);
+
+  const perOptions = [
+    { id: 1, value: 5, name: '5개씩 보기' },
+    { id: 2, value: 10, name: '10개씩 보기' },
+    { id: 3, value: 15, name: '15개씩 보기' },
+    { id: 4, value: 20, name: '20개씩 보기' },
+  ];
+
+  //  페이지 옵션
+  const pagePerOptions = useMemo(
+    () =>
+      perOptions.map((item) => (
+        <option
+          key={item.id}
+          value={item.value}>
+          {item.name}
+        </option>
+      )),
+    [],
+  );
+
+  // 페이지 옵션 선택 핸들러
+  const handlePagePerOptionSelect = useCallback(
+    (event) => {
+      const perPage = event.target.value;
+      setSelectedPerOption(perPage);
+    },
+    [setSelectedPerOption],
+  );
 
   if (isLoading) return <Loading />;
 
@@ -113,15 +145,27 @@ const AccomList = () => {
         {/* 숙소 필터 */}
         <SideFilter handleSearch={handleSearch} />
 
-        {/* 숙소 목록 */}
-        <ul className="flex-1 flex flex-col gap-6">
-          {filteredData.map((item, index) => (
-            <AccomCard
-              accommodation={item}
-              key={index}
-            />
-          ))}
-        </ul>
+        <div className="flex-1">
+          <div className="flex justify-end mb-10">
+            <select
+              id="perPage"
+              className="rounded-lg border border-gray-300 px-4 py-2"
+              value={selectedPerOption}
+              onChange={(e) => handlePagePerOptionSelect(e)}>
+              {pagePerOptions}
+            </select>
+          </div>
+
+          {/* 숙소 목록 */}
+          <ul className="flex flex-col gap-6">
+            {filteredData.map((item, index) => (
+              <AccomCard
+                accommodation={item}
+                key={index}
+              />
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

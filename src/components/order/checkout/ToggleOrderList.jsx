@@ -16,7 +16,7 @@ const ToggleOrderList = ({ data }) => {
 
   return (
     <div className="flex-1">
-      {data.map((room, index) => (
+      {data?.map((room, index) => (
         <OrderResult
           key={room.accommodation_id}
           room={room}

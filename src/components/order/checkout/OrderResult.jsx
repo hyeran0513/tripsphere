@@ -27,33 +27,36 @@ const OrderResult = ({ room, isOpen, toggleContent }) => {
       {isOpen && (
         <div className="mt-2 text-base-content">
           <div>
-            <dl className="divide-y divide-gray-100">
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <div className="divide-y divide-gray-100">
+              <div className="px-4 py-6 grid grid-cols-2 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium">숙소명</dt>
                 <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0">
                   {room?.accomData?.name}
                 </dd>
               </div>
 
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium">객실명</dt>
                 <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0 flex items-center gap-2">
                   {room?.name} <RoomTypeMapping type={room?.type} />
                 </dd>
               </div>
 
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium ">예약 정보</dt>
                 <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                  <ul
+                  <div
                     role="list"
                     className="divide-y divide-gray-200 rounded-md border border-gray-200">
+                    {/* 숙소 위치 */}
                     <OrderList
                       IconComponent={FaMapLocationDot}
                       Title={'숙소 위치'}
                       description={`${room?.accomData?.location?.city}
                                 ${room?.accomData?.location?.sub_city}`}
                     />
+
+                    {/* 지도 */}
                     <div className="border-t border-gray-100">
                       <div className="divide-y divide-gray-100">
                         <KakaoMap
@@ -62,65 +65,56 @@ const OrderResult = ({ room, isOpen, toggleContent }) => {
                         />
                       </div>
                     </div>
+
+                    {/* 숙박 시설 */}
                     <OrderList
                       IconComponent={BiHotel}
                       Title={'숙박 시설'}
                       type={room?.accomData?.type}
                     />
-                    <li>
-                      <div className="py-4 px-6 flex flex-col gap-3">
-                        {/* 체크인 · 체크아웃 */}
-                        체크인: {formatTimeStampTime(room?.check_in)} ~
-                        체크아웃: {formatTimeStampTime(room?.check_out)}
-                        <span className="flex items-center gap-1">
-                          <BiUser /> 성인 {room?.capacity?.adults || 0}명
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <PiBabyLight /> 미성년자{' '}
-                          {room?.capacity?.children || 0}명
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
+
+                    <div className="py-4 px-6 flex flex-col gap-3">
+                      {/* 체크인 · 체크아웃 */}
+                      체크인: {formatTimeStampTime(room?.check_in)} ~ 체크아웃:{' '}
+                      {formatTimeStampTime(room?.check_out)}
+                      {/* 인원수 */}
+                      <span className="flex items-center gap-1">
+                        <BiUser /> 성인 {room?.capacity?.adults || 0}명
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <PiBabyLight /> 미성년자 {room?.capacity?.children || 0}
+                        명
+                      </span>
+                    </div>
+                  </div>
                 </dd>
               </div>
 
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 ">
+              {/* 호스트 연락처 */}
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium">호스트 연락처</dt>
                 <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
                   {room?.accomData?.host?.contact}
                 </dd>
               </div>
 
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              {/* 객실 소개 */}
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium ">객실 소개</dt>
                 <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
                   {room?.description}
                 </dd>
               </div>
 
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              {/* 서비스 */}
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4">
                 <dt className="text-sm/6 font-medium">서비스</dt>
                 <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
                   {room?.services && <ServiceList services={room?.services} />}
                 </dd>
               </div>
-            </dl>
+            </div>
           </div>
-
-          {/* <p>{room.description}</p>
-          <p className="text-sm">위치: {room.location.place_name}</p>
-          <p className="text-sm">가격: {room.original_price} 원</p>
-          <div className="flex items-center gap-2">
-            {room.images && room.images.length > 0 && (
-              <img
-                src={room.images[0]}
-                alt={room.name}
-                className="w-32 h-32 object-cover"
-              />
-            )}
-          </div>
-          <p className="text-sm">재고: {room.stock}</p> */}
         </div>
       )}
     </div>

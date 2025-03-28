@@ -35,7 +35,7 @@ const OrderHistory = () => {
       </div>
 
       <ul className="list bg-base-100 rounded-box shadow-md mb-10">
-        {orderInfo?.map((order, index) => (
+        {orderInfo?.slice(0, 3).map((order, index) => (
           <li
             className="list-row flex-col flex"
             key={index}>

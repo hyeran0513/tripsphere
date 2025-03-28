@@ -1,19 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  BiBuildings,
   BiCalendarAlt,
   BiChevronRight,
   BiUser,
-  BiBuildings,
 } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { compareToday, formatNumber, formatDate } from '../../utils/format';
-import CancelOrderModal from './CancelOrderModal';
 import { useCancelOrder } from '../../hooks/useOrderData';
+import { orderQuery } from '../../services/orderService';
+import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
+import { compareToday, formatDate, formatNumber } from '../../utils/format';
+import Loading from '../common/Loading';
+import CancelOrderModal from './CancelOrderModal';
 
-const OrderList = ({ orderInfo }) => {
+// orderList = 결제 페이지에서 넘겨받는 값.
+/*
+  orderId, 주문아이디
+  userId: user.uid, 유저 uid
+  room: room, 객실 정보(숙소 정보 포함)
+  accomId: room.accommodation_id, 숙소 아이디
+  reservationInfo: reservationInfoEle, (예약정보)
+*/
+const OrderList = ({ orderList }) => {
   const navigate = useNavigate();
+  const { reservationInfo } = useRoomSelectionStore();
   const cancelOrderMutation = useCancelOrder();
   const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const [orderIDList, setOrderIDList] = useState(null);
+
+  console.log('orderList - orderList: ', orderList.flat());
+  console.log('orderList - reservationInfo : ', reservationInfo);
+
+  const [orderInfo, setOrderInfo] = useState(orderList);
+  const [forOrderTimes, setForOrderTime] = useState();
+
+  console.log('orderInfo : ', orderInfo);
+
+  useEffect(() => {
+    console.log('OrderList data : ', orderList.flat());
+  }, []);
+
+  // 주문정보의 아이디들 관리
+  useEffect(() => {
+    let arr = orderList.map((ele) => ele.orderId);
+    console.log('orderIDList : ', arr);
+    setOrderIDList(arr);
+  }, [orderList]);
+
+  useEffect(() => {
+    const getOrder = async () => {
+      const orders = await orderQuery(orderIDList);
+      setForOrderTime(orders);
+      console.log('orders :', orders);
+    };
+    getOrder();
+  }, [orderIDList]);
+
+  useEffect(() => {
+    console.log('forOrderTimes : ', forOrderTimes);
+  }, [forOrderTimes]);
 
   // 주문 취소 처리
   const handleCancelClick = (order) => {
@@ -44,70 +90,84 @@ const OrderList = ({ orderInfo }) => {
   //     })
   //   : [];
 
+  if (!orderInfo) return <Loading />;
+  if (!forOrderTimes) return <>주문결과 불러오는 중</>;
+  if (orderInfo.length === 0) return <p>주문 결과 정보가 없습니다.</p>;
+
   return (
     <>
       <ul className="list bg-base-100 dark:bg-gray-800 rounded-box shadow-md py-">
         {orderInfo?.map((order, index) => (
           <li
             key={index}
-            className="list-row flex-col flex my-3 border-gray-200">
-            <div className="border-b border-stone-200 flex justify-between items-center py-1">
-              <div> {formatDate(order.order_date)}</div>
+            className="list-row flex-col flex my-3 mx-5 border-gray-200">
+            <div className="border-b border-stone-200 flex justify-between items-center">
+              <div>
+                {' '}
+                {forOrderTimes.find((ele) => ele.id === order.orderId)
+                  ? formatDate(
+                      forOrderTimes.find((ele) => ele.id === order.orderId)
+                        .duration,
+                    )
+                  : 'N/A'}
+              </div>
               <button
                 type="button"
                 onClick={() =>
-                  navigate(`/product/${order.room.accommodation_id}`)
+                  navigate(`/product/${order.room.accomData.accommodation_id}`)
                 }>
                 <BiChevronRight className="size-6" />
               </button>
             </div>
-            <div className="flex justify-between">
-              {compareToday(order.room.check_in) && (
-                <div className="mr-2 badge badge-soft badge-primary text-[10px]">
-                  {compareToday(order.room.check_in)}
-                </div>
-              )}
-              <div className="text-xs uppercase opacity-60 pt-1">
-                예약번호 : {order.id}
-              </div>
-            </div>
+
             <div className="flex justify-between">
               <div className="flex gap-6">
                 <img
-                  className="size-28 rounded-box"
-                  src={order.room?.images?.[0] || 'https://place-hold.it/112'}
-                  alt={order.room?.name || '숙소 정보 없음'}
+                  className="size-24 rounded-box"
+                  src={
+                    order.room?.images?.[0] || 'https://via.placeholder.com/100'
+                  }
+                  alt={order.room?.accomData.name || '숙소 정보 없음'}
                 />
                 <div className="flex flex-col">
                   <h2 className="text-lg font-bold">
-                    {order.room?.name || '숙소 정보 없음'}
+                    {compareToday(order.room.check_in) && (
+                      <div class="mr-2 badge badge-soft badge-primary text-[10px]">
+                        {compareToday(order.room.check_in)}
+                      </div>
+                    )}
+
+                    {order.room?.accomData.name || '숙소 정보 없음'}
+                    <p className="flex items-center gap-1 text-gray-500 text-xs">
+                      <BiBuildings />
+                      {order.room.name}
+                    </p>
                   </h2>
-                  <div className="flex items-center gap-2 text-xs mt-auto font-bold">
-                    <BiBuildings />
-                    {order.accom.name}
+                  <div className="text-xs uppercase opacity-60 pt-1">
+                    예약번호 : {order.orderId}
                   </div>
 
                   {/* 인원 정보 */}
-                  <div className="flex items-center gap-2 mt-2 text-xs">
+                  <div className="flex items-center gap-2 mt-2">
                     <BiUser />
-                    <span className="font-bold">성인: </span>
-                    <span>{order.room.capacity?.adults ?? 0}명, </span>
-                    <span className="font-bold">어린이: </span>
-                    <span> {order.room.capacity.children ?? 0}명 </span>
+                    <div className="mr-1 text-sm">
+                      성인: {order.room.capacity?.adults ?? 0}명, 어린이:{' '}
+                      {order.room.capacity.children ?? 0}명
+                    </div>
                   </div>
 
                   {/* 체크인/체크아웃 날짜 */}
-                  <div className="flex items-center gap-10 mt-2 text-xs">
+                  <div className="flex items-center gap-10 mt-2">
                     <div className="flex items-center gap-2">
                       <BiCalendarAlt />
-                      <span className="font-bold">체크인:</span>
+                      <span className="font-bold">체크인:</span>{' '}
                       <span>
                         {formatDate(order.room.check_in) || '날짜 없음'}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <BiCalendarAlt />
-                      <span className="font-bold">체크아웃:</span>
+                      <span className="font-bold">체크아웃:</span>{' '}
                       <span>
                         {formatDate(order.room.check_out) || '날짜 없음'}
                       </span>
@@ -120,7 +180,8 @@ const OrderList = ({ orderInfo }) => {
               <div className="flex flex-col justify-between">
                 <div className="text-lg">
                   {formatNumber(
-                    order.room.original_price * (1 - order.room.discount_rate),
+                    order.room.original_price *
+                      (1 - order.room.accomData.discount_rate),
                   )}
                   원
                 </div>

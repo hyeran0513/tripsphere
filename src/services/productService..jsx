@@ -46,21 +46,24 @@ export const getRoomOfAccomData = async (accomId) => {
 };
 
 // 특정 객실 정보 쿼리
-export const getRoomData = async (roomId) => {
-  if (!roomId) return;
+export const getRoomData = async (roomIds) => {
+  console.log('roomIds', JSON.stringify(roomIds));
+  const roomDataPromises = roomIds.map(async (roomId) => {
+    const roomDoc = doc(db, 'rooms', roomId);
+    const roomSnap = await getDoc(roomDoc);
 
-  const roomDoc = doc(db, 'rooms', roomId);
-  const roomSnap = await getDoc(roomDoc);
+    if (roomSnap.exists()) {
+      const data = roomSnap.data();
+      const accomData = await fetchAccomData(data.accommodation_id);
+      return { ...data, roomId, accomData };
+    } else {
+      return null;
+    }
+  });
 
-  if (roomSnap.exists()) {
-    const data = roomSnap.data();
-
-    const accomData = await fetchAccomData(data.accommodation_id);
-
-    return { ...data, roomId, accomData };
-  } else {
-    return null;
-  }
+  const roomData = await Promise.all(roomDataPromises);
+  console.log('최종 데이터:', JSON.stringify(roomData));
+  return roomData.filter(Boolean);
 };
 
 // 필터링된 숙소 정보 쿼리

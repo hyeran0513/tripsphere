@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   query,
+  serverTimestamp,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -78,41 +79,83 @@ export const cancelUserOrder = async ({
 
 // 주문 완료 생성 (firebase)
 export const createUserOrder = async ({
-  orderId,
   userId,
-  usedPoints,
-  reason,
+  room,
+  accomId,
+  checkin,
+  checkout,
+  status = 'completed',
+  points,
+  selectedTime,
 }) => {
-  const orderRef = doc(db, 'orders', orderId);
+  const orderRef = collection(db, 'orders');
+  const roomRef = doc(db, 'rooms', room);
+  const accomRef = doc(db, 'accommodations', accomId);
+
+  const roomSnap = await getDoc(roomRef);
+  if (roomSnap.exists()) {
+    const roomData = roomSnap.data();
+    const updateRooms = [
+      ...(roomData.booked_dates || []),
+      {
+        // check_in: Timestamp.fromDate(new Date(checkin)),
+        check_in: checkin,
+        // check_out: Timestamp.fromDate(new Date(checkout)),
+        check_out: checkout,
+      },
+    ];
+    await updateDoc(roomRef, {
+      booked_dates: updateRooms,
+    });
+  }
+
+  const accomSnap = await getDoc(accomRef);
+  if (accomSnap.exists()) {
+    const accomData = accomSnap.data();
+    const updateAccom = [
+      ...(accomData.booked_dates || []),
+      {
+        // check_in: Timestamp.fromDate(new Date(checkin)),
+        check_in: checkin,
+        // check_out: Timestamp.fromDate(new Date(checkout)),
+        check_out: checkout,
+      },
+    ];
+
+    await updateDoc(accomRef, {
+      booked_dates: updateAccom,
+    });
+  }
 
   // 주문 상태 업데이트
-  await updateDoc(orderRef, {
-    payment_status: '결제 완료',
-    cancel_reason: reason,
+  const docRef = await addDoc(orderRef, {
+    user_id: userId,
+    room_id: room,
+    payment_status: status,
+    used_points: points,
+    duration: serverTimestamp(),
+    selectedTime: selectedTime,
   });
 
-  // 포인트 환불 처리
-  if (usedPoints > 0) {
-    await addDoc(collection(db, 'points'), {
-      user_id: userId,
-      points: usedPoints,
-      type: 'success',
-      reason: `주문 완료`,
-      created_at: new Date(),
-    });
+  console.log('docRef.id : ', docRef.id);
+  return docRef.id;
+};
 
-    // users 컬렉션의 포인트 업데이트
-    const userRef = doc(db, 'users', userId);
-    const userSnap = await getDoc(userRef);
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      const newPoints = (userData.points || 0) + usedPoints;
+// 주문아이디 배열로 주문조회
+export const orderQuery = async (orderIds) => {
+  if (!Array.isArray(orderIds) || orderIds.length === 0) return [];
 
-      await updateDoc(userRef, {
-        points: newPoints, // 유저의 포인트에 환불된 포인트 추가
-      });
-    }
-  }
+  const orders = await Promise.all(
+    orderIds.map(async (orderId) => {
+      const orderRef = doc(db, 'orders', orderId);
+      const orderSnap = await getDoc(orderRef);
+      return orderSnap.exists()
+        ? { id: orderSnap.id, ...orderSnap.data() }
+        : null;
+    }),
+  );
+
+  return orders.filter((order) => order !== null);
 };
 
 // 주문 내역 조회

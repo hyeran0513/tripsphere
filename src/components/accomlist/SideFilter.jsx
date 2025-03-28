@@ -16,7 +16,7 @@ const SideFilter = ({ handleSearch }) => {
   return (
     <aside
       aria-label="숙소 검색 옵션"
-      className={`sidebar z-10 sticky top-5 ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
+      className={`sidebar z-10 sticky top-[100px] ${isFormOpen ? 'w-[30%]' : 'w-0'}`}>
       <div className="flex mb-4 items-center justify-between">
         {isFormOpen && (
           <div className="pl-3 font-extrabold">검색 옵션 영역</div>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Pagination from '../../components/productlist/Pagination';
 import PageHeader from '../../components/common/PageHeader';
 import ProductCard from '../../components/favorite/ProductCard';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
@@ -31,7 +30,6 @@ const Favorite = () => {
   useEffect(() => {
     if (data) {
       setFilteredData(data);
-      console.log(JSON.stringify(data));
     }
   }, [data]);
 
@@ -167,8 +165,6 @@ const Favorite = () => {
           />
         ))}
       </div>
-
-      <Pagination data={filteredData} />
     </div>
   );
 };

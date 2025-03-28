@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BiChevronRight } from 'react-icons/bi';
 import DateSelector from '../../common/DateSelector';
 import PeopleSelector from '../../common/PeopleSelector';
@@ -14,17 +14,12 @@ const SearchForm = ({
   datePickerDate,
   setDatePickerDate,
   setFilters,
-  filters,
 }) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
   };
-
-  useEffect(() => {
-    console.log('searchform' + setChildren);
-  }, []);
 
   // 검색 핸들러
   const handleSearch = (e) => {

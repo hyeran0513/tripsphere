@@ -2,7 +2,6 @@ import OrderList from '../../components/order/OrderList';
 import PageHeader from '../../components/common/PageHeader';
 import { useOrderData } from '../../hooks/useOrderData';
 import useAuthStore from '../../stores/useAuthStore';
-import { useEffect } from 'react';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -12,12 +11,6 @@ const breadcrumb = [
 const OrderHistory = () => {
   const { user } = useAuthStore();
   const { data: orderInfo, isLoading, error } = useOrderData(user?.uid);
-
-  useEffect(() => {
-    if (orderInfo) {
-      console.log(JSON.stringify(orderInfo));
-    }
-  }, [orderInfo]);
 
   if (isLoading) {
     return (

@@ -34,6 +34,7 @@ const InputField = ({
           </div>
         )}
       </div>
+
       <div className="mt-2 relative">
         {/* 인풋 영역 */}
         <input

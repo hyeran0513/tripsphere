@@ -1,23 +1,15 @@
-import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BiHeart, BiCalendarAlt, BiSolidStar } from 'react-icons/bi';
-import { formatDate, formatNumber } from '../../utils/format';
+import { BiHeart, BiSolidStar } from 'react-icons/bi';
+import { formatNumber } from '../../utils/format';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
 
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
-import Rating from '../common/Rating';
 import TypeMapping from '../common/TypeMapping';
 
 const FavoriteList = () => {
   const { user } = useAuthStore();
   const { data, isLoading, error } = useFavoriteAccommData(user?.uid);
-
-  useEffect(() => {
-    if (data) {
-      // console.log('찜 목록 내역:', JSON.stringify(data));
-    }
-  }, [data]);
 
   if (isLoading) return <Loading />;
   if (error) return <>오류</>;

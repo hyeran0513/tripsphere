@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderState from '../../components/order/orderConfirmation/OrderConfirmState';
 
 const OrderConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log('엥' + JSON.stringify(location.state));
-  }, []);
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px] flex flex-col justify-start items-center gap-12">

@@ -5,17 +5,10 @@ import { compareToday, formatDate, formatNumber } from '../../utils/format';
 import { useOrderData } from '../../hooks/useOrderData';
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
-import { useEffect } from 'react';
 
 const OrderHistory = () => {
   const { user } = useAuthStore();
   const { data: orderInfo, isLoading, error } = useOrderData(user?.uid);
-
-  useEffect(() => {
-    if (orderInfo) {
-      // console.log("주문 내역" + JSON.stringify(orderInfo));
-    }
-  }, [orderInfo]);
 
   if (isLoading) return <Loading />;
   if (error) return <>{error.message}</>;

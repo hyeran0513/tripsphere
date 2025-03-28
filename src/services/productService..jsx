@@ -38,7 +38,7 @@ export const getRoomOfAccomData = async (accomId) => {
       ...doc.data(),
       roomId: doc.id,
     }));
-    console.log(JSON.stringify(roomsData));
+
     return roomsData;
   } else {
     return null;
@@ -47,7 +47,6 @@ export const getRoomOfAccomData = async (accomId) => {
 
 // 특정 객실 정보 쿼리
 export const getRoomData = async (roomIds) => {
-  console.log('roomIds', JSON.stringify(roomIds));
   const roomDataPromises = roomIds.map(async (roomId) => {
     const roomDoc = doc(db, 'rooms', roomId);
     const roomSnap = await getDoc(roomDoc);
@@ -62,7 +61,7 @@ export const getRoomData = async (roomIds) => {
   });
 
   const roomData = await Promise.all(roomDataPromises);
-  // console.log('최종 데이터:', JSON.stringify(roomData));
+
   return roomData.filter(Boolean);
 };
 

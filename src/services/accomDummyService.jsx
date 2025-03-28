@@ -1,10 +1,8 @@
 import {
-  arrayRemove,
   collection,
   deleteDoc,
   doc,
   getDocs,
-  serverTimestamp,
   updateDoc,
   writeBatch,
 } from 'firebase/firestore';
@@ -661,7 +659,7 @@ export const addAccommodations = async () => {
   }
 
   await batch.commit();
-  console.log('새 숙소 데이터 생성');
+
   return accommodationIds;
 };
 
@@ -733,5 +731,4 @@ export const addRooms = async (accommodationIds) => {
   });
 
   await batch.commit();
-  console.log('새 객실 데이터 생성');
 };

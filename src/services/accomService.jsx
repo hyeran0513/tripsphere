@@ -97,6 +97,5 @@ export const getFilteredAccommodations = async (filters) => {
     rooms: roomMap[doc.id] || [],
   }));
 
-  console.log('최종:', docs);
   return docs;
 };

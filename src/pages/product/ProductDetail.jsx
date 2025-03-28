@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   useAccomData,
@@ -11,7 +11,6 @@ import ProductReview from '../../components/detail/review/ProductReview';
 import { useReviewData } from '../../hooks/useReviewData';
 import { BiSolidStar } from 'react-icons/bi';
 import RoomList from '../../components/room/RoomList';
-import ServiceList from '../../components/common/ServiceList';
 import ProductInfo from '../../components/detail/overview/ProductInfo';
 import SearchForm from '../../components/detail/search/SearchForm';
 import HostInfo from '../../components/detail/services/HostInfo';

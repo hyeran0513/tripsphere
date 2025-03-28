@@ -120,6 +120,5 @@ export const delCartItemOfroomId = async (roomId) => {
 
   cartsSnapshot.forEach(async (docSnap) => {
     await deleteDoc(doc(db, 'carts', docSnap.id));
-    console.log('삭제된 카트 항목 ID:', docSnap.id);
   });
 };

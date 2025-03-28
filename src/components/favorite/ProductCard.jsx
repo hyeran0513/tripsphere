@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BiSolidStar, BiSolidMap, BiTrash } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { formatNumber } from '../../utils/format';
@@ -22,10 +22,6 @@ const ProductCard = ({ favorite }) => {
     if (e) e.preventDefault();
     favoriteDelMutation(favorite.id);
   };
-
-  useEffect(() => {
-    console.log('favorite' + JSON.stringify(favorite));
-  }, [favorite]);
 
   return (
     <>

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import KakaoShareButton from '../../common/KakaoShareButton';
-import { BiCart, BiHeart, BiSolidHeart } from 'react-icons/bi';
-import Toast from '../../common/Toast';
+import { BiHeart, BiSolidHeart } from 'react-icons/bi';
 import {
   useCheckFavorite,
   useControlFavorite,
@@ -63,7 +62,7 @@ const ProductHeader = ({ product, productId, hideFavorite }) => {
                 <button
                   onClick={handleFavorite}
                   type="button"
-                  className="dark:text-white inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
+                  className="cursor-pointer dark:text-white inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
                   {isFavorite ? (
                     <BiSolidHeart
                       aria-hidden="true"

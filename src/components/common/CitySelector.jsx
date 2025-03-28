@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useReducer, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { cities } from '../data/cities';
 import useFilterStore from '../../stores/useFilterStore';
 import useCitySelection from '../../hooks/useCitySelection';

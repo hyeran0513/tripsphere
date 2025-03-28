@@ -1,13 +1,11 @@
 import {
   addDoc,
   collection,
-  deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
   serverTimestamp,
-  setDoc,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -138,7 +136,6 @@ export const createUserOrder = async ({
     order_date: serverTimestamp(),
   });
 
-  console.log('docRef.id : ', docRef.id);
   return docRef.id;
 };
 
@@ -207,8 +204,6 @@ export const getOrderData = async (userId) => {
       };
     }),
   );
-
-  // console.log('orders:', orderItems);
 
   return orderItems;
 };

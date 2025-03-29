@@ -251,7 +251,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                                   {formatNumber(item.room.original_price)}원
                                 </span>
                               </div>
-                              <div className="font-semibold text-lg text-gray-900">
+                              <div className="font-semibold text-lg text-gray-900 dark:text-white">
                                 {formatNumber(
                                   item.room.original_price *
                                     (1 - item.room.discount_rate),

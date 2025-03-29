@@ -9,6 +9,7 @@ import { useOrderData } from '../../hooks/useOrderData';
 import Loading from '../common/Loading';
 import Modal from '../common/Modal';
 import useAuthStore from '../../stores/useAuthStore';
+import { formatNumber } from '../../utils/format';
 
 const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
   const { user } = useAuthStore();
@@ -34,7 +35,7 @@ const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
             <div>포인트</div>
           </div>
           <div className="stat-value text-center">
-            {data && (data.points || 0)}
+            {formatNumber(data.points || 0)}
           </div>
         </Link>
 

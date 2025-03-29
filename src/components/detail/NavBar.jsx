@@ -29,7 +29,7 @@ const NavBar = ({ tabRef }) => {
 
   return (
     <div
-      className={`fixed border-b border-gray-200 top-[64px] left-0 w-full bg-white transition-transform duration-300 
+      className={`fixed border-b border-gray-200 top-[64px] left-0 w-full bg-white dark:bg-base-100 dark:border-base-300 transition-transform duration-300 
       ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
       style={{ zIndex: 90 }}>
       <div className="flex gap-12 p-4 mx-auto w-[1200px]">

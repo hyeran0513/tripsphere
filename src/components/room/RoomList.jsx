@@ -40,14 +40,14 @@ const RoomList = ({ rooms }) => {
               )}
             </div>
 
-            <div className="flex flex-col gap-1 mt-4 text-base/7 font-semibold text-gray-800">
+            <div className="flex flex-col gap-1 mt-4 text-base/7 font-semibold text-gray-800 dark:text-white">
               <RoomTypeMapping type={roomGroup.type} /> {roomGroup.name}
             </div>
             <div className="flex items-center gap-3 mt-1 max-w-2xl text-sm text-gray-500">
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 dark:text-white">
                 <BiUser /> 성인 {roomGroup.capacity.adults}
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 dark:text-white">
                 <PiBabyLight /> 미성년자 {roomGroup.capacity.children}
               </div>
             </div>

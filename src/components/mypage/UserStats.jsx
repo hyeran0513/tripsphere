@@ -3,7 +3,6 @@ import { BiHeart } from 'react-icons/bi';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { LiaCoinsSolid } from 'react-icons/lia';
-
 import PointModal from './PointModal';
 import { useUserData } from '../../hooks/useUserData';
 import { useOrderData } from '../../hooks/useOrderData';

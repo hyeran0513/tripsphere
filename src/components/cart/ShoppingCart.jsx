@@ -70,7 +70,6 @@ const ShoppingCart = ({ open, setOpen }) => {
     const selectedData = data
       .filter((item) => selectedItems.includes(item.id))
       .map((item) => {
-        console.log('hey:' + JSON.stringify(item));
         const {
           accommodation_id,
           check_in,
@@ -124,7 +123,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                     </DialogTitle>
                     <button
                       onClick={() => setOpen(false)}
-                      className="text-gray-400 hover:text-gray-500">
+                      className="cursor-pointer text-gray-400 hover:text-gray-500">
                       <BiX className="size-6" />
                     </button>
                   </div>
@@ -147,12 +146,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                         key={item.id}
                         className="p-4 border border-gray-200 rounded-lg">
                         <div className="border-b border-gray-200 mb-4 pb-4">
-                          <Link
-                            to={`/product/${item.room.accommodation_id}`}
-                            onClick={() => setOpen(false)}
-                            className="font-semibold  hover:text-indigo-600">
-                            {item?.accom?.name}
-                          </Link>
+                          <p className="font-semibold">{item?.accom?.name}</p>
                           <div className="mt-1 text-xs text-gray-500 flex items-center gap-1">
                             <BiMap />
                             {item?.accom?.location.place_name}
@@ -288,7 +282,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                     <button
                       onClick={handleOrder}
                       disabled={selectedItems.length === 0}
-                      className="flex justify-center w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium cursor-pointer hover:bg-indigo-700 disabled:bg-gray-400">
+                      className="cursor-pointer flex justify-center w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700 disabled:bg-gray-400">
                       주문하기
                     </button>
                   </div>

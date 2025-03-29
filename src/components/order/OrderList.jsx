@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import {
+  BiBuildings,
   BiCalendarAlt,
   BiChevronRight,
   BiUser,
-  BiBuildings,
 } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { compareToday, formatNumber, formatDate } from '../../utils/format';
-import CancelOrderModal from './CancelOrderModal';
 import { useCancelOrder } from '../../hooks/useOrderData';
+import { compareToday, formatDate, formatNumber } from '../../utils/format';
+import CancelOrderModal from './CancelOrderModal';
+import Loading from '../common/Loading';
 
 const OrderList = ({ orderInfo }) => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const OrderList = ({ orderInfo }) => {
     setSelectedOrder(order);
   };
 
-  // 주문 취소 요청 -> firebase
+  // 주문 취소 요청
   const handleCancelConfirm = (reason) => {
     if (selectedOrder) {
       cancelOrderMutation.mutate({
@@ -32,17 +33,8 @@ const OrderList = ({ orderInfo }) => {
     }
   };
 
-  // 오늘 날짜 가져오기
-  // const today = new Date();
-  // today.setHours(0, 0, 0, 0);
-
-  // // 체크인 날짜 지나면 주문 내역에서 제외
-  // const validOrders = orderInfo
-  //   ? orderInfo.filter((order) => {
-  //       const checkInDate = new Date(order.check_in);
-  //       return checkInDate >= today; // 체크인 날짜가 오늘 이후인 주문만 표시
-  //     })
-  //   : [];
+  if (!orderInfo) return <Loading />;
+  if (orderInfo.length === 0) return <p>주문 결과 정보가 없습니다.</p>;
 
   return (
     <>
@@ -52,7 +44,7 @@ const OrderList = ({ orderInfo }) => {
             key={index}
             className="list-row flex-col flex my-3 mx-5 border-gray-200">
             <div className="border-b border-stone-200 flex justify-between items-center">
-              <div> {formatDate(order.order_date)}</div>
+              <div>{formatDate(order.order_date)}</div>
               <button
                 type="button"
                 className="cursor-pointer"
@@ -70,17 +62,16 @@ const OrderList = ({ orderInfo }) => {
                   src={
                     order.room?.images?.[0] || 'https://via.placeholder.com/100'
                   }
-                  alt={order.room?.name || '숙소 정보 없음'}
+                  alt={order.accom.name || '숙소 정보 없음'}
                 />
                 <div className="flex flex-col">
                   <h2 className="text-lg font-bold">
                     {compareToday(order.room.check_in) && (
-                      <div class="mr-2 badge badge-soft badge-primary text-[10px]">
+                      <div className="mr-2 badge badge-soft badge-primary text-[10px]">
                         {compareToday(order.room.check_in)}
                       </div>
                     )}
-
-                    {order.room?.name || '숙소 정보 없음'}
+                    {order.room.name || '숙소 정보 없음'}
                     <p className="flex items-center gap-1 text-gray-500 text-xs">
                       <BiBuildings />
                       {order.accom.name}
@@ -94,7 +85,7 @@ const OrderList = ({ orderInfo }) => {
                   <div className="flex items-center gap-2 mt-2">
                     <BiUser />
                     <div className="mr-1 text-sm">
-                      성인: {order.room.capacity?.adults ?? 0}명, 어린이:{' '}
+                      성인: {order.room.capacity?.adults ?? 0}명, 미성년자:{' '}
                       {order.room.capacity.children ?? 0}명
                     </div>
                   </div>
@@ -131,7 +122,7 @@ const OrderList = ({ orderInfo }) => {
                   <span className="text-red-500 font-bold">결제 취소</span>
                 ) : (
                   <button
-                    className={`px-3 py-1 cursor-pointer rounded-md transition ${
+                    className={`cursor-pointer px-3 py-1 rounded-md transition ${
                       compareToday(order.room.check_in)
                         ? 'bg-gray-400 text-white cursor-not-allowed'
                         : 'bg-red-500 text-white hover:bg-red-700'

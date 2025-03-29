@@ -2,7 +2,6 @@ import {
   addDoc,
   collection,
   doc,
-  limit as firestoreLimit,
   getDocs,
   increment,
   orderBy,
@@ -14,18 +13,13 @@ import {
 import { db } from '../firebase/firebaseConfig';
 
 // 포인트 내역 조회
-export const getPoints = async (userId, limit) => {
+export const getPoints = async (userId) => {
   try {
     let q = query(
       collection(db, 'points'),
       where('user_id', '==', userId),
       orderBy('received_date', 'desc'),
     );
-
-    // 제한
-    if (limit) {
-      q = query(q, firestoreLimit(limit));
-    }
 
     const querySnapshot = await getDocs(q);
 
@@ -63,23 +57,24 @@ export const addPoints = async (userId, points) => {
 };
 
 // 포인트 사용 및 포인트 사용 내역 추가
-export const usedPoints = async (userId, points) => {
+export const usedPoints = async ({ userId, points }) => {
   try {
     const pointsRef = collection(db, 'points');
     const userRef = doc(db, 'users', userId);
 
+    const numberPoints = Math.abs(Number(points));
+
+    await updateDoc(userRef, {
+      points: increment(-numberPoints),
+    });
+
     // 포인트 내역 추가
     await addDoc(pointsRef, {
       user_id: userId,
+      points: numberPoints,
       title: '포인트 사용',
-      description: `${points} 포인트가 사용되었습니다!`,
-      points: points,
+      description: `${numberPoints} 포인트가 결제에 사용되었습니다.`,
       received_date: serverTimestamp(),
-    });
-
-    // 유저 포인트 감소
-    await updateDoc(userRef, {
-      points: increment(-points),
     });
   } catch (error) {
     console.error('포인트 사용 오류:', error.message);

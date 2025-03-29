@@ -1,4 +1,3 @@
-import React from 'react';
 import OrderList from '../../components/order/OrderList';
 import PageHeader from '../../components/common/PageHeader';
 import { useOrderData } from '../../hooks/useOrderData';

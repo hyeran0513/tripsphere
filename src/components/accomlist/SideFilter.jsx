@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BiChevronLeft } from 'react-icons/bi';
 import CitySelector from '../common/CitySelector';
 import DateSelector from '../common/DateSelector';
 import PeopleSelector from '../common/PeopleSelector';
-import useFilterStore from '../../stores/useFilterStore';
 
 const SideFilter = ({ handleSearch }) => {
   const [openDate, setOpenDate] = useState(false);

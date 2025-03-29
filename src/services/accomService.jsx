@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDocs, runTransaction } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 // room 조건을 기반으로 가능한 숙소 ID만 필터링
@@ -97,6 +97,28 @@ export const getFilteredAccommodations = async (filters) => {
     rooms: roomMap[doc.id] || [],
   }));
 
-  console.log('최종:', docs);
   return docs;
+};
+
+// 재고 차감
+export const decrementRoomStock = async (roomId, quantity = 1) => {
+  const roomRef = doc(db, 'rooms', roomId);
+
+  await runTransaction(db, async (transaction) => {
+    const roomDoc = await transaction.get(roomRef);
+
+    if (!roomDoc.exists()) {
+      throw new Error('객실이 존재X');
+    }
+
+    const currentStock = roomDoc.data().stock;
+
+    if (currentStock < quantity) {
+      throw new Error('재고가 부족합니다.');
+    }
+
+    transaction.update(roomRef, {
+      stock: currentStock - quantity,
+    });
+  });
 };

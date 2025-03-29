@@ -29,7 +29,7 @@ export const useRoomData = (roomIds) => {
   return useQuery({
     queryKey: ['rooms', roomIds],
     queryFn: () => getRoomData(roomIds),
-    enabled: roomIds && roomIds.length > 0,
+    enabled: Array.isArray(roomIds) && roomIds.length > 0,
   });
 };
 

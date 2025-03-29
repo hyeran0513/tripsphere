@@ -16,6 +16,7 @@ import { serverTimestamp } from 'firebase/firestore';
 import { useAddCarts } from '../../hooks/useCartData';
 import useAuthStore from '../../stores/useAuthStore';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
+import ServiceList from '../common/ServiceList';
 
 const RoomCard = ({ room, index }) => {
   const navigate = useNavigate();
@@ -44,6 +45,8 @@ const RoomCard = ({ room, index }) => {
       duration,
       selectedTime,
     });
+
+    document.getElementById('dayUse').close();
   };
 
   // 11:00 - 19:00 생성
@@ -122,6 +125,7 @@ const RoomCard = ({ room, index }) => {
             title={room.name}
             hideButton={true}>
             <div className="py-4">{room.description}</div>
+            <ServiceList services={room.services} />
           </Modal>
         </div>
 

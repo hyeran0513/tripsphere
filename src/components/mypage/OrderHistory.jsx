@@ -5,18 +5,11 @@ import { compareToday, formatDate, formatNumber } from '../../utils/format';
 import { useOrderData } from '../../hooks/useOrderData';
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
-import { useEffect } from 'react';
 
 const OrderHistory = () => {
   const { user } = useAuthStore();
   const { data: orderInfo, isLoading, error } = useOrderData(user?.uid);
-  console.log(orderInfo);
 
-  useEffect(() => {
-    if (orderInfo) {
-      console.log(JSON.stringify(orderInfo));
-    }
-  }, [orderInfo]);
   if (isLoading) return <Loading />;
   if (error) return <>{error.message}</>;
 
@@ -35,7 +28,7 @@ const OrderHistory = () => {
       </div>
 
       <ul className="list bg-base-100 rounded-box shadow-md mb-10">
-        {orderInfo?.map((order, index) => (
+        {orderInfo?.slice(0, 3).map((order, index) => (
           <li
             className="list-row flex-col flex"
             key={index}>
@@ -57,9 +50,7 @@ const OrderHistory = () => {
               <div className="flex gap-6">
                 <img
                   className="size-24 rounded-box"
-                  src={
-                    order.room?.images?.[0] || 'https://via.placeholder.com/100'
-                  }
+                  src={order.room?.images?.[0] || 'https://place-hold.it/96'}
                   alt={order.room?.name || '숙소 정보 없음'}
                 />
 

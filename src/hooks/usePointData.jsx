@@ -2,10 +2,10 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { addPoints, getPoints } from '../services/pointService';
 
 // 포인트 내역 조회
-export const usePointData = (userId, limit) => {
+export const usePointData = (userId) => {
   return useQuery({
     queryKey: ['points'],
-    queryFn: () => getPoints(userId, limit),
+    queryFn: () => getPoints(userId),
     enabled: !!userId,
   });
 };

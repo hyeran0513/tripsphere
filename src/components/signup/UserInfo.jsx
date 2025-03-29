@@ -12,7 +12,6 @@ const UserInfo = ({ onNext, onPrev }) => {
   // 약관 동의 핸들러
   const handleTermsAgree = () => {
     setIsAgreed(true);
-    console.log('약관 동의 완료');
   };
 
   // 유저 정보 mutation
@@ -94,7 +93,7 @@ const UserInfo = ({ onNext, onPrev }) => {
 
             <button
               type="submit"
-              className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-indigo-600
+              className={`cursor-pointer flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-indigo-600
                 ${
                   !isAgreed
                     ? 'bg-gray-300 hover:bg-gray-200 cursor-not-allowed'

@@ -5,6 +5,7 @@ import {
   deleteAllAccommodations,
   deleteAllCarts,
   deleteAllFavorites,
+  deleteAllOrders,
   deleteAllRooms,
 } from '../services/accomDummyService';
 
@@ -19,6 +20,7 @@ const useExampleData = () => {
       await deleteAllRooms();
       await deleteAllCarts();
       await deleteAllFavorites();
+      await deleteAllOrders();
 
       const accommodationIds = await addAccommodations();
       await addRooms(accommodationIds);

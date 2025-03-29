@@ -7,9 +7,9 @@ import RoomTypeMapping from '../common/RoomTypeMapping';
 const RoomList = ({ rooms }) => {
   const roomsGroupedById = rooms?.length
     ? rooms.reduce((acc, room) => {
-        if (!acc[room.room_id]) {
-          acc[room.room_id] = {
-            room_id: room.room_id,
+        if (!acc[room.room_group_id]) {
+          acc[room.room_group_id] = {
+            room_group_id: room.room_group_id,
             name: room.name,
             type: room.type,
             images: room.images || [],
@@ -17,7 +17,7 @@ const RoomList = ({ rooms }) => {
             rooms: [],
           };
         }
-        acc[room.room_id].rooms.push(room);
+        acc[room.room_group_id].rooms.push(room);
         return acc;
       }, {})
     : {};
@@ -26,7 +26,7 @@ const RoomList = ({ rooms }) => {
     <div className="flex-1 divide-y divide-gray-200">
       {Object.values(roomsGroupedById)?.map((roomGroup, index) => (
         <div
-          key={roomGroup.room_id}
+          key={roomGroup.room_group_id}
           className={`flex gap-6 ${index === 0 ? 'pt-0' : 'pt-[40px]'} ${index === roomGroup.length - 1 ? 'pb-0' : 'pb-[40px]'}`}>
           <h3 className="w-[40%]">
             <div className="overflow-hidden rounded-lg">
@@ -57,7 +57,7 @@ const RoomList = ({ rooms }) => {
                 <img
                   key={idx}
                   src={img}
-                  alt={`room_${roomGroup.room_id}_${idx}`}
+                  alt={`room_${roomGroup.room_group_id}_${idx}`}
                   className="w-32 h-32 object-cover rounded-lg"
                 />
               ))}

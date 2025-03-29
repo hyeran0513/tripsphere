@@ -33,7 +33,7 @@ export const saveUserInfo = async ({ username, nickname, phone }) => {
   const user = auth.currentUser;
 
   if (!user) {
-    console.log('사용자가 없습니다.');
+    console.error('사용자가 없습니다.');
     return;
   }
 

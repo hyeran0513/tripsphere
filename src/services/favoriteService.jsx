@@ -4,9 +4,10 @@ import {
   arrayUnion,
   arrayRemove,
   getDoc,
+  getDocs,
+  collection,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-import { fetchAccomData } from './productService.';
 
 // 사용자 찜 목록 가져오기
 const getUserWishlist = async (userId) => {
@@ -15,13 +16,13 @@ const getUserWishlist = async (userId) => {
     const userDocSnap = await getDoc(userDocRef);
 
     if (!userDocSnap.exists()) {
-      console.log('users 문서가 존재 X');
+      console.error('users 문서가 존재 X');
       return;
     }
 
     return { userDocRef, wishlist: userDocSnap.data().wishlist || [] };
   } catch (error) {
-    console.log('찜 목록 조회 오류: ' + error.message);
+    console.error('찜 목록 조회 오류: ' + error.message);
   }
 };
 
@@ -44,7 +45,7 @@ export const controlFavorite = async (userId, accommodationId) => {
       return 'add';
     }
   } catch (error) {
-    console.log('찜 버튼 선택 오류: ' + error.message);
+    console.error('찜 버튼 선택 오류: ' + error.message);
   }
 };
 
@@ -60,11 +61,41 @@ export const checkFavorite = async (userId, accommodationId) => {
 export const getFavoriteAccomm = async (userId) => {
   const userData = await getUserWishlist(userId);
 
+  // 숙소
   const accomPromises = userData.wishlist.map(async (item) => {
-    return fetchAccomData(item);
+    const accomDoc = doc(db, 'accommodations', item);
+    const accomSnap = await getDoc(accomDoc);
+
+    if (accomSnap.exists()) {
+      const data = accomSnap.data();
+      return { ...data, id: accomSnap.id };
+    } else {
+      return null;
+    }
   });
 
+  // 객실
   const accommodations = await Promise.all(accomPromises);
+  const filteredAccommodations = accommodations.filter(
+    (accom) => accom !== null,
+  );
 
-  return accommodations.filter((accom) => accom !== null);
+  const roomSnapshot = await getDocs(collection(db, 'rooms'));
+  const roomMap = {};
+
+  roomSnapshot.forEach((doc) => {
+    const room = doc.data();
+    const accomId = room.accommodation_id;
+    if (!roomMap[accomId]) {
+      roomMap[accomId] = [];
+    }
+    roomMap[accomId].push({ id: doc.id, ...room });
+  });
+
+  const favoriteItems = filteredAccommodations.map((accom) => ({
+    ...accom,
+    rooms: roomMap[accom.id] || [],
+  }));
+
+  return favoriteItems;
 };

@@ -74,6 +74,7 @@ export const getFilteredRoomData = async (accomId, filters) => {
   let constraints = [];
 
   constraints.push(where('accommodation_id', '==', accomId));
+
   // 어른 수
   if (filters.adults > 0) {
     constraints.push(where('capacity.adults', '>=', filters.adults));
@@ -84,16 +85,15 @@ export const getFilteredRoomData = async (accomId, filters) => {
     constraints.push(where('capacity.children', '>=', filters.children));
   }
 
-  // 체크인
+  // 체크인과 체크아웃은 클라이언트에서 처리
+  let checkInTimestamp = '';
   if (filters.datePickerDate.startDate) {
-    let checkInTimestamp = Timestamp.fromDate(
+    checkInTimestamp = Timestamp.fromDate(
       new Date(filters.datePickerDate.startDate),
     );
-    constraints.push(where('check_in', '>=', checkInTimestamp));
   }
 
   let checkOutTimestamp = '';
-  // 체크아웃
   if (filters.datePickerDate.endDate) {
     checkOutTimestamp = Timestamp.fromDate(
       new Date(filters.datePickerDate.endDate),
@@ -106,7 +106,14 @@ export const getFilteredRoomData = async (accomId, filters) => {
     const accomSnap = await getDocs(q);
     let results = accomSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-    // 체크아웃은 클라이언트에서 처리
+    // 체크인 클라이언트에서 처리
+    if (checkInTimestamp) {
+      results = results.filter(
+        (accom) => accom.check_in.toMillis() >= checkInTimestamp.toMillis(),
+      );
+    }
+
+    // 체크아웃 클라이언트에서 처리
     if (checkOutTimestamp) {
       results = results.filter(
         (accom) => accom.check_out.toMillis() <= checkOutTimestamp.toMillis(),

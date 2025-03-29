@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BiChevronRight } from 'react-icons/bi';
 import DateSelector from '../../common/DateSelector';
 import PeopleSelector from '../../common/PeopleSelector';
+import { formatDateWithHyphen } from '../../../utils/format';
 
 const SearchForm = ({
   openDate,
@@ -26,7 +27,8 @@ const SearchForm = ({
     e.preventDefault();
 
     setFilters({
-      datePickerDate,
+      checkIn: formatDateWithHyphen(datePickerDate.startDate),
+      checkOut: formatDateWithHyphen(datePickerDate.endDate),
       adults,
       children,
     });

@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import ProductCard from '../../components/favorite/ProductCard';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
 import Loading from '../../components/common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Pagination from '../../components/common/Pagination';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -15,6 +17,28 @@ const Favorite = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [searchOption, setSearchOption] = useState('name');
+  const [selectedPerOption, setSelectedPerOption] = useState(5);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [currentPageData, setCurrentPageData] = useState([]);
+
+  const perOptions = [
+    { id: 1, value: 5, name: '5개씩 보기' },
+    { id: 2, value: 10, name: '10개씩 보기' },
+    { id: 3, value: 15, name: '15개씩 보기' },
+    { id: 4, value: 20, name: '20개씩 보기' },
+  ];
+
+  // 페이지 옵션 선택 핸들러
+  const handlePagePerOptionSelect = useCallback(
+    (event) => {
+      const perPage = Number(event.target.value);
+      setSelectedPerOption(perPage);
+
+      navigate(location.pathname);
+    },
+    [navigate, location],
+  );
 
   const typeMapping = {
     hotel: '호텔',
@@ -122,12 +146,29 @@ const Favorite = () => {
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">
+      {/* 페이지 헤더 */}
       <PageHeader
         title="찜 목록"
         breadcrumb={breadcrumb}
         hasBackButton={true}
       />
+
+      {/* 검색 영역 */}
       <div className="my-8 flex gap-2 justify-end rounded-2xl">
+        <select
+          id="perPage"
+          className="select border border-gray-400 rounded-lg w-40"
+          value={selectedPerOption}
+          onChange={handlePagePerOptionSelect}>
+          {perOptions.map((item) => (
+            <option
+              key={item.id}
+              value={item.value}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+
         <select
           value={searchOption}
           id="searchOption"
@@ -138,7 +179,6 @@ const Favorite = () => {
           <option value="place">장소명</option>
           <option value="type">타입명</option>
         </select>
-
         <input
           type="text"
           placeholder="검색어를 입력하세요"
@@ -148,7 +188,6 @@ const Favorite = () => {
           onKeyUp={handleKeyUp}
           className="input border border-gray-400 p-4"
         />
-
         <button
           type="submit"
           onClick={handleSearchButton}
@@ -157,14 +196,21 @@ const Favorite = () => {
         </button>
       </div>
 
-      <div className="mb-10 grid grid-cols-4 gap-10">
-        {filteredData.map((favorite, index) => (
+      <div className="mb-10 grid grid-cols-5 gap-10">
+        {currentPageData.map((favorite, index) => (
           <ProductCard
             key={index}
             favorite={favorite}
           />
         ))}
       </div>
+
+      {/* 페이지네이션 */}
+      <Pagination
+        data={filteredData}
+        pagePerItem={selectedPerOption}
+        setCurrentPageData={setCurrentPageData}
+      />
     </div>
   );
 };

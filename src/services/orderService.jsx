@@ -112,40 +112,6 @@ export const createUserOrder = async ({
   return docRef.id;
 };
 
-// 주문아이디 배열로 주문조회 수정 기존 OrderList 에 맞게 수정
-export const orderQuery = async (orderIds) => {
-  if (!Array.isArray(orderIds) || orderIds.length === 0) return [];
-
-  const orders = await Promise.all(
-    orderIds.map(async (orderId) => {
-      const orderRef = doc(db, 'orders', orderId);
-      const orderSnap = await getDoc(orderRef);
-      const orderByRoomInfo = orderSnap.data();
-
-      const roomRef = doc(db, 'rooms', orderByRoomInfo.room_id);
-      const roomSnap = await getDoc(roomRef);
-      const roomData = roomSnap.exists() ? roomSnap.data() : null;
-
-      let accomData = null;
-
-      if (roomData) {
-        const accomRef = doc(db, 'accommodations', roomData.accommodation_id);
-        const accomSnap = await getDoc(accomRef);
-        accomData = accomSnap.exists() ? accomSnap.data() : null;
-      }
-
-      return {
-        id: orderId,
-        ...orderByRoomInfo,
-        room: roomData,
-        accom: accomData,
-      };
-    }),
-  );
-
-  return orders.filter((order) => order !== null);
-};
-
 // 주문 내역 조회
 export const getOrderData = async (userId) => {
   if (!userId) return [];
@@ -209,4 +175,50 @@ export const checkout = async (orderItem, userId) => {
 
   // 재고 차감
   await decrementRoomStock(orderItem.room_id);
+};
+
+// 결제완료된 주문 데이터 조회
+export const getOrdersByRoomIds = async (roomIds) => {
+  if (!roomIds || roomIds.length === 0) return [];
+
+  const ordersRef = collection(db, 'orders');
+  const results = [];
+
+  for (const roomId of roomIds) {
+    const q = query(
+      ordersRef,
+      where('room_id', '==', roomId),
+      where('payment_status', '==', 'completed'),
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    for (const docSnap of querySnapshot.docs) {
+      const orderData = {
+        id: docSnap.id,
+        ...docSnap.data(),
+      };
+
+      // rooms 컬렉션에서 room 정보 조회
+      const roomRef = doc(db, 'rooms', orderData.room_id);
+      const roomSnap = await getDoc(roomRef);
+      const roomData = roomSnap.exists() ? roomSnap.data() : null;
+
+      // accommodations 정보 조회
+      let accomData = null;
+      if (roomData?.accommodation_id) {
+        const accomRef = doc(db, 'accommodations', roomData.accommodation_id);
+        const accomSnap = await getDoc(accomRef);
+        accomData = accomSnap.exists() ? accomSnap.data() : null;
+      }
+
+      results.push({
+        ...orderData,
+        room: roomData,
+        accomData: accomData,
+      });
+    }
+  }
+
+  return results;
 };

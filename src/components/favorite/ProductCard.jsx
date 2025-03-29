@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BiSolidStar, BiSolidMap, BiTrash } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { formatNumber } from '../../utils/format';
@@ -22,10 +22,6 @@ const ProductCard = ({ favorite }) => {
     if (e) e.preventDefault();
     favoriteDelMutation(favorite.id);
   };
-
-  useEffect(() => {
-    console.log('favorite' + JSON.stringify(favorite));
-  }, [favorite]);
 
   return (
     <>
@@ -84,7 +80,6 @@ const ProductCard = ({ favorite }) => {
               (room) => room.stay_type === 'day_use',
             );
 
-            // 조건에 맞는 객실을 출력
             return (
               <>
                 {stayRoom && room.id === stayRoom.id && (

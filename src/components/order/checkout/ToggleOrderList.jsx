@@ -5,7 +5,9 @@ const ToggleOrderList = ({ data }) => {
   const [openIndexes, setOpenIndexes] = useState([]);
 
   useEffect(() => {
-    setOpenIndexes(new Array(data.length).fill(true));
+    if (data) {
+      setOpenIndexes(new Array(data.length).fill(true));
+    }
   }, [data]);
 
   const toggleContent = (index) => {
@@ -15,11 +17,11 @@ const ToggleOrderList = ({ data }) => {
   };
 
   return (
-    <div className="w-full">
-      {data.map((accommodation, index) => (
+    <div className="flex-1">
+      {data?.map((room, index) => (
         <OrderResult
-          key={accommodation.accommodation_id}
-          accommodation={accommodation}
+          key={`${room.roomId}-${index}`}
+          room={room}
           isOpen={openIndexes[index]}
           toggleContent={() => toggleContent(index)}
         />

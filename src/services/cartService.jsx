@@ -9,7 +9,7 @@ import {
   where,
   deleteDoc,
 } from 'firebase/firestore';
-import { db, auth } from '../firebase/firebaseConfig';
+import { db } from '../firebase/firebaseConfig';
 
 // 장바구니에 이미 있는지 확인
 const checkCartItemExist = async (cartId) => {
@@ -80,33 +80,20 @@ export const getCartItems = async (userId) => {
   return cartItems;
 };
 
-// 장바구니 데이터 조회 (기존)
-export const fetchCartItems = async () => {
-  const user = auth.currentUser;
-  if (!user) return [];
-
-  const q = query(collection(db, 'carts'), where('user_id', '==', user.uid));
-  const cartSnapshot = await getDocs(q);
-
-  const cartItems = await Promise.all(
-    cartSnapshot.docs.map(async (docSnap) => {
-      const data = docSnap.data();
-      const accomRef = doc(db, 'accommodations', data.accommodation_id);
-      const accomSnap = await getDoc(accomRef);
-
-      return {
-        id: docSnap.id,
-        ...data,
-        accommodation: accomSnap.exists() ? accomSnap.data() : null,
-      };
-    }),
-  );
-
-  return cartItems;
-};
-
 // 장바구니 항목 삭제
 export const delCartItem = async (cartId) => {
   const cartRef = doc(db, 'carts', cartId);
   await deleteDoc(cartRef);
+};
+
+// room_id 기준으로 장바구니 항목 삭제
+export const delCartItemOfroomId = async (roomId) => {
+  const cartsCollection = collection(db, 'carts');
+
+  const cartsQuery = query(cartsCollection, where('room_id', '==', roomId));
+  const cartsSnapshot = await getDocs(cartsQuery);
+
+  cartsSnapshot.forEach(async (docSnap) => {
+    await deleteDoc(doc(db, 'carts', docSnap.id));
+  });
 };

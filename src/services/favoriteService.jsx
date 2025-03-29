@@ -8,7 +8,6 @@ import {
   collection,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-import { fetchAccomData } from './productService.';
 
 // 사용자 찜 목록 가져오기
 const getUserWishlist = async (userId) => {
@@ -17,13 +16,13 @@ const getUserWishlist = async (userId) => {
     const userDocSnap = await getDoc(userDocRef);
 
     if (!userDocSnap.exists()) {
-      console.log('users 문서가 존재 X');
+      console.error('users 문서가 존재 X');
       return;
     }
 
     return { userDocRef, wishlist: userDocSnap.data().wishlist || [] };
   } catch (error) {
-    console.log('찜 목록 조회 오류: ' + error.message);
+    console.error('찜 목록 조회 오류: ' + error.message);
   }
 };
 
@@ -46,7 +45,7 @@ export const controlFavorite = async (userId, accommodationId) => {
       return 'add';
     }
   } catch (error) {
-    console.log('찜 버튼 선택 오류: ' + error.message);
+    console.error('찜 버튼 선택 오류: ' + error.message);
   }
 };
 
@@ -98,6 +97,5 @@ export const getFavoriteAccomm = async (userId) => {
     rooms: roomMap[accom.id] || [],
   }));
 
-  console.log('최종:', favoriteItems);
   return favoriteItems;
 };

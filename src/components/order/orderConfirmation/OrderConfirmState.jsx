@@ -1,90 +1,46 @@
-import { useEffect, useState } from 'react';
+import OrderCard from './OrderCard';
 import { FcApproval, FcCancel, FcClock, FcQuestions } from 'react-icons/fc';
-// import { useOrderDataID } from '../../../hooks/useOrderData';
-import { orderQuery } from '../../../services/orderService';
-import Loading from '../../common/Loading';
-import OrderList from '../OrderList';
-// import OrderList from '../OrderList';
+import { useOrdersDataByRoomId } from '../../../hooks/useOrderData';
 
-// 주문 정보 아이디만 입력받음
-const OrderState = ({ orderInfo }) => {
-  let State;
-  let message;
+const OrderState = ({ orderList }) => {
+  const roomIds = orderList.map((room) => room.roomId);
+  const { data: orders, isLoading, isError } = useOrdersDataByRoomId(roomIds);
 
-  const [orderResult, setOrderResult] = useState(null);
+  if (isLoading) return <div>로딩 중...</div>;
+  if (isError) return <div>에러 발생!</div>;
 
-  console.log('전달받은 주문정보 OrderConfirmState -OrderState: ', orderInfo);
-  // const { data, isLoading, error } = useOrderDataID(orderInfo[0]);
+  // 주문 상태 조회
+  const getOrderStatus = () => {
+    if (orders.some((room) => room.payment_status === 'pending')) {
+      return { Icon: FcClock, message: '결제 대기중입니다.' };
+    }
 
-  // 주문 아이디로 주문 결과를 DB 조회 결과 저장
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+    if (orders.some((room) => room.payment_status === 'canceled')) {
+      return { Icon: FcCancel, message: '결제가 취소 되었습니다.' };
+    }
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      setIsLoading(true);
-      try {
-        if (!orderInfo || orderInfo.length === 0) {
-          console.log('전달받은 주문정보 없음 : ', orderInfo);
-          return;
-        }
-        const tmp = await orderQuery(orderInfo.orderId);
-        setData(tmp);
-      } catch (error) {
-        console.error('Error fetching order:', error);
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (orders.every((room) => room.payment_status === 'completed')) {
+      return { Icon: FcApproval, message: '결제가 완료되었습니다.' };
+    }
 
-    fetchOrder();
-  }, [orderInfo]);
+    return { Icon: FcQuestions, message: '정보를 확인할 수 없습니다.' };
+  };
 
-  useEffect(() => {}, [isLoading, error]);
-
-  useEffect(() => {}, [data]);
-
-  // const hasPending = data.some((order) => order.payment_status === 'pending');
-  // const hasCanceled = orderInfo.some((order) => order.payment_status === 'canceled');
-  // const allCompleted = data.every((order) => order.payment_status === 'completed');
-
-  const hasPending = false;
-  const hasCanceled = data?.some((ele) => ele.payment_status == 'canceled');
-  const allCompleted = data?.every((ele) => ele.payment_status == 'completed');
-
-  if (hasPending) {
-    State = FcClock;
-    message = '결제 대기중입니다.';
-  } else if (hasCanceled) {
-    State = FcCancel;
-    message = '결제가 취소 되었습니다.';
-  } else if (allCompleted) {
-    State = FcApproval;
-    message = '결제가 완료되었습니다.';
-  } else {
-    State = FcQuestions;
-    message = '정보를 확인할 수 없습니다.';
-  }
-  if (isLoading) return <Loading />;
-  if (!data) return <Loading />;
-  else if (error) return <>{error.message}</>;
+  const { Icon, message } = getOrderStatus();
 
   return (
     <div className="flex flex-col justify-center items-center gap-4">
-      <State size={50} />
+      <Icon size={50} />
 
       <h1 className="text-4xl font-semibold tracking-tight">{message}</h1>
 
-      {orderInfo ? (
-        <OrderList
-          orderDetailInfo={data}
-          orderList={orderInfo}
+      {orders.map((item, index) => (
+        <OrderCard
+          key={item.id || index}
+          data={item}
+          index={index}
         />
-      ) : (
-        '주문정보 없음'
-      )}
+      ))}
     </div>
   );
 };

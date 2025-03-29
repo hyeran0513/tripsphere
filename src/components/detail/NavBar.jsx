@@ -4,7 +4,7 @@ const NavBar = ({ tabRef }) => {
   const sections = [
     { id: 'overview', label: '개요' },
     { id: 'rooms', label: '객실' },
-    { id: 'services', label: '서비스 및 부대시설' },
+    { id: 'services', label: '숙소 소개' },
     { id: 'location', label: '위치' },
     { id: 'reviews', label: '리뷰' },
   ];

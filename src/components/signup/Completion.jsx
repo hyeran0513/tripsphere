@@ -15,13 +15,13 @@ const Completion = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate('/')}
-            className="w-full py-2 px-4 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200">
+            className="cursor-pointer w-full py-2 px-4 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200">
             홈으로 가기
           </button>
 
           <button
             onClick={() => navigate('/signin')}
-            className="w-full py-2 px-4 text-gray-700 bg-indigo-500 rounded-md hover:bg-indigo-400 text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200">
+            className="cursor-pointer w-full py-2 px-4 text-gray-700 bg-indigo-500 rounded-md hover:bg-indigo-400 text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200">
             로그인하러 가기
           </button>
         </div>

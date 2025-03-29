@@ -10,7 +10,7 @@ const OrderList = ({ IconComponent, Title, type }) => {
         <span className="font-medium">{Title}</span>
       </div>
 
-      <TypeMapping type={type} />
+      {type && <TypeMapping type={type} />}
     </li>
   );
 };

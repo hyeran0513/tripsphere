@@ -34,7 +34,7 @@ export const cities = [
     ],
   },
   {
-    name: '경기도',
+    name: '경기',
     subCities: [
       '전체',
       '가평군',
@@ -64,6 +64,7 @@ export const cities = [
       '안양시 동안구',
       '안양시 만안구',
       '양주시',
+      '양평군',
     ],
   },
   {
@@ -81,7 +82,7 @@ export const cities = [
     ],
   },
   {
-    name: '강원도',
+    name: '강원',
     subCities: [
       '전체',
       '강릉시',

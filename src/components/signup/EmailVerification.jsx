@@ -142,7 +142,7 @@ const EmailPassword = ({ onNext, onPrev, showToast }) => {
               <button
                 type="button"
                 onClick={onNext}
-                className={`flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold text-white shadow-xs ${
+                className={`cursor-pointer flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold text-white shadow-xs ${
                   !isVerified || !isCheckClicked
                     ? 'bg-gray-300 hover:bg-gray-200 cursor-not-allowed'
                     : 'bg-indigo-600 hover:bg-indigo-500'

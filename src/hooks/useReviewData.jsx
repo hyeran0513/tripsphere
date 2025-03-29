@@ -15,7 +15,6 @@ export const useAddReview = (showToast, handleNewReview) => {
   return useMutation({
     mutationFn: (review) => addReview(review),
     onSuccess: (data) => {
-      console.log('리뷰가 성공적으로 추가되었습니다:', data);
       showToast('success', '리뷰가 성공적으로 추가되었습니다.');
       handleNewReview();
     },

@@ -76,7 +76,7 @@ const SignIn = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-indigo-600">
+                className="cursor-pointer flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-indigo-600">
                 로그인
               </button>
             </div>
@@ -86,7 +86,7 @@ const SignIn = () => {
             아직 회원이 아닌가요?{' '}
             <Link
               to="/signup"
-              className="font-semibold text-indigo-600 hover:text-indigo-500">
+              className="cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500">
               회원가입
             </Link>
           </p>

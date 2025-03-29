@@ -43,12 +43,12 @@ const CancelOrderModal = ({ isOpen, onClose, onConfirm }) => {
           </div>
           <div className="flex justify-end mt-4">
             <button
-              className="mr-2 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded"
+              className="cursor-pointer mr-2 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded"
               onClick={onClose}>
               취소
             </button>
             <button
-              className="px-4 py-2 bg-red-500 text-white rounded"
+              className="cursor-pointer px-4 py-2 bg-red-500 text-white rounded"
               onClick={handleInitialConfirm}>
               확인
             </button>
@@ -70,12 +70,12 @@ const CancelOrderModal = ({ isOpen, onClose, onConfirm }) => {
           </p>
           <div className="flex justify-end mt-4">
             <button
-              className="mr-2 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded"
+              className="cursor-pointer mr-2 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded"
               onClick={() => setShowConfirmDialog(false)}>
               취소
             </button>
             <button
-              className="px-4 py-2 bg-red-500 text-white rounded"
+              className="cursor-pointer px-4 py-2 bg-red-500 text-white rounded"
               onClick={handleFinalConfirm}>
               확인
             </button>

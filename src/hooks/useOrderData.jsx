@@ -1,24 +1,10 @@
-import {
-  useMutation,
-  useQueries,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   cancelUserOrder,
-  fetchUserOrders,
+  checkout,
   getOrderData,
-  orderQuery,
+  getOrdersByRoomIds,
 } from '../services/orderService';
-
-// 주문내역 조회 (기존)
-export const useUserOrders = (userId) => {
-  return useQuery({
-    queryKey: ['orders', userId],
-    queryFn: () => fetchUserOrders(userId),
-    enabled: !!userId,
-  });
-};
 
 // 주문 취소 (UI)
 export const useCancelOrder = () => {
@@ -44,11 +30,29 @@ export const useOrderData = (userId) => {
   });
 };
 
-// 주문아이디로 내역 조회
-export const useOrderDataGetByOrderID = (orderID) => {
-  return useQueries({
-    queryKey: ['orders', orderID],
-    queryFn: () => orderQuery(orderID),
-    enabled: !!orderID,
+// 결제하기
+export const useCheckout = (userId, data, showToast) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (orderItem) => checkout(orderItem, userId),
+    onSuccess: () => {
+      data.forEach((item) => {
+        queryClient.invalidateQueries(['orders', item.roomId]);
+      });
+      showToast('success', '주문 목록에 항목을 추가했습니다.');
+    },
+    onError: () => {
+      showToast('error', '주문 목록에 항목 추가가 실패했습니다.');
+    },
+  });
+};
+
+// 결제완료된 주문 데이터 조회
+export const useOrdersDataByRoomId = (roomIds) => {
+  return useQuery({
+    queryKey: ['orders', roomIds],
+    queryFn: () => getOrdersByRoomIds(roomIds),
+    enabled: !!roomIds && roomIds.length > 0,
   });
 };

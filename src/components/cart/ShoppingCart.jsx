@@ -70,7 +70,6 @@ const ShoppingCart = ({ open, setOpen }) => {
     const selectedData = data
       .filter((item) => selectedItems.includes(item.id))
       .map((item) => {
-        console.log('hey:' + JSON.stringify(item));
         const {
           accommodation_id,
           check_in,
@@ -124,7 +123,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                     </DialogTitle>
                     <button
                       onClick={() => setOpen(false)}
-                      className="text-gray-400 hover:text-gray-500">
+                      className="cursor-pointer text-gray-400 hover:text-gray-500">
                       <BiX className="size-6" />
                     </button>
                   </div>
@@ -283,7 +282,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                     <button
                       onClick={handleOrder}
                       disabled={selectedItems.length === 0}
-                      className="flex justify-center w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700 disabled:bg-gray-400">
+                      className="cursor-pointer flex justify-center w-full rounded-md bg-indigo-600 px-6 py-3 text-white font-medium hover:bg-indigo-700 disabled:bg-gray-400">
                       주문하기
                     </button>
                   </div>

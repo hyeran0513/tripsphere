@@ -21,7 +21,7 @@ const PointHistory = ({ points }) => {
 
       <ul className="list bg-base-100 rounded-box shadow-md mb-10">
         {isAuthenticated &&
-          points?.map((point, index) => (
+          points?.slice(0, 3).map((point, index) => (
             <li
               key={index}
               className="list-row flex-col flex">

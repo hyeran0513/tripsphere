@@ -6,10 +6,12 @@ import NoData from '../../common/NoData';
 const ReviewItem = ({ reviews }) => {
   if (!reviews || reviews.length === 0) {
     return (
-      <NoData
-        text="리뷰가 없습니다."
-        icon={BiMessageAltEdit}
-      />
+      <div className="mt-4">
+        <NoData
+          text="리뷰가 없습니다."
+          icon={BiMessageAltEdit}
+        />
+      </div>
     );
   }
 

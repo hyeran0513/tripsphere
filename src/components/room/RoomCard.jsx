@@ -26,6 +26,7 @@ const RoomCard = ({ room, index }) => {
   const [selectedType, setSelectedType] = useState(null);
   const { user } = useAuthStore();
   const { setReservationInfo } = useRoomSelectionStore();
+  const { isAuthenticated } = useAuthStore();
 
   const showToast = (type, message) => {
     setToast({ type, message });
@@ -37,6 +38,12 @@ const RoomCard = ({ room, index }) => {
 
   // 장바구니 추가
   const handleAddToCart = (type, duration, selectedTime) => {
+    if (!isAuthenticated) {
+      showToast('error', '로그인 후 장바구니 기능을 이용하실 수 있습니다.');
+      document.getElementById('dayUse').close();
+      return;
+    }
+
     mutate({
       user_id: user?.uid,
       room_id: selectedRoomData.roomId,
@@ -98,6 +105,50 @@ const RoomCard = ({ room, index }) => {
     selectedRoomData?.check_in,
     selectedRoomData?.check_out,
   );
+
+  // 대실 예약하기
+  const handleReservationDayUse = (
+    hours,
+    minutes,
+    selectedRange,
+    selectedRoomData,
+    setReservationInfo,
+    navigate,
+  ) => {
+    if (!isAuthenticated) {
+      showToast('error', '로그인 후 예약을 진행하실 수 있습니다');
+      document.getElementById('dayUse').close();
+      return;
+    }
+
+    setReservationInfo([
+      {
+        type: 'day_use',
+        room_id: selectedRoomData.roomId,
+        duration: { hours, minutes },
+        selectedTime: selectedRange,
+      },
+    ]);
+    navigate('/checkout');
+  };
+
+  // 숙박 예약하기
+  const handleReservationStay = (room, setReservationInfo, navigate) => {
+    if (!isAuthenticated) {
+      showToast('error', '로그인 후 예약을 진행하실 수 있습니다');
+      document.getElementById('dayUse').close();
+      return;
+    }
+
+    setReservationInfo([
+      {
+        type: 'stay',
+        room_id: room.roomId,
+      },
+    ]);
+
+    navigate('/checkout');
+  };
 
   return (
     <>
@@ -172,15 +223,9 @@ const RoomCard = ({ room, index }) => {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    setReservationInfo([
-                      {
-                        type: 'stay',
-                        room_id: room.roomId,
-                      },
-                    ]);
-                    navigate('/checkout');
-                  }}
+                  onClick={() =>
+                    handleReservationStay(room, setReservationInfo, navigate)
+                  }
                   className="h-[38px] text-indigo-600 hover:text-white border border-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-500 dark:focus:ring-indigo-800 cursor-pointer">
                   숙박 예약
                 </button>
@@ -260,17 +305,16 @@ const RoomCard = ({ room, index }) => {
                     <button
                       aria-label="예약하기"
                       type="button"
-                      onClick={() => {
-                        setReservationInfo([
-                          {
-                            type: 'day_use',
-                            room_id: selectedRoomData.roomId,
-                            duration: { hours, minutes },
-                            selectedTime: selectedRange,
-                          },
-                        ]);
-                        navigate('/checkout');
-                      }}
+                      onClick={() =>
+                        handleReservationDayUse(
+                          hours,
+                          minutes,
+                          selectedRange,
+                          selectedRoomData,
+                          setReservationInfo,
+                          navigate,
+                        )
+                      }
                       className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                       예약하기
                     </button>

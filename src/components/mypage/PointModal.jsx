@@ -5,6 +5,7 @@ import { useUserData } from '../../hooks/useUserData';
 import { useAddPoints } from '../../hooks/usePointData';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { validateForm } from '../../utils/validation';
+import { formatNumber } from '../../utils/format';
 
 const PointModal = ({ points, setPoints, pointHistoryRefetch }) => {
   const { user } = useAuthStore();
@@ -58,7 +59,8 @@ const PointModal = ({ points, setPoints, pointHistoryRefetch }) => {
         error={state.errors.point}
       />
       <div className="mt-2 text-indigo-500 text-sm">
-        보유 포인트: <span className="font-bold">{points || 0}</span> 포인트
+        보유 포인트:{' '}
+        <span className="font-bold">{formatNumber(points || 0)}</span> 포인트
       </div>
 
       <div className="modal-action">
@@ -67,7 +69,7 @@ const PointModal = ({ points, setPoints, pointHistoryRefetch }) => {
             type="button"
             onClick={handlePoint}
             className="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors">
-            {isLoading ? '포인트 추가 중...' : '포인트 추가'}
+            {isLoading ? '포인트 적립 중...' : '포인트 적립'}
           </button>
         </form>
       </div>

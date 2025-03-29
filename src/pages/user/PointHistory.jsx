@@ -1,6 +1,6 @@
 import PageHeader from '../../components/common/PageHeader';
 import { usePointData } from '../../hooks/usePointData';
-import { formatDate } from '../../utils/format';
+import { formatDate, formatNumber } from '../../utils/format';
 import Loading from '../../components/common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
 
@@ -48,7 +48,7 @@ const PointHistory = () => {
 
                 <div className="text-secondary">
                   {point.type === 'used' ? '-' : '+'}
-                  {point.points} 포인트
+                  {formatNumber(point.points)} 포인트
                 </div>
               </div>
             </li>

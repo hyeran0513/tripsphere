@@ -38,7 +38,7 @@ const PointHistory = ({ points }) => {
                   </div>
                 </div>
                 <div className="text-secondary">
-                  {point.points > 0 ? '+' : '-'}
+                  {point.type === 'used' ? '-' : '+'}
                   {point.points} 포인트
                 </div>
               </div>

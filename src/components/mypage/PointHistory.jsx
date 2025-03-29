@@ -1,6 +1,6 @@
 import { LiaCoinsSolid } from 'react-icons/lia';
 import { Link } from 'react-router-dom';
-import { formatDate } from '../../utils/format';
+import { formatDate, formatNumber } from '../../utils/format';
 import useAuthStore from '../../stores/useAuthStore';
 
 const PointHistory = ({ points }) => {
@@ -39,7 +39,7 @@ const PointHistory = ({ points }) => {
                 </div>
                 <div className="text-secondary">
                   {point.type === 'used' ? '-' : '+'}
-                  {point.points} 포인트
+                  {formatNumber(point.points)} 포인트
                 </div>
               </div>
             </li>

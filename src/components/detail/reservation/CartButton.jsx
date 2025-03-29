@@ -5,7 +5,7 @@ import useAuthStore from '../../../stores/useAuthStore';
 import { BiCart } from 'react-icons/bi';
 
 const CartButton = ({ productId, showToast }) => {
-  const { user } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
 
   // firebase에 장바구니 추가
   const { mutate } = useAddCarts(user?.uid, showToast);
@@ -13,6 +13,12 @@ const CartButton = ({ productId, showToast }) => {
   // 장바구니 추가
   const handleAddToCart = (e) => {
     e.preventDefault();
+
+    if (!isAuthenticated) {
+      showToast('error', '로그인 후 장바구니 기능을 이용하실 수 있습니다.');
+      document.getElementById('dayUse').close();
+      return;
+    }
 
     mutate({
       user_id: user?.uid,

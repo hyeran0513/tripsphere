@@ -72,7 +72,6 @@ export const getFilteredRoomData = async (accomId, filters) => {
   const roomsRef = collection(db, 'rooms');
 
   let constraints = [];
-
   constraints.push(where('accommodation_id', '==', accomId));
 
   // 어른 수
@@ -85,19 +84,20 @@ export const getFilteredRoomData = async (accomId, filters) => {
     constraints.push(where('capacity.children', '>=', filters.children));
   }
 
-  // 체크인과 체크아웃은 클라이언트에서 처리
+  // 체크인 날짜
   let checkInTimestamp = '';
-  if (filters.datePickerDate.startDate) {
-    checkInTimestamp = Timestamp.fromDate(
-      new Date(filters.datePickerDate.startDate),
-    );
+  if (filters.checkIn) {
+    let checkIn = new Date(filters.checkIn);
+    checkIn.setHours(0, 0, 0, 0);
+    checkInTimestamp = Timestamp.fromDate(checkIn);
   }
 
+  // 체크아웃 날짜
   let checkOutTimestamp = '';
-  if (filters.datePickerDate.endDate) {
-    checkOutTimestamp = Timestamp.fromDate(
-      new Date(filters.datePickerDate.endDate),
-    );
+  if (filters.checkOut) {
+    let checkOut = new Date(filters.checkOut);
+    checkOut.setHours(23, 59, 59, 999);
+    checkOutTimestamp = Timestamp.fromDate(checkOut);
   }
 
   const q = query(roomsRef, ...constraints);
@@ -106,18 +106,14 @@ export const getFilteredRoomData = async (accomId, filters) => {
     const accomSnap = await getDocs(q);
     let results = accomSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-    // 체크인 클라이언트에서 처리
-    if (checkInTimestamp) {
-      results = results.filter(
-        (accom) => accom.check_in.toMillis() >= checkInTimestamp.toMillis(),
-      );
-    }
-
-    // 체크아웃 클라이언트에서 처리
-    if (checkOutTimestamp) {
-      results = results.filter(
-        (accom) => accom.check_out.toMillis() <= checkOutTimestamp.toMillis(),
-      );
+    // 체크인 체크아웃 비교
+    if (checkInTimestamp && checkOutTimestamp) {
+      results = results.filter((accom) => {
+        return (
+          accom.check_in.toMillis() <= checkOutTimestamp.toMillis() &&
+          accom.check_out.toMillis() >= checkInTimestamp.toMillis()
+        );
+      });
     }
 
     return results;

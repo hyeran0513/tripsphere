@@ -11,6 +11,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import { formatNumber } from '../utils/format';
 
 // 포인트 내역 조회
 export const getPoints = async (userId) => {
@@ -43,7 +44,7 @@ export const addPoints = async (userId, points) => {
       user_id: userId,
       title: '포인트 적립',
       type: 'add',
-      description: `${points} 포인트가 적립되었습니다!`,
+      description: `${formatNumber(points)} 포인트가 적립되었습니다!`,
       points: points,
       received_date: serverTimestamp(),
     });
@@ -75,7 +76,7 @@ export const usedPoints = async ({ userId, points }) => {
       points: numberPoints,
       title: '포인트 사용',
       type: 'used',
-      description: `${numberPoints} 포인트가 결제 금액에 적용되었습니다.`,
+      description: `${formatNumber(numberPoints)} 포인트가 결제 금액에 적용되었습니다.`,
       received_date: serverTimestamp(),
     });
   } catch (error) {

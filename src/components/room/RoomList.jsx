@@ -7,17 +7,19 @@ import RoomTypeMapping from '../common/RoomTypeMapping';
 const RoomList = ({ rooms }) => {
   const roomsGroupedById = rooms?.length
     ? rooms.reduce((acc, room) => {
-        if (!acc[room.room_group_id]) {
-          acc[room.room_group_id] = {
-            room_group_id: room.room_group_id,
-            name: room.name,
-            type: room.type,
-            images: room.images || [],
-            capacity: room.capacity,
-            rooms: [],
-          };
+        if (room.stock > 0) {
+          if (!acc[room.room_group_id]) {
+            acc[room.room_group_id] = {
+              room_group_id: room.room_group_id,
+              name: room.name,
+              type: room.type,
+              images: room.images || [],
+              capacity: room.capacity,
+              rooms: [],
+            };
+          }
+          acc[room.room_group_id].rooms.push(room);
         }
-        acc[room.room_group_id].rooms.push(room);
         return acc;
       }, {})
     : {};

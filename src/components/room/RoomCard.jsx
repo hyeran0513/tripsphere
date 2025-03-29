@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   convertTimestampToDate,
+  formatDate,
   formatNumber,
   formatTimeStampTime,
   getTimeDiff,
@@ -11,7 +12,7 @@ import { BiChevronRight } from 'react-icons/bi';
 import Modal from '../common/Modal';
 import CartButton from '../detail/reservation/CartButton';
 import ToastMessage from '../common/ToastMessage';
-import { BiCart } from 'react-icons/bi';
+import { BiCart, BiCalendarAlt } from 'react-icons/bi';
 import { serverTimestamp } from 'firebase/firestore';
 import { useAddCarts } from '../../hooks/useCartData';
 import useAuthStore from '../../stores/useAuthStore';
@@ -181,6 +182,11 @@ const RoomCard = ({ room, index }) => {
         </div>
 
         {/* 체크인 체크아웃 */}
+        <p className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-white">
+          <BiCalendarAlt /> {formatDate(room.check_in)}{' '}
+          {room.stay_type === 'stay' && `- ${formatDate(room.check_out)}`}
+        </p>
+
         <p className="mt-1 text-xs text-gray-500 dark:text-white">
           체크인: {formatTimeStampTime(room.check_in)} ~ 체크아웃:{' '}
           {formatTimeStampTime(room.check_out)}

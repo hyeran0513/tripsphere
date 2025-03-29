@@ -1,4 +1,4 @@
-import { differenceInDays, differenceInMinutes, parse } from 'date-fns';
+import { differenceInDays, differenceInMinutes, format, parse } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 
 // 숫자 3자리마다 콤마를 추가
@@ -135,4 +135,10 @@ export const getTimeDiff = (checkInTimestamp, checkOutTimestamp) => {
   const minutes = totalMinutes % 60;
 
   return { hours, minutes };
+};
+
+// yyyy-MM-dd 형식으로 포맷
+export const formatDateWithHyphen = (date) => {
+  const formatDate = new Date(date);
+  return format(formatDate, 'yyyy-MM-dd');
 };

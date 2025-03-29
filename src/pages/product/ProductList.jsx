@@ -8,6 +8,12 @@ import useFilterStore from '../../stores/useFilterStore';
 import AccomTypeSelector from '../../components/accomlist/AccomTypeSelector';
 import Pagination from '../../components/common/Pagination';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { LiaHotelSolid } from 'react-icons/lia';
+import { LuHotel } from 'react-icons/lu';
+import { BiBuildingHouse } from 'react-icons/bi';
+import { BsHouses } from 'react-icons/bs';
+import { PiWarehouse, PiDiamondsFourLight } from 'react-icons/pi';
+import { MdOutlineForest } from 'react-icons/md';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -18,37 +24,37 @@ const typeMapping = [
   {
     value: '전체',
     text: '전체',
-    icon: 'https://a0.muscache.com/pictures/9a2ca4df-ee90-4063-b15d-0de7e4ce210a.jpg',
+    icon: <PiDiamondsFourLight className="size-[40px]" />,
   },
   {
     value: 'hotel',
     text: '호텔',
-    icon: 'https://a0.muscache.com/pictures/7630c83f-96a8-4232-9a10-0398661e2e6f.jpg',
+    icon: <LiaHotelSolid className="size-[40px]" />,
   },
   {
     value: 'motel',
     text: '모텔',
-    icon: 'https://a0.muscache.com/pictures/251c0635-cc91-4ef7-bb13-1084d5229446.jpg',
+    icon: <LuHotel className="size-[40px]" />,
   },
   {
     value: 'resort',
     text: '리조트',
-    icon: 'https://a0.muscache.com/pictures/c027ff1a-b89c-4331-ae04-f8dee1cdc287.jpg',
+    icon: <BiBuildingHouse className="size-[40px]" />,
   },
   {
     value: 'pension',
     text: '펜션',
-    icon: 'https://a0.muscache.com/pictures/677a041d-7264-4c45-bb72-52bff21eb6e8.jpg',
+    icon: <PiWarehouse className="size-[40px]" />,
   },
   {
     value: 'guesthouse',
     text: '게스트하우스',
-    icon: 'https://a0.muscache.com/pictures/48b55f09-f51c-4ff5-b2c6-7f6bd4d1e049.jpg',
+    icon: <BsHouses className="size-[40px]" />,
   },
   {
     value: 'camping',
     text: '캠핑',
-    icon: 'https://a0.muscache.com/pictures/ca25c7f3-0d1f-432b-9efa-b9f5dc6d8770.jpg',
+    icon: <MdOutlineForest className="size-[40px]" />,
   },
 ];
 

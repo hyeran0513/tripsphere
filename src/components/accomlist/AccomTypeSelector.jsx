@@ -17,12 +17,13 @@ const AccomTypeSelector = ({ filters, setFilters, typeMapping }) => {
             }
             className="hidden"
           />
-          <div className="flex flex-col items-center gap-2">
-            <img
-              className="w-[30px]"
-              src={item.icon}
-              alt={item.text}
-            />
+          <div className="flex flex-col items-center gap-1">
+            <div
+              className={`flex items-center justify-center w-[50px] h-[50px] ${
+                filters.type === item.value ? 'text-indigo-600 font-bold' : ''
+              }`}>
+              {item.icon}
+            </div>
             <span
               className={`text-sm ${
                 filters.type === item.value ? 'text-indigo-600 font-bold' : ''

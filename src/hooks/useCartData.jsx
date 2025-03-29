@@ -1,8 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { auth } from '../firebase/firebaseConfig';
 import {
   addCartItem,
-  fetchCartItems,
   delCartItem,
   getCartItems,
 } from '../services/cartService';
@@ -44,17 +42,5 @@ export const useCartItems = (userId) => {
     queryKey: ['carts', userId],
     queryFn: () => getCartItems(userId),
     enabled: !!userId,
-  });
-};
-
-// 장바구니 데이터 조회 훅
-export const useUserCart = () => {
-  const user = auth.currentUser;
-
-  return useQuery({
-    queryKey: ['carts'],
-    queryFn: () => fetchCartItems,
-    enabled: !!user,
-    staleTime: 0,
   });
 };

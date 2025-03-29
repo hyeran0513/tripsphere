@@ -14,33 +14,6 @@ import { usedPoints } from './pointService';
 import { delCartItemOfroomId } from './cartService';
 import { decrementRoomStock } from './accomService';
 
-// 유저의 주문 내역 조회 (기존)
-export const fetchUserOrders = async (userId) => {
-  if (!userId) return [];
-
-  const ordersRef = collection(db, 'orders');
-  const q = query(ordersRef, where('user_id', '==', userId));
-  const ordersSnapshot = await getDocs(q);
-
-  const orders = await Promise.all(
-    ordersSnapshot.docs.map(async (orderDoc) => {
-      const orderData = orderDoc.data();
-
-      // 숙소 정보 불러오기
-      const accomRef = doc(db, 'accommodations', orderData.accommodation_id);
-      const accomSnap = await getDoc(accomRef);
-
-      return {
-        id: orderDoc.id,
-        ...orderData,
-        accommodation: accomSnap.exists() ? accomSnap.data() : null,
-      };
-    }),
-  );
-
-  return orders;
-};
-
 // 주문 취소 (firebase)
 export const cancelUserOrder = async ({
   orderId,

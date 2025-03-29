@@ -9,7 +9,7 @@ import {
   where,
   deleteDoc,
 } from 'firebase/firestore';
-import { db, auth } from '../firebase/firebaseConfig';
+import { db } from '../firebase/firebaseConfig';
 
 // 장바구니에 이미 있는지 확인
 const checkCartItemExist = async (cartId) => {
@@ -73,31 +73,6 @@ export const getCartItems = async (userId) => {
         ...data,
         room: roomData,
         accom: accomData,
-      };
-    }),
-  );
-
-  return cartItems;
-};
-
-// 장바구니 데이터 조회 (기존)
-export const fetchCartItems = async () => {
-  const user = auth.currentUser;
-  if (!user) return [];
-
-  const q = query(collection(db, 'carts'), where('user_id', '==', user.uid));
-  const cartSnapshot = await getDocs(q);
-
-  const cartItems = await Promise.all(
-    cartSnapshot.docs.map(async (docSnap) => {
-      const data = docSnap.data();
-      const accomRef = doc(db, 'accommodations', data.accommodation_id);
-      const accomSnap = await getDoc(accomRef);
-
-      return {
-        id: docSnap.id,
-        ...data,
-        accommodation: accomSnap.exists() ? accomSnap.data() : null,
       };
     }),
   );

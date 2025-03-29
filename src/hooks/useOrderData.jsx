@@ -7,19 +7,9 @@ import {
 import {
   cancelUserOrder,
   checkout,
-  fetchUserOrders,
   getOrderData,
   orderQuery,
 } from '../services/orderService';
-
-// 주문내역 조회 (기존)
-export const useUserOrders = (userId) => {
-  return useQuery({
-    queryKey: ['orders', userId],
-    queryFn: () => fetchUserOrders(userId),
-    enabled: !!userId,
-  });
-};
 
 // 주문 취소 (UI)
 export const useCancelOrder = () => {

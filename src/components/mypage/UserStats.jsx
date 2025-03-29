@@ -35,7 +35,7 @@ const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
             <div>포인트</div>
           </div>
           <div className="stat-value text-center">
-            {formatNumber(data.points || 0)}
+            {formatNumber(data?.points || 0)}
           </div>
         </Link>
 

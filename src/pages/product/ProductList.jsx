@@ -97,14 +97,14 @@ const ProductList = () => {
   }, [data, filters]);
 
   useEffect(() => {
-    if (filteredData.length > 0) {
+    if (filteredData.length > 0 && location.search === '') {
       setSearchParams((prev) => {
         const newParams = new URLSearchParams(prev.toString());
         newParams.set('page', 1);
         return newParams;
       });
     }
-  }, [filteredData]);
+  }, [filteredData, location.search]);
 
   // 검색 핸들러
   const handleSearch = () => {

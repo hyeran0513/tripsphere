@@ -127,14 +127,14 @@ const AccomCard = ({ accommodation }) => {
                       <h3 className="text-xs font-semibold">숙박</h3>
                       <div className="flex flex-col items-end">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-gray-900">
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">
                             {stayRoom.discount_rate * 100}%
                           </span>
-                          <span className="line-through text-sm text-gray-300">
+                          <span className="line-through text-sm text-gray-300 dark:text-white">
                             {formatNumber(stayRoom.original_price)}원
                           </span>
                         </div>
-                        <div className="font-semibold text-lg text-gray-900">
+                        <div className="font-semibold text-lg text-gray-900 dark:text-white">
                           {formatNumber(
                             stayRoom.original_price *
                               (1 - stayRoom.discount_rate),
@@ -152,14 +152,14 @@ const AccomCard = ({ accommodation }) => {
                       <h3 className="text-xs font-semibold">대실</h3>
                       <div className="mt-4 flex flex-col items-end">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold text-gray-900">
+                          <span className="text-sm font-semibold text-gray-900 dark:text-white">
                             {dayUseRoom.discount_rate * 100}%
                           </span>
-                          <span className="line-through text-sm text-gray-300">
+                          <span className="line-through text-sm text-gray-300 dark:text-white">
                             {formatNumber(dayUseRoom.original_price)}원
                           </span>
                         </div>
-                        <div className="font-semibold text-lg text-gray-900">
+                        <div className="font-semibold text-lg text-gray-900 dark:text-white">
                           {formatNumber(
                             dayUseRoom.original_price *
                               (1 - dayUseRoom.discount_rate),

@@ -105,7 +105,7 @@ const RoomCard = ({ room, index }) => {
         key={index}
         className={`p-6 ${index > 0 && 'border-t border-gray-200'}`}>
         <div className="flex justify-between items-center">
-          <h4 className="font-semibold text-gray-700">
+          <h4 className="font-semibold text-gray-700 dark:text-white">
             {room.stay_type === 'stay' ? '숙박' : '대실'}
           </h4>
 
@@ -130,22 +130,22 @@ const RoomCard = ({ room, index }) => {
         </div>
 
         {/* 체크인 체크아웃 */}
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-gray-500 dark:text-white">
           체크인: {formatTimeStampTime(room.check_in)} ~ 체크아웃:{' '}
           {formatTimeStampTime(room.check_out)}
         </p>
 
         <div className="mt-4 flex flex-col items-end">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-gray-900">
+            <span className="text-sm font-semibold text-gray-900 dark:text-white">
               {room.discount_rate * 100}%
             </span>
-            <span className="line-through text-sm text-gray-300">
+            <span className="line-through text-sm text-gray-300 dark:text-white">
               {formatNumber(room.original_price)}원
             </span>
           </div>
 
-          <div className="font-semibold text-lg text-gray-900">
+          <div className="font-semibold text-lg text-gray-90 dark:text-white0">
             {formatNumber(room.original_price * (1 - room.discount_rate))}원
           </div>
         </div>
@@ -218,7 +218,7 @@ const RoomCard = ({ room, index }) => {
                         key={item.id}
                         className={`flex items-center justify-center text-center rounded-lg border border-gray-300 ${
                           selectedRange.includes(item.label)
-                            ? 'bg-indigo-100 border-indigo-600 text-indigo-600 font-semibold'
+                            ? 'bg-indigo-100 border-indigo-600 text-indigo-600 font-semibold dark:bg-base-200'
                             : ''
                         }`}
                         onClick={() => handleChange(item.label)}>

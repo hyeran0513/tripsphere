@@ -13,7 +13,7 @@ import ToastMessage from '../common/ToastMessage';
 
 const AccomCard = ({ accommodation }) => {
   const [toast, setToast] = useState(null);
-  const { user } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
   const { data: isFavorite } = useCheckFavorite(user?.uid, accommodation.id);
 
   // 토스트 메시지
@@ -28,6 +28,11 @@ const AccomCard = ({ accommodation }) => {
   // 찜 버튼 핸들러
   const handleFavorite = (e) => {
     if (e) e.preventDefault();
+
+    if (!isAuthenticated) {
+      showToast('error', '로그인 후 찜 기능을 이용하실 수 있습니다.');
+      return;
+    }
 
     favoriteMutation(accommodation.id);
   };

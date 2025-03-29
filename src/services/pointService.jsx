@@ -41,8 +41,9 @@ export const addPoints = async (userId, points) => {
     // 포인트 내역 추가
     await addDoc(pointsRef, {
       user_id: userId,
-      title: '포인트 추가',
-      description: `${points} 포인트가 추가되었습니다!`,
+      title: '포인트 적립',
+      type: 'add',
+      description: `${points} 포인트가 적립되었습니다!`,
       points: points,
       received_date: serverTimestamp(),
     });
@@ -73,7 +74,8 @@ export const usedPoints = async ({ userId, points }) => {
       user_id: userId,
       points: numberPoints,
       title: '포인트 사용',
-      description: `${numberPoints} 포인트가 결제에 사용되었습니다.`,
+      type: 'used',
+      description: `${numberPoints} 포인트가 결제 금액에 적용되었습니다.`,
       received_date: serverTimestamp(),
     });
   } catch (error) {

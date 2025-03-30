@@ -50,19 +50,10 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
   // 결제하기 버튼 클릭
   const handleCheckOut = async (e) => {
     e.preventDefault();
-    console.log('reservationInfo reservationInfo : ', reservationInfo);
-
-    console.log('handleCheckOut - data : ', data);
     const updatedData = data.map((item) => {
-      console.log('item : ', item);
       const matchedRoom = reservationInfo.find(
-        (room) =>
-          // console.log('room : ', room);
-          // return
-          room.room_id === item.roomId,
+        (room) => room.room_id === item.roomId,
       );
-
-      console.log('matchedRoom : ', matchedRoom);
 
       if (matchedRoom && item.stay_type === 'day_use') {
         return {
@@ -93,19 +84,11 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
             payment_status: 'completed',
             used_points: item.original_price * (1 - item.discount_rate),
           };
-          console.log('item :', item);
-          console.log('orderData before mutate:', orderData);
 
           if (item.stay_type === 'day_use') {
             orderData.duration = item.duration;
             orderData.selectedTime = item.selectedTime;
           }
-
-          // 다시 한번 로그를 출력
-          console.log(
-            'orderData after condition 여기서 undefinded 나오면 안됨:',
-            orderData,
-          );
 
           // mutate(orderData, {
           //   onSuccess: (response) => {
@@ -116,14 +99,11 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
           //   onError: reject,
           // });
 
-          console.log();
           mutate(orderData, {
             onSuccess: (response) => {
-              console.log('response : ', response);
               resolve(response);
             },
             onError: (error) => {
-              console.error('mutate error : ', error);
               reject(error);
             },
           });
@@ -132,14 +112,12 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
 
     const orderIds = await Promise.all(orderPromises)
       .then((orderIds) => {
-        console.log('모든 주문 ID:', orderIds);
         return orderIds;
       })
       .catch((error) => {
         console.error('하나 이상의 주문 실패:', error);
       });
 
-    console.log('orderIds : ', orderIds);
     setOrderIds(orderIds);
     navigate('/orderconfirmation');
   };

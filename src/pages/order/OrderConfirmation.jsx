@@ -1,9 +1,19 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderState from '../../components/order/orderConfirmation/OrderConfirmState';
+import useCheckoutStore from '../../stores/useCheckoutStore';
+import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 
 const OrderConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { clearReservationInfo } = useRoomSelectionStore();
+  const { roomIds, setRoomIds, resetRoomIds } = useCheckoutStore();
+
+  useEffect(() => {
+    clearReservationInfo();
+    resetRoomIds();
+  }, []);
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px] flex flex-col justify-start items-center gap-12">

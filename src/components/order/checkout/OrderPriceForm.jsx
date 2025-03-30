@@ -1,5 +1,5 @@
 import { serverTimestamp } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCheckout } from '../../../hooks/useOrderData';
 import { useUserData } from '../../../hooks/useUserData';
@@ -17,12 +17,13 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
   const { clearReservationInfo } = useRoomSelectionStore();
   const { roomIds, setRoomIds, resetRoomIds } = useCheckoutStore();
 
-  useEffect(() => {
-    return () => {
-      clearReservationInfo();
-      resetRoomIds();
-    };
-  }, []);
+  // 새로고침시 언마운트라고 판단함 -> orderConfirm 페이지 이동시로 변경 필요.
+  // useEffect(() => {
+  //   return () => {
+  //     clearReservationInfo();
+  //     resetRoomIds();
+  //   };
+  // }, []);
 
   // 토스트 보여주기
   const showToast = (type, message) => {

@@ -1,9 +1,11 @@
 import { serverTimestamp } from 'firebase/firestore';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCheckout } from '../../../hooks/useOrderData';
 import { useUserData } from '../../../hooks/useUserData';
 import useAuthStore from '../../../stores/useAuthStore';
+import useCheckoutStore from '../../../stores/useCheckoutStore';
+import useRoomSelectionStore from '../../../stores/useRoomSelectionStore';
 import { formatNumber } from '../../../utils/format';
 import ToastMessage from '../../common/ToastMessage';
 
@@ -12,6 +14,15 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
   const { data: userData } = useUserData(user?.uid);
   const navigate = useNavigate();
   const [toast, setToast] = useState(null);
+  const { clearReservationInfo } = useRoomSelectionStore();
+  const { roomIds, setRoomIds, resetRoomIds } = useCheckoutStore();
+
+  useEffect(() => {
+    return () => {
+      clearReservationInfo();
+      resetRoomIds();
+    };
+  }, []);
 
   // 토스트 보여주기
   const showToast = (type, message) => {
@@ -36,11 +47,14 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
   // 결제하기 버튼 클릭
   const handleCheckOut = async (e) => {
     e.preventDefault();
+    console.log('reservationInfo reservationInfo : ', reservationInfo);
 
     const updatedData = data.map((item) => {
-      const matchedRoom = reservationInfo.find(
-        (room) => room.room_id === item.roomId,
-      );
+      console.log('item : ', item);
+      const matchedRoom = reservationInfo.find((room) => {
+        console.log('room : ', room);
+        return room === item.roomId;
+      });
 
       if (matchedRoom && item.stay_type === 'day_use') {
         return {

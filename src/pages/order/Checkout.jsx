@@ -13,6 +13,7 @@ const Checkout = () => {
   const { roomIds, setRoomIds } = useCheckoutStore();
 
   useEffect(() => {
+    console.log('reservationInfo : ', reservationInfo);
     let newRoomIds;
     if (!reservationInfo || !reservationInfo?.length === 0) {
       console.log('수신한 데이터 없음');
@@ -24,7 +25,7 @@ const Checkout = () => {
         return;
       }
     } else {
-      console.log('수신한 데이터 있음. 임시 데이터 저장');
+      console.log('수신한 데이터 있음. 수신 데이터 저장');
       newRoomIds = reservationInfo.map((info) => {
         console.log('info : ', info);
         return info.room_id;
@@ -33,10 +34,12 @@ const Checkout = () => {
     }
 
     console.log('newRoomIds : ', newRoomIds);
+    // 다른 컴포넌트로 데이터 전달시 사용
     setRooms(newRoomIds);
+    // 새로고침시 사용
     setRoomIds(newRoomIds);
 
-    return () => clearReservationInfo();
+    // return () => clearReservationInfo();
   }, [reservationInfo]);
 
   if (isLoading) return <Loading />;
@@ -60,7 +63,7 @@ const Checkout = () => {
             {/* 최종 결제 금액 */}
             <OrderPriceForm
               data={data}
-              reservationInfo={reservationInfo}
+              reservationInfo={roomIds}
             />
           </div>
         </div>

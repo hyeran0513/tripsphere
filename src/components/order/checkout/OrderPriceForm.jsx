@@ -5,6 +5,7 @@ import { useCheckout } from '../../../hooks/useOrderData';
 import { useUserData } from '../../../hooks/useUserData';
 import useAuthStore from '../../../stores/useAuthStore';
 import useCheckoutStore from '../../../stores/useCheckoutStore';
+import useOrderStore from '../../../stores/useOrderStore';
 import useRoomSelectionStore from '../../../stores/useRoomSelectionStore';
 import { formatNumber } from '../../../utils/format';
 import ToastMessage from '../../common/ToastMessage';
@@ -16,6 +17,7 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
   const [toast, setToast] = useState(null);
   const { clearReservationInfo } = useRoomSelectionStore();
   const { roomIds, setRoomIds, resetRoomIds } = useCheckoutStore();
+  const { setOrderIds } = useOrderStore();
 
   // 새로고침시 언마운트라고 판단함 -> orderConfirm 페이지 이동시로 변경 필요.
   // useEffect(() => {
@@ -50,12 +52,17 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
     e.preventDefault();
     console.log('reservationInfo reservationInfo : ', reservationInfo);
 
+    console.log('handleCheckOut - data : ', data);
     const updatedData = data.map((item) => {
       console.log('item : ', item);
-      const matchedRoom = reservationInfo.find((room) => {
-        console.log('room : ', room);
-        return room === item.roomId;
-      });
+      const matchedRoom = reservationInfo.find(
+        (room) =>
+          // console.log('room : ', room);
+          // return
+          room.room_id === item.roomId,
+      );
+
+      console.log('matchedRoom : ', matchedRoom);
 
       if (matchedRoom && item.stay_type === 'day_use') {
         return {
@@ -78,7 +85,7 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
 
     const orderPromises = updatedData.map(
       (item) =>
-        new Promise((resolve, reject) => {
+        new Promise(async (resolve, reject) => {
           const orderData = {
             user_id: user?.uid,
             room_id: item.roomId,
@@ -95,15 +102,30 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
           }
 
           // 다시 한번 로그를 출력
-          console.log('orderData after condition:', orderData);
+          console.log(
+            'orderData after condition 여기서 undefinded 나오면 안됨:',
+            orderData,
+          );
 
+          // mutate(orderData, {
+          //   onSuccess: (response) => {
+          //     console.log('orderData : ', orderData);
+          //     console.log('response : ', response);
+          //     resolve(response);
+          //   },
+          //   onError: reject,
+          // });
+
+          console.log();
           mutate(orderData, {
             onSuccess: (response) => {
-              console.log('orderData : ', orderData);
               console.log('response : ', response);
               resolve(response);
             },
-            onError: reject,
+            onError: (error) => {
+              console.error('mutate error : ', error);
+              reject(error);
+            },
           });
         }),
     );
@@ -111,13 +133,15 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
     const orderIds = await Promise.all(orderPromises)
       .then((orderIds) => {
         console.log('모든 주문 ID:', orderIds);
-        navigate('/orderconfirmation', { state: orderIds });
+        return orderIds;
       })
       .catch((error) => {
         console.error('하나 이상의 주문 실패:', error);
       });
 
-    // console.log('orderIds : ', orderIds);
+    console.log('orderIds : ', orderIds);
+    setOrderIds(orderIds);
+    navigate('/orderconfirmation');
   };
 
   return (

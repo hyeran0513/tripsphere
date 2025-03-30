@@ -1,27 +1,15 @@
-import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderState from '../../components/order/orderConfirmation/OrderConfirmState';
-import useCheckoutStore from '../../stores/useCheckoutStore';
-import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 
 const OrderConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { clearReservationInfo } = useRoomSelectionStore();
-  const { roomIds, setRoomIds, resetRoomIds } = useCheckoutStore();
-
-  // 첫 렌더링시 store 초기화.
-  useEffect(() => {
-    clearReservationInfo();
-    resetRoomIds();
-  }, []);
-
   return (
     <div className="max-w-[1200px] mx-auto py-[40px] flex flex-col justify-start items-center gap-12">
       <div className="flex flex-col items-center">
         {/* 주문 문구 */}
-        <OrderState orderList={location.state} />
+        <OrderState />
 
         <div className="flex justify-center gap-x-2 mt-8">
           {/* 마이페이지로 이동 버튼 */}

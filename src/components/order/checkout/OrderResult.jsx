@@ -3,7 +3,7 @@ import { BiHotel, BiUser } from 'react-icons/bi';
 import { FaMapLocationDot } from 'react-icons/fa6';
 import { IoIosArrowDropdownCircle } from 'react-icons/io';
 import { PiBabyLight } from 'react-icons/pi';
-import { formatTimeStampTime } from '../../../utils/format';
+import { formatDate, formatTimeStampTime } from '../../../utils/format';
 import KakaoMap from '../../common/KakaoMap';
 import RoomTypeMapping from '../../common/RoomTypeMapping';
 import ServiceList from '../../common/ServiceList';
@@ -85,21 +85,32 @@ const OrderResult = ({ room, isOpen, toggleContent, reservationInfo }) => {
                     />
 
                     <div className="py-4 px-6 flex flex-col gap-3">
-                      {/* 체크인 · 체크아웃 */}
-                      체크인 :{' '}
-                      {target.selectedTime
-                        ? `${target.selectedTime[0]}`
-                        : target.checkIn
-                        ? formatTimeStampTime(target.checkIn)
-                        : formatTimeStampTime(room?.check_in)}{' '}
-                      ~ 체크아웃 :{' '}
-                      {target.selectedTime
-                        ? `${
-                            target.selectedTime[target.selectedTime.length - 1]
-                          }`
-                        : target.checkOut
-                        ? formatTimeStampTime(target.checkOut)
-                        : formatTimeStampTime(room?.check_out)}{' '}
+                      <span>
+                        {target.stayType
+                          ? target.stayType === 'stay'
+                            ? '숙박'
+                            : '대실'
+                          : ''}
+                      </span>
+                      <span>
+                        {/* 체크인 · 체크아웃 */}
+                        체크인 :{' '}
+                        {target.selectedTime
+                          ? `${target.selectedTime[0]}`
+                          : formatDate(target.checkIn)
+                          ? formatTimeStampTime(target.checkIn)
+                          : formatTimeStampTime(room?.check_in)}{' '}
+                        ~ 체크아웃 :{' '}
+                        {target.selectedTime
+                          ? `${
+                              target.selectedTime[
+                                target.selectedTime.length - 1
+                              ]
+                            }`
+                          : formatTimeStampTime(target.checkOut)
+                          ? formatTimeStampTime(target.checkOut)
+                          : formatTimeStampTime(room?.check_out)}{' '}
+                      </span>
                       {/* 인원수 */}
                       <span className="flex items-center gap-1">
                         <BiUser /> 성인 {room?.capacity?.adults || 0}명

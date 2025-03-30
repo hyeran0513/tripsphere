@@ -25,7 +25,7 @@ const Checkout = () => {
     // useRoomData가 제대로 동작하지도 않았을듯
     if (!reservationInfo || reservationInfo?.length === 0) {
       console.log('수신한 데이터 없음');
-      if (roomIds) {
+      if (roomIds && roomIds.length > 0) {
         console.log('저장된 데이터 있음 : ', roomIds);
         newRoomIds = roomIds;
       } else {
@@ -74,7 +74,8 @@ const Checkout = () => {
             {/* 최종 결제 금액 */}
             <OrderPriceForm
               data={data}
-              reservationInfo={roomIds}
+              roomIds={roomIds}
+              reservationInfo={reservationInfo}
             />
           </div>
         </div>

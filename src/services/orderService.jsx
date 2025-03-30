@@ -151,6 +151,7 @@ export const getOrderData = async (userId) => {
 export const checkout = async (orderItem, userId) => {
   const ordersCollection = collection(db, 'orders');
 
+  // 재주문 영구 봉인 코드ㅋㅋㅋㅋㅋ
   // const q = query(
   //   ordersCollection,
   //   where('user_id', '==', orderItem.user_id),
@@ -225,4 +226,23 @@ export const getOrdersByRoomIds = async (roomIds) => {
   }
 
   return results;
+};
+
+// 주문내역 아이디 배열로 주문조회 결과를 배열로 리턴
+export const getOrdersByOrderIds = async (orderIds) => {
+  if (!Array.isArray(orderIds) || orderIds.length === 0) return [];
+
+  const orders = await Promise.all(
+    orderIds.map(async (orderId) => {
+      const orderRef = doc(db, 'orders', orderId);
+      const orderSnap = await getDoc(orderRef);
+
+      return {
+        id: orderId,
+        ...orderSnap.data(),
+      };
+    }),
+  );
+
+  return orders.filter((order) => order !== null);
 };

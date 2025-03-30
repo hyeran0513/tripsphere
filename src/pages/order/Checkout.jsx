@@ -1,23 +1,42 @@
 import { useEffect, useState } from 'react';
-import { useRoomData } from '../../hooks/useProductData';
-import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
-import ToggleOrderList from '../../components/order/checkout/ToggleOrderList';
 import Loading from '../../components/common/Loading';
 import OrderPriceForm from '../../components/order/checkout/OrderPriceForm';
+import ToggleOrderList from '../../components/order/checkout/ToggleOrderList';
+import { useRoomData } from '../../hooks/useProductData';
+import useCheckoutStore from '../../stores/useCheckoutStore';
+import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 
 const Checkout = () => {
-  const { reservationInfo } = useRoomSelectionStore();
-  const [saveRoomId, setSaveRoomId] = useState(null);
-  const { data, isLoading, error } = useRoomData(saveRoomId);
+  const { reservationInfo, clearReservationInfo } = useRoomSelectionStore();
+  const [rooms, setRooms] = useState(null);
+  const { data, isLoading, error } = useRoomData(rooms);
+  const { roomIds, setRoomIds } = useCheckoutStore();
 
   useEffect(() => {
-    if (reservationInfo) {
-      const newRoomIds = reservationInfo.map((info) => {
+    let newRoomIds;
+    if (!reservationInfo || !reservationInfo?.length === 0) {
+      console.log('수신한 데이터 없음');
+      if (roomIds) {
+        console.log('저장된 데이터 있음 : ', roomIds);
+        newRoomIds = roomIds;
+      } else {
+        console.log('수신한 데이터, 저장된 데이터도 암것도 없음 ');
+        return;
+      }
+    } else {
+      console.log('수신한 데이터 있음. 임시 데이터 저장');
+      newRoomIds = reservationInfo.map((info) => {
+        console.log('info : ', info);
         return info.room_id;
       });
-
-      setSaveRoomId(newRoomIds);
+      setRoomIds(newRoomIds);
     }
+
+    console.log('newRoomIds : ', newRoomIds);
+    setRooms(newRoomIds);
+    setRoomIds(newRoomIds);
+
+    return () => clearReservationInfo();
   }, [reservationInfo]);
 
   if (isLoading) return <Loading />;

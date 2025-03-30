@@ -1,6 +1,6 @@
-import OrderCard from './OrderCard';
 import { FcApproval, FcCancel, FcClock, FcQuestions } from 'react-icons/fc';
 import { useOrdersDataByRoomId } from '../../../hooks/useOrderData';
+import OrderCard from './OrderCard';
 
 const OrderState = ({ orderList }) => {
   const roomIds = orderList.map((room) => room.roomId);
@@ -8,6 +8,8 @@ const OrderState = ({ orderList }) => {
 
   if (isLoading) return <div>로딩 중...</div>;
   if (isError) return <div>에러 발생!</div>;
+
+  console.log('roomIds : ', roomIds);
 
   // 주문 상태 조회
   const getOrderStatus = () => {

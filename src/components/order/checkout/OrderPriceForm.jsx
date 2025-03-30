@@ -1,10 +1,10 @@
+import { serverTimestamp } from 'firebase/firestore';
 import React, { useState } from 'react';
-import { formatNumber } from '../../../utils/format';
-import useAuthStore from '../../../stores/useAuthStore';
-import { useUserData } from '../../../hooks/useUserData';
 import { useNavigate } from 'react-router-dom';
 import { useCheckout } from '../../../hooks/useOrderData';
-import { serverTimestamp } from 'firebase/firestore';
+import { useUserData } from '../../../hooks/useUserData';
+import useAuthStore from '../../../stores/useAuthStore';
+import { formatNumber } from '../../../utils/format';
 import ToastMessage from '../../common/ToastMessage';
 
 const OrderPriceForm = ({ data, reservationInfo }) => {
@@ -84,7 +84,9 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
         }),
     );
 
-    await Promise.all(orderPromises);
+    const orderIds = await Promise.all(orderPromises);
+
+    console.log('orderIds : ', orderIds);
   };
 
   return (
@@ -131,7 +133,11 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
                 <div className="flex justify-between">
                   <p>결제 후 잔여 포인트</p>
                   <p
-                    className={`flex justify-end ${getRemainingPoints(userData?.points, data) < 0 ? 'text-red-500' : 'text-indigo-500'}`}>
+                    className={`flex justify-end ${
+                      getRemainingPoints(userData?.points, data) < 0
+                        ? 'text-red-500'
+                        : 'text-indigo-500'
+                    }`}>
                     {formatNumber(getRemainingPoints(userData?.points, data))}원
                   </p>
                 </div>

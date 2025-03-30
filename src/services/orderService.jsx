@@ -10,9 +10,9 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-import { usedPoints } from './pointService';
-import { delCartItemOfroomId } from './cartService';
 import { decrementRoomStock } from './accomService';
+import { delCartItemOfroomId } from './cartService';
+import { usedPoints } from './pointService';
 
 // 주문 취소 (firebase)
 export const cancelUserOrder = async ({
@@ -151,21 +151,22 @@ export const getOrderData = async (userId) => {
 export const checkout = async (orderItem, userId) => {
   const ordersCollection = collection(db, 'orders');
 
-  const q = query(
-    ordersCollection,
-    where('user_id', '==', orderItem.user_id),
-    where('room_id', '==', orderItem.room_id),
-  );
-  const querySnapshot = await getDocs(q);
+  // const q = query(
+  //   ordersCollection,
+  //   where('user_id', '==', orderItem.user_id),
+  //   where('room_id', '==', orderItem.room_id),
+  // );
+  // const querySnapshot = await getDocs(q);
 
-  // 이미 존재하는 주문이 있으면 종료
-  if (!querySnapshot.empty) {
-    console.error('이미 존재하는 주문입니다. room_id:', orderItem.room_id);
-    return;
-  }
+  // // 이미 존재하는 주문이 있으면 종료
+  // if (!querySnapshot.empty) {
+  //   console.error('이미 존재하는 주문입니다. room_id:', orderItem.room_id);
+  //   return;
+  // }
 
   // 주문을 orders 컬렉션에 추가
-  await addDoc(ordersCollection, orderItem);
+  // 컬랙션에 추가한 문서정보 획득
+  const orderDoc = await addDoc(ordersCollection, orderItem);
 
   // carts 컬렉션에서 해당 room_id를 가진 항목 삭제
   await delCartItemOfroomId(orderItem.room_id);
@@ -175,6 +176,9 @@ export const checkout = async (orderItem, userId) => {
 
   // 재고 차감
   await decrementRoomStock(orderItem.room_id);
+
+  // 추가한 주문 문서 아이디 반환
+  return orderDoc.id;
 };
 
 // 결제완료된 주문 데이터 조회

@@ -15,7 +15,15 @@ const Checkout = () => {
   useEffect(() => {
     console.log('reservationInfo : ', reservationInfo);
     let newRoomIds;
-    if (!reservationInfo || !reservationInfo?.length === 0) {
+    // ???
+    // 기존소스코드에서 이어쓰고 테스트하다 오류나서
+    // 전부 다시 확인해보는데
+    // 예약정보인 reservationInfo를 넘겨야하는데
+    // 예약정보를 넘겨야하는데
+    // 훅에서 가져오는 정보가 객실 정보를 가져오고있었네
+    // 심지어 useEffect 로 rooms가 변경됐을때를 따로 감지 안해서
+    // useRoomData가 제대로 동작하지도 않았을듯
+    if (!reservationInfo || reservationInfo?.length === 0) {
       console.log('수신한 데이터 없음');
       if (roomIds) {
         console.log('저장된 데이터 있음 : ', roomIds);
@@ -35,11 +43,9 @@ const Checkout = () => {
 
     console.log('newRoomIds : ', newRoomIds);
     // 다른 컴포넌트로 데이터 전달시 사용
-    setRooms(newRoomIds);
     // 새로고침시 사용
+    setRooms(newRoomIds);
     setRoomIds(newRoomIds);
-
-    // return () => clearReservationInfo();
   }, [reservationInfo]);
 
   if (isLoading) return <Loading />;

@@ -35,7 +35,11 @@ export const useCheckout = (userId, data, showToast) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (orderItem) => checkout(orderItem, userId),
+    // mutationFn: (orderItem) => checkout(orderItem, userId),
+    mutationFn: (orderItem) => {
+      const orderId = checkout(orderItem, userId);
+      return orderId;
+    },
     onSuccess: () => {
       data.forEach((item) => {
         queryClient.invalidateQueries(['orders', item.roomId]);

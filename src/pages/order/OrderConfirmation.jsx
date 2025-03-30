@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderState from '../../components/order/orderConfirmation/OrderConfirmState';
 import useCheckoutStore from '../../stores/useCheckoutStore';
@@ -10,6 +11,7 @@ const OrderConfirmation = () => {
   const { clearReservationInfo } = useRoomSelectionStore();
   const { roomIds, setRoomIds, resetRoomIds } = useCheckoutStore();
 
+  // 첫 렌더링시 store 초기화.
   useEffect(() => {
     clearReservationInfo();
     resetRoomIds();

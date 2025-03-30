@@ -74,7 +74,7 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
       return;
     }
 
-    navigate('/orderconfirmation', { state: updatedData });
+    // navigate('/orderconfirmation', { state: updatedData });
 
     const orderPromises = updatedData.map(
       (item) =>
@@ -86,22 +86,38 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
             payment_status: 'completed',
             used_points: item.original_price * (1 - item.discount_rate),
           };
+          console.log('item :', item);
+          console.log('orderData before mutate:', orderData);
 
           if (item.stay_type === 'day_use') {
             orderData.duration = item.duration;
             orderData.selectedTime = item.selectedTime;
           }
 
+          // 다시 한번 로그를 출력
+          console.log('orderData after condition:', orderData);
+
           mutate(orderData, {
-            onSuccess: resolve,
+            onSuccess: (response) => {
+              console.log('orderData : ', orderData);
+              console.log('response : ', response);
+              resolve(response);
+            },
             onError: reject,
           });
         }),
     );
 
-    const orderIds = await Promise.all(orderPromises);
+    const orderIds = await Promise.all(orderPromises)
+      .then((orderIds) => {
+        console.log('모든 주문 ID:', orderIds);
+        navigate('/orderconfirmation', { state: orderIds });
+      })
+      .catch((error) => {
+        console.error('하나 이상의 주문 실패:', error);
+      });
 
-    console.log('orderIds : ', orderIds);
+    // console.log('orderIds : ', orderIds);
   };
 
   return (

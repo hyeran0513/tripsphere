@@ -31,12 +31,19 @@ const ShoppingCart = ({ open, setOpen }) => {
 
   // 전체 선택에 따른 선택된 항목
   useEffect(() => {
-    if (selectAll && data) {
+    if (!data) return;
+    setSelectAll(selectedItems.length === data.length && data.length > 0);
+  }, [selectedItems, data]);
+
+  // 전체 선택 토글
+  const handleSelectAllChange = (checked) => {
+    setSelectAll(checked);
+    if (checked && data) {
       setSelectedItems(data.map((item) => item.id));
     } else {
       setSelectedItems([]);
     }
-  }, [selectAll, data]);
+  };
 
   // 개별 항목 선택/해제 토글
   const toggleItemSelection = (id) => {
@@ -131,7 +138,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                     <input
                       type="checkbox"
                       checked={selectAll}
-                      onChange={(e) => setSelectAll(e.target.checked)}
+                      onChange={(e) => handleSelectAllChange(e.target.checked)}
                       className="checkbox checkbox-primary mr-2"
                     />
                     <span className="text-sm">전체 선택</span>

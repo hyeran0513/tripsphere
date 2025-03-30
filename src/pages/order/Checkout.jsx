@@ -43,10 +43,12 @@ const Checkout = () => {
 
     console.log('newRoomIds : ', newRoomIds);
     // 다른 컴포넌트로 데이터 전달시 사용
-    // 새로고침시 사용
     setRooms(newRoomIds);
+    // 새로고침시 사용
     setRoomIds(newRoomIds);
   }, [reservationInfo]);
+
+  useEffect(() => {}, [rooms]);
 
   if (isLoading) return <Loading />;
 
@@ -64,7 +66,10 @@ const Checkout = () => {
 
           <div className="flex gap-10">
             {/* 주문 목록 */}
-            <ToggleOrderList data={data} />
+            <ToggleOrderList
+              data={data}
+              reservationInfo={reservationInfo}
+            />
 
             {/* 최종 결제 금액 */}
             <OrderPriceForm

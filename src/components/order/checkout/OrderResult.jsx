@@ -1,15 +1,23 @@
 import React from 'react';
-import { IoIosArrowDropdownCircle } from 'react-icons/io';
-import { formatTimeStampTime } from '../../../utils/format';
-import { FaMapLocationDot } from 'react-icons/fa6';
 import { BiHotel, BiUser } from 'react-icons/bi';
-import RoomTypeMapping from '../../common/RoomTypeMapping';
-import OrderList from './OrderList';
-import KakaoMap from '../../common/KakaoMap';
+import { FaMapLocationDot } from 'react-icons/fa6';
+import { IoIosArrowDropdownCircle } from 'react-icons/io';
 import { PiBabyLight } from 'react-icons/pi';
+import { formatTimeStampTime } from '../../../utils/format';
+import KakaoMap from '../../common/KakaoMap';
+import RoomTypeMapping from '../../common/RoomTypeMapping';
 import ServiceList from '../../common/ServiceList';
+import OrderList from './OrderList';
 
-const OrderResult = ({ room, isOpen, toggleContent }) => {
+const OrderResult = ({ room, isOpen, toggleContent, reservationInfo }) => {
+  console.log(' OrderResult -  reservationInfo: ', reservationInfo);
+  console.log(' OrderResult -  room: ', room);
+  // 방정보 (단일) - room, 예약정보 (배열) - reservationInfo
+  // 방정보에 해당하는 예약정보 불러오기
+
+  const target = reservationInfo.find((ele) => ele.room_id === room.roomId);
+
+  console.log('target : ', target);
   return (
     <div className="border-b border-base-300 mb-4">
       <button
@@ -17,7 +25,9 @@ const OrderResult = ({ room, isOpen, toggleContent }) => {
         className="flex justify-between items-center w-full text-left p-4 bg-base-200 rounded-lg">
         <span className="text-sm font-semibold">{room.name}</span>
         <span
-          className={`cursor-pointer transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>
+          className={`cursor-pointer transform transition-transform ${
+            isOpen ? 'rotate-180' : ''
+          }`}>
           <IoIosArrowDropdownCircle className="text-stone-500 text-lg" />
         </span>
       </button>
@@ -76,8 +86,20 @@ const OrderResult = ({ room, isOpen, toggleContent }) => {
 
                     <div className="py-4 px-6 flex flex-col gap-3">
                       {/* 체크인 · 체크아웃 */}
-                      체크인: {formatTimeStampTime(room?.check_in)} ~ 체크아웃:{' '}
-                      {formatTimeStampTime(room?.check_out)}
+                      체크인 :{' '}
+                      {target.selectedTime
+                        ? `${target.selectedTime[0]}`
+                        : target.checkIn
+                        ? formatTimeStampTime(target.checkIn)
+                        : formatTimeStampTime(room?.check_in)}{' '}
+                      ~ 체크아웃 :{' '}
+                      {target.selectedTime
+                        ? `${
+                            target.selectedTime[target.selectedTime.length - 1]
+                          }`
+                        : target.checkOut
+                        ? formatTimeStampTime(target.checkOut)
+                        : formatTimeStampTime(room?.check_out)}{' '}
                       {/* 인원수 */}
                       <span className="flex items-center gap-1">
                         <BiUser /> 성인 {room?.capacity?.adults || 0}명

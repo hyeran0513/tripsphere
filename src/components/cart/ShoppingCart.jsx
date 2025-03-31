@@ -148,7 +148,7 @@ const ShoppingCart = ({ open, setOpen }) => {
 
                 {/* 장바구니 목록 */}
                 <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">
-                  {data.length > 0 ? (
+                  {data?.length > 0 ? (
                     <ul className="grid grid-cols-2 gap-6">
                       {data.map((item) => (
                         <li

@@ -165,7 +165,7 @@ const Favorite = () => {
       ) : (
         <NoData
           text={
-            data.length > 0
+            data?.length > 0
               ? '검색하신 조건에 맞는 숙소가 없습니다.'
               : '찜 내역이 없습니다.'
           }

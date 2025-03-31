@@ -34,7 +34,7 @@ const OrderHistory = () => {
         </Link>
       </div>
 
-      {orderInfo.length > 0 ? (
+      {orderInfo?.length > 0 ? (
         <ul className="list bg-base-100 rounded-box shadow-md mb-10">
           {orderInfo?.slice(0, 3).map((order, index) => (
             <li

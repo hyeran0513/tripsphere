@@ -21,7 +21,7 @@ const PointHistory = ({ points }) => {
         </Link>
       </div>
 
-      {points.length > 0 ? (
+      {points?.length > 0 ? (
         <ul className="list bg-base-100 rounded-box shadow-md mb-10">
           {isAuthenticated &&
             points?.slice(0, 3).map((point, index) => (

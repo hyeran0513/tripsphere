@@ -43,7 +43,7 @@ const FavoriteList = () => {
                   <div className="flex  gap-6">
                     <img
                       className="size-20 rounded-box"
-                      src={favorite.images[1] || 'https://place-hold.it/80'}
+                      src={favorite.images[0]}
                       alt={favorite.name}
                     />
 
@@ -183,7 +183,7 @@ const FavoriteList = () => {
       ) : (
         <NoData
           text={
-            data.length > 0
+            data?.length > 0
               ? '검색하신 조건에 맞는 숙소가 없습니다.'
               : '찜 내역이 없습니다.'
           }

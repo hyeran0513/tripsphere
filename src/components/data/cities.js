@@ -1,8 +1,5 @@
 export const cities = [
   {
-    name: '전체',
-  },
-  {
     name: '서울',
     subCities: [
       '전체',

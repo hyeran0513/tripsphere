@@ -3,7 +3,7 @@ import { cities } from '../data/cities';
 import useFilterStore from '../../stores/useFilterStore';
 import useCitySelection from '../../hooks/useCitySelection';
 
-const CitySelector = React.memo(({ isGlobal }) => {
+const CitySelector = ({ isGlobal }) => {
   const store = useFilterStore();
   const {
     selectedCity,
@@ -113,11 +113,7 @@ const CitySelector = React.memo(({ isGlobal }) => {
             className="input bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
             value={selectedCity}
             onChange={handleCitySelect}>
-            <option
-              value=""
-              disabled>
-              대분류 선택
-            </option>
+            <option value="">전체</option>
             {cityOptions}
           </select>
         </div>
@@ -130,14 +126,14 @@ const CitySelector = React.memo(({ isGlobal }) => {
             className="input bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
             value={selectedSubCity}
             onChange={handleSubCitySelect}
-            disabled={!subCities.length}>
-            <option value="">소분류 선택</option>
+            disabled={selectedCity === ''}>
+            <option value="">전체</option>
             {subCityOptions}
           </select>
         </div>
       </div>
     </div>
   );
-});
+};
 
 export default CitySelector;

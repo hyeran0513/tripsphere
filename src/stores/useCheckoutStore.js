@@ -13,6 +13,9 @@ const useCheckoutStore = create()(
         set((state) => ({
           roomIds: [],
         })),
+      reservationInfo: null,
+      setReservationInfo: (info) => set({ reservationInfo: info }),
+      clearReservationInfo: () => set({ reservationInfo: null }),
     }),
     { name: 'checkout-storage' },
   ),

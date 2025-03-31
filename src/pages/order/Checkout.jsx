@@ -10,42 +10,26 @@ const Checkout = () => {
   const { reservationInfo, clearReservationInfo } = useRoomSelectionStore();
   const [rooms, setRooms] = useState(null);
   const { data, isLoading, error } = useRoomData(rooms);
-  const { roomIds, setRoomIds } = useCheckoutStore();
+  const {
+    roomIds,
+    setRoomIds,
+    reservationInfo: savedReserveInfo,
+    setReservationInfo: setSavedReserveInfo,
+  } = useCheckoutStore();
 
   useEffect(() => {
-    console.log('reservationInfo : ', reservationInfo);
-    let newRoomIds;
-    // ???
-    // 기존소스코드에서 이어쓰고 테스트하다 오류나서
-    // 전부 다시 확인해보는데
-    // 예약정보인 reservationInfo에서 예약정보를 통채로 넘겨야하는데
-    // 객실 아이디만 추려서 사용함.
-    // 훅에서 가져오는 정보가 객실 정보를 가져오고있었네
-    // 심지어 useEffect 로 rooms가 변경됐을때를 따로 감지 안해서
-    // useRoomData가 제대로 동작하지도 않았을듯
-    if (!reservationInfo || reservationInfo?.length === 0) {
-      console.log('수신한 데이터 없음');
-      if (roomIds && roomIds.length > 0) {
-        console.log('저장된 데이터 있음 : ', roomIds);
-        newRoomIds = roomIds;
-      } else {
-        console.log('수신한 데이터, 저장된 데이터도 암것도 없음 ');
-        return;
+    if (reservationInfo?.length > 0) {
+      const newRoomIds = reservationInfo.map((info) => info.room_id);
+      console.log('전달받은 정보 활용 newRoomIds:', newRoomIds);
+      setSavedReserveInfo(reservationInfo);
+      if (JSON.stringify(newRoomIds) !== JSON.stringify(roomIds)) {
+        setRoomIds(newRoomIds);
       }
-    } else {
-      console.log('수신한 데이터 있음. 수신 데이터 저장');
-      newRoomIds = reservationInfo.map((info) => {
-        console.log('info : ', info);
-        return info.room_id;
-      });
-      setRoomIds(newRoomIds);
+      setRooms(newRoomIds);
+    } else if (roomIds?.length > 0) {
+      console.log('저장된 정보 활용 roomIds:', roomIds);
+      setRooms(roomIds);
     }
-
-    console.log('newRoomIds : ', newRoomIds);
-    // 다른 컴포넌트로 데이터 전달시 사용
-    setRooms(newRoomIds);
-    // 새로고침시 사용
-    setRoomIds(newRoomIds);
   }, [reservationInfo]);
 
   useEffect(() => {}, [rooms]);
@@ -68,14 +52,18 @@ const Checkout = () => {
             {/* 주문 목록 */}
             <ToggleOrderList
               data={data}
-              reservationInfo={reservationInfo}
+              reservationInfo={
+                reservationInfo ? reservationInfo : savedReserveInfo
+              }
             />
 
             {/* 최종 결제 금액 */}
             <OrderPriceForm
               data={data}
               roomIds={roomIds}
-              reservationInfo={reservationInfo}
+              reservationInfo={
+                reservationInfo ? reservationInfo : savedReserveInfo
+              }
             />
           </div>
         </div>

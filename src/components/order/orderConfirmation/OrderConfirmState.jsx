@@ -14,9 +14,6 @@ const OrderState = () => {
 
   // 첫 렌더링시 store 초기화.
   useEffect(() => {
-    console.log('reservationInfo : ', reservationInfo);
-    console.log('roomIds : ', roomIds);
-
     return () => {
       resetOrderIds();
       clearReservationInfo();
@@ -24,11 +21,7 @@ const OrderState = () => {
     };
   }, []);
 
-  console.log('orderIds : ', orderIds);
-
   const [orderIdLists, setOrderIdLists] = useState(orderIds.map((ele) => ele));
-
-  console.log('orderIdLists : ', orderIdLists);
 
   const {
     data: orders,
@@ -36,13 +29,9 @@ const OrderState = () => {
     isError,
   } = useOrdersDataByOrderId(orderIdLists);
 
-  useEffect(() => {
-    console.log('orders : ', orders);
-  }, [orders]);
+  useEffect(() => {}, [orders]);
 
-  useEffect(() => {
-    console.log('isLoading, isError : ', isLoading, isError);
-  }, [isLoading, isError]);
+  useEffect(() => {}, [isLoading, isError]);
 
   if (isLoading) {
     return <>주문정보 로딩 중...</>;

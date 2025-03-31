@@ -153,7 +153,7 @@ const Favorite = () => {
         </button>
       </div>
 
-      {currentPageData.length > 0 ? (
+      {filteredData.length > 0 ? (
         <div className="mb-10 grid grid-cols-2 gap-10">
           {currentPageData.map((favorite, index) => (
             <ProductCard

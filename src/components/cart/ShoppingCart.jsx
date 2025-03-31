@@ -4,10 +4,10 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/react';
-import { BiX, BiTrash, BiUser, BiMap } from 'react-icons/bi';
+import { BiX, BiTrash, BiUser, BiMap, BiBox } from 'react-icons/bi';
 import { PiBabyLight } from 'react-icons/pi';
 import { IoBedOutline } from 'react-icons/io5';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
   formatDate,
@@ -19,6 +19,7 @@ import RoomTypeMapping from '../common/RoomTypeMapping';
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
+import NoData from '../common/NoData';
 
 const ShoppingCart = ({ open, setOpen }) => {
   const { user } = useAuthStore();
@@ -147,133 +148,140 @@ const ShoppingCart = ({ open, setOpen }) => {
 
                 {/* 장바구니 목록 */}
                 <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6">
-                  <ul className="grid grid-cols-2 gap-6">
-                    {data?.map((item) => (
-                      <li
-                        key={item.id}
-                        className="p-4 border border-gray-200 rounded-lg">
-                        <div className="border-b border-gray-200 mb-4 pb-4">
-                          <p className="font-semibold">{item?.accom?.name}</p>
-                          <div className="mt-1 text-xs text-gray-500 flex items-center gap-1">
-                            <BiMap />
-                            {item?.accom?.location.place_name}
+                  {data.length > 0 ? (
+                    <ul className="grid grid-cols-2 gap-6">
+                      {data.map((item) => (
+                        <li
+                          key={item.id}
+                          className="p-4 border border-gray-200 rounded-lg">
+                          <div className="border-b border-gray-200 mb-4 pb-4">
+                            <p className="font-semibold">{item?.accom?.name}</p>
+                            <div className="mt-1 text-xs text-gray-500 flex items-center gap-1">
+                              <BiMap />
+                              {item?.accom?.location.place_name}
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="flex items-center justify-between">
-                          <h3 className="mb-4 flex items-center gap-2 font-semibold">
-                            {item.room?.name}
-                            <RoomTypeMapping type={item.room.type} />
-                          </h3>
-                          <button
-                            type="button"
-                            onClick={(e) => deleteItem(e, item?.id)}
-                            className="cursor-pointer">
-                            <BiTrash />
-                          </button>
-                        </div>
+                          <div className="flex items-center justify-between">
+                            <h3 className="mb-4 flex items-center gap-2 font-semibold">
+                              {item.room?.name}
+                              <RoomTypeMapping type={item.room.type} />
+                            </h3>
+                            <button
+                              type="button"
+                              onClick={(e) => deleteItem(e, item?.id)}
+                              className="cursor-pointer">
+                              <BiTrash />
+                            </button>
+                          </div>
 
-                        <div className="flex gap-4">
-                          {/* 체크박스 */}
-                          <input
-                            type="checkbox"
-                            checked={selectedItems.includes(item.id)}
-                            onChange={() => toggleItemSelection(item.id)}
-                            className="checkbox checkbox-primary mb-3"
-                          />
-
-                          {/* 객실 이미지 */}
-                          <div className="w-[130px] h-[100px] overflow-hidden border border-gray-400 rounded-lg">
-                            <img
-                              src={item.room?.images?.[0]}
-                              alt={item.room?.name}
-                              className="w-full h-full object-cover"
+                          <div className="flex gap-4">
+                            {/* 체크박스 */}
+                            <input
+                              type="checkbox"
+                              checked={selectedItems.includes(item.id)}
+                              onChange={() => toggleItemSelection(item.id)}
+                              className="checkbox checkbox-primary mb-3"
                             />
-                          </div>
 
-                          {/* 객실 유형 및 기간 */}
-                          <div className="flex-1">
-                            <div className="flex gap-2 items-center text-xs text-gray-500">
-                              <span className="font-semibold text-gray-900">
-                                {item.room.stay_type === 'stay'
-                                  ? '숙박'
-                                  : '대실'}
-                              </span>
-                              <span>/</span>
-                              <span>
-                                {formatDate(item.room.check_in)} ~{' '}
-                                {formatDate(item.room.check_out)}
-                              </span>
+                            {/* 객실 이미지 */}
+                            <div className="w-[130px] h-[100px] overflow-hidden border border-gray-400 rounded-lg">
+                              <img
+                                src={item.room?.images?.[0]}
+                                alt={item.room?.name}
+                                className="w-full h-full object-cover"
+                              />
                             </div>
 
-                            {/* 체크인 체크아웃 */}
-                            <div className="my-1 flex items-center gap-2 text-xs text-gray-600">
-                              {item.room.stay_type === 'day_use' ? (
-                                <>
-                                  {item.duration?.hours}시간{' '}
-                                  {item.duration?.minutes}분 /{' '}
-                                  <span>체크인 {item.selectedTime?.[0]}</span>
-                                  <span>
-                                    체크아웃{' '}
-                                    {
-                                      item.selectedTime?.[
-                                        item.selectedTime.length - 1
-                                      ]
-                                    }
-                                  </span>
-                                </>
-                              ) : (
-                                <>
-                                  <span>
-                                    체크인{' '}
-                                    {formatTimeStampTime(item.room.check_in)}
-                                  </span>
-                                  <span>
-                                    체크아웃{' '}
-                                    {formatTimeStampTime(item.room.check_out)}
-                                  </span>
-                                </>
-                              )}
-                            </div>
-
-                            {/* 인원 수 */}
-                            <div className="flex items-center gap-2 text-xs text-gray-600">
-                              <span className="flex items-center gap-1">
-                                <BiUser /> 성인 {item.room.capacity.adults || 0}
-                                명
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <PiBabyLight /> 미성년자{' '}
-                                {item.room.capacity.children || 0}명
-                              </span>
-                            </div>
-
-                            {/* 가격 정보 */}
-                            <div className="mt-4 flex flex-col items-end">
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-semibold text-gray-900">
-                                  {item.room.discount_rate * 100}%
+                            {/* 객실 유형 및 기간 */}
+                            <div className="flex-1">
+                              <div className="flex gap-2 items-center text-xs text-gray-500">
+                                <span className="font-semibold text-gray-900">
+                                  {item.room.stay_type === 'stay'
+                                    ? '숙박'
+                                    : '대실'}
                                 </span>
-                                <span className="line-through text-sm text-gray-300">
-                                  {formatNumber(item.room.original_price)}원
+                                <span>/</span>
+                                <span>
+                                  {formatDate(item.room.check_in)} ~{' '}
+                                  {formatDate(item.room.check_out)}
                                 </span>
                               </div>
-                              <div className="font-semibold text-lg text-gray-900 dark:text-white">
-                                {formatNumber(
-                                  item.room.original_price *
-                                    (1 - item.room.discount_rate),
+
+                              {/* 체크인 체크아웃 */}
+                              <div className="my-1 flex items-center gap-2 text-xs text-gray-600">
+                                {item.room.stay_type === 'day_use' ? (
+                                  <>
+                                    {item.duration?.hours}시간{' '}
+                                    {item.duration?.minutes}분 /{' '}
+                                    <span>체크인 {item.selectedTime?.[0]}</span>
+                                    <span>
+                                      체크아웃{' '}
+                                      {
+                                        item.selectedTime?.[
+                                          item.selectedTime.length - 1
+                                        ]
+                                      }
+                                    </span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span>
+                                      체크인{' '}
+                                      {formatTimeStampTime(item.room.check_in)}
+                                    </span>
+                                    <span>
+                                      체크아웃{' '}
+                                      {formatTimeStampTime(item.room.check_out)}
+                                    </span>
+                                  </>
                                 )}
-                                원
                               </div>
-                              <p className="mt-2 flex items-center gap-1 text-xs font-semibold text-red-400">
-                                <IoBedOutline /> 남은 객실 {item.room.stock}개
-                              </p>
+
+                              {/* 인원 수 */}
+                              <div className="flex items-center gap-2 text-xs text-gray-600">
+                                <span className="flex items-center gap-1">
+                                  <BiUser /> 성인{' '}
+                                  {item.room.capacity.adults || 0}명
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <PiBabyLight /> 미성년자{' '}
+                                  {item.room.capacity.children || 0}명
+                                </span>
+                              </div>
+
+                              {/* 가격 정보 */}
+                              <div className="mt-4 flex flex-col items-end">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-semibold text-gray-900">
+                                    {item.room.discount_rate * 100}%
+                                  </span>
+                                  <span className="line-through text-sm text-gray-300">
+                                    {formatNumber(item.room.original_price)}원
+                                  </span>
+                                </div>
+                                <div className="font-semibold text-lg text-gray-900 dark:text-white">
+                                  {formatNumber(
+                                    item.room.original_price *
+                                      (1 - item.room.discount_rate),
+                                  )}
+                                  원
+                                </div>
+                                <p className="mt-2 flex items-center gap-1 text-xs font-semibold text-red-400">
+                                  <IoBedOutline /> 남은 객실 {item.room.stock}개
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <NoData
+                      text="장바구니에 상품이 없습니다."
+                      icon={BiBox}
+                    />
+                  )}
                 </div>
 
                 {/* 주문 합계 금액 */}

@@ -10,10 +10,11 @@ import Pagination from '../../components/common/Pagination';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { LiaHotelSolid } from 'react-icons/lia';
 import { LuHotel } from 'react-icons/lu';
-import { BiBuildingHouse } from 'react-icons/bi';
+import { BiBuildingHouse, BiBuildings } from 'react-icons/bi';
 import { BsHouses } from 'react-icons/bs';
 import { PiWarehouse, PiDiamondsFourLight } from 'react-icons/pi';
 import { MdOutlineForest } from 'react-icons/md';
+import NoData from '../../components/common/NoData';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -187,22 +188,29 @@ const ProductList = () => {
             </select>
           </div>
 
-          {/* 숙소 목록 */}
-          <ul className="flex flex-col gap-6">
-            {currentPageData.map((item, index) => (
-              <AccomCard
-                accommodation={item}
-                key={index}
+          {filteredData.length > 0 ? (
+            <>
+              <ul className="flex flex-col gap-6">
+                {currentPageData.map((item, index) => (
+                  <AccomCard
+                    accommodation={item}
+                    key={index}
+                  />
+                ))}
+              </ul>
+              {/* 페이지네이션 */}
+              <Pagination
+                data={filteredData}
+                pagePerItem={selectedPerOption}
+                setCurrentPageData={setCurrentPageData}
               />
-            ))}
-          </ul>
-
-          {/* 페이지네이션 */}
-          <Pagination
-            data={filteredData}
-            pagePerItem={selectedPerOption}
-            setCurrentPageData={setCurrentPageData}
-          />
+            </>
+          ) : (
+            <NoData
+              text="검색 결과가 없습니다."
+              icon={BiBuildings}
+            />
+          )}
         </div>
       </div>
     </div>

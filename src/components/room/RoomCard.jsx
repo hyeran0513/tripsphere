@@ -47,7 +47,7 @@ const RoomCard = ({ room, index }) => {
 
     mutate({
       user_id: user?.uid,
-      room_id: selectedRoomData.roomId,
+      room_id: selectedRoomData?.roomId || selectedRoomData?.id,
       created_at: serverTimestamp(),
       type,
       duration,
@@ -136,7 +136,7 @@ const RoomCard = ({ room, index }) => {
     setReservationInfo([
       {
         type: 'stay',
-        room_id: room.roomId || room.id,
+        room_id: room?.roomId || room?.id,
       },
     ]);
     navigate('/checkout');
@@ -209,7 +209,7 @@ const RoomCard = ({ room, index }) => {
             {room.stay_type === 'stay' && (
               <>
                 <CartButton
-                  productId={room.roomId}
+                  productId={room.roomId || room.id}
                   showToast={showToast}
                   checkIn={convertTimestampToDate(room.check_in)}
                   checkOut={convertTimestampToDate(room.check_out)}

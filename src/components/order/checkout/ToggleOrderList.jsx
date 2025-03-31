@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderResult from './OrderResult';
 
-const ToggleOrderList = ({ data }) => {
+const ToggleOrderList = ({ data, reservationInfo }) => {
   const [openIndexes, setOpenIndexes] = useState([]);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const ToggleOrderList = ({ data }) => {
         <OrderResult
           key={`${room.roomId}-${index}`}
           room={room}
+          reservationInfo={reservationInfo}
           isOpen={openIndexes[index]}
           toggleContent={() => toggleContent(index)}
         />

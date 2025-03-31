@@ -3,6 +3,7 @@ import {
   cancelUserOrder,
   checkout,
   getOrderData,
+  getOrdersByOrderIds,
   getOrdersByRoomIds,
 } from '../services/orderService';
 
@@ -35,7 +36,11 @@ export const useCheckout = (userId, data, showToast) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (orderItem) => checkout(orderItem, userId),
+    // mutationFn: (orderItem) => checkout(orderItem, userId),
+    mutationFn: (orderItem) => {
+      const orderId = checkout(orderItem, userId);
+      return orderId;
+    },
     onSuccess: () => {
       data.forEach((item) => {
         queryClient.invalidateQueries(['orders', item.roomId]);
@@ -54,5 +59,15 @@ export const useOrdersDataByRoomId = (roomIds) => {
     queryKey: ['orders', roomIds],
     queryFn: () => getOrdersByRoomIds(roomIds),
     enabled: !!roomIds && roomIds.length > 0,
+  });
+};
+
+// 전달받은 주문 ID 로 주문데이터 조회.
+// 결과페이지 출력용
+export const useOrdersDataByOrderId = (orderIds) => {
+  return useQuery({
+    queryKey: ['orders', orderIds],
+    queryFn: () => getOrdersByOrderIds(orderIds),
+    enabled: !!orderIds && orderIds.length > 0,
   });
 };

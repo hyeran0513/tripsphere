@@ -128,16 +128,14 @@ const OrderList = ({ orderInfo }) => {
 
                     {/* 인원 정보 */}
                     <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-white">
-                      <BiUser />
-                      <div className="flex items-center gap-2 mr-1 text-sm">
-                        <span className="flex items-center gap-1">
-                          성인 {order.room.capacity?.adults ?? 0}명
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <PiBabyLight /> 미성년자{' '}
-                          {order.room.capacity.children ?? 0}명
-                        </span>
-                      </div>
+                      <span className="flex items-center gap-1">
+                        <BiUser />
+                        성인 {order.room.capacity?.adults ?? 0}명
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <PiBabyLight /> 미성년자{' '}
+                        {order.room.capacity.children ?? 0}명
+                      </span>
                     </div>
                   </div>
                 </div>

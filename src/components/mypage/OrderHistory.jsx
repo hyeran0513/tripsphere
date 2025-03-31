@@ -1,10 +1,16 @@
 import { BiUser, BiCalendarAlt, BiBuildings } from 'react-icons/bi';
 import { HiOutlineTicket } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
-import { compareToday, formatDate, formatNumber } from '../../utils/format';
+import {
+  compareToday,
+  formatDate,
+  formatNumber,
+  formatTimeStampTime,
+} from '../../utils/format';
 import { useOrderData } from '../../hooks/useOrderData';
 import Loading from '../common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
+import { PiBabyLight } from 'react-icons/pi';
 
 const OrderHistory = () => {
   const { user } = useAuthStore();
@@ -63,27 +69,49 @@ const OrderHistory = () => {
                     </p>
                   </div>
 
-                  <div className="flex-col flex gap-[4px] mt-auto">
-                    <div className="flex items-center gap-2 text-xs">
-                      <BiUser />
-                      <div className="mr-1 text-xs">
-                        인원수 (성인: {order.room.capacity.adults}명 소아:
-                        {order.room.capacity.children}
-                        명)
-                      </div>
+                  <div className="mt-4">
+                    <p className="flex justify-between items-center font-semibold">
+                      {order.room.stay_type
+                        ? order.room.stay_type === 'stay'
+                          ? '숙박'
+                          : '대실'
+                        : ''}
+                    </p>
+
+                    <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-white">
+                      <BiCalendarAlt />
+                      {formatDate(order.room?.check_in)}
+                      {order.room?.stay_type === 'stay' &&
+                        ` - ${formatDate(order.room?.check_out)}`}
                     </div>
 
-                    <div className="flex items-center gap-10">
-                      <div className="flex items-center gap-2 text-xs">
-                        <BiCalendarAlt />
-                        <span>체크인:</span>
-                        <span>{formatDate(order.room.check_in)}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs">
-                        <BiCalendarAlt />
-                        <span>체크아웃:</span>
-                        <span>{formatDate(order.room.check_out)}</span>
-                      </div>
+                    {/* 체크인 · 체크아웃 */}
+                    <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-white">
+                      {order.room.stay_type === 'stay' && (
+                        <>
+                          체크인: {formatTimeStampTime(order.room.check_in)} ~{' '}
+                          체크아웃: {formatTimeStampTime(order.room.check_out)}
+                        </>
+                      )}
+
+                      {order.room.stay_type === 'day_use' && (
+                        <>
+                          체크인: {order.selectedTime[0]} ~ 체크아웃:{' '}
+                          {order.selectedTime[order.selectedTime.length - 1]}
+                        </>
+                      )}
+                    </div>
+
+                    {/* 인원 정보 */}
+                    <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-white">
+                      <span className="flex items-center gap-1">
+                        <BiUser />
+                        성인 {order.room.capacity?.adults ?? 0}명
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <PiBabyLight /> 미성년자{' '}
+                        {order.room.capacity.children ?? 0}명
+                      </span>
                     </div>
                   </div>
                 </div>

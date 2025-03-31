@@ -6,6 +6,8 @@ import Loading from '../../components/common/Loading';
 import useAuthStore from '../../stores/useAuthStore';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../../components/common/Pagination';
+import { BiHeartCircle } from 'react-icons/bi';
+import NoData from '../../components/common/NoData';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -98,58 +100,6 @@ const Favorite = () => {
     }
   };
 
-  const renderEmptyState = (message) => (
-    <div className="max-w-[1200px] mx-auto py-[40px]">
-      <PageHeader
-        title={`찜 목록 (${data?.length || 0}건)`}
-        breadcrumb={breadcrumb}
-        hasBackButton={true}
-        navigateLink="/mypage"
-      />
-      <div className="my-8 flex gap-2 justify-end rounded-2xl">
-        <select
-          value={searchOption}
-          id="searchOption"
-          onChange={(e) => setSearchOption(e.target.value)}
-          className="select border border-gray-400 rounded-lg w-40">
-          <option value="name">숙소명</option>
-          <option value="location">도시명</option>
-          <option value="place">장소명</option>
-          <option value="type">타입명</option>
-        </select>
-
-        <input
-          type="text"
-          placeholder="검색어를 입력하세요"
-          value={searchTerm}
-          id="searchTerm"
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyUp={handleKeyUp}
-          className="input border border-gray-400 p-4"
-        />
-        <button
-          type="submit"
-          onClick={handleSearchButton}
-          className="btn">
-          검색
-        </button>
-      </div>
-      <div className="mb-10">{message}</div>
-    </div>
-  );
-
-  // 찜 목록이  없을 때
-  if (!data || data.length === 0) {
-    return renderEmptyState(<div> </div>);
-  }
-
-  // 검색 결과가 없을 때
-  if (filteredData.length === 0) {
-    return renderEmptyState(
-      data ? '검색하신 조건에 맞는 숙소가 없습니다.' : '찜 목록이 없습니다.',
-    );
-  }
-
   return (
     <div className="max-w-[1200px] mx-auto py-[40px]">
       {/* 페이지 헤더 */}
@@ -203,14 +153,25 @@ const Favorite = () => {
         </button>
       </div>
 
-      <div className="mb-10 grid grid-cols-2 gap-10">
-        {currentPageData.map((favorite, index) => (
-          <ProductCard
-            key={index}
-            favorite={favorite}
-          />
-        ))}
-      </div>
+      {currentPageData.length > 0 ? (
+        <div className="mb-10 grid grid-cols-2 gap-10">
+          {currentPageData.map((favorite, index) => (
+            <ProductCard
+              key={index}
+              favorite={favorite}
+            />
+          ))}
+        </div>
+      ) : (
+        <NoData
+          text={
+            data.length > 0
+              ? '검색하신 조건에 맞는 숙소가 없습니다.'
+              : '찜 내역이 없습니다.'
+          }
+          icon={BiHeartCircle}
+        />
+      )}
 
       {/* 페이지네이션 */}
       <Pagination

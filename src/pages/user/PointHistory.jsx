@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/common/Pagination';
 import { useUserData } from '../../hooks/useUserData';
 import { BiCoin } from 'react-icons/bi';
+import NoData from '../../components/common/NoData';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -80,34 +81,41 @@ const PointHistory = () => {
         </span>
       </p>
 
-      <ul className="list bg-base-100 rounded-box shadow-md">
-        {isAuthenticated &&
-          currentPageData?.map((point, index) => (
-            <li
-              className="list-row flex-col flex"
-              key={index}>
-              <div className="py-2 border-b border-stone-200 flex justify-between items-center">
-                <div>{formatDate(point.received_date)}</div>
-              </div>
+      {currentPageData.length > 0 ? (
+        <ul className="list bg-base-100 rounded-box shadow-md">
+          {isAuthenticated &&
+            currentPageData?.map((point, index) => (
+              <li
+                className="list-row flex-col flex"
+                key={index}>
+                <div className="py-2 border-b border-stone-200 flex justify-between items-center">
+                  <div>{formatDate(point.received_date)}</div>
+                </div>
 
-              <div className="flex justify-between">
-                <div className="flex gap-6">
-                  <div className="flex flex-col">
-                    <h2 className="text-md font-bold">{point.title}</h2>
-                    <div className="mb-4 text-xs uppercase opacity-60">
-                      {point.description}
+                <div className="flex justify-between">
+                  <div className="flex gap-6">
+                    <div className="flex flex-col">
+                      <h2 className="text-md font-bold">{point.title}</h2>
+                      <div className="mb-4 text-xs uppercase opacity-60">
+                        {point.description}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="text-secondary">
-                  {point.type === 'used' ? '-' : '+'}
-                  {formatNumber(point.points)} 포인트
+                  <div className="text-secondary">
+                    {point.type === 'used' ? '-' : '+'}
+                    {formatNumber(point.points)} 포인트
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-      </ul>
+              </li>
+            ))}
+        </ul>
+      ) : (
+        <NoData
+          text={'포인트 내역이 없습니다.'}
+          icon={BiCoin}
+        />
+      )}
 
       {/* 페이지네이션 */}
       <Pagination

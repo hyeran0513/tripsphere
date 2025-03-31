@@ -54,6 +54,7 @@ const Favorite = () => {
   useEffect(() => {
     if (data) {
       setFilteredData(data);
+      console.log(data);
     }
   }, [data]);
 
@@ -137,8 +138,13 @@ const Favorite = () => {
     </div>
   );
 
-  // 찜 목록이 없거나 검색 결과가 없을 때
-  if (!data || filteredData.length === 0) {
+  // 찜 목록이  없을 때
+  if (!data || data.length === 0) {
+    return renderEmptyState(<div> </div>);
+  }
+
+  // 검색 결과가 없을 때
+  if (filteredData.length === 0) {
     return renderEmptyState(
       data ? '검색하신 조건에 맞는 숙소가 없습니다.' : '찜 목록이 없습니다.',
     );

@@ -25,7 +25,7 @@ const OrderHistory = () => {
   return (
     <div className="max-w-[700px] mx-auto py-[40px]">
       <PageHeader
-        title="주문 내역"
+        title={`주문 내역 (${orderInfo?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
       />

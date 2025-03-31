@@ -103,7 +103,6 @@ const Favorite = () => {
         title={`찜 목록 (${data?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
-        navigateLink="/mypage"
       />
       <div className="my-8 flex gap-2 justify-end rounded-2xl">
         <select
@@ -156,7 +155,6 @@ const Favorite = () => {
         title={`찜 목록 (${data?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
-        navigateLink="/mypage"
       />
 
       {/* 검색 영역 */}
@@ -203,10 +201,10 @@ const Favorite = () => {
       </div>
 
       <div className="mb-10 grid grid-cols-2 gap-10">
-        {currentPageData.map((favorite, index) => (
+        {[...currentPageData].map((_, i, arr) => (
           <ProductCard
-            key={index}
-            favorite={favorite}
+            key={arr[arr.length - 1 - i].id}
+            favorite={arr[arr.length - 1 - i]}
           />
         ))}
       </div>

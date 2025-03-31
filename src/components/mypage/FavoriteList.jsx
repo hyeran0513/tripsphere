@@ -30,9 +30,8 @@ const FavoriteList = () => {
 
       <ul className="list bg-base-100 rounded-box shadow-md mb-10">
         {data
-          ?.slice()
+          ?.slice(-3)
           .reverse()
-          .slice(0, 3)
           .map((favorite, index) => (
             <li
               key={index}

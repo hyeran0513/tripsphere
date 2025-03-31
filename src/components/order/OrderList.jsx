@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BiBuildings,
   BiCalendarAlt,
@@ -7,9 +7,15 @@ import {
 } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { useCancelOrder } from '../../hooks/useOrderData';
-import { compareToday, formatDate, formatNumber } from '../../utils/format';
+import {
+  compareToday,
+  formatDate,
+  formatNumber,
+  formatTimeStampTime,
+} from '../../utils/format';
 import CancelOrderModal from './CancelOrderModal';
 import Loading from '../common/Loading';
+import { PiBabyLight } from 'react-icons/pi';
 
 const OrderList = ({ orderInfo }) => {
   const navigate = useNavigate();
@@ -32,6 +38,10 @@ const OrderList = ({ orderInfo }) => {
       });
     }
   };
+
+  useEffect(() => {
+    console.log(JSON.stringify(orderInfo));
+  }, [orderInfo]);
 
   if (!orderInfo) return <Loading />;
   if (orderInfo.length === 0) return <p>주문 결과 정보가 없습니다.</p>;
@@ -64,6 +74,7 @@ const OrderList = ({ orderInfo }) => {
                   }
                   alt={order.accom.name || '숙소 정보 없음'}
                 />
+
                 <div className="flex flex-col">
                   <h2 className="text-lg font-bold">
                     {compareToday(order.room.check_in) && (
@@ -77,33 +88,53 @@ const OrderList = ({ orderInfo }) => {
                       {order.accom.name}
                     </p>
                   </h2>
+
                   <div className="text-xs uppercase opacity-60 pt-1">
                     예약번호 : {order.id}
                   </div>
 
-                  {/* 인원 정보 */}
-                  <div className="flex items-center gap-2 mt-2">
-                    <BiUser />
-                    <div className="mr-1 text-sm">
-                      성인: {order.room.capacity?.adults ?? 0}명, 미성년자:{' '}
-                      {order.room.capacity.children ?? 0}명
-                    </div>
-                  </div>
+                  <div className="mt-4">
+                    <p className="flex justify-between items-center font-semibold">
+                      {order.room.stay_type
+                        ? order.room.stay_type === 'stay'
+                          ? '숙박'
+                          : '대실'
+                        : ''}
+                    </p>
 
-                  {/* 체크인/체크아웃 날짜 */}
-                  <div className="flex items-center gap-10 mt-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-white">
                       <BiCalendarAlt />
-                      <span className="font-bold">체크인:</span>{' '}
-                      <span>
-                        {formatDate(order.room.check_in) || '날짜 없음'}
-                      </span>
+                      {formatDate(order.room?.check_in)}
+                      {order.room?.stay_type === 'stay' &&
+                        ` - ${formatDate(order.room?.check_out)}`}
                     </div>
-                    <div className="flex items-center gap-2">
-                      <BiCalendarAlt />
-                      <span className="font-bold">체크아웃:</span>{' '}
-                      <span>
-                        {formatDate(order.room.check_out) || '날짜 없음'}
+
+                    {/* 체크인 · 체크아웃 */}
+                    <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-white">
+                      {order.room.stay_type === 'stay' && (
+                        <>
+                          체크인: {formatTimeStampTime(order.room.check_in)} ~{' '}
+                          체크아웃: {formatTimeStampTime(order.room.check_out)}
+                        </>
+                      )}
+
+                      {order.room.stay_type === 'day_use' && (
+                        <>
+                          체크인: {order.selectedTime[0]} ~ 체크아웃:{' '}
+                          {order.selectedTime[order.selectedTime.length - 1]}
+                        </>
+                      )}
+                    </div>
+
+                    {/* 인원 정보 */}
+                    <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 dark:text-white">
+                      <span className="flex items-center gap-1">
+                        <BiUser />
+                        성인 {order.room.capacity?.adults ?? 0}명
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <PiBabyLight /> 미성년자{' '}
+                        {order.room.capacity.children ?? 0}명
                       </span>
                     </div>
                   </div>

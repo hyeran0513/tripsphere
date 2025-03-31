@@ -102,20 +102,13 @@ const RoomCard = ({ room, index }) => {
   };
 
   // 대실 시간 구하기
-  const { hours, minutes } = getTimeDiff(
+  const { hours = 0, minutes = 0 } = getTimeDiff(
     selectedRoomData?.check_in,
     selectedRoomData?.check_out,
   );
 
   // 대실 예약하기
-  const handleReservationDayUse = (
-    hours,
-    minutes,
-    selectedRange,
-    selectedRoomData,
-    setReservationInfo,
-    navigate,
-  ) => {
+  const handleReservationDayUse = () => {
     if (!isAuthenticated) {
       showToast('error', '로그인 후 예약을 진행하실 수 있습니다');
       document.getElementById('dayUse').close();
@@ -125,7 +118,7 @@ const RoomCard = ({ room, index }) => {
     setReservationInfo([
       {
         type: 'day_use',
-        room_id: selectedRoomData.roomId,
+        room_id: selectedRoomData?.roomId,
         duration: { hours, minutes },
         selectedTime: selectedRange,
       },
@@ -134,10 +127,9 @@ const RoomCard = ({ room, index }) => {
   };
 
   // 숙박 예약하기
-  const handleReservationStay = (room, setReservationInfo, navigate) => {
+  const handleReservationStay = (room) => {
     if (!isAuthenticated) {
       showToast('error', '로그인 후 예약을 진행하실 수 있습니다');
-      document.getElementById('dayUse').close();
       return;
     }
 
@@ -147,7 +139,6 @@ const RoomCard = ({ room, index }) => {
         room_id: room.roomId,
       },
     ]);
-
     navigate('/checkout');
   };
 
@@ -229,9 +220,7 @@ const RoomCard = ({ room, index }) => {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    handleReservationStay(room, setReservationInfo, navigate)
-                  }
+                  onClick={() => handleReservationStay(room)}
                   className="h-[38px] text-indigo-600 hover:text-white border border-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-500 dark:focus:ring-indigo-800 cursor-pointer">
                   숙박 예약
                 </button>
@@ -311,16 +300,7 @@ const RoomCard = ({ room, index }) => {
                     <button
                       aria-label="예약하기"
                       type="button"
-                      onClick={() =>
-                        handleReservationDayUse(
-                          hours,
-                          minutes,
-                          selectedRange,
-                          selectedRoomData,
-                          setReservationInfo,
-                          navigate,
-                        )
-                      }
+                      onClick={handleReservationDayUse}
                       className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-3.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                       예약하기
                     </button>

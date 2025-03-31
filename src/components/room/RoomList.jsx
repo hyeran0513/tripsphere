@@ -29,7 +29,7 @@ const RoomList = ({ rooms }) => {
       {Object.values(roomsGroupedById)?.map((roomGroup, index) => (
         <div
           key={roomGroup.room_group_id}
-          className={`flex gap-6 ${index === 0 ? 'pt-0' : 'pt-[40px]'} ${index === roomGroup.length - 1 ? 'pb-0' : 'pb-[40px]'}`}>
+          className={`flex gap-6 ${index === 0 ? 'pt-0' : 'pt-[40px]'} ${index === Object.values(roomsGroupedById).length - 1 ? 'pb-0' : 'pb-[40px]'}`}>
           <h3 className="w-[40%]">
             <div className="overflow-hidden rounded-lg">
               {roomGroup.images && roomGroup.images.length > 0 ? (

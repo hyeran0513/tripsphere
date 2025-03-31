@@ -30,7 +30,7 @@ const ReviewItem = ({ reviews }) => {
                 alt={review.userInfo.nickname}
               />
             ) : (
-              <div className="flex justify-center items-center w-[100%] h-[100%] bg-gray-100">
+              <div className="flex justify-center items-center w-[100%] h-[100%] bg-gray-100 dark:bg-base-200">
                 <BiSolidUser
                   size={24}
                   className="text-gray-300"

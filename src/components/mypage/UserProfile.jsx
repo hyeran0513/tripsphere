@@ -54,10 +54,10 @@ const UserProfile = () => {
                 alt={userInfo?.username}
               />
             ) : (
-              <div className="flex justify-center items-center w-[100%] h-[100%] bg-gray-100">
+              <div className="flex justify-center items-center w-[100%] h-[100%] bg-gray-100 dark:bg-base-200">
                 <BiSolidUser
                   size={40}
-                  className="text-gray-300"
+                  className="text-gray-300 "
                 />
               </div>
             )}

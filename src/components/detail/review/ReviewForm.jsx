@@ -61,7 +61,7 @@ const ReviewForm = ({ handleNewReview, productId }) => {
               type="submit"
               onClick={handleAddReview}
               disabled={!comment.trim() && !rating}
-              className={`self-end rounded-lg px-6 py-2 font-medium transition-all focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 
+              className={`cursor-pointer self-end rounded-lg px-6 py-2 font-medium transition-all focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 
               ${
                 comment.trim() && rating
                   ? 'bg-indigo-600 text-white hover:bg-indigo-700'

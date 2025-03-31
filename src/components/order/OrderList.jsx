@@ -50,7 +50,7 @@ const OrderList = ({ orderInfo }) => {
   return (
     <>
       {orderInfo.length > 0 ? (
-        <ul className="list bg-base-100 dark:bg-gray-800 rounded-box shadow-md py-">
+        <ul className="list bg-base-100 dark:bg-base-100 rounded-box shadow-md">
           {orderInfo?.map((order, index) => (
             <li
               key={index}

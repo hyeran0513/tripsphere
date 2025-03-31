@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { BiSolidStar, BiSolidMap, BiTrash } from 'react-icons/bi';
+import {
+  BiSolidStar,
+  BiSolidMap,
+  BiTrash,
+  BiCalendarAlt,
+  BiUser,
+} from 'react-icons/bi';
 import { Link } from 'react-router-dom';
-import { formatNumber } from '../../utils/format';
+import { formatDate, formatNumber } from '../../utils/format';
 import { useControlFavorite } from '../../hooks/useFavoriteData';
 import ToastMessage from '../common/ToastMessage';
 import useAuthStore from '../../stores/useAuthStore';
 import TypeMapping from '../common/TypeMapping';
+import { PiBabyLight } from 'react-icons/pi';
 
 const ProductCard = ({ favorite }) => {
   const [toast, setToast] = useState(null);
@@ -27,7 +34,7 @@ const ProductCard = ({ favorite }) => {
     <>
       <Link
         to={`/product/${favorite.id}`}
-        className="flex flex-col gap-6 relative group">
+        className="flex gap-6 relative group">
         <button
           className="btn btn-square btn-ghost indicator-item badge absolute top-2 right-2 transition opacity-0 hover:scale-110 group-hover:opacity-100"
           onClick={handleDelete}
@@ -35,14 +42,13 @@ const ProductCard = ({ favorite }) => {
           <BiTrash className="size-[1.2em]" />
         </button>
 
-        <div className="w-[100%] h-[200px] rounded-md overflow-hidden">
+        <div className="w-[40%] h-[200px] rounded-md overflow-hidden">
           <img
             src={favorite.images[0]}
             alt={favorite.name}
             className="w-full h-full object-cover"
           />
         </div>
-
         <div className="flex-1">
           <div className="flex justify-between">
             <div>
@@ -80,13 +86,28 @@ const ProductCard = ({ favorite }) => {
               (room) => room.stay_type === 'day_use',
             );
 
+            // 조건에 맞는 객실을 출력
             return (
               <>
                 {stayRoom && room.id === stayRoom.id && (
                   <div
                     key={stayRoom.id}
                     className="mt-4 pl-2 flex justify-between border-l-3 border-gray-200">
-                    <h3 className="text-xs font-semibold">숙박</h3>
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-xs font-semibold">숙박</h3>
+                      <p className="flex items-center gap-2 text-xs">
+                        <BiCalendarAlt /> {formatDate(stayRoom.check_in)} -{' '}
+                        {formatDate(stayRoom.check_out)}
+                      </p>
+
+                      <p className="flex items-center gap-2 text-xs">
+                        <BiUser /> 성인{' '}
+                        <span>{stayRoom.capacity.adults}명</span>
+                        <PiBabyLight /> 미성년자{' '}
+                        <span>{stayRoom.capacity.children}명</span>
+                      </p>
+                    </div>
+
                     <div className="flex flex-col items-end">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -111,7 +132,21 @@ const ProductCard = ({ favorite }) => {
                   <div
                     key={dayUseRoom.id}
                     className="mt-4 pl-2 flex justify-between border-l-3 border-gray-200">
-                    <h3 className="text-xs font-semibold">대실</h3>
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-xs font-semibold">대실</h3>
+
+                      <p className="flex items-center gap-2 text-xs">
+                        <BiCalendarAlt /> {formatDate(dayUseRoom.check_in)}
+                      </p>
+
+                      <p className="flex items-center gap-2 text-xs">
+                        <BiUser /> 성인{' '}
+                        <span>{dayUseRoom.capacity.adults}명</span>
+                        <PiBabyLight /> 미성년자{' '}
+                        <span>{dayUseRoom.capacity.children}명</span>
+                      </p>
+                    </div>
+
                     <div className="mt-4 flex flex-col items-end">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold text-gray-900 dark:text-white">

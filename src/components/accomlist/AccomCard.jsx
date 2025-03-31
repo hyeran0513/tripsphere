@@ -7,6 +7,7 @@ import {
   BiHeart,
   BiSolidHeart,
   BiCalendarAlt,
+  BiUser,
 } from 'react-icons/bi';
 import { formatDate, formatNumber } from '../../utils/format';
 import KakaoShareButton from '../common/KakaoShareButton';
@@ -16,7 +17,6 @@ import {
 } from '../../hooks/useFavoriteData';
 import useAuthStore from '../../stores/useAuthStore';
 import ToastMessage from '../common/ToastMessage';
-import { BiUser } from 'react-icons/bi';
 import { PiBabyLight } from 'react-icons/pi';
 
 const AccomCard = ({ accommodation }) => {

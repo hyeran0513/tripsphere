@@ -7,6 +7,7 @@ import { useEditUserData, useUserData } from '../../hooks/useUserData';
 import NotificationModal from '../../components/common/NotificationModal';
 import { validateForm } from '../../utils/validation';
 import Loading from '../../components/common/Loading';
+import { formatPhoneNumber } from '../../utils/format';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -123,7 +124,10 @@ const Profile = () => {
                   value={state.phone}
                   placeholder={state.placeholder.phone}
                   onChange={(e) =>
-                    dispatch({ type: 'SET_PHONE', payload: e.target.value })
+                    dispatch({
+                      type: 'SET_PHONE',
+                      payload: formatPhoneNumber(e.target.value),
+                    })
                   }
                   error={state.errors.phone}
                 />

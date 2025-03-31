@@ -16,7 +16,7 @@ const Modal = ({ modalId, buttonTitle, title, children, hideButton }) => {
         className="modal">
         <div className="modal-box">
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            <button className="cursor-pointer btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button>
           </form>

@@ -4,6 +4,7 @@ import InputField from '../common/InputField';
 import TermsAgreement from './TermsAgreement';
 import { useSaveUserInfo } from '../../hooks/useAuthData';
 import { validateForm } from '../../utils/validation';
+import { formatPhoneNumber } from '../../utils/format';
 
 const UserInfo = ({ onNext, onPrev }) => {
   const [state, dispatch] = useAuthForm();
@@ -74,7 +75,10 @@ const UserInfo = ({ onNext, onPrev }) => {
             value={state.phone}
             placeholder={state.placeholder.phone}
             onChange={(e) =>
-              dispatch({ type: 'SET_PHONE', payload: e.target.value })
+              dispatch({
+                type: 'SET_PHONE',
+                payload: formatPhoneNumber(e.target.value),
+              })
             }
             error={state.errors.phone}
           />

@@ -77,47 +77,65 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
     const orderPromises = updatedData.map(
       (item) =>
         new Promise(async (resolve, reject) => {
-          const orderData = {
-            user_id: user?.uid,
-            room_id: item.roomId,
-            order_date: serverTimestamp(),
-            payment_status: 'completed',
-            used_points: item.original_price * (1 - item.discount_rate),
-          };
+          try {
+            const orderData = {
+              user_id: user?.uid,
+              room_id: item.roomId,
+              order_date: serverTimestamp(),
+              payment_status: 'completed',
+              used_points: item.original_price * (1 - item.discount_rate),
+            };
+            console.log('item :', item);
+            console.log('orderData before mutate:', orderData);
 
-          if (item.stay_type === 'day_use') {
-            orderData.duration = item.duration;
-            orderData.selectedTime = item.selectedTime;
+            if (item.stay_type === 'day_use') {
+              orderData.duration = item.duration;
+              orderData.selectedTime = item.selectedTime;
+            }
+
+            // 다시 한번 로그를 출력
+            console.log(
+              'orderData after condition 여기서 undefinded 나오면 안됨:',
+              orderData,
+            );
+
+            // mutate(orderData, {
+            //   onSuccess: (response) => {
+            //     console.log('orderData : ', orderData);
+            //     console.log('response : ', response);
+            //     resolve(response);
+            //   },
+            //   onError: reject,
+            // });
+
+            console.log();
+            mutate(orderData, {
+              onSuccess: (response) => {
+                console.log('response : ', response);
+                resolve(response);
+              },
+              onError: (error) => {
+                console.error('mutate error : ', error);
+                reject(error);
+              },
+            });
+          } catch (error) {
+            console.error('Catch orderPromises error:', error);
+            resolve(null);
           }
-
-          // mutate(orderData, {
-          //   onSuccess: (response) => {
-          //     console.log('orderData : ', orderData);
-          //     console.log('response : ', response);
-          //     resolve(response);
-          //   },
-          //   onError: reject,
-          // });
-
-          mutate(orderData, {
-            onSuccess: (response) => {
-              resolve(response);
-            },
-            onError: (error) => {
-              reject(error);
-            },
-          });
         }),
     );
 
-    const orderIds = await Promise.all(orderPromises)
-      .then((orderIds) => {
-        return orderIds;
-      })
-      .catch((error) => {
-        console.error('하나 이상의 주문 실패:', error);
-      });
+    const orderIds = await Promise.all(orderPromises);
+    // .then((orderIds) => {
+    //   console.log('모든 주문 ID:', orderIds);
+    //   return orderIds;
+    // })
+    // .catch((error) => {
+    //   console.error('하나 이상의 주문 실패:', error);
+    // });
 
+    console.log('orderIds : ', orderIds);
     setOrderIds(orderIds);
     navigate('/orderconfirmation');
   };

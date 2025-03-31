@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TypeMapping from '../common/TypeMapping';
-import { BiSolidStar, BiSolidMap, BiHeart, BiSolidHeart } from 'react-icons/bi';
-import { formatNumber } from '../../utils/format';
+import {
+  BiSolidStar,
+  BiSolidMap,
+  BiHeart,
+  BiSolidHeart,
+  BiCalendarAlt,
+} from 'react-icons/bi';
+import { formatDate, formatNumber } from '../../utils/format';
 import KakaoShareButton from '../common/KakaoShareButton';
 import {
   useCheckFavorite,
@@ -10,6 +16,8 @@ import {
 } from '../../hooks/useFavoriteData';
 import useAuthStore from '../../stores/useAuthStore';
 import ToastMessage from '../common/ToastMessage';
+import { BiUser } from 'react-icons/bi';
+import { PiBabyLight } from 'react-icons/pi';
 
 const AccomCard = ({ accommodation }) => {
   const [toast, setToast] = useState(null);
@@ -129,7 +137,21 @@ const AccomCard = ({ accommodation }) => {
                     <div
                       key={stayRoom.id}
                       className="mt-4 pl-2 flex justify-between border-l-3 border-gray-200">
-                      <h3 className="text-xs font-semibold">숙박</h3>
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-xs font-semibold">숙박</h3>
+                        <p className="flex items-center gap-2 text-xs">
+                          <BiCalendarAlt /> {formatDate(stayRoom.check_in)} -{' '}
+                          {formatDate(stayRoom.check_out)}
+                        </p>
+
+                        <p className="flex items-center gap-2 text-xs">
+                          <BiUser /> 성인{' '}
+                          <span>{stayRoom.capacity.adults}명</span>
+                          <PiBabyLight /> 미성년자{' '}
+                          <span>{stayRoom.capacity.children}명</span>
+                        </p>
+                      </div>
+
                       <div className="flex flex-col items-end">
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -154,7 +176,21 @@ const AccomCard = ({ accommodation }) => {
                     <div
                       key={dayUseRoom.id}
                       className="mt-4 pl-2 flex justify-between border-l-3 border-gray-200">
-                      <h3 className="text-xs font-semibold">대실</h3>
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-xs font-semibold">대실</h3>
+
+                        <p className="flex items-center gap-2 text-xs">
+                          <BiCalendarAlt /> {formatDate(dayUseRoom.check_in)}
+                        </p>
+
+                        <p className="flex items-center gap-2 text-xs">
+                          <BiUser /> 성인{' '}
+                          <span>{dayUseRoom.capacity.adults}명</span>
+                          <PiBabyLight /> 미성년자{' '}
+                          <span>{dayUseRoom.capacity.children}명</span>
+                        </p>
+                      </div>
+
                       <div className="mt-4 flex flex-col items-end">
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-semibold text-gray-900 dark:text-white">

@@ -21,15 +21,15 @@ const CitySelector = ({ isGlobal }) => {
       const city = event.target.value;
       setSelectedCity(city);
 
-      if (city === '전체') {
+      if (city === '') {
         setSubCities([]);
-        setSelectedSubCity('전체');
+        setSelectedSubCity('');
         subCityRef.current.disabled = true;
       } else {
         const selected = cities.find((item) => item.name === city);
         const newSubCities = selected ? selected.subCities : [];
         setSubCities(newSubCities);
-        setSelectedSubCity('전체');
+        setSelectedSubCity('');
         subCityRef.current.disabled = false;
       }
     },
@@ -75,16 +75,27 @@ const CitySelector = ({ isGlobal }) => {
     if (selectedCity) {
       const selected = cities.find((item) => item.name === selectedCity);
       const newSubCities = selected ? selected.subCities : [];
-      setSubCities(newSubCities);
+
+      if (JSON.stringify(subCities) !== JSON.stringify(newSubCities)) {
+        setSubCities(newSubCities);
+      }
 
       // 선택된 소도시가 해당 대도시에 포함되지 않으면 전체로 초기화
       if (newSubCities && !newSubCities.includes(selectedSubCity)) {
-        setSelectedSubCity('전체');
+        if (selectedSubCity !== '') {
+          setSelectedSubCity('');
+        }
       }
 
       subCityRef.current.disabled = newSubCities.length === 0;
     }
-  }, [selectedCity, selectedSubCity, setSubCities, setSelectedSubCity]);
+  }, [
+    selectedCity,
+    selectedSubCity,
+    subCities,
+    setSubCities,
+    setSelectedSubCity,
+  ]);
 
   /* 대도시와 소도시 설정된 값이 있을 때
   대도시를 기준으로 소도시 목록을 업데이트 */

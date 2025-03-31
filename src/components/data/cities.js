@@ -2,7 +2,6 @@ export const cities = [
   {
     name: '서울',
     subCities: [
-      '전체',
       '강남구',
       '강동구',
       '강북구',
@@ -33,7 +32,6 @@ export const cities = [
   {
     name: '경기',
     subCities: [
-      '전체',
       '가평군',
       '고양시 덕양구',
       '고양시 일산동구',
@@ -67,7 +65,6 @@ export const cities = [
   {
     name: '인천',
     subCities: [
-      '전체',
       '계양구',
       '남동구',
       '동구',
@@ -81,7 +78,6 @@ export const cities = [
   {
     name: '강원',
     subCities: [
-      '전체',
       '강릉시',
       '고성군',
       '동해시',
@@ -103,7 +99,6 @@ export const cities = [
   {
     name: '충남',
     subCities: [
-      '전체',
       '공주시',
       '금산군',
       '논산시',
@@ -122,12 +117,11 @@ export const cities = [
   },
   {
     name: '대전',
-    subCities: ['전체', '대덕구', '동구', '서구', '유성구', '중구'],
+    subCities: ['대덕구', '동구', '서구', '유성구', '중구'],
   },
   {
     name: '충북',
     subCities: [
-      '전체',
       '괴산군',
       '단양군',
       '보은군',
@@ -144,13 +138,8 @@ export const cities = [
     ],
   },
   {
-    name: '세종',
-    subCities: ['전체'],
-  },
-  {
     name: '부산',
     subCities: [
-      '전체',
       '강서구',
       '금정구',
       '기장군',
@@ -171,12 +160,11 @@ export const cities = [
   },
   {
     name: '울산',
-    subCities: ['전체', '남구', '동구', '북구', '울주군', '중구'],
+    subCities: ['남구', '동구', '북구', '울주군', '중구'],
   },
   {
     name: '대구',
     subCities: [
-      '전체',
       '남구',
       '달서구',
       '달성군',
@@ -190,7 +178,6 @@ export const cities = [
   {
     name: '경북',
     subCities: [
-      '전체',
       '경산시',
       '경주시',
       '고령군',
@@ -220,7 +207,6 @@ export const cities = [
   {
     name: '경남',
     subCities: [
-      '전체',
       '거제시',
       '거창군',
       '고성군',
@@ -244,7 +230,6 @@ export const cities = [
   {
     name: '전남',
     subCities: [
-      '전체',
       '강진군',
       '고흥군',
       '곡성군',
@@ -271,12 +256,11 @@ export const cities = [
   },
   {
     name: '광주',
-    subCities: ['전체', '광산구', '남구', '동구', '북구', '서구'],
+    subCities: ['광산구', '남구', '동구', '북구', '서구'],
   },
   {
     name: '전북',
     subCities: [
-      '전체',
       '고창군',
       '군산시',
       '김제시',

@@ -8,6 +8,7 @@ import {
   serverTimestamp,
   updateDoc,
   where,
+  orderBy,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import { decrementRoomStock } from './accomService';
@@ -116,7 +117,11 @@ export const createUserOrder = async ({
 export const getOrderData = async (userId) => {
   if (!userId) return [];
 
-  const q = query(collection(db, 'orders'), where('user_id', '==', userId));
+  const q = query(
+    collection(db, 'orders'),
+    where('user_id', '==', userId),
+    orderBy('order_date', 'desc'),
+  );
   const cartSnapshot = await getDocs(q);
 
   const orderItems = await Promise.all(

@@ -1,5 +1,5 @@
 import { BiUser } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserData } from '../../../hooks/useUserData';
 import useAuthStore from '../../../stores/useAuthStore';
 import { useState } from 'react';
@@ -8,6 +8,12 @@ const UserDropdown = () => {
   const { isAuthenticated, logout } = useAuthStore();
   const { data: userData } = useUserData();
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <div className="dropdown dropdown-end">
@@ -29,7 +35,7 @@ const UserDropdown = () => {
             {isAuthenticated ? (
               <button
                 type="button"
-                onClick={logout}>
+                onClick={handleLogout}>
                 로그아웃
               </button>
             ) : (

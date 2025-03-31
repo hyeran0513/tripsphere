@@ -7,7 +7,7 @@ import {
 } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { useRoomData } from '../../../hooks/useProductData';
-import { formatDate } from '../../../utils/format';
+import { formatDate, formatTimeStampTime } from '../../../utils/format';
 
 const OrderCard = ({ data, index }) => {
   const navigate = useNavigate();
@@ -88,12 +88,24 @@ const OrderCard = ({ data, index }) => {
               <div className="flex items-center gap-2">
                 <BiCalendarAlt />
                 <span className="font-bold">체크인:</span>{' '}
-                <span>{formatDate(room?.check_in) || '날짜 없음'}</span>
+                <span>
+                  {room.check_in
+                    ? room.stay_type === 'stay'
+                      ? formatDate(room?.check_in)
+                      : formatTimeStampTime(room?.check_in)
+                    : '날짜 없음'}
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <BiCalendarAlt />
                 <span className="font-bold">체크아웃:</span>{' '}
-                <span>{formatDate(room?.check_out) || '날짜 없음'}</span>
+                <span>
+                  {room.check_out
+                    ? room.stay_type === 'stay'
+                      ? formatDate(room?.check_out)
+                      : formatTimeStampTime(room?.check_out)
+                    : '날짜 없음'}
+                </span>
               </div>
             </div>
           </div>

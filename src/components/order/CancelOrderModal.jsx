@@ -3,35 +3,44 @@ import { Dialog } from '@headlessui/react';
 
 const CancelOrderModal = ({ isOpen, onClose, onConfirm }) => {
   const [reason, setReason] = useState('단순 변심');
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [modalStep, setModalStep] = useState(null);
+
+  React.useEffect(() => {
+    if (isOpen) setModalStep('reason');
+    else setModalStep(null);
+  }, [isOpen]);
 
   const handleInitialConfirm = () => {
-    setShowConfirmDialog(true);
+    setModalStep('confirm');
   };
 
   const handleFinalConfirm = () => {
     onConfirm(reason);
+    setModalStep(null);
     onClose();
-    setShowConfirmDialog(false);
+  };
+
+  const handleClose = () => {
+    setModalStep(null);
+    onClose();
   };
 
   return (
     <>
-      {/* 취소 사유 선택 모달 */}
       <Dialog
-        open={isOpen}
-        onClose={onClose}
+        open={modalStep === 'reason'}
+        onClose={handleClose}
         className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="bg-white dark:bg-gray-200 p-6 rounded-lg shadow-lg w-96">
-          <Dialog.Title className="text-lg dark:text-black font-bold">
+        <div className="bg-white dark:bg-base-200 p-6 rounded-lg shadow-lg w-96">
+          <Dialog.Title className="text-lg dark:text-white font-bold">
             주문 취소
           </Dialog.Title>
           <div className="mt-4">
-            <label className="block mb-2 text-sm dark:text-black font-medium">
+            <label className="block mb-2 text-sm dark:text-white font-medium">
               취소 사유
             </label>
             <select
-              className="w-full border border-gray-300 dark:text-black rounded p-2"
+              className="w-full border border-gray-300 dark:text-white dark:bg-base-200 rounded p-2"
               value={reason}
               onChange={(e) => setReason(e.target.value)}>
               <option value="단순 변심">단순 변심</option>
@@ -44,7 +53,7 @@ const CancelOrderModal = ({ isOpen, onClose, onConfirm }) => {
           <div className="flex justify-end mt-4">
             <button
               className="cursor-pointer mr-2 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded"
-              onClick={onClose}>
+              onClick={handleClose}>
               취소
             </button>
             <button
@@ -56,22 +65,21 @@ const CancelOrderModal = ({ isOpen, onClose, onConfirm }) => {
         </div>
       </Dialog>
 
-      {/* 추가 확인 모달 */}
       <Dialog
-        open={showConfirmDialog}
-        onClose={() => setShowConfirmDialog(false)}
+        open={modalStep === 'confirm'}
+        onClose={handleClose}
         className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="bg-white dark:bg-gray-100 p-6 rounded-lg shadow-lg w-80">
-          <Dialog.Title className="text-lg dark:text-black font-bold">
+        <div className="bg-white dark:bg-base-200 p-6 rounded-lg shadow-lg w-80">
+          <Dialog.Title className="text-lg dark:text-white font-bold">
             정말 취소하시겠습니까?
           </Dialog.Title>
-          <p className="mt-2 text-sm dark:text-black">
+          <p className="mt-2 text-sm dark:text-white">
             선택한 사유: <strong>{reason}</strong>
           </p>
           <div className="flex justify-end mt-4">
             <button
               className="cursor-pointer mr-2 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded"
-              onClick={() => setShowConfirmDialog(false)}>
+              onClick={handleClose}>
               취소
             </button>
             <button

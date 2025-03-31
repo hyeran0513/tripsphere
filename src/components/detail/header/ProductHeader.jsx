@@ -66,7 +66,7 @@ const ProductHeader = ({ product, productId, hideFavorite }) => {
               <button
                 onClick={handleFavorite}
                 type="button"
-                className="cursor-pointer dark:text-white inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50">
+                className="cursor-pointer dark:text-white inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 dark:hover:bg-base-300">
                 {isFavorite ? (
                   <BiSolidHeart
                     aria-hidden="true"

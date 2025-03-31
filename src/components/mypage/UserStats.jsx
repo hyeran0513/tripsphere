@@ -30,7 +30,7 @@ const UserStats = ({ points, setPoints, pointHistoryRefetch }) => {
       {/* 포인트 박스  */}
       <div className="stat place-items-center">
         <Link to="/pointhistory">
-          <div className="stat-title  flex-none flex gap-2 items-center">
+          <div className="stat-title  flex-none flex gap-2 items-center justify-center">
             <LiaCoinsSolid size={30} />
             <div>포인트</div>
           </div>

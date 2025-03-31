@@ -33,9 +33,6 @@ const ResetPassword = () => {
       return;
     }
 
-    // 포인트 추가 요청
-    await mutate(state.email);
-
     mutate(state.email);
   };
 

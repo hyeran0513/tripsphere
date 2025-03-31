@@ -30,6 +30,7 @@ const MyPage = () => {
       <PageHeader
         title="마이페이지"
         breadcrumb={breadcrumb}
+        navigateLink="-1"
       />
 
       {/* 유저 프로필 */}

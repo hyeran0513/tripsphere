@@ -28,6 +28,7 @@ const OrderHistory = () => {
         title={`주문 내역 (${orderInfo?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
+        navigateLink="/mypage"
       />
 
       {/* 주문 내역 */}

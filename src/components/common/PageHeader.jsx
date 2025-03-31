@@ -2,7 +2,7 @@ import React from 'react';
 import { BiArrowBack } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 
-const PageHeader = ({ title, breadcrumb, hasBackButton }) => {
+const PageHeader = ({ title, breadcrumb, hasBackButton, navigateLink }) => {
   const navigate = useNavigate();
 
   return (
@@ -44,7 +44,7 @@ const PageHeader = ({ title, breadcrumb, hasBackButton }) => {
         {hasBackButton && (
           <button
             type="button"
-            onClick={() => navigate(-1)}>
+            onClick={() => navigate(navigateLink)}>
             <BiArrowBack className="size-6 hover:cursor-pointer" />
           </button>
         )}

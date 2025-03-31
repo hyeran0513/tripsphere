@@ -146,6 +146,7 @@ const ProductList = () => {
       <PageHeader
         title={`여행 숙소 검색 결과 (${filteredData.length}건)`}
         breadcrumb={breadcrumb}
+        navigateLink="/"
       />
 
       {/* 숙소 유형 선택 */}

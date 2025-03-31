@@ -75,7 +75,6 @@ const Profile = () => {
             <PageHeader
               title="내 정보 수정"
               breadcrumb={breadcrumb}
-              hasBackButton={true}
             />
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -146,7 +145,7 @@ const Profile = () => {
           <button
             type="button"
             onClick={() => navigate('/mypage')}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm font-semibold shadow-xs">
+            className="cursor-pointer rounded-md border border-gray-300 px-3 py-2 text-sm font-semibold shadow-xs">
             취소
           </button>
 

@@ -24,6 +24,7 @@ const PointHistory = () => {
         title="포인트 내역"
         breadcrumb={breadcrumb}
         hasBackButton={true}
+        navigateLink="/mypage"
       />
 
       <ul className="list bg-base-100 rounded-box shadow-md">

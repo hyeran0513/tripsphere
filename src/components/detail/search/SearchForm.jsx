@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BiChevronRight } from 'react-icons/bi';
 import DateSelector from '../../common/DateSelector';
 import PeopleSelector from '../../common/PeopleSelector';
 import { formatDateWithHyphen } from '../../../utils/format';
+import { useLocation } from 'react-router-dom';
+import useReservationStore from '../../../stores/useReservationStore';
 
 const SearchForm = ({
   openDate,
@@ -17,10 +19,19 @@ const SearchForm = ({
   setFilters,
 }) => {
   const [isFormOpen, setIsFormOpen] = useState(true);
+  const location = useLocation();
+  const resetReservation = useReservationStore(
+    (state) => state.resetReservation,
+  );
 
   const toggleForm = () => {
     setIsFormOpen((prevState) => !prevState);
   };
+
+  // 필터 초기화
+  useEffect(() => {
+    resetReservation();
+  }, [location]);
 
   // 검색 핸들러
   const handleSearch = (e) => {

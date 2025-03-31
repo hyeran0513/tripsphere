@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { cities } from '../data/cities';
 import useFilterStore from '../../stores/useFilterStore';
 import useCitySelection from '../../hooks/useCitySelection';
@@ -70,6 +70,32 @@ const CitySelector = React.memo(({ isGlobal }) => {
     [subCities],
   );
 
+  // 초기화 및 소도시 설정
+  useEffect(() => {
+    if (selectedCity) {
+      const selected = cities.find((item) => item.name === selectedCity);
+      const newSubCities = selected ? selected.subCities : [];
+      setSubCities(newSubCities);
+
+      // 선택된 소도시가 해당 대도시에 포함되지 않으면 전체로 초기화
+      if (newSubCities && !newSubCities.includes(selectedSubCity)) {
+        setSelectedSubCity('전체');
+      }
+
+      subCityRef.current.disabled = newSubCities.length === 0;
+    }
+  }, [selectedCity, selectedSubCity, setSubCities, setSelectedSubCity]);
+
+  /* 대도시와 소도시 설정된 값이 있을 때
+  대도시를 기준으로 소도시 목록을 업데이트 */
+  useEffect(() => {
+    if (selectedCity) {
+      const selected = cities.find((item) => item.name === selectedCity);
+      const newSubCities = selected ? selected.subCities : [];
+      setSubCities(newSubCities);
+    }
+  }, [selectedCity, setSubCities]);
+
   return (
     <div className="w-full">
       {/* 라벨 영역 */}
@@ -103,7 +129,8 @@ const CitySelector = React.memo(({ isGlobal }) => {
             ref={subCityRef}
             className="input bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
             value={selectedSubCity}
-            onChange={handleSubCitySelect}>
+            onChange={handleSubCitySelect}
+            disabled={!subCities.length}>
             <option value="">소분류 선택</option>
             {subCityOptions}
           </select>

@@ -17,15 +17,13 @@ const Favorite = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [searchOption, setSearchOption] = useState('name');
-  const [selectedPerOption, setSelectedPerOption] = useState(5);
+  const [selectedPerOption, setSelectedPerOption] = useState(10);
   const navigate = useNavigate();
   const location = useLocation();
   const [currentPageData, setCurrentPageData] = useState([]);
 
   const perOptions = [
-    { id: 1, value: 5, name: '5개씩 보기' },
     { id: 2, value: 10, name: '10개씩 보기' },
-    { id: 3, value: 15, name: '15개씩 보기' },
     { id: 4, value: 20, name: '20개씩 보기' },
   ];
 
@@ -54,6 +52,7 @@ const Favorite = () => {
   useEffect(() => {
     if (data) {
       setFilteredData(data);
+      console.log(data);
     }
   }, [data]);
 
@@ -101,9 +100,10 @@ const Favorite = () => {
   const renderEmptyState = (message) => (
     <div className="max-w-[1200px] mx-auto py-[40px]">
       <PageHeader
-        title="찜 목록"
+        title={`찜 목록 (${data?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
+        navigateLink="/mypage"
       />
       <div className="my-8 flex gap-2 justify-end rounded-2xl">
         <select
@@ -137,8 +137,13 @@ const Favorite = () => {
     </div>
   );
 
-  // 찜 목록이 없거나 검색 결과가 없을 때
-  if (!data || filteredData.length === 0) {
+  // 찜 목록이  없을 때
+  if (!data || data.length === 0) {
+    return renderEmptyState(<div> </div>);
+  }
+
+  // 검색 결과가 없을 때
+  if (filteredData.length === 0) {
     return renderEmptyState(
       data ? '검색하신 조건에 맞는 숙소가 없습니다.' : '찜 목록이 없습니다.',
     );
@@ -148,9 +153,10 @@ const Favorite = () => {
     <div className="max-w-[1200px] mx-auto py-[40px]">
       {/* 페이지 헤더 */}
       <PageHeader
-        title="찜 목록"
+        title={`찜 목록 (${data?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
+        navigateLink="/mypage"
       />
 
       {/* 검색 영역 */}
@@ -196,7 +202,7 @@ const Favorite = () => {
         </button>
       </div>
 
-      <div className="mb-10 grid grid-cols-5 gap-10">
+      <div className="mb-10 grid grid-cols-2 gap-10">
         {currentPageData.map((favorite, index) => (
           <ProductCard
             key={index}

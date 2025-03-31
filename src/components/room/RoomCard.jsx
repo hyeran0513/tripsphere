@@ -118,7 +118,7 @@ const RoomCard = ({ room, index }) => {
     setReservationInfo([
       {
         type: 'day_use',
-        room_id: selectedRoomData?.roomId,
+        room_id: selectedRoomData?.roomId || selectedRoomData?.id,
         duration: { hours, minutes },
         selectedTime: selectedRange,
       },
@@ -136,7 +136,7 @@ const RoomCard = ({ room, index }) => {
     setReservationInfo([
       {
         type: 'stay',
-        room_id: room.roomId,
+        room_id: room.roomId || room.id,
       },
     ]);
     navigate('/checkout');

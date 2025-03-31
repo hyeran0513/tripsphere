@@ -72,71 +72,55 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
       return;
     }
 
-    // navigate('/orderconfirmation', { state: updatedData });
+    const orderResults = [];
 
-    const orderPromises = updatedData.map(
-      (item) =>
-        new Promise(async (resolve, reject) => {
-          try {
-            const orderData = {
-              user_id: user?.uid,
-              room_id: item.roomId,
-              order_date: serverTimestamp(),
-              payment_status: 'completed',
-              used_points: item.original_price * (1 - item.discount_rate),
-            };
-            console.log('item :', item);
-            console.log('orderData before mutate:', orderData);
+    // 순차적으로 주문 처리
+    for (const item of updatedData) {
+      try {
+        const orderData = {
+          user_id: user?.uid,
+          room_id: item.roomId,
+          order_date: serverTimestamp(),
+          payment_status: 'completed',
+          used_points: item.original_price * (1 - item.discount_rate),
+        };
 
-            if (item.stay_type === 'day_use') {
-              orderData.duration = item.duration;
-              orderData.selectedTime = item.selectedTime;
-            }
+        console.log('item :', item);
+        console.log('orderData before mutate:', orderData);
 
-            // 다시 한번 로그를 출력
-            console.log(
-              'orderData after condition 여기서 undefinded 나오면 안됨:',
-              orderData,
-            );
+        if (item.stay_type === 'day_use') {
+          orderData.duration = item.duration;
+          orderData.selectedTime = item.selectedTime;
+        }
 
-            // mutate(orderData, {
-            //   onSuccess: (response) => {
-            //     console.log('orderData : ', orderData);
-            //     console.log('response : ', response);
-            //     resolve(response);
-            //   },
-            //   onError: reject,
-            // });
+        let timeout = setTimeout(() => {
+          console.error('mutate 응답 지연으로 강제 reject');
+          throw new Error('mutate timeout');
+        }, 5000);
 
-            console.log();
-            mutate(orderData, {
-              onSuccess: (response) => {
-                console.log('response : ', response);
-                resolve(response);
-              },
-              onError: (error) => {
-                console.error('mutate error : ', error);
-                reject(error);
-              },
-            });
-          } catch (error) {
-            console.error('Catch orderPromises error:', error);
-            resolve(null);
-          }
-        }),
-    );
+        await new Promise((resolve, reject) => {
+          mutate(orderData, {
+            onSuccess: (response) => {
+              clearTimeout(timeout);
+              console.log('response : ', response);
+              orderResults.push(response); // 응답을 결과 배열에 추가
+              resolve();
+            },
+            onError: (error) => {
+              clearTimeout(timeout);
+              console.error('mutate error : ', error);
+              reject(error);
+            },
+          });
+        });
+      } catch (error) {
+        console.error('Order failed:', error);
+      }
+    }
 
-    const orderIds = await Promise.all(orderPromises);
-    // .then((orderIds) => {
-    //   console.log('모든 주문 ID:', orderIds);
-    //   return orderIds;
-    // })
-    // .catch((error) => {
-    //   console.error('하나 이상의 주문 실패:', error);
-    // });
-
-    console.log('orderIds : ', orderIds);
-    setOrderIds(orderIds);
+    // 모든 주문이 완료된 후 처리
+    console.log('All orders completed:', orderResults);
+    setOrderIds(orderResults);
     navigate('/orderconfirmation');
   };
 

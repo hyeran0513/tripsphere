@@ -672,7 +672,7 @@ export const addRooms = async (accommodationIds) => {
     {
       availability: true,
       capacity: { adults: 4, children: 5 },
-      check_in: new Date('2025-03-29T14:52:09+09:00'),
+      check_in: new Date('2025-03-31T14:52:09+09:00'),
       check_out: new Date('2025-04-05T14:52:36+09:00'),
       description:
         '만 19세 미만 청소년 혼숙은 법적으로 불가하며, 이에 대한 숙소의 입실 거부 시 취소/환불이 불가합니다.\n만 19세 미만 청소년 예약에 대한 숙소의 입실 거부 시 취소/환불이 불가하오니, 예약 전 반드시 숙소에 확인하시기 바랍니다.',
@@ -691,8 +691,8 @@ export const addRooms = async (accommodationIds) => {
     {
       availability: true,
       capacity: { adults: 4, children: 2 },
-      check_in: new Date('2025-03-29T14:00:00+09:00'),
-      check_out: new Date('2025-03-29T16:30:00+09:00'),
+      check_in: new Date('2025-03-31T14:00:00+09:00'),
+      check_out: new Date('2025-03-31T16:30:00+09:00'),
       description:
         '주차 시설을 보유한 숙소입니다. (차량 이용 시 숙소에 문의해 주세요.)\n객실은 체크인 시 배정되며 사진과 다를 수 있습니다.',
       discount_rate: 0.1,

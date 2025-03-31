@@ -104,6 +104,7 @@ const Favorite = () => {
         title={`찜 목록 (${data?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
+        navigateLink="/mypage"
       />
       <div className="my-8 flex gap-2 justify-end rounded-2xl">
         <select
@@ -156,6 +157,7 @@ const Favorite = () => {
         title={`찜 목록 (${data?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
+        navigateLink="/mypage"
       />
 
       {/* 검색 영역 */}

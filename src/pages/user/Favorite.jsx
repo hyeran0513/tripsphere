@@ -156,6 +156,7 @@ const Favorite = () => {
         title={`찜 목록 (${data?.length || 0}건)`}
         breadcrumb={breadcrumb}
         hasBackButton={true}
+        navigateLink="/mypage"
       />
 
       {/* 검색 영역 */}

@@ -112,6 +112,14 @@ const ProductList = () => {
     }
   }, [filteredData, location.search]);
 
+  useEffect(() => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev.toString());
+      newParams.set('page', 1);
+      return newParams;
+    });
+  }, [filters.type, setSearchParams]);
+
   // 검색 핸들러
   const handleSearch = () => {
     setFilters((prev) => ({

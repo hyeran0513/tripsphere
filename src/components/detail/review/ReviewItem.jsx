@@ -1,6 +1,6 @@
 import Rating from '../../common/Rating';
 import { formatDate } from '../../../utils/format';
-import { BiMessageAltEdit } from 'react-icons/bi';
+import { BiMessageAltEdit, BiSolidUser } from 'react-icons/bi';
 import NoData from '../../common/NoData';
 
 const ReviewItem = ({ reviews }) => {
@@ -22,12 +22,21 @@ const ReviewItem = ({ reviews }) => {
           key={index}
           className="list-row">
           {/* 프로필 */}
-          <div>
-            <img
-              className="size-10 rounded-box"
-              src={review.userInfo.profile_image}
-              alt={review.userInfo.nickname}
-            />
+          <div className="w-[50px] h-[50px] rounded-lg overflow-hidden">
+            {review.userInfo.profile_image ? (
+              <img
+                className="w-[100%] h-[100%] object-cover"
+                src={review.userInfo.profile_image}
+                alt={review.userInfo.nickname}
+              />
+            ) : (
+              <div className="flex justify-center items-center w-[100%] h-[100%] bg-gray-100">
+                <BiSolidUser
+                  size={24}
+                  className="text-gray-300"
+                />
+              </div>
+            )}
           </div>
 
           {/* 유저 정보 */}

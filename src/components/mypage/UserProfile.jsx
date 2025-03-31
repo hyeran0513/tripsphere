@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BiCog, BiLock } from 'react-icons/bi';
-import { FaUser } from 'react-icons/fa';
+import { BiCog, BiSolidUser } from 'react-icons/bi';
 import InputField from '../common/InputField';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useUserData, useVerifyPassword } from '../../hooks/useUserData';
@@ -47,14 +46,20 @@ const UserProfile = () => {
       <div className="flex px-4 mb-8">
         {/* 프로필사진 */}
         <div className="avatar">
-          <div className="w-20 rounded-full">
+          <div className="w-[80px] h-[80px] rounded-lg overflow-hidden">
             {userInfo?.profile_image ? (
               <img
+                className="w-[100%] h-[100%] object-cover"
                 src={userInfo?.profile_image}
                 alt={userInfo?.username}
               />
             ) : (
-              <FaUser size={80} />
+              <div className="flex justify-center items-center w-[100%] h-[100%] bg-gray-100">
+                <BiSolidUser
+                  size={40}
+                  className="text-gray-300"
+                />
+              </div>
             )}
           </div>
         </div>

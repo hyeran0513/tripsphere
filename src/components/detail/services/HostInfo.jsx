@@ -1,4 +1,5 @@
 import React from 'react';
+import { BiSolidUser } from 'react-icons/bi';
 
 const HostInfo = ({ product }) => {
   return (
@@ -6,11 +7,21 @@ const HostInfo = ({ product }) => {
       <ul className="list">
         <li className="list-row px-0 py-0">
           {/* 호스트 프로필 */}
-          <div>
-            <img
-              className="size-10 rounded-box"
-              src="https://img.daisyui.com/images/profile/demo/1@94.webp"
-            />
+          <div className="w-[50px] h-[50px] rounded-lg overflow-hidden">
+            {product.host.profile_image ? (
+              <img
+                className="w-[100%] h-[100%] object-cover"
+                src={product?.host?.profile_image}
+                alt={product?.host?.name}
+              />
+            ) : (
+              <div className="flex justify-center items-center w-[100%] h-[100%] bg-gray-100">
+                <BiSolidUser
+                  size={24}
+                  className="text-gray-300"
+                />
+              </div>
+            )}
           </div>
 
           {/* 호스트 정보 */}

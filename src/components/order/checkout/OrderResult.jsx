@@ -10,14 +10,8 @@ import ServiceList from '../../common/ServiceList';
 import OrderList from './OrderList';
 
 const OrderResult = ({ room, isOpen, toggleContent, reservationInfo }) => {
-  console.log(' OrderResult -  reservationInfo: ', reservationInfo);
-  console.log(' OrderResult -  room: ', room);
-  // 방정보 (단일) - room, 예약정보 (배열) - reservationInfo
-  // 방정보에 해당하는 예약정보 불러오기
-
   const target = reservationInfo.find((ele) => ele.room_id === room.roomId);
 
-  console.log('target : ', target);
   return (
     <div className="border-b border-base-300 mb-4">
       <button

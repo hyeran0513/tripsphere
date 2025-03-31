@@ -74,7 +74,7 @@ const FavoriteList = () => {
                         );
 
                         return (
-                          <div>
+                          <div key={`room-${room.id}`}>
                             {stayRoom && room.id === stayRoom.id && (
                               <div
                                 key={stayRoom.id}

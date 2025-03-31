@@ -51,7 +51,8 @@ const Favorite = () => {
 
   useEffect(() => {
     if (data) {
-      setFilteredData(data);
+      const sortedData = [...data].reverse();
+      setFilteredData(sortedData);
       console.log(data);
     }
   }, [data]);
@@ -61,7 +62,7 @@ const Favorite = () => {
 
   const handleSearchButton = () => {
     if (!searchTerm.trim()) {
-      setFilteredData(data);
+      setFilteredData([...data].reverse());
       return;
     }
 
@@ -201,10 +202,10 @@ const Favorite = () => {
       </div>
 
       <div className="mb-10 grid grid-cols-2 gap-10">
-        {[...currentPageData].map((_, i, arr) => (
+        {currentPageData.map((favorite, index) => (
           <ProductCard
-            key={arr[arr.length - 1 - i].id}
-            favorite={arr[arr.length - 1 - i]}
+            key={index}
+            favorite={favorite}
           />
         ))}
       </div>

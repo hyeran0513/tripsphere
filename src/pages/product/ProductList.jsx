@@ -123,6 +123,8 @@ const ProductList = () => {
       adults: adultCount,
       children: childrenCount,
     }));
+
+    navigate('/products');
   };
 
   // 페이지 옵션 선택 핸들러

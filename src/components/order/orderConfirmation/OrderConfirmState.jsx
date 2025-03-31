@@ -116,7 +116,7 @@ const OrderState = () => {
   const { Icon, message } = getOrderStatus();
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4">
+    <div className="w-[600px] flex flex-col justify-center items-center gap-4">
       <Icon size={50} />
 
       <h1 className="text-4xl font-semibold tracking-tight">{message}</h1>

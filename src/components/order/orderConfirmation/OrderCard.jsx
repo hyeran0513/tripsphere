@@ -90,7 +90,7 @@ const OrderCard = ({ data, index }) => {
                 <span className="font-bold">체크인:</span>{' '}
                 <span>
                   {room.check_in
-                    ? room.type === 'stay'
+                    ? room.stay_type === 'stay'
                       ? formatDate(room?.check_in)
                       : formatTimeStampTime(room?.check_in)
                     : '날짜 없음'}
@@ -101,7 +101,7 @@ const OrderCard = ({ data, index }) => {
                 <span className="font-bold">체크아웃:</span>{' '}
                 <span>
                   {room.check_out
-                    ? room.type === 'stay'
+                    ? room.stay_type === 'stay'
                       ? formatDate(room?.check_out)
                       : formatTimeStampTime(room?.check_out)
                     : '날짜 없음'}

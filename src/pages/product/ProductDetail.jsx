@@ -1,10 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  useAccomData,
-  useFilteredRoomData,
-  useRoomOfAccomData,
-} from '../../hooks/useProductData';
+import { useAccomData, useFilteredRoomData } from '../../hooks/useProductData';
 import ProductGallery from '../../components/detail/gallery/ProductGallery';
 import ProductLocation from '../../components/detail/location/ProductLocation';
 import ProductReview from '../../components/detail/review/ProductReview';
@@ -26,9 +22,18 @@ const ProductDetail = () => {
   const [datePickerDate, setDatePickerDate] = useState(null);
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
-  const [filters, setFilters] = useState(null);
+  const [filters, setFilters] = useState({
+    adults: 0,
+    children: 0,
+    checkIn: new Date(),
+    checkOut: new Date(),
+  });
 
   const { data: filteredRooms } = useFilteredRoomData(id, filters);
+
+  useEffect(() => {
+    console.log(JSON.stringify(filteredRooms));
+  }, []);
 
   const avgRating =
     reviews && reviews.length
@@ -43,11 +48,6 @@ const ProductDetail = () => {
   };
 
   const { data: accommodation, isLoading, error } = useAccomData(id);
-  const {
-    data: rooms,
-    isLoading: isRoomLoading,
-    error: roomError,
-  } = useRoomOfAccomData(id);
 
   // 섹션별 ref 설정
   const tabRef = useRef([]);
@@ -85,7 +85,7 @@ const ProductDetail = () => {
         <div
           id="container"
           className="flex items-start gap-10 mt-6">
-          <RoomList rooms={filters ? filteredRooms : rooms} />
+          <RoomList rooms={filteredRooms} />
 
           <SearchForm
             openDate={openDate}

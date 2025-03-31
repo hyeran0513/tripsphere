@@ -24,27 +24,6 @@ export const fetchAccomData = async (accomId) => {
   }
 };
 
-// 숙소 내 객실 정보 쿼리
-export const getRoomOfAccomData = async (accomId) => {
-  if (!accomId) return null;
-
-  const roomsRef = collection(db, 'rooms');
-  const q = query(roomsRef, where('accommodation_id', '==', accomId));
-
-  const querySnapshot = await getDocs(q);
-
-  if (!querySnapshot.empty) {
-    const roomsData = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      roomId: doc.id,
-    }));
-
-    return roomsData;
-  } else {
-    return null;
-  }
-};
-
 // 특정 객실 정보 쿼리
 export const getRoomData = async (roomIds) => {
   const roomDataPromises = roomIds.map(async (roomId) => {
@@ -56,12 +35,9 @@ export const getRoomData = async (roomIds) => {
         const data = roomSnap.data();
         const accomData = await fetchAccomData(data.accommodation_id);
         return { ...data, roomId, accomData };
-      } else {
-        console.log('No document found for roomId:', roomId);
-        return null;
       }
     } catch (error) {
-      console.error('Error fetching room data:', error);
+      console.error(error.message);
       return null;
     }
   });

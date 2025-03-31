@@ -38,7 +38,6 @@ const getAccommodationIds = async (accommodationIds, filters) => {
     }
 
     // 체크아웃 날짜
-
     if (filters.checkOut) {
       let checkOut = new Date(filters.checkOut);
       checkOut.setHours(23, 59, 59, 999);
@@ -92,7 +91,33 @@ export const getFilteredAccommodations = async (filters) => {
 
   roomSnapshot.forEach((doc) => {
     const room = doc.data();
-    const accomId = room.accommodation_id;
+
+    let checkInTimestamp = '';
+    let checkOutTimestamp = '';
+
+    // 체크인 날짜
+    if (filters.checkIn) {
+      let checkIn = new Date(filters.checkIn);
+      checkIn.setHours(0, 0, 0, 0);
+      checkInTimestamp = Timestamp.fromDate(checkIn);
+    }
+
+    // 체크아웃 날짜
+    if (filters.checkOut) {
+      let checkOut = new Date(filters.checkOut);
+      checkOut.setHours(23, 59, 59, 999);
+      checkOutTimestamp = Timestamp.fromDate(checkOut);
+    }
+
+    const isWithinAvailablePeriod =
+      room.check_in.toMillis() <= checkOutTimestamp.toMillis() &&
+      room.check_out.toMillis() >= checkInTimestamp.toMillis();
+
+    let accomId = '';
+    if (isWithinAvailablePeriod) {
+      accomId = room.accommodation_id;
+    }
+
     if (!roomMap[accomId]) {
       roomMap[accomId] = [];
     }

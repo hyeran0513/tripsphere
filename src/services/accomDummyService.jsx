@@ -699,7 +699,7 @@ export const addRooms = async (accommodationIds) => {
       images: [
         'https://image.goodchoice.kr/adimg_new/55/449531/65bbebcd5d5e35bc0775d1c73da7c65c.jpg',
       ],
-      name: 'B-타입',
+      name: 'A-타입',
       original_price: 40000,
       services: ['wifi', 'parking', 'tv'],
       stay_type: 'day_use',

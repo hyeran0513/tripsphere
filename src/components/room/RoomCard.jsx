@@ -156,7 +156,9 @@ const RoomCard = ({ room, index }) => {
           <button
             className="flex items-center text-xs font-semibold cursor-pointer"
             onClick={() =>
-              document.getElementById(`room${index}_${room.roomId}`).showModal()
+              document
+                .getElementById(`room${index}_${room.room_group_id}`)
+                .showModal()
             }>
             상세보기 <BiChevronRight className="text-lg" />
           </button>
@@ -164,8 +166,8 @@ const RoomCard = ({ room, index }) => {
           {/* 객실 상세 정보 */}
           <Modal
             buttonTitle={room.name}
-            modalId={`room${index}_${room.roomId}`}
-            title={room.name}
+            modalId={`room${index}_${room.room_group_id}`}
+            title={`${room.name} (${room.stay_type === 'stay' ? '숙박' : '대실'})`}
             hideButton={true}>
             <div className="py-4">{room.description}</div>
             <ServiceList services={room.services} />

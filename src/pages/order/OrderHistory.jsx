@@ -2,6 +2,9 @@ import OrderList from '../../components/order/OrderList';
 import PageHeader from '../../components/common/PageHeader';
 import { useOrderData } from '../../hooks/useOrderData';
 import useAuthStore from '../../stores/useAuthStore';
+import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Pagination from '../../components/common/Pagination';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -9,8 +12,28 @@ const breadcrumb = [
 ];
 
 const OrderHistory = () => {
+  const navigate = useNavigate();
   const { user } = useAuthStore();
   const { data: orderInfo, isLoading, error } = useOrderData(user?.uid);
+  const [selectedPerOption, setSelectedPerOption] = useState(5);
+  const [currentPageData, setCurrentPageData] = useState([]);
+
+  const perOptions = [
+    { id: 1, value: 5, name: '5개씩 보기' },
+    { id: 2, value: 10, name: '10개씩 보기' },
+    { id: 4, value: 20, name: '20개씩 보기' },
+  ];
+
+  // 페이지 옵션 선택 핸들러
+  const handlePagePerOptionSelect = useCallback(
+    (event) => {
+      const perPage = Number(event.target.value);
+      setSelectedPerOption(perPage);
+
+      navigate(location.pathname);
+    },
+    [navigate, location],
+  );
 
   if (isLoading) {
     return (
@@ -31,8 +54,31 @@ const OrderHistory = () => {
         navigateLink="/mypage"
       />
 
+      <div className="flex justify-end mb-10">
+        <select
+          id="perPage"
+          className="select border border-gray-400 rounded-lg w-40"
+          value={selectedPerOption}
+          onChange={handlePagePerOptionSelect}>
+          {perOptions.map((item) => (
+            <option
+              key={item.id}
+              value={item.value}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* 주문 내역 */}
-      <OrderList orderInfo={orderInfo} />
+      <OrderList orderInfo={currentPageData} />
+
+      {/* 페이지네이션 */}
+      <Pagination
+        data={orderInfo}
+        pagePerItem={selectedPerOption}
+        setCurrentPageData={setCurrentPageData}
+      />
     </div>
   );
 };

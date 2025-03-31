@@ -83,7 +83,7 @@ const OrderList = ({ orderInfo }) => {
                       </div>
                     )}
                     {order.room.name || '숙소 정보 없음'}
-                    <p className="flex items-center gap-1 text-gray-500 text-xs">
+                    <p className="mt-4  flex items-center gap-1 text-gray-500 text-xs">
                       <BiBuildings />
                       {order.accom.name}
                     </p>

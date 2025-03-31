@@ -1,4 +1,10 @@
-import { collection, doc, getDocs, runTransaction } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  runTransaction,
+  Timestamp,
+} from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
 // room 조건을 기반으로 가능한 숙소 ID만 필터링
@@ -7,8 +13,8 @@ const getAccommodationIds = async (accommodationIds, filters) => {
 
   const allRoomDocs = await getDocs(collection(db, 'rooms'));
 
-  const checkIn = new Date(filters.checkIn);
-  const checkOut = new Date(filters.checkOut);
+  let checkInTimestamp = '';
+  let checkOutTimestamp = '';
   const filterAdults = Number(filters.adults ?? 0);
   const filterChildren = Number(filters.children ?? 0);
 
@@ -24,23 +30,24 @@ const getAccommodationIds = async (accommodationIds, filters) => {
     const maxChildren = room.capacity?.children ?? 0;
     if (maxAdults < filterAdults || maxChildren < filterChildren) return;
 
-    const roomAvailableFrom =
-      room.check_in?.toDate?.() || new Date(room.check_in);
-    const roomAvailableTo =
-      room.check_out?.toDate?.() || new Date(room.check_out);
+    // 체크인 날짜
+    if (filters.checkIn) {
+      let checkIn = new Date(filters.checkIn);
+      checkIn.setHours(0, 0, 0, 0);
+      checkInTimestamp = Timestamp.fromDate(checkIn);
+    }
 
-    // 날짜만 비교하고 시간은 무시하도록 처리
-    const roomAvailableFromDate = new Date(
-      roomAvailableFrom.setHours(0, 0, 0, 0),
-    );
-    const roomAvailableToDate = new Date(roomAvailableTo.setHours(0, 0, 0, 0));
-    const checkInDate = new Date(checkIn.setHours(0, 0, 0, 0));
-    const checkOutDate = new Date(checkOut.setHours(0, 0, 0, 0));
+    // 체크아웃 날짜
 
-    // 날짜 범위가 겹치는지 확인
+    if (filters.checkOut) {
+      let checkOut = new Date(filters.checkOut);
+      checkOut.setHours(23, 59, 59, 999);
+      checkOutTimestamp = Timestamp.fromDate(checkOut);
+    }
+
     const isWithinAvailablePeriod =
-      checkInDate >= roomAvailableFromDate &&
-      checkOutDate <= roomAvailableToDate;
+      room.check_in.toMillis() <= checkOutTimestamp.toMillis() &&
+      room.check_out.toMillis() >= checkInTimestamp.toMillis();
 
     if (isWithinAvailablePeriod) {
       result.add(room.accommodation_id);

@@ -48,14 +48,20 @@ export const getRoomOfAccomData = async (accomId) => {
 // 특정 객실 정보 쿼리
 export const getRoomData = async (roomIds) => {
   const roomDataPromises = roomIds.map(async (roomId) => {
-    const roomDoc = doc(db, 'rooms', roomId);
-    const roomSnap = await getDoc(roomDoc);
+    try {
+      const roomDoc = doc(db, 'rooms', roomId);
+      const roomSnap = await getDoc(roomDoc);
 
-    if (roomSnap.exists()) {
-      const data = roomSnap.data();
-      const accomData = await fetchAccomData(data.accommodation_id);
-      return { ...data, roomId, accomData };
-    } else {
+      if (roomSnap.exists()) {
+        const data = roomSnap.data();
+        const accomData = await fetchAccomData(data.accommodation_id);
+        return { ...data, roomId, accomData };
+      } else {
+        console.log('No document found for roomId:', roomId);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching room data:', error);
       return null;
     }
   });

@@ -1,10 +1,13 @@
+import { serverTimestamp } from 'firebase/firestore';
 import React, { useState } from 'react';
-import { formatNumber } from '../../../utils/format';
-import useAuthStore from '../../../stores/useAuthStore';
-import { useUserData } from '../../../hooks/useUserData';
 import { useNavigate } from 'react-router-dom';
 import { useCheckout } from '../../../hooks/useOrderData';
-import { serverTimestamp } from 'firebase/firestore';
+import { useUserData } from '../../../hooks/useUserData';
+import useAuthStore from '../../../stores/useAuthStore';
+import useCheckoutStore from '../../../stores/useCheckoutStore';
+import useOrderStore from '../../../stores/useOrderStore';
+import useRoomSelectionStore from '../../../stores/useRoomSelectionStore';
+import { formatNumber } from '../../../utils/format';
 import ToastMessage from '../../common/ToastMessage';
 
 const OrderPriceForm = ({ data, reservationInfo }) => {
@@ -12,6 +15,17 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
   const { data: userData } = useUserData(user?.uid);
   const navigate = useNavigate();
   const [toast, setToast] = useState(null);
+  const { clearReservationInfo } = useRoomSelectionStore();
+  const { roomIds, setRoomIds, resetRoomIds } = useCheckoutStore();
+  const { setOrderIds } = useOrderStore();
+
+  // 새로고침시 언마운트라고 판단함 -> orderConfirm 페이지 이동시로 변경 필요.
+  // useEffect(() => {
+  //   return () => {
+  //     clearReservationInfo();
+  //     resetRoomIds();
+  //   };
+  // }, []);
 
   // 토스트 보여주기
   const showToast = (type, message) => {
@@ -36,7 +50,6 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
   // 결제하기 버튼 클릭
   const handleCheckOut = async (e) => {
     e.preventDefault();
-
     const updatedData = data.map((item) => {
       const matchedRoom = reservationInfo.find(
         (room) => room.room_id === item.roomId,
@@ -59,11 +72,11 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
       return;
     }
 
-    navigate('/orderconfirmation', { state: updatedData });
+    // navigate('/orderconfirmation', { state: updatedData });
 
     const orderPromises = updatedData.map(
       (item) =>
-        new Promise((resolve, reject) => {
+        new Promise(async (resolve, reject) => {
           const orderData = {
             user_id: user?.uid,
             room_id: item.roomId,
@@ -77,14 +90,36 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
             orderData.selectedTime = item.selectedTime;
           }
 
+          // mutate(orderData, {
+          //   onSuccess: (response) => {
+          //     console.log('orderData : ', orderData);
+          //     console.log('response : ', response);
+          //     resolve(response);
+          //   },
+          //   onError: reject,
+          // });
+
           mutate(orderData, {
-            onSuccess: resolve,
-            onError: reject,
+            onSuccess: (response) => {
+              resolve(response);
+            },
+            onError: (error) => {
+              reject(error);
+            },
           });
         }),
     );
 
-    await Promise.all(orderPromises);
+    const orderIds = await Promise.all(orderPromises)
+      .then((orderIds) => {
+        return orderIds;
+      })
+      .catch((error) => {
+        console.error('하나 이상의 주문 실패:', error);
+      });
+
+    setOrderIds(orderIds);
+    navigate('/orderconfirmation');
   };
 
   return (
@@ -131,7 +166,11 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
                 <div className="flex justify-between">
                   <p>결제 후 잔여 포인트</p>
                   <p
-                    className={`flex justify-end ${getRemainingPoints(userData?.points, data) < 0 ? 'text-red-500' : 'text-indigo-500'}`}>
+                    className={`flex justify-end ${
+                      getRemainingPoints(userData?.points, data) < 0
+                        ? 'text-red-500'
+                        : 'text-indigo-500'
+                    }`}>
                     {formatNumber(getRemainingPoints(userData?.points, data))}원
                   </p>
                 </div>

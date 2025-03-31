@@ -1,24 +1,54 @@
 import { useEffect, useState } from 'react';
-import { useRoomData } from '../../hooks/useProductData';
-import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
-import ToggleOrderList from '../../components/order/checkout/ToggleOrderList';
 import Loading from '../../components/common/Loading';
 import OrderPriceForm from '../../components/order/checkout/OrderPriceForm';
+import ToggleOrderList from '../../components/order/checkout/ToggleOrderList';
+import { useRoomData } from '../../hooks/useProductData';
+import useCheckoutStore from '../../stores/useCheckoutStore';
+import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 
 const Checkout = () => {
-  const { reservationInfo } = useRoomSelectionStore();
-  const [saveRoomId, setSaveRoomId] = useState(null);
-  const { data, isLoading, error } = useRoomData(saveRoomId);
+  const { reservationInfo, clearReservationInfo } = useRoomSelectionStore();
+  const [rooms, setRooms] = useState(null);
+  const { data, isLoading, error } = useRoomData(rooms);
+  const { roomIds, setRoomIds } = useCheckoutStore();
 
   useEffect(() => {
-    if (reservationInfo) {
-      const newRoomIds = reservationInfo.map((info) => {
+    console.log('reservationInfo : ', reservationInfo);
+    let newRoomIds;
+    // ???
+    // 기존소스코드에서 이어쓰고 테스트하다 오류나서
+    // 전부 다시 확인해보는데
+    // 예약정보인 reservationInfo에서 예약정보를 통채로 넘겨야하는데
+    // 객실 아이디만 추려서 사용함.
+    // 훅에서 가져오는 정보가 객실 정보를 가져오고있었네
+    // 심지어 useEffect 로 rooms가 변경됐을때를 따로 감지 안해서
+    // useRoomData가 제대로 동작하지도 않았을듯
+    if (!reservationInfo || reservationInfo?.length === 0) {
+      console.log('수신한 데이터 없음');
+      if (roomIds && roomIds.length > 0) {
+        console.log('저장된 데이터 있음 : ', roomIds);
+        newRoomIds = roomIds;
+      } else {
+        console.log('수신한 데이터, 저장된 데이터도 암것도 없음 ');
+        return;
+      }
+    } else {
+      console.log('수신한 데이터 있음. 수신 데이터 저장');
+      newRoomIds = reservationInfo.map((info) => {
+        console.log('info : ', info);
         return info.room_id;
       });
-
-      setSaveRoomId(newRoomIds);
+      setRoomIds(newRoomIds);
     }
+
+    console.log('newRoomIds : ', newRoomIds);
+    // 다른 컴포넌트로 데이터 전달시 사용
+    setRooms(newRoomIds);
+    // 새로고침시 사용
+    setRoomIds(newRoomIds);
   }, [reservationInfo]);
+
+  useEffect(() => {}, [rooms]);
 
   if (isLoading) return <Loading />;
 
@@ -36,11 +66,15 @@ const Checkout = () => {
 
           <div className="flex gap-10">
             {/* 주문 목록 */}
-            <ToggleOrderList data={data} />
+            <ToggleOrderList
+              data={data}
+              reservationInfo={reservationInfo}
+            />
 
             {/* 최종 결제 금액 */}
             <OrderPriceForm
               data={data}
+              roomIds={roomIds}
               reservationInfo={reservationInfo}
             />
           </div>

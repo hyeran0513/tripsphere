@@ -119,7 +119,7 @@ const ProductList = () => {
       newParams.set('page', 1);
       return newParams;
     });
-  }, [filters.type, setSearchParams]);
+  }, [filters.type]);
 
   // 검색 핸들러
   const handleSearch = () => {

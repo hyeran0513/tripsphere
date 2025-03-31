@@ -64,7 +64,7 @@ export const usedPoints = async ({ userId, points }) => {
     const pointsRef = collection(db, 'points');
     const userRef = doc(db, 'users', userId);
 
-    const numberPoints = Math.abs(Number(points));
+    const numberPoints = Number(points);
 
     await updateDoc(userRef, {
       points: increment(-numberPoints),

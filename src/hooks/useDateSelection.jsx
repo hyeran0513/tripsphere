@@ -8,11 +8,37 @@ const useDateSelection = (stateType) => {
   const filterStore = useFilterStore();
   const reservationStore = useReservationStore();
 
-  const [date, setDate] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-  });
+  const initialDate = (() => {
+    if (stateType === 'filter') {
+      return {
+        startDate: filterStore.checkIn
+          ? new Date(filterStore.checkIn)
+          : new Date(),
+        endDate: filterStore.checkOut
+          ? new Date(filterStore.checkOut)
+          : new Date(),
+        key: 'selection',
+      };
+    } else if (stateType === 'reservation') {
+      return {
+        startDate: reservationStore.checkIn
+          ? new Date(reservationStore.checkIn)
+          : new Date(),
+        endDate: reservationStore.checkOut
+          ? new Date(reservationStore.checkOut)
+          : new Date(),
+        key: 'selection',
+      };
+    } else {
+      return {
+        startDate: new Date(),
+        endDate: new Date(),
+        key: 'selection',
+      };
+    }
+  })();
+
+  const [date, setDate] = useState(initialDate);
 
   const selectedState =
     stateType === 'filter'
@@ -34,6 +60,7 @@ const useDateSelection = (stateType) => {
 
   // 날짜 선택 시 상태 저장
   useEffect(() => {
+    console.log('🌀 date 변경됨:', date);
     if (date.startDate && date.endDate) {
       setCheckIn(date.startDate.toLocaleDateString());
       setCheckOut(date.endDate.toLocaleDateString());

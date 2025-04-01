@@ -60,3 +60,30 @@ export const addReview = async (review) => {
     console.error('리뷰 추가 오류: ' + error.message);
   }
 };
+
+// 숙소별 평균 평점
+export const getAverageRatings = async () => {
+  const reviewSnapshot = await getDocs(collection(db, 'reviews'));
+  const reviewMap = {};
+
+  reviewSnapshot.forEach((doc) => {
+    const review = doc.data();
+    const accomId = review.accommodation_id;
+
+    if (!reviewMap[accomId]) {
+      reviewMap[accomId] = [];
+    }
+    reviewMap[accomId].push(review.rating);
+  });
+
+  const averageMap = {};
+
+  for (const accomId in reviewMap) {
+    const ratings = reviewMap[accomId];
+    const average =
+      ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length;
+    averageMap[accomId] = Math.round(average * 10) / 10;
+  }
+
+  return averageMap;
+};

@@ -58,7 +58,7 @@ const ProductCard = ({ favorite }) => {
 
                 <div className="badge bg-yellow-500 text-xs gap-0.5">
                   <BiSolidStar />
-                  {favorite.rating}
+                  {(favorite.average_rating || 0).toFixed(1)}
                 </div>
               </div>
 
@@ -68,9 +68,7 @@ const ProductCard = ({ favorite }) => {
               </div>
 
               {/* 위치 */}
-              <div
-                aria-label={`숙소 위치 ${favorite.rating}`}
-                className="flex items-center gap-1 text-xs text-gray-500">
+              <div className="flex items-center gap-1 text-xs text-gray-500">
                 <BiSolidMap /> {favorite.location.city}{' '}
                 {favorite.location.sub_city}
               </div>

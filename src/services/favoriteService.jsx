@@ -8,6 +8,7 @@ import {
   collection,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import { getAverageRatings } from './reviewService';
 
 // 사용자 찜 목록 가져오기
 const getUserWishlist = async (userId) => {
@@ -61,6 +62,9 @@ export const checkFavorite = async (userId, accommodationId) => {
 export const getFavoriteAccomm = async (userId) => {
   const userData = await getUserWishlist(userId);
 
+  // 평균 평점 조회
+  const averageRatingMap = await getAverageRatings();
+
   // 숙소
   const accomPromises = userData.wishlist.map(async (item) => {
     const accomDoc = doc(db, 'accommodations', item);
@@ -68,27 +72,33 @@ export const getFavoriteAccomm = async (userId) => {
 
     if (accomSnap.exists()) {
       const data = accomSnap.data();
-      return { ...data, id: accomSnap.id };
+      return {
+        ...data,
+        id: accomSnap.id,
+        average_rating: averageRatingMap[accomSnap.id] || null,
+      };
     } else {
       return null;
     }
   });
 
-  // 객실
   const accommodations = await Promise.all(accomPromises);
   const filteredAccommodations = accommodations.filter(
     (accom) => accom !== null,
   );
 
+  // 객실
   const roomSnapshot = await getDocs(collection(db, 'rooms'));
   const roomMap = {};
 
   roomSnapshot.forEach((doc) => {
     const room = doc.data();
     const accomId = room.accommodation_id;
+
     if (!roomMap[accomId]) {
       roomMap[accomId] = [];
     }
+
     roomMap[accomId].push({ id: doc.id, ...room });
   });
 

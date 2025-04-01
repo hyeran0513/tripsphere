@@ -6,6 +6,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
+import { getAverageRatings } from './reviewService';
 
 // room 조건을 기반으로 가능한 숙소 ID만 필터링
 const getAccommodationIds = async (accommodationIds, filters) => {
@@ -124,9 +125,13 @@ export const getFilteredAccommodations = async (filters) => {
     roomMap[accomId].push({ id: doc.id, ...room });
   });
 
+  // 평균 평점 조회
+  const averageRatingMap = await getAverageRatings();
+
   docs = docs.map((doc) => ({
     ...doc,
     rooms: roomMap[doc.id] || [],
+    average_rating: averageRatingMap[doc.id] || null,
   }));
 
   return docs;

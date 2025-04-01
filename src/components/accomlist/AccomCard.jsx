@@ -68,7 +68,7 @@ const AccomCard = ({ accommodation }) => {
 
                   <div className="badge bg-yellow-500 text-xs gap-0.5">
                     <BiSolidStar />
-                    {accommodation.rating}
+                    {(accommodation.average_rating || 0).toFixed(1)}
                   </div>
                 </div>
 
@@ -78,9 +78,7 @@ const AccomCard = ({ accommodation }) => {
                 </div>
 
                 {/* 위치 */}
-                <div
-                  aria-label={`숙소 위치 ${accommodation.rating}`}
-                  className="flex items-center gap-1 text-xs text-gray-500">
+                <div className="flex items-center gap-1 text-xs text-gray-500">
                   <BiSolidMap /> {accommodation.location.city}{' '}
                   {accommodation.location.sub_city}
                 </div>

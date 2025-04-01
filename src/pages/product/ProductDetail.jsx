@@ -41,7 +41,7 @@ const ProductDetail = () => {
           reviews.reduce((acc, cmd) => acc + (cmd.rating || 0), 0) /
           reviews.length
         ).toFixed(1)
-      : '0';
+      : '0.0';
 
   const handleReFetch = async () => {
     await refetch();

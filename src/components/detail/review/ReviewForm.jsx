@@ -9,7 +9,7 @@ import ToastMessage from '../../common/ToastMessage';
 
 const ReviewForm = ({ handleNewReview, productId }) => {
   const [comment, setComment] = useState('');
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState(0);
   const user = auth.currentUser;
   const { isAuthenticated } = useAuthStore();
   const [toast, setToast] = useState(null);
@@ -38,7 +38,7 @@ const ReviewForm = ({ handleNewReview, productId }) => {
 
     // 초기화
     setComment('');
-    setRating('');
+    setRating(0);
   };
 
   return (
@@ -50,20 +50,24 @@ const ReviewForm = ({ handleNewReview, productId }) => {
             className="textarea h-28 p-3 border rounded-lg resize-none w-full text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all"
             placeholder="리뷰를 작성해 주세요."
             value={comment}
-            onChange={(e) => setComment(e.target.value)}></textarea>
+            onChange={(e) => setComment(e.target.value)}
+          />
 
           <div className="flex items-center justify-between">
             {/* 별점 */}
-            <Rating setRating={setRating} />
+            <Rating
+              rating={rating}
+              setRating={setRating}
+            />
 
             {/* 전송 버튼 */}
             <button
               type="submit"
               onClick={handleAddReview}
-              disabled={!comment.trim() && !rating}
+              disabled={!comment.trim() || rating === 0}
               className={`cursor-pointer self-end rounded-lg px-6 py-2 font-medium transition-all focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 
               ${
-                comment.trim() && rating
+                comment.trim() && rating !== 0
                   ? 'bg-indigo-600 text-white hover:bg-indigo-700'
                   : 'bg-gray-200 text-gray-500 cursor-not-allowed'
               }`}>

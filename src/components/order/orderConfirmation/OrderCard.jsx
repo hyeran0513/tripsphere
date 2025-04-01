@@ -5,41 +5,29 @@ import {
   BiChevronRight,
   BiUser,
 } from 'react-icons/bi';
+import { PiBabyLight } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
 import { useRoomData } from '../../../hooks/useProductData';
 import { formatDate, formatTimeStampTime } from '../../../utils/format';
-import { PiBabyLight } from 'react-icons/pi';
 
 const OrderCard = ({ data, index }) => {
   const navigate = useNavigate();
 
-  console.log('OrderCard  - data : ', data);
   const { data: roomData, isLoading, isError } = useRoomData([data.room_id]);
 
-  // 방 데이터가 로딩될 때마다 로그를 찍어주는 useEffect
-  useEffect(() => {
-    console.log('roomData : ', roomData);
-  }, [roomData]);
+  useEffect(() => {}, [roomData]);
 
   let room;
-  useEffect(() => {
-    console.log(' isLoading, isError : ', isLoading, isError);
-  }, [isLoading, isError]);
+  useEffect(() => {}, [isLoading, isError]);
 
-  // 에러가 있을 경우 에러 메시지 반환
   if (isError) {
     return <>{isError.message}</>;
   }
 
-  // roomData가 없으면 렌더링하지 않도록 방어 처리
   if (!roomData) {
-    console.log('roomData 없음!', roomData);
-    return null; // roomData가 없으면 아무 것도 렌더링하지 않음
+    return null;
   } else {
-    console.log('roomData ! : ', roomData);
-    console.log('roomData.flat() ! : ', roomData.flat());
     room = roomData[0];
-    console.log('room : ', room);
   }
 
   return (

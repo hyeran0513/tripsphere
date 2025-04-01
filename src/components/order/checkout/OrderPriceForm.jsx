@@ -85,9 +85,6 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
           used_points: item.original_price * (1 - item.discount_rate),
         };
 
-        console.log('item :', item);
-        console.log('orderData before mutate:', orderData);
-
         if (item.stay_type === 'day_use') {
           orderData.duration = item.duration;
           orderData.selectedTime = item.selectedTime;
@@ -102,7 +99,6 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
           mutate(orderData, {
             onSuccess: (response) => {
               clearTimeout(timeout);
-              console.log('response : ', response);
               orderResults.push(response); // 응답을 결과 배열에 추가
               resolve();
             },

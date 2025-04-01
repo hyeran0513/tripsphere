@@ -20,14 +20,12 @@ const Checkout = () => {
   useEffect(() => {
     if (reservationInfo?.length > 0) {
       const newRoomIds = reservationInfo.map((info) => info.room_id);
-      console.log('전달받은 정보 활용 newRoomIds:', newRoomIds);
       setSavedReserveInfo(reservationInfo);
       if (JSON.stringify(newRoomIds) !== JSON.stringify(roomIds)) {
         setRoomIds(newRoomIds);
       }
       setRooms(newRoomIds);
     } else if (roomIds?.length > 0) {
-      console.log('저장된 정보 활용 roomIds:', roomIds);
       setRooms(roomIds);
     }
   }, [reservationInfo]);

@@ -19,14 +19,6 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
   const { roomIds, setRoomIds, resetRoomIds } = useCheckoutStore();
   const { setOrderIds } = useOrderStore();
 
-  // 새로고침시 언마운트라고 판단함 -> orderConfirm 페이지 이동시로 변경 필요.
-  // useEffect(() => {
-  //   return () => {
-  //     clearReservationInfo();
-  //     resetRoomIds();
-  //   };
-  // }, []);
-
   // 토스트 보여주기
   const showToast = (type, message) => {
     setToast({ type, message });
@@ -85,9 +77,6 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
           used_points: item.original_price * (1 - item.discount_rate),
         };
 
-        console.log('item :', item);
-        console.log('orderData before mutate:', orderData);
-
         if (item.stay_type === 'day_use') {
           orderData.duration = item.duration;
           orderData.selectedTime = item.selectedTime;
@@ -102,7 +91,6 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
           mutate(orderData, {
             onSuccess: (response) => {
               clearTimeout(timeout);
-              console.log('response : ', response);
               orderResults.push(response); // 응답을 결과 배열에 추가
               resolve();
             },

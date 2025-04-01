@@ -27,38 +27,12 @@ const OrderState = () => {
 
   const { orderIds, setOrderIds, resetOrderIds } = useOrderStore();
 
-  // 페이지 이동 감지 후 상태 초기화
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      console.log('페이지 이동 감지: ', location.pathname);
-
-      // 특정 페이지로 이동할 때만 상태 초기화
-      if (location.pathname !== '/orderstate') {
-        console.log(
-          `감지 : location.pathname !== '/orderstate' : `,
-          location.pathname !== '/orderstate',
-        );
-        // resetOrderIds();
-        // resetRoomIds();
-        // clearReservationInfo();
-      }
-    };
-
-    return () => {
-      handleBeforeUnload(); // 언마운트 시 실행
-    };
-  }, [location]);
-
-  // 첫 렌더링시 store 초기화.
   useEffect(() => {
     return () => {
-      console.log('언마운트 동작');
-
-      // 개발환경에서 strict로 인한 언마운트 동작
-      // resetOrderIds();
-      // clearReservationInfo();
-      // resetRoomIds();
-      // resetTmpReserveInfo();
+      resetOrderIds();
+      clearReservationInfo();
+      resetRoomIds();
+      resetTmpReserveInfo();
     };
   }, []);
 
@@ -67,17 +41,12 @@ const OrderState = () => {
   const { data: orders, isLoading, isError } = useOrdersDataByOrderId(tmp);
 
   useEffect(() => {
-    console.log('orderIds : ', orderIds);
     setTmp(orderIds);
   }, [orderIds]);
 
-  useEffect(() => {
-    console.log('tmp : ', tmp);
-  }, [tmp]);
+  useEffect(() => {}, [tmp]);
 
-  useEffect(() => {
-    console.log('orders : ', orders);
-  }, [orders]);
+  useEffect(() => {}, [orders]);
 
   useEffect(() => {
     console.log(

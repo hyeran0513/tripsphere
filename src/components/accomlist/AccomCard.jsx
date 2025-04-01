@@ -51,7 +51,7 @@ const AccomCard = ({ accommodation }) => {
         <Link
           to={`/product/${accommodation.id}`}
           className="flex gap-6">
-          <div className="h-[200px] rounded-md overflow-hidden">
+          <div className="w-[40%] h-[200px] rounded-md overflow-hidden">
             <img
               src={accommodation.images[0]}
               alt={accommodation.name}

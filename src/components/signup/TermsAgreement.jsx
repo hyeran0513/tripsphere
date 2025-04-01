@@ -73,7 +73,7 @@ const TermsAgreement = ({ onAgree }) => {
 
             {/* 모든 항목 동의 */}
             <div className="pt-8">
-              <div className="flex items-center bg-gray-100 py-6 px-4">
+              <div className="flex items-center bg-gray-100 py-6 px-4 dark:bg-base-200">
                 <input
                   id="all-agree"
                   type="checkbox"

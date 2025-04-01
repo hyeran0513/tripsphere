@@ -90,7 +90,7 @@ const EmailPassword = ({ onNext, onPrev, showToast }) => {
                 </h2>
 
                 {/* 회원 인증 메일 설명 */}
-                <p className="px-4 py-4 text-gray-600 bg-gray-100">
+                <p className="px-4 py-4 text-gray-600 bg-gray-100 dark:bg-base-300 dark:text-gray-200">
                   이 이메일 인증은 회원가입을 위한 필수 절차입니다.
                   <br />
                   인증 메일이 발송되었으니, 아래의{' '}
@@ -119,7 +119,7 @@ const EmailPassword = ({ onNext, onPrev, showToast }) => {
                     onClick={resendVerificationEmail}
                     className={`btn flex-1 ${
                       canResend
-                        ? 'border border-gray-300 hover:bg-gray-100'
+                        ? 'border border-gray-300 hover:bg-gray-100 dark:hover:bg-base-200'
                         : 'bg-gray-300 cursor-not-allowed'
                     }`}>
                     {canResend
@@ -135,7 +135,7 @@ const EmailPassword = ({ onNext, onPrev, showToast }) => {
               <button
                 type="button"
                 onClick={onPrev}
-                className="flex w-full justify-center border border-gray-300 hover:bg-gray-100 rounded-md px-3 py-1.5 text-sm font-semibold shadow-xs">
+                className="cursor-pointer flex w-full justify-center border border-gray-300 hover:bg-gray-100 dark:hover:bg-base-200 rounded-md px-3 py-1.5 text-sm font-semibold shadow-xs">
                 이전
               </button>
 

@@ -91,7 +91,7 @@ const UserInfo = ({ onNext, onPrev }) => {
             <button
               type="button"
               onClick={onPrev}
-              className="flex w-full justify-center border border-gray-300 hover:bg-gray-100 rounded-md px-3 py-1.5 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-indigo-600">
+              className="cursor-pointer flex w-full justify-center border border-gray-300 hover:bg-gray-100 dark:hover:bg-base-200 rounded-md px-3 py-1.5 text-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-indigo-600">
               이전
             </button>
 

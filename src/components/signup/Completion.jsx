@@ -8,7 +8,7 @@ const Completion = () => {
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm text-center shadow-sm bg-base-100 py-5 px-5 round-md">
         <div className="mb-6 text-5xl">🎉</div>
-        <p className="text-2xl font-semibold text-gray-800 mb-6">
+        <p className="text-2xl font-semibold text-gray-800 mb-6 dark:text-white">
           회원 가입이 완료되었습니다
         </p>
 

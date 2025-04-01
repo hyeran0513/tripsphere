@@ -28,12 +28,14 @@ const OrderState = () => {
   const { orderIds, setOrderIds, resetOrderIds } = useOrderStore();
 
   useEffect(() => {
-    return () => {
-      resetOrderIds();
-      clearReservationInfo();
-      resetRoomIds();
-      resetTmpReserveInfo();
-    };
+    if (import.meta.env.MODE !== 'development') {
+      return () => {
+        resetOrderIds();
+        clearReservationInfo();
+        resetRoomIds();
+        resetTmpReserveInfo();
+      };
+    }
   }, []);
 
   const [tmp, setTmp] = useState(null);

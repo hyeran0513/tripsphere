@@ -30,7 +30,7 @@ const ProductDetails = ({ product, productId }) => {
     setTimeout(() => setToast(null), 3000);
   };
 
-  // 총 금액
+  // checkIn과 checkOut이 같으면 1박, 아니면 숙박 일수 계산하여 총 금액 반환
   const totalPrice = useMemo(
     () =>
       (checkIn === checkOut ? 1 : totalDays(checkIn, checkOut)) *

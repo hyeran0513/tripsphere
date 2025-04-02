@@ -48,9 +48,11 @@ const UserDropdown = () => {
               <Link to="/signin">로그인</Link>
             )}
           </li>
-          <li>
-            <Link to="/signup">회원가입</Link>
-          </li>
+          {!isAuthenticated && (
+            <li>
+              <Link to="/signup">회원가입</Link>
+            </li>
+          )}
         </ul>
       )}
     </div>

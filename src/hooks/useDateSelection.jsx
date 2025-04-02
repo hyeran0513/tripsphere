@@ -60,7 +60,6 @@ const useDateSelection = (stateType) => {
 
   // 날짜 선택 시 상태 저장
   useEffect(() => {
-    console.log('🌀 date 변경됨:', date);
     if (date.startDate && date.endDate) {
       setCheckIn(date.startDate.toLocaleDateString());
       setCheckOut(date.endDate.toLocaleDateString());

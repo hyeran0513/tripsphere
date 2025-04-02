@@ -55,7 +55,6 @@ const Favorite = () => {
     if (data) {
       const sortedData = [...data].reverse();
       setFilteredData(sortedData);
-      console.log(data);
     }
   }, [data]);
 

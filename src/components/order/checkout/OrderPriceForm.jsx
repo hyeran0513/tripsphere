@@ -107,7 +107,6 @@ const OrderPriceForm = ({ data, reservationInfo }) => {
     }
 
     // 모든 주문이 완료된 후 처리
-    console.log('All orders completed:', orderResults);
     setOrderIds(orderResults);
     navigate('/orderconfirmation');
   };

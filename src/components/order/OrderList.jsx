@@ -41,10 +41,6 @@ const OrderList = ({ orderInfo }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(JSON.stringify(orderInfo));
-  }, [orderInfo]);
-
   if (!orderInfo) return <Loading />;
 
   return (

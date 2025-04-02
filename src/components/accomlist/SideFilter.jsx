@@ -26,7 +26,7 @@ const SideFilter = ({ handleSearch }) => {
           aria-label={
             isFormOpen ? '숙소 검색 옵션 닫기' : '숙소 검색 옵션 열기'
           }
-          className={`border border-gray-200 px-0.5 py-2 ${
+          className={`cursor-pointer border border-gray-200 px-0.5 py-2 ${
             isFormOpen ? 'rounded-l-md' : 'rounded-r-md'
           }`}>
           <BiChevronLeft

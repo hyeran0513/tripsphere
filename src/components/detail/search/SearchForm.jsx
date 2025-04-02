@@ -61,7 +61,7 @@ const SearchForm = ({
           aria-label={
             isFormOpen ? '숙소 검색 옵션 열림' : '숙소 검색 옵션 닫힘'
           }
-          className={`border border-gray-200 px-0.5 py-2 ${isFormOpen ? 'rounded-l-md' : 'rounded-r-md'}`}>
+          className={`cursor-pointer border border-gray-200 px-0.5 py-2 ${isFormOpen ? 'rounded-l-md' : 'rounded-r-md'}`}>
           <BiChevronRight
             className={`transition-transform duration-300 ${!isFormOpen ? 'rotate-180' : ''} size-6`}
           />

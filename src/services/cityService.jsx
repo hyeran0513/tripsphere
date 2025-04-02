@@ -1,3 +1,17 @@
+import { collection, doc, getDocs, writeBatch } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
+
+// 도시 조회
+export const getCities = async () => {
+  try {
+    const citySnapshot = await getDocs(collection(db, 'cities'));
+    return citySnapshot.docs.map((doc) => doc.data());
+  } catch (error) {
+    console.error(error.message);
+    return [];
+  }
+};
+
 export const cities = [
   {
     name: '서울',
@@ -278,3 +292,19 @@ export const cities = [
     subCities: ['서귀포시', '제주시'],
   },
 ];
+
+export const addCities = async () => {
+  try {
+    const batch = writeBatch(db);
+    const citiesCollection = collection(db, 'cities');
+
+    cities.forEach((city, index) => {
+      const cityDoc = doc(citiesCollection, city.name);
+      batch.set(cityDoc, { ...city, order: index + 1 });
+    });
+
+    await batch.commit();
+  } catch (error) {
+    console.error(error);
+  }
+};

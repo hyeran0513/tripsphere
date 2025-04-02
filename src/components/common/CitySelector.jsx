@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { cities } from '../data/cities';
 import useFilterStore from '../../stores/useFilterStore';
 import useCitySelection from '../../hooks/useCitySelection';
+import { useCityData } from '../../hooks/useCityData';
 
 const CitySelector = ({ isGlobal }) => {
   const store = useFilterStore();
@@ -14,6 +14,11 @@ const CitySelector = ({ isGlobal }) => {
     setSubCities,
   } = useCitySelection(isGlobal, store);
   const subCityRef = useRef();
+  const { data: cities } = useCityData();
+
+  const sortedCities = useMemo(() => {
+    return cities?.sort((a, b) => a.order - b.order);
+  }, [cities]);
 
   // 대분류 선택 핸들러
   const handleCitySelect = useCallback(
@@ -47,20 +52,20 @@ const CitySelector = ({ isGlobal }) => {
   // 대분류 옵션
   const cityOptions = useMemo(
     () =>
-      cities.map((item) => (
+      sortedCities?.map((item) => (
         <option
           key={item.name}
           value={item.name}>
           {item.name}
         </option>
       )),
-    [],
+    [sortedCities],
   );
 
   // 소분류 옵션
   const subCityOptions = useMemo(
     () =>
-      subCities.map((item) => (
+      subCities?.map((item) => (
         <option
           key={item}
           value={item}>

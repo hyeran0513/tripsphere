@@ -26,18 +26,18 @@ const ThemeToggleButton = () => {
       />
 
       {/* 해 아이콘 - 라이트 모드 */}
-      <div
+      <span
         className="btn btn-ghost btn-circle swap-on fill-current"
         aria-hidden="true">
         <BiSun className="h-5 w-5" />
-      </div>
+      </span>
 
       {/* 달 아이콘 - 다크 모드 */}
-      <div
+      <span
         className="btn btn-ghost btn-circle swap-off fill-current"
         aria-hidden="true">
         <BiMoon className="h-5 w-5" />
-      </div>
+      </span>
     </label>
   );
 };

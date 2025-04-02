@@ -4,6 +4,7 @@ import { useAuthForm } from '../../hooks/useAuthForm';
 import { useSignInMutation } from '../../hooks/useAuthData';
 import InputField from '../../components/common/InputField';
 import NotificationModal from '../../components/common/NotificationModal';
+import InputErrorMessage from '../../components/common/InputErrorMessage';
 
 const SignIn = () => {
   const [state, dispatch] = useAuthForm();
@@ -54,30 +55,38 @@ const SignIn = () => {
           <form
             onSubmit={handleLogin}
             className="space-y-6">
-            <InputField
-              label="이메일"
-              type="email"
-              value={state.email}
-              placeholder={state.placeholder.email}
-              onChange={(e) =>
-                dispatch({ type: 'SET_EMAIL', payload: e.target.value })
-              }
-              error={state.errors.email}
-            />
+            {/* 이메일 */}
+            <div>
+              <InputField
+                label="이메일"
+                type="email"
+                value={state.email}
+                placeholder={state.placeholder.email}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_EMAIL', payload: e.target.value })
+                }
+              />
 
-            <InputField
-              label="비밀번호"
-              type="password"
-              value={state.password}
-              isResetPassword={true}
-              placeholder={state.placeholder.password}
-              onChange={(e) =>
-                dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
-              }
-              error={state.errors.password}
-              showPassword={showPassword}
-              onTogglePassword={() => setShowPassword(!showPassword)}
-            />
+              <InputErrorMessage error={state.errors.email} />
+            </div>
+
+            {/* 비밀번호 */}
+            <div>
+              <InputField
+                label="비밀번호"
+                type="password"
+                value={state.password}
+                isResetPassword={true}
+                placeholder={state.placeholder.password}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
+                }
+                showPassword={showPassword}
+                onTogglePassword={() => setShowPassword(!showPassword)}
+              />
+
+              <InputErrorMessage error={state.errors.password} />
+            </div>
 
             <div>
               <button

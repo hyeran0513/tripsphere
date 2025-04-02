@@ -7,6 +7,7 @@ import { useUserData, useVerifyPassword } from '../../hooks/useUserData';
 import Loading from '../common/Loading';
 import Modal from '../common/Modal';
 import ToastMessage from '../common/ToastMessage';
+import InputErrorMessage from '../common/InputErrorMessage';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -91,18 +92,21 @@ const UserProfile = () => {
             </div>
 
             {/* 비밀번호 */}
-            <InputField
-              label="비밀번호"
-              type="password"
-              value={state.password}
-              placeholder={state.placeholder.password}
-              onChange={(e) =>
-                dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
-              }
-              error={state.errors.password}
-              showPassword={showPassword}
-              onTogglePassword={() => setShowPassword(!showPassword)}
-            />
+            <div>
+              <InputField
+                label="비밀번호"
+                type="password"
+                value={state.password}
+                placeholder={state.placeholder.password}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
+                }
+                showPassword={showPassword}
+                onTogglePassword={() => setShowPassword(!showPassword)}
+              />
+
+              <InputErrorMessage error={state.errors.password} />
+            </div>
           </div>
 
           {/* 버튼 영역 */}

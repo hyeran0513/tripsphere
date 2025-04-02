@@ -66,7 +66,7 @@ const ProductDetail = () => {
         ref={(el) => (tabRef.current[1] = el)}
         id="rooms"
         className="pt-[50px]">
-        <h1 className="mb-6 text-xl font-semibold">객실</h1>
+        <h3 className="mb-6 text-xl font-semibold">객실</h3>
         <div
           id="container"
           className="flex items-start gap-10 mt-6">
@@ -91,7 +91,7 @@ const ProductDetail = () => {
         ref={(el) => (tabRef.current[2] = el)}
         id="services"
         className="pt-[50px]">
-        <h1 className="text-xl font-semibold">숙소 소개</h1>
+        <h3 className="text-xl font-semibold">숙소 소개</h3>
         <ProductDescription product={accommodation} />
         <HostInfo product={accommodation} />
       </section>
@@ -100,7 +100,7 @@ const ProductDetail = () => {
         ref={(el) => (tabRef.current[3] = el)}
         id="location"
         className="pt-[50px]">
-        <h1 className="text-xl font-semibold">위치</h1>
+        <h3 className="text-xl font-semibold">위치</h3>
         <ProductLocation product={accommodation} />
       </section>
 
@@ -108,7 +108,7 @@ const ProductDetail = () => {
         ref={(el) => (tabRef.current[4] = el)}
         id="reviews"
         className="pt-[50px]">
-        <h1 className="flex gap-2 items-center text-xl font-semibold">
+        <h3 className="flex gap-2 items-center text-xl font-semibold">
           <div>
             <span>리뷰</span>
             <span className="ml-2 text-gray-400 text-xs">
@@ -119,7 +119,7 @@ const ProductDetail = () => {
             <BiSolidStar className="text-orange-400" />
             <span className="text-orange-400">{avgRating}</span>
           </div>
-        </h1>
+        </h3>
 
         <ProductReview
           reviews={reviews}

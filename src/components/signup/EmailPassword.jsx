@@ -3,6 +3,7 @@ import { useAuthForm } from '../../hooks/useAuthForm';
 import InputField from '../../components/common/InputField';
 import { useSignupMutation } from '../../hooks/useAuthData';
 import { validateForm } from '../../utils/validation';
+import InputErrorMessage from '../common/InputErrorMessage';
 
 const EmailPassword = ({ onNext, showToast }) => {
   const [state, dispatch] = useAuthForm();
@@ -42,46 +43,57 @@ const EmailPassword = ({ onNext, showToast }) => {
           action="#"
           method="POST">
           {/* 이메일 */}
-          <InputField
-            label="이메일"
-            type="email"
-            value={state.email}
-            placeholder={state.placeholder.email}
-            onChange={(e) =>
-              dispatch({ type: 'SET_EMAIL', payload: e.target.value })
-            }
-            error={state.errors.email}
-          />
+          <div>
+            <InputField
+              label="이메일"
+              type="email"
+              value={state.email}
+              placeholder={state.placeholder.email}
+              onChange={(e) =>
+                dispatch({ type: 'SET_EMAIL', payload: e.target.value })
+              }
+            />
+            <InputErrorMessage error={state.errors.email} />
+          </div>
 
           {/* 비밀번호 */}
-          <InputField
-            label="비밀번호"
-            type="password"
-            value={state.password}
-            placeholder={state.placeholder.password}
-            onChange={(e) =>
-              dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
-            }
-            error={state.errors.password}
-            showPassword={showPassword}
-            onTogglePassword={() => setShowPassword(!showPassword)}
-          />
+          <div>
+            <InputField
+              label="비밀번호"
+              type="password"
+              value={state.password}
+              placeholder={state.placeholder.password}
+              onChange={(e) =>
+                dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
+              }
+              showPassword={showPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+            />
+
+            <InputErrorMessage error={state.errors.password} />
+          </div>
 
           {/* 비밀번호 확인 */}
-          <InputField
-            label="비밀번호 확인"
-            type="password"
-            value={state.passwordConfirm}
-            placeholder={state.placeholder.passwordConfirm}
-            onChange={(e) =>
-              dispatch({ type: 'SET_PASSWORDCONFIRM', payload: e.target.value })
-            }
-            error={state.errors.passwordConfirm}
-            showPassword={showPasswordConfirm}
-            onTogglePassword={() =>
-              setShowPasswordConfirm(!showPasswordConfirm)
-            }
-          />
+          <div>
+            <InputField
+              label="비밀번호 확인"
+              type="password"
+              value={state.passwordConfirm}
+              placeholder={state.placeholder.passwordConfirm}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_PASSWORDCONFIRM',
+                  payload: e.target.value,
+                })
+              }
+              showPassword={showPasswordConfirm}
+              onTogglePassword={() =>
+                setShowPasswordConfirm(!showPasswordConfirm)
+              }
+            />
+
+            <InputErrorMessage error={state.errors.passwordConfirm} />
+          </div>
 
           {/* 버튼 영역 */}
           <div>

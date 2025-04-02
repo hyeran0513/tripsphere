@@ -5,6 +5,7 @@ import { useResetPassword } from '../../hooks/useAuthData';
 import InputField from '../../components/common/InputField';
 import NotificationModal from '../../components/common/NotificationModal';
 import { validateForm } from '../../utils/validation';
+import InputErrorMessage from '../../components/common/InputErrorMessage';
 
 const ResetPassword = () => {
   const [state, dispatch] = useAuthForm();
@@ -58,16 +59,19 @@ const ResetPassword = () => {
           <form
             onSubmit={handleReset}
             className="space-y-6">
-            <InputField
-              label="이메일"
-              type="email"
-              value={state.email}
-              placeholder={state.placeholder.email}
-              onChange={(e) =>
-                dispatch({ type: 'SET_EMAIL', payload: e.target.value })
-              }
-              error={state.errors.email}
-            />
+            <div>
+              <InputField
+                label="이메일"
+                type="email"
+                value={state.email}
+                placeholder={state.placeholder.email}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_EMAIL', payload: e.target.value })
+                }
+              />
+
+              <InputErrorMessage error={state.errors.email} />
+            </div>
 
             <div>
               <button

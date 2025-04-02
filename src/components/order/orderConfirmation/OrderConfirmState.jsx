@@ -10,7 +10,7 @@ import OrderCard from './OrderCard';
 
 const OrderState = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // 현재 페이지 경로 감지
+  const location = useLocation();
 
   const {
     reservationInfo: tmpReserveInfo,
@@ -50,16 +50,6 @@ const OrderState = () => {
 
   useEffect(() => {}, [orders]);
 
-  useEffect(() => {
-    console.log(
-      'orders : ',
-      orders,
-      'isLoading, isError :',
-      isLoading,
-      isError,
-    );
-  }, [isLoading, isError]);
-
   if (isLoading) {
     return <>주문정보 로딩 중...</>;
   }
@@ -90,7 +80,7 @@ const OrderState = () => {
     <div className="w-[600px] flex flex-col justify-center items-center gap-4">
       <Icon size={50} />
 
-      <h1 className="text-4xl font-semibold tracking-tight">{message}</h1>
+      <h3 className="text-4xl font-semibold tracking-tight">{message}</h3>
 
       {orders?.map((item, index) => (
         <OrderCard

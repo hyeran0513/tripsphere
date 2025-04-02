@@ -19,7 +19,9 @@ const CartButton = ({ onClick }) => {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            aria-hidden="true">
+            aria-hidden="true"
+            role="img"
+            aria-label="장바구니 아이콘">
             <title>장바구니</title>
             <path
               strokeLinecap="round"
@@ -31,7 +33,9 @@ const CartButton = ({ onClick }) => {
           2a2 2 0 11-4 0 2 2 0 014 0z"
             />
           </svg>
-          <span className="badge badge-sm indicator-item">
+          <span
+            className="badge badge-sm indicator-item"
+            aria-label={`장바구니 ${data?.length || 0}건`}>
             {data?.length || 0}
           </span>
         </div>

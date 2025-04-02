@@ -5,6 +5,7 @@ import TermsAgreement from './TermsAgreement';
 import { useSaveUserInfo } from '../../hooks/useAuthData';
 import { validateForm } from '../../utils/validation';
 import { formatPhoneNumber } from '../../utils/format';
+import InputErrorMessage from '../common/InputErrorMessage';
 
 const UserInfo = ({ onNext, onPrev }) => {
   const [state, dispatch] = useAuthForm();
@@ -45,43 +46,52 @@ const UserInfo = ({ onNext, onPrev }) => {
           className="space-y-6"
           onSubmit={handleRegister}>
           {/* 이름 */}
-          <InputField
-            label="이름"
-            type="text"
-            value={state.username}
-            placeholder={state.placeholder.username}
-            onChange={(e) =>
-              dispatch({ type: 'SET_USERNAME', payload: e.target.value })
-            }
-            error={state.errors.username}
-          />
+          <div>
+            <InputField
+              label="이름"
+              type="text"
+              value={state.username}
+              placeholder={state.placeholder.username}
+              onChange={(e) =>
+                dispatch({ type: 'SET_USERNAME', payload: e.target.value })
+              }
+            />
+
+            <InputErrorMessage error={state.errors.username} />
+          </div>
 
           {/* 닉네임 */}
-          <InputField
-            label="닉네임"
-            type="text"
-            value={state.nickname}
-            placeholder={state.placeholder.nickname}
-            onChange={(e) =>
-              dispatch({ type: 'SET_NICKNAME', payload: e.target.value })
-            }
-            error={state.errors.nickname}
-          />
+          <div>
+            <InputField
+              label="닉네임"
+              type="text"
+              value={state.nickname}
+              placeholder={state.placeholder.nickname}
+              onChange={(e) =>
+                dispatch({ type: 'SET_NICKNAME', payload: e.target.value })
+              }
+            />
+
+            <InputErrorMessage error={state.errors.nickname} />
+          </div>
 
           {/* 연락처 */}
-          <InputField
-            label="연락처"
-            type="text"
-            value={state.phone}
-            placeholder={state.placeholder.phone}
-            onChange={(e) =>
-              dispatch({
-                type: 'SET_PHONE',
-                payload: formatPhoneNumber(e.target.value),
-              })
-            }
-            error={state.errors.phone}
-          />
+          <div>
+            <InputField
+              label="연락처"
+              type="text"
+              value={state.phone}
+              placeholder={state.placeholder.phone}
+              onChange={(e) =>
+                dispatch({
+                  type: 'SET_PHONE',
+                  payload: formatPhoneNumber(e.target.value),
+                })
+              }
+            />
+
+            <InputErrorMessage error={state.errors.phone} />
+          </div>
 
           {/* 약관 동의 */}
           <TermsAgreement onAgree={handleTermsAgree} />

@@ -8,7 +8,7 @@ const Dummy = () => {
 
   return (
     <>
-      <h1 className="font-bold text-2xl mb-4">숙소 데이터</h1>
+      <h3 className="font-bold text-2xl mb-4">숙소 데이터</h3>
 
       <button
         className="text-base font-medium flex-1 border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden rounded cursor-pointer"

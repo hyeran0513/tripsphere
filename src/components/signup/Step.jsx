@@ -4,7 +4,7 @@ const Step = ({ currentStep }) => {
   const steps = ['정보 입력', '본인 확인', '추가 정보', '가입 완료'];
 
   return (
-    <ul className="steps steps-horizontal sm:w-full sm:max-w-sm">
+    <ol className="steps steps-horizontal sm:w-full sm:max-w-sm">
       {steps.map((step, index) => (
         <li
           key={index}
@@ -13,7 +13,7 @@ const Step = ({ currentStep }) => {
           {step}
         </li>
       ))}
-    </ul>
+    </ol>
   );
 };
 

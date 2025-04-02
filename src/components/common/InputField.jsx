@@ -8,10 +8,9 @@ const InputField = ({
   value,
   placeholder,
   onChange,
-  error,
+  disabled,
   showPassword,
   onTogglePassword,
-  disabled,
   isResetPassword,
 }) => {
   return (
@@ -44,8 +43,10 @@ const InputField = ({
           onChange={onChange}
           disabled={disabled}
           className={`dark:text-white block w-full rounded-md px-3 py-1.5 text-base text-gray-900 outline-1 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm ${
-            error ? 'outline-red-600' : 'outline-gray-300 '
-          } ${disabled ? 'bg-gray-100 cursor-not-allowed dark:bg-gray-800' : ''}`}
+            disabled
+              ? 'bg-gray-100 cursor-not-allowed dark:bg-gray-800'
+              : 'outline-gray-300'
+          }`}
         />
 
         {/* 비밀번호일 경우, 패스워드 토글 노출 */}
@@ -56,9 +57,6 @@ const InputField = ({
           />
         )}
       </div>
-
-      {/* 오류 문구 */}
-      {error && <p className="mt-2 text-red-600 text-xs">{error}</p>}
     </div>
   );
 };

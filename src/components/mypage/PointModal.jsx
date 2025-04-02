@@ -6,6 +6,7 @@ import { useAddPoints } from '../../hooks/usePointData';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { validateForm } from '../../utils/validation';
 import { formatNumber } from '../../utils/format';
+import InputErrorMessage from '../common/InputErrorMessage';
 
 const PointModal = ({ points, setPoints, pointHistoryRefetch }) => {
   const { user } = useAuthStore();
@@ -48,16 +49,19 @@ const PointModal = ({ points, setPoints, pointHistoryRefetch }) => {
 
   return (
     <>
-      <InputField
-        label="포인트"
-        type="email"
-        value={state.point}
-        placeholder={state.placeholder.point}
-        onChange={(e) =>
-          dispatch({ type: 'SET_POINT', payload: e.target.value })
-        }
-        error={state.errors.point}
-      />
+      <div>
+        <InputField
+          label="포인트"
+          type="email"
+          value={state.point}
+          placeholder={state.placeholder.point}
+          onChange={(e) =>
+            dispatch({ type: 'SET_POINT', payload: e.target.value })
+          }
+        />
+        <InputErrorMessage error={state.errors.point} />
+      </div>
+
       <div className="mt-2 text-indigo-500 text-sm">
         보유 포인트:{' '}
         <span className="font-bold">{formatNumber(points || 0)}</span> 포인트

@@ -8,6 +8,7 @@ import NotificationModal from '../../components/common/NotificationModal';
 import { validateForm } from '../../utils/validation';
 import Loading from '../../components/common/Loading';
 import { formatPhoneNumber } from '../../utils/format';
+import InputErrorMessage from '../../components/common/InputErrorMessage';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -81,56 +82,74 @@ const Profile = () => {
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
               <form className="space-y-6">
                 {/* 이메일 */}
-                <InputField
-                  label="이메일"
-                  type="email"
-                  value={state.email}
-                  placeholder={state.placeholder.email}
-                  onChange={(e) =>
-                    dispatch({ type: 'SET_EMAIL', payload: e.target.value })
-                  }
-                  error={state.errors.email}
-                  disabled
-                />
+                <div>
+                  <InputField
+                    label="이메일"
+                    type="email"
+                    value={state.email}
+                    placeholder={state.placeholder.email}
+                    onChange={(e) =>
+                      dispatch({ type: 'SET_EMAIL', payload: e.target.value })
+                    }
+                    disabled
+                  />
+
+                  <InputErrorMessage error={state.errors.email} />
+                </div>
 
                 {/* 이름 */}
-                <InputField
-                  label="이름"
-                  type="text"
-                  value={state.username}
-                  placeholder={state.placeholder.username}
-                  onChange={(e) =>
-                    dispatch({ type: 'SET_USERNAME', payload: e.target.value })
-                  }
-                  error={state.errors.username}
-                />
+                <div>
+                  <InputField
+                    label="이름"
+                    type="text"
+                    value={state.username}
+                    placeholder={state.placeholder.username}
+                    onChange={(e) =>
+                      dispatch({
+                        type: 'SET_USERNAME',
+                        payload: e.target.value,
+                      })
+                    }
+                  />
+
+                  <InputErrorMessage error={state.errors.username} />
+                </div>
 
                 {/* 닉네임 */}
-                <InputField
-                  label="닉네임"
-                  type="text"
-                  value={state.nickname}
-                  placeholder={state.placeholder.nickname}
-                  onChange={(e) =>
-                    dispatch({ type: 'SET_NICKNAME', payload: e.target.value })
-                  }
-                  error={state.errors.nickname}
-                />
+                <div>
+                  <InputField
+                    label="닉네임"
+                    type="text"
+                    value={state.nickname}
+                    placeholder={state.placeholder.nickname}
+                    onChange={(e) =>
+                      dispatch({
+                        type: 'SET_NICKNAME',
+                        payload: e.target.value,
+                      })
+                    }
+                  />
+
+                  <InputErrorMessage error={state.errors.nickname} />
+                </div>
 
                 {/* 연락처 */}
-                <InputField
-                  label="연락처"
-                  type="text"
-                  value={state.phone}
-                  placeholder={state.placeholder.phone}
-                  onChange={(e) =>
-                    dispatch({
-                      type: 'SET_PHONE',
-                      payload: formatPhoneNumber(e.target.value),
-                    })
-                  }
-                  error={state.errors.phone}
-                />
+                <div>
+                  <InputField
+                    label="연락처"
+                    type="text"
+                    value={state.phone}
+                    placeholder={state.placeholder.phone}
+                    onChange={(e) =>
+                      dispatch({
+                        type: 'SET_PHONE',
+                        payload: formatPhoneNumber(e.target.value),
+                      })
+                    }
+                  />
+
+                  <InputErrorMessage error={state.errors.phone} />
+                </div>
 
                 <p className="mt-10 text-center text-sm text-gray-500">
                   비밀번호를 변경하고 싶으신가요?

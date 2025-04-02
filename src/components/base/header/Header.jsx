@@ -4,9 +4,11 @@ import UserDropdown from './UserDropdown';
 import ShoppingCart from '../../cart/ShoppingCart';
 import { useState } from 'react';
 import ThemeToggleButton from './ThemeToggleButton';
+import useAuthStore from '../../../stores/useAuthStore';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const { isAuthenticated } = useAuthStore();
 
   const toggleCart = () => {
     setOpen(true);
@@ -20,7 +22,7 @@ const Header = () => {
           <Logo />
         </div>
 
-        {/* 장바구니 사이드 패널 */}
+        {/* 장바구니 */}
         <ShoppingCart
           open={open}
           setOpen={setOpen}
@@ -30,7 +32,9 @@ const Header = () => {
         <div className="navbar-end">
           <div className="flex items-center gap-2">
             <ThemeToggleButton />
-            <CartButton onClick={toggleCart} />
+
+            {isAuthenticated && <CartButton onClick={toggleCart} />}
+
             <UserDropdown />
           </div>
         </div>

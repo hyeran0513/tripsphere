@@ -17,7 +17,9 @@ import NavBar from '../../components/detail/NavBar';
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const { data: reviews, refetch } = useReviewData(id);
+  const { data: reviews } = useReviewData(id);
+  const { data: avgRating } = useGetAverageRatings(id);
+
   const [openDate, setOpenDate] = useState(false);
   const [datePickerDate, setDatePickerDate] = useState(null);
   const [adults, setAdults] = useState(0);
@@ -30,13 +32,6 @@ const ProductDetail = () => {
   });
 
   const { data: filteredRooms } = useFilteredRoomData(id, filters);
-
-  const { data: avgRating } = useGetAverageRatings(id);
-
-  const handleReFetch = async () => {
-    await refetch();
-  };
-
   const { data: accommodation, isLoading, error } = useAccomData(id);
 
   // 섹션별 ref 설정
@@ -128,7 +123,6 @@ const ProductDetail = () => {
 
         <ProductReview
           reviews={reviews}
-          handleReFetch={handleReFetch}
           avgRating={avgRating}
           productId={id}
         />

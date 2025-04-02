@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   addReview,
   fetchAllReviewData,
@@ -15,12 +15,16 @@ export const useReviewData = (accomId) => {
 };
 
 // 리뷰 추가
-export const useAddReview = (showToast, handleNewReview) => {
+export const useAddReview = (showToast) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (review) => addReview(review),
     onSuccess: () => {
       showToast('success', '리뷰가 성공적으로 추가되었습니다.');
-      handleNewReview();
+
+      queryClient.invalidateQueries(['review']);
+      queryClient.invalidateQueries(['reviews']);
     },
     onError: (error) => {
       showToast('error', '리뷰 추가 중 오류가 발생했습니다.');

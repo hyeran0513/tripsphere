@@ -28,7 +28,8 @@ const Counter = ({
           type="button"
           className="btn btn-circle"
           onClick={decrease}
-          disabled={count === 0}>
+          disabled={count === 0}
+          aria-label={`${label} 감소`}>
           <BiMinus className="size-[1.2em]" />
         </button>
 
@@ -37,13 +38,15 @@ const Counter = ({
           value={count}
           className="input bg-base-200 w-20 text-center"
           readOnly
+          aria-live="polite"
         />
 
         <button
           type="button"
           className="btn btn-circle"
           onClick={increase}
-          disabled={count >= maxCount}>
+          disabled={count >= maxCount}
+          aria-label={`${label} 증가`}>
           <BiPlus className="size-[1.2em]" />
         </button>
       </div>

@@ -21,7 +21,7 @@ const DatePicker = ({
       ref={ref}
       className="relative ">
       <input
-        type="text"
+        role="button"
         className="input bg-base-200 w-full  dark:border-gray-200"
         value={`${date.startDate.toLocaleDateString()} - ${date.endDate.toLocaleDateString()}`}
         readOnly

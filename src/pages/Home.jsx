@@ -12,9 +12,9 @@ const Home = () => {
         </div>
 
         <div className="text-center">
-          <h1 className="text-4xl font-semibold tracking-tight text-white ">
+          <p className="text-4xl font-semibold tracking-tight text-white ">
             TRIPSPHERE와 함께 꿈의 여행을 떠나세요
-          </h1>
+          </p>
 
           <Filter />
         </div>

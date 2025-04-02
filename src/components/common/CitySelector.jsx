@@ -121,7 +121,7 @@ const CitySelector = ({ isGlobal }) => {
         <div className="w-full">
           <select
             id="city"
-            className="input bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
+            className="select bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
             value={selectedCity}
             onChange={handleCitySelect}>
             <option value="">전체</option>
@@ -134,7 +134,7 @@ const CitySelector = ({ isGlobal }) => {
           <select
             id="subCity"
             ref={subCityRef}
-            className="input bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
+            className="select bg-base-200 w-full dark:border-gray-200 dark:placeholder:text-gray-200"
             value={selectedSubCity}
             onChange={handleSubCitySelect}
             disabled={selectedCity === ''}>

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import PageHeader from '../../components/common/PageHeader';
-import UserProfile from '../../components/mypage/UserProfile';
-import UserStats from '../../components/mypage/UserStats';
-import PointHistory from '../../components/mypage/PointHistory';
-import OrderHistory from '../../components/mypage/OrderHistory';
-import FavoriteList from '../../components/mypage/FavoriteList';
+import PageHeader from '../../components/Molecules/PageHeader';
+import UserProfile from '../../components/Organisms/UserProfile';
+import UserStats from '../../components/Organisms/UserStats';
+import PointHistory from '../../components/Organisms/PointHistory';
+import OrderHistory from '../../components/Organisms/OrderHistory';
+import FavoriteList from '../../components/Organisms/FavoriteList';
 import { usePointData } from '../../hooks/usePointData';
 import useAuthStore from '../../stores/useAuthStore';
-import Loading from '../../components/common/Loading';
+import Loading from '../../components/Molecules/Loading';
 
 const breadcrumb = [
   { link: '/', text: '홈' },

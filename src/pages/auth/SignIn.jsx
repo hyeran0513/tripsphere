@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useSignInMutation } from '../../hooks/useAuthData';
-import InputField from '../../components/common/InputField';
-import NotificationModal from '../../components/common/NotificationModal';
-import InputErrorMessage from '../../components/common/InputErrorMessage';
+import InputField from '../../components/Atoms/InputField';
+import NotificationModal from '../../components/Molecules/NotificationModal';
+import InputErrorMessage from '../../components/Atoms/InputErrorMessage';
 
 const SignIn = () => {
   const [state, dispatch] = useAuthForm();

@@ -1,14 +1,14 @@
-import PageHeader from '../../components/common/PageHeader';
+import PageHeader from '../../components/Molecules/PageHeader';
 import { usePointData } from '../../hooks/usePointData';
 import { formatDate, formatNumber } from '../../utils/format';
-import Loading from '../../components/common/Loading';
+import Loading from '../../components/Molecules/Loading';
 import useAuthStore from '../../stores/useAuthStore';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '../../components/common/Pagination';
+import Pagination from '../../components/Molecules/Pagination';
 import { useUserData } from '../../hooks/useUserData';
 import { BiCoin } from 'react-icons/bi';
-import NoData from '../../components/common/NoData';
+import NoData from '../../components/Atoms/NoData';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },

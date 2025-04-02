@@ -1,10 +1,10 @@
-import OrderList from '../../components/order/OrderList';
-import PageHeader from '../../components/common/PageHeader';
+import OrderList from '../../components/Organisms/OrderList';
+import PageHeader from '../../components/Molecules/PageHeader';
 import { useOrderData } from '../../hooks/useOrderData';
 import useAuthStore from '../../stores/useAuthStore';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '../../components/common/Pagination';
+import Pagination from '../../components/Molecules/Pagination';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },

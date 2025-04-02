@@ -1,15 +1,14 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import OrderState from '../../components/order/orderConfirmation/OrderConfirmState';
+import { useNavigate } from 'react-router-dom';
+import OrderConfirmState from '../../components/Molecules/OrderConfirmState';
 
 const OrderConfirmation = () => {
-  const location = useLocation();
   const navigate = useNavigate();
 
   return (
     <div className="max-w-[1200px] mx-auto py-[40px] flex flex-col justify-start items-center gap-12">
       <div className="flex flex-col items-center">
         {/* 주문 문구 */}
-        <OrderState />
+        <OrderConfirmState />
 
         <div className="flex justify-center gap-x-2 mt-8">
           {/* 마이페이지로 이동 버튼 */}

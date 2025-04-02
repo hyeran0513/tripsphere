@@ -1,19 +1,19 @@
 import React, { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAccomData, useFilteredRoomData } from '../../hooks/useProductData';
-import ProductGallery from '../../components/detail/gallery/ProductGallery';
-import ProductLocation from '../../components/detail/location/ProductLocation';
-import ProductReview from '../../components/detail/review/ProductReview';
+import ProductGallery from '../../components/Molecules/ProductGallery';
+import ProductLocation from '../../components/Molecules/ProductLocation';
+import ProductReview from '../../components/Molecules/ProductReview';
 import { useGetAverageRatings, useReviewData } from '../../hooks/useReviewData';
 import { BiSolidStar } from 'react-icons/bi';
-import RoomList from '../../components/room/RoomList';
-import ProductInfo from '../../components/detail/overview/ProductInfo';
-import SearchForm from '../../components/detail/search/SearchForm';
-import HostInfo from '../../components/detail/services/HostInfo';
-import ProductDescription from '../../components/detail/services/ProductDescription';
-import ProductHeader from '../../components/detail/header/ProductHeader';
-import Loading from '../../components/common/Loading';
-import NavBar from '../../components/detail/NavBar';
+import RoomList from '../../components/Organisms/RoomList';
+import ProductInfo from '../../components/Molecules/ProductInfo';
+import SearchForm from '../../components/Molecules/SearchForm';
+import HostInfo from '../../components/Molecules/HostInfo';
+import ProductDescription from '../../components/Molecules/ProductDescription';
+import ProductHeader from '../../components/Atoms/ProductHeader';
+import Loading from '../../components/Molecules/Loading';
+import NavBar from '../../components/Molecules/NavBar';
 
 const ProductDetail = () => {
   const { id } = useParams();

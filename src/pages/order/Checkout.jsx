@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import Loading from '../../components/common/Loading';
-import OrderPriceForm from '../../components/order/checkout/OrderPriceForm';
-import ToggleOrderList from '../../components/order/checkout/ToggleOrderList';
+import Loading from '../../components/Molecules/Loading';
+import OrderPriceForm from '../../components/Organisms/OrderPriceForm';
+import ToggleOrderList from '../../components/Organisms/ToggleOrderList';
 import { useRoomData } from '../../hooks/useProductData';
 import useCheckoutStore from '../../stores/useCheckoutStore';
 import useRoomSelectionStore from '../../stores/useRoomSelectionStore';
 
 const Checkout = () => {
-  const { reservationInfo, clearReservationInfo } = useRoomSelectionStore();
+  const { reservationInfo } = useRoomSelectionStore();
   const [rooms, setRooms] = useState(null);
   const { data, isLoading, error } = useRoomData(rooms);
   const {

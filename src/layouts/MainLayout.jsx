@@ -1,8 +1,8 @@
 import React from 'react';
-import Footer from '../components/base/Footer';
+import Footer from '../components/Organisms/Footer';
 import { Outlet } from 'react-router-dom';
-import Header from '../components/base/header/Header';
-import TopButton from '../components/common/TopButton';
+import Header from '../components/Organisms/Header';
+import TopButton from '../components/Atoms/TopButton';
 
 const MainLayout = () => {
   return (

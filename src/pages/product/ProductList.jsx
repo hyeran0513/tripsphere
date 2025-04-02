@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import PageHeader from '../../components/common/PageHeader';
-import SideFilter from '../../components/accomlist/SideFilter';
-import Loading from '../../components/common/Loading';
-import AccomCard from '../../components/accomlist/AccomCard';
+import PageHeader from '../../components/Molecules/PageHeader';
+import SideFilter from '../../components/Organisms/SideFilter';
+import Loading from '../../components/Molecules/Loading';
+import AccomCard from '../../components/Molecules/AccomCard';
 import { useAccommodations } from '../../hooks/useAccomData';
 import useFilterStore from '../../stores/useFilterStore';
-import AccomTypeSelector from '../../components/accomlist/AccomTypeSelector';
-import Pagination from '../../components/common/Pagination';
+import AccomTypeSelector from '../../components/Organisms/AccomTypeSelector';
+import Pagination from '../../components/Molecules/Pagination';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { LiaHotelSolid } from 'react-icons/lia';
 import { LuHotel } from 'react-icons/lu';
@@ -14,7 +14,7 @@ import { BiBuildingHouse, BiBuildings } from 'react-icons/bi';
 import { BsHouses } from 'react-icons/bs';
 import { PiWarehouse, PiDiamondsFourLight } from 'react-icons/pi';
 import { MdOutlineForest } from 'react-icons/md';
-import NoData from '../../components/common/NoData';
+import NoData from '../../components/Atoms/NoData';
 
 const breadcrumb = [
   { link: '/', text: '홈' },

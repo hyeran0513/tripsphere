@@ -1,5 +1,5 @@
 import React from 'react';
-import Filter from '../components/filter/Filter';
+import Filter from '../components/Molecules/Filter';
 
 const Home = () => {
   return (

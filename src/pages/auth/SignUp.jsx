@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import EmailPassword from '../../components/signup/EmailPassword';
-import EmailVerification from '../../components/signup/EmailVerification';
-import Completion from '../../components/signup/Completion';
-import UserInfo from '../../components/signup/UserInfo';
-import Step from '../../components/signup/Step';
-import ToastMessage from '../../components/common/ToastMessage';
+import EmailPassword from '../../components/Molecules/EmailPassword';
+import EmailVerification from '../../components/Molecules/EmailVerification';
+import Completion from '../../components/Molecules/Completion';
+import UserInfo from '../../components/Molecules/UserInfo';
+import Step from '../../components/Atoms/Step';
+import ToastMessage from '../../components/Atoms/ToastMessage';
 import { useDeleteUnverifiedUser } from '../../hooks/useAuthData';
 
 const SignUp = () => {

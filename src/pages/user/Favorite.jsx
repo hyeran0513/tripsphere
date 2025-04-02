@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import PageHeader from '../../components/common/PageHeader';
-import ProductCard from '../../components/favorite/ProductCard';
+import PageHeader from '../../components/Molecules/PageHeader';
+import FavoriteProductCard from '../../components/Molecules/FavoriteProductCard';
 import { useFavoriteAccommData } from '../../hooks/useFavoriteData';
-import Loading from '../../components/common/Loading';
+import Loading from '../../components/Molecules/Loading';
 import useAuthStore from '../../stores/useAuthStore';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Pagination from '../../components/common/Pagination';
+import Pagination from '../../components/Molecules/Pagination';
 import { BiHeartCircle } from 'react-icons/bi';
-import NoData from '../../components/common/NoData';
+import NoData from '../../components/Atoms/NoData';
 
 const breadcrumb = [
   { link: '/', text: '홈' },
@@ -156,7 +156,7 @@ const Favorite = () => {
       {filteredData.length > 0 ? (
         <div className="mb-10 grid grid-cols-2 gap-10">
           {currentPageData.map((favorite, index) => (
-            <ProductCard
+            <FavoriteProductCard
               key={index}
               favorite={favorite}
             />

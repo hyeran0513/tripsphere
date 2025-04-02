@@ -1,14 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
-import PageHeader from '../../components/common/PageHeader';
+import PageHeader from '../../components/Molecules/PageHeader';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useEffect, useState } from 'react';
-import InputField from '../../components/common/InputField';
+import InputField from '../../components/Atoms/InputField';
 import { useEditUserData, useUserData } from '../../hooks/useUserData';
-import NotificationModal from '../../components/common/NotificationModal';
+import NotificationModal from '../../components/Molecules/NotificationModal';
 import { validateForm } from '../../utils/validation';
-import Loading from '../../components/common/Loading';
+import Loading from '../../components/Molecules/Loading';
 import { formatPhoneNumber } from '../../utils/format';
-import InputErrorMessage from '../../components/common/InputErrorMessage';
+import InputErrorMessage from '../../components/Atoms/InputErrorMessage';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },

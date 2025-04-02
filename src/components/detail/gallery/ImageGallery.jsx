@@ -48,6 +48,7 @@ const ImageGallery = ({ images }) => {
             <div className="h-[140px] border overflow-hidden rounded-lg">
               <img
                 src={image}
+                alt=""
                 className="w-full h-full"
               />
             </div>

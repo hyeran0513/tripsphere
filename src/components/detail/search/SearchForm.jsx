@@ -69,9 +69,7 @@ const SearchForm = ({
       </div>
 
       {isFormOpen && (
-        <form
-          aria-label="검색 옵션 변경창"
-          className="flex flex-col gap-y-5 p-2.5">
+        <form className="flex flex-col gap-y-5 p-2.5">
           <fieldset className="flex flex-col gap-4 fieldset border border-base-300 p-4 rounded-box dark:border-white">
             {/* 체크인 · 체크아웃 */}
             <DateSelector

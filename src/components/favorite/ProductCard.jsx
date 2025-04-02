@@ -45,7 +45,7 @@ const ProductCard = ({ favorite }) => {
         <div className="w-[40%] h-[200px] rounded-md overflow-hidden">
           <img
             src={favorite.images[0]}
-            alt={favorite.name}
+            alt=""
             className="w-full h-full object-cover"
           />
         </div>

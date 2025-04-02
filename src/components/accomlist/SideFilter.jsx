@@ -38,9 +38,7 @@ const SideFilter = ({ handleSearch }) => {
       </div>
 
       {isFormOpen && (
-        <form
-          aria-label="검색 옵션 변경창"
-          className="flex flex-col gap-y-5 p-2.5">
+        <form className="flex flex-col gap-y-5 p-2.5">
           {/* 여행 장소 선택 */}
           <fieldset className="fieldset border border-base-300 p-4 rounded-box dark:border-white">
             <legend className="fieldset-legend px-2 font-medium">
@@ -64,7 +62,6 @@ const SideFilter = ({ handleSearch }) => {
           </fieldset>
 
           <button
-            aria-label="수정한 검색 옵션 적용"
             type="button"
             onClick={handleSearch}
             className="cursor-pointer flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

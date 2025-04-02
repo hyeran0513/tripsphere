@@ -177,7 +177,8 @@ const ProductList = () => {
               id="perPage"
               className="select border border-gray-400 rounded-lg w-40"
               value={selectedPerOption}
-              onChange={handlePagePerOptionSelect}>
+              onChange={handlePagePerOptionSelect}
+              title="갯수 보기">
               {perOptions.map((item) => (
                 <option
                   key={item.id}
@@ -187,6 +188,8 @@ const ProductList = () => {
               ))}
             </select>
           </div>
+
+          <h2 className="sr-only">숙소 리스트</h2>
 
           {filteredData.length > 0 ? (
             <>

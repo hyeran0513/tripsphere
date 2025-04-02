@@ -12,6 +12,7 @@ const PageHeader = ({ title, breadcrumb, hasBackButton, navigateLink }) => {
         <nav
           aria-label="Breadcrumb"
           className="mb-4">
+          <h2 className="sr-only">현재 위치</h2>
           <ol
             role="list"
             className="mx-auto flex max-w-2xl items-center space-x-2 lg:max-w-7xl">

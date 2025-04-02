@@ -54,7 +54,7 @@ const AccomCard = ({ accommodation }) => {
           <div className="w-[40%] h-[200px] rounded-md overflow-hidden">
             <img
               src={accommodation.images[0]}
-              alt={accommodation.name}
+              alt=""
               className="w-full h-full object-cover"
             />
           </div>

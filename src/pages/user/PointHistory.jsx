@@ -63,7 +63,8 @@ const PointHistory = () => {
           id="perPage"
           className="select border border-gray-400 rounded-lg w-40"
           value={selectedPerOption}
-          onChange={handlePagePerOptionSelect}>
+          onChange={handlePagePerOptionSelect}
+          title="갯수 보기">
           {perOptions.map((item) => (
             <option
               key={item.id}

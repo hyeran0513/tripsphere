@@ -188,7 +188,7 @@ const ShoppingCart = ({ open, setOpen }) => {
                             <div className="w-[130px] h-[100px] overflow-hidden border border-gray-400 rounded-lg">
                               <img
                                 src={item.room?.images?.[0]}
-                                alt={item.room?.name}
+                                alt=""
                                 className="w-full h-full object-cover"
                               />
                             </div>

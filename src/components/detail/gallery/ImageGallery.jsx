@@ -35,26 +35,28 @@ const ImageGallery = ({ images }) => {
       </Swiper>
 
       {/* 이미지 목록 */}
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        spaceBetween={10}
-        slidesPerView={4}
-        freeMode={true}
-        watchSlidesProgress={true}
-        modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper mt-4">
-        {images?.map((image, index) => (
-          <SwiperSlide key={`children-${index}`}>
-            <div className="h-[140px] border overflow-hidden rounded-lg">
-              <img
-                src={image}
-                alt=""
-                className="w-full h-full"
-              />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <div className="h-[140px]">
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          spaceBetween={10}
+          slidesPerView={4}
+          freeMode={true}
+          watchSlidesProgress={true}
+          modules={[FreeMode, Navigation, Thumbs]}
+          className="mySwiper mt-4">
+          {images?.map((image, index) => (
+            <SwiperSlide key={`children-${index}`}>
+              <div className="h-[140px] border overflow-hidden rounded-lg">
+                <img
+                  src={image}
+                  alt=""
+                  className="w-full h-full"
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </>
   );
 };

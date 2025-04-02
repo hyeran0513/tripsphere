@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAccomData, useFilteredRoomData } from '../../hooks/useProductData';
 import ProductGallery from '../../components/detail/gallery/ProductGallery';
 import ProductLocation from '../../components/detail/location/ProductLocation';
 import ProductReview from '../../components/detail/review/ProductReview';
-import { useReviewData } from '../../hooks/useReviewData';
+import { useGetAverageRatings, useReviewData } from '../../hooks/useReviewData';
 import { BiSolidStar } from 'react-icons/bi';
 import RoomList from '../../components/room/RoomList';
 import ProductInfo from '../../components/detail/overview/ProductInfo';
@@ -31,17 +31,7 @@ const ProductDetail = () => {
 
   const { data: filteredRooms } = useFilteredRoomData(id, filters);
 
-  useEffect(() => {
-    console.log(JSON.stringify(filteredRooms));
-  }, []);
-
-  const avgRating =
-    reviews && reviews.length
-      ? (
-          reviews.reduce((acc, cmd) => acc + (cmd.rating || 0), 0) /
-          reviews.length
-        ).toFixed(1)
-      : '0.0';
+  const { data: avgRating } = useGetAverageRatings(id);
 
   const handleReFetch = async () => {
     await refetch();

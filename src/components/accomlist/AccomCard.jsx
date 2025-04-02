@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TypeMapping from '../common/TypeMapping';
 import {
@@ -68,7 +68,7 @@ const AccomCard = ({ accommodation }) => {
 
                   <div className="badge bg-yellow-500 text-xs gap-0.5">
                     <BiSolidStar />
-                    {(accommodation.average_rating || 0).toFixed(1)}
+                    {(accommodation.avg_rating || 0).toFixed(1)}
                   </div>
                 </div>
 

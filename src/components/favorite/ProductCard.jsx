@@ -58,7 +58,7 @@ const ProductCard = ({ favorite }) => {
 
                 <div className="badge bg-yellow-500 text-xs gap-0.5">
                   <BiSolidStar />
-                  {(favorite.average_rating || 0).toFixed(1)}
+                  {(favorite.avg_rating || 0).toFixed(1)}
                 </div>
               </div>
 

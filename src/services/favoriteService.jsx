@@ -62,9 +62,6 @@ export const checkFavorite = async (userId, accommodationId) => {
 export const getFavoriteAccomm = async (userId) => {
   const userData = await getUserWishlist(userId);
 
-  // 평균 평점 조회
-  const averageRatingMap = await getAverageRatings();
-
   // 숙소
   const accomPromises = userData.wishlist.map(async (item) => {
     const accomDoc = doc(db, 'accommodations', item);
@@ -72,10 +69,12 @@ export const getFavoriteAccomm = async (userId) => {
 
     if (accomSnap.exists()) {
       const data = accomSnap.data();
+      const avgRating = await getAverageRatings(item);
+
       return {
         ...data,
+        avg_rating: avgRating,
         id: accomSnap.id,
-        average_rating: averageRatingMap[accomSnap.id] || null,
       };
     } else {
       return null;

@@ -156,20 +156,6 @@ export const getOrderData = async (userId) => {
 export const checkout = async (orderItem, userId) => {
   const ordersCollection = collection(db, 'orders');
 
-  // 재주문 영구 봉인 코드ㅋㅋㅋㅋㅋ
-  // const q = query(
-  //   ordersCollection,
-  //   where('user_id', '==', orderItem.user_id),
-  //   where('room_id', '==', orderItem.room_id),
-  // );
-  // const querySnapshot = await getDocs(q);
-
-  // // 이미 존재하는 주문이 있으면 종료
-  // if (!querySnapshot.empty) {
-  //   console.error('이미 존재하는 주문입니다. room_id:', orderItem.room_id);
-  //   return;
-  // }
-
   // 주문을 orders 컬렉션에 추가
   // 컬랙션에 추가한 문서정보 획득
   const orderDoc = await addDoc(ordersCollection, orderItem);

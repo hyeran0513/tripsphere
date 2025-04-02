@@ -59,12 +59,17 @@ const getAccommodationIds = async (accommodationIds, filters) => {
 
 // 숙소 전체 조회 및 조건 필터
 export const getFilteredAccommodations = async (filters) => {
-  // 숙소 데이터 조회
   const accomSnapshot = await getDocs(collection(db, 'accommodations'));
-  let docs = accomSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  let docs = await Promise.all(
+    accomSnapshot.docs.map(async (doc) => {
+      const avgRating = await getAverageRatings(doc.id);
+      return {
+        id: doc.id,
+        avg_rating: avgRating,
+        ...doc.data(),
+      };
+    }),
+  );
 
   // 도시 대분류
   if (filters.city && filters.city !== '전체') {
@@ -125,13 +130,9 @@ export const getFilteredAccommodations = async (filters) => {
     roomMap[accomId].push({ id: doc.id, ...room });
   });
 
-  // 평균 평점 조회
-  const averageRatingMap = await getAverageRatings();
-
   docs = docs.map((doc) => ({
     ...doc,
     rooms: roomMap[doc.id] || [],
-    average_rating: averageRatingMap[doc.id] || null,
   }));
 
   return docs;

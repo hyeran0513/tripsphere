@@ -1,9 +1,12 @@
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   orderBy,
   query,
+  runTransaction,
   serverTimestamp,
   where,
 } from 'firebase/firestore';
@@ -55,35 +58,33 @@ export const addReview = async (review) => {
 
     const docRef = await addDoc(collection(db, 'reviews'), newReview);
 
+    // 숙소 정보 업데이트
+    const accomRef = doc(db, 'accommodations', review.accommodation_id);
+    await runTransaction(db, async (transaction) => {
+      const accomSnap = await transaction.get(accomRef);
+
+      if (!accomSnap.exists()) throw new Error('숙소 정보 없습니다.');
+
+      const { total_rating = 0, review_count = 0 } = accomSnap.data();
+
+      transaction.update(accomRef, {
+        total_rating: total_rating + review.rating,
+        review_count: review_count + 1,
+      });
+    });
+
     return docRef;
   } catch (error) {
     console.error('리뷰 추가 오류: ' + error.message);
   }
 };
 
-// 숙소별 평균 평점
-export const getAverageRatings = async () => {
-  const reviewSnapshot = await getDocs(collection(db, 'reviews'));
-  const reviewMap = {};
+// 숙소별 평균 평점 계산
+export const getAverageRatings = async (accomId) => {
+  const accomSnap = await getDoc(doc(db, 'accommodations', accomId));
+  const { total_rating = 0, review_count = 0 } = accomSnap.data() || {};
 
-  reviewSnapshot.forEach((doc) => {
-    const review = doc.data();
-    const accomId = review.accommodation_id;
-
-    if (!reviewMap[accomId]) {
-      reviewMap[accomId] = [];
-    }
-    reviewMap[accomId].push(review.rating);
-  });
-
-  const averageMap = {};
-
-  for (const accomId in reviewMap) {
-    const ratings = reviewMap[accomId];
-    const average =
-      ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length;
-    averageMap[accomId] = Math.round(average * 10) / 10;
-  }
-
-  return averageMap;
+  return review_count > 0
+    ? Math.round((total_rating / review_count) * 10) / 10
+    : 0;
 };

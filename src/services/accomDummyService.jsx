@@ -89,7 +89,6 @@ export const addAccommodations = async () => {
         place_name: '서울특별시 강남구 언주로 506',
         sub_city: '강남구',
       },
-      rating: 4.5,
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/06/28/16/1280/62bb331b64efe8.30673986.jpg',
@@ -113,7 +112,6 @@ export const addAccommodations = async () => {
         place_name: '서울특별시 강남구 테헤란로 610',
         sub_city: '강남구',
       },
-      rating: 4.6,
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/10/26/14/1280/6359424d363cb1.59078840.jpg',
@@ -139,7 +137,6 @@ export const addAccommodations = async () => {
         place_name: '서울특별시 강남구 테헤란로10길 5',
         sub_city: '강남구',
       },
-      rating: 4.6,
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/10/26/09/1280/6359010f6cb429.36101357.jpg',
@@ -163,7 +160,6 @@ export const addAccommodations = async () => {
         place_name: '서울특별시 강남구 봉은사로 130',
         sub_city: '강남구',
       },
-      rating: 4.6,
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/08/25/15/1280/6307957c193de7.66392039.jpg',
@@ -188,7 +184,6 @@ export const addAccommodations = async () => {
         place_name: '서울특별시 강남구 영동대로 618',
         sub_city: '강남구',
       },
-      rating: 4.6,
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/08/25/15/1280/6307957c193de7.66392039.jpg',
@@ -213,7 +208,6 @@ export const addAccommodations = async () => {
         place_name: '경기도 가평군 가평읍 태봉두밀로 494-37',
         sub_city: '가평군',
       },
-      rating: 4.6,
       type: 'pension',
       images: [
         'https://yaimg.yanolja.com/v5/2025/01/04/01/1280/67788e31a68b35.12454781.jpg',
@@ -237,7 +231,6 @@ export const addAccommodations = async () => {
         place_name: '경기도 가평군 가평읍 태봉두밀로 475',
         sub_city: '가평군',
       },
-      rating: 4.5,
       type: 'pension',
       images: [
         'https://yaimg.yanolja.com/v5/2024/12/26/04/1280/676ce1c257c322.79610863.jpg',
@@ -262,7 +255,6 @@ export const addAccommodations = async () => {
         place_name: '경기도 가평군 가평읍 호반로 2329-61',
         sub_city: '가평군',
       },
-      rating: 4.0,
       type: 'pension',
       images: [
         'https://yaimg.yanolja.com/v5/2025/01/25/10/1280/6794b916d7d944.07169048.jpg',
@@ -286,7 +278,6 @@ export const addAccommodations = async () => {
         place_name: '경기도 가평군 가평읍 북한강변로 481-25',
         sub_city: '가평군',
       },
-      rating: 4.0,
       type: 'pension',
       images: [
         'https://yaimg.yanolja.com/v5/2024/12/06/07/1280/6752a310ca7368.92898056.jpg',
@@ -307,7 +298,6 @@ export const addAccommodations = async () => {
         place_name: '경기도 가평군 가평읍 복장포길 118-3',
         sub_city: '강남구',
       },
-      rating: 4.5,
       type: 'hotel',
       images: [
         'https://yaimg.yanolja.com/v5/2024/11/15/10/1280/67371fa0ea9ac3.01996822.jpg',
@@ -330,7 +320,6 @@ export const addAccommodations = async () => {
         place_name: '경기도 양평군 단월면 단월로 600',
         sub_city: '양평군',
       },
-      rating: 3.5,
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2024/09/04/11/1280/66d8491cbc7502.50230503.jpg',
@@ -355,7 +344,6 @@ export const addAccommodations = async () => {
         place_name: '경기도 가평군 상면 임초밤안골로 313',
         sub_city: '가평군',
       },
-      rating: 4.5,
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2020/02/25/16/1280/5e54d0b2ef95a5.44638934.jpg',
@@ -380,7 +368,6 @@ export const addAccommodations = async () => {
         place_name: '강원특별자치도 영월군 무릉도원면 무릉법흥로 1078-16',
         sub_city: '가평군',
       },
-      rating: 4.5,
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2021/07/06/16/1280/60e480bb43a087.59238567.jpg',
@@ -404,7 +391,6 @@ export const addAccommodations = async () => {
         place_name: '강원도 영월군 영월읍 동강로 871-19',
         sub_city: '영월군',
       },
-      rating: 5.0,
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2022/03/08/19/1280/6227ae5bd16857.12736285.jpg',
@@ -429,7 +415,6 @@ export const addAccommodations = async () => {
         place_name: '강원도 속초시 장성천길 151',
         sub_city: '속초시',
       },
-      rating: 5.0,
       type: 'camping',
       images: [
         'https://yaimg.yanolja.com/v5/2020/11/23/18/1280/5fbb81ad8087c3.44335588.jpg',
@@ -451,7 +436,6 @@ export const addAccommodations = async () => {
         place_name: '강원도 양양군 현북면 기사문길 21',
         sub_city: '양양군',
       },
-      rating: 5.0,
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2021/04/13/14/1280/6075a8362ee000.99543666.jpg',
@@ -474,7 +458,6 @@ export const addAccommodations = async () => {
         place_name: '강원도 양양군 강현면 진미로 348-10',
         sub_city: '양양군',
       },
-      rating: 3.5,
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2024/11/18/06/1280/673ad895a182d5.49033304.jpg',
@@ -496,7 +479,6 @@ export const addAccommodations = async () => {
         place_name: '강원도 양양군 강현면 물치1길 22-1',
         sub_city: '양양군',
       },
-      rating: 3.5,
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/06/08/17/1280/62a0dbf2ada053.38491851.jpg',
@@ -519,7 +501,6 @@ export const addAccommodations = async () => {
         place_name: '충청북도 충주시 성남2길 18-1',
         sub_city: '충주시',
       },
-      rating: 3.5,
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/09/13/11/1280/63206d25674330.91116082.jpg',
@@ -543,7 +524,6 @@ export const addAccommodations = async () => {
         place_name: '제주특별자치도 제주시 삼무로1길 3',
         sub_city: '제주시',
       },
-      rating: 3.5,
       type: 'motel',
       images: [
         'https://yaimg.yanolja.com/v5/2022/03/15/13/1280/623097d9b83898.45434650.jpg',
@@ -567,7 +547,6 @@ export const addAccommodations = async () => {
         place_name: '전라북도 전주시 완산구 은행로 5-9',
         sub_city: '제주시',
       },
-      rating: 3.5,
       type: 'guesthouse',
       images: [
         'https://yaimg.yanolja.com/v5/2024/09/04/12/1280/66d84cb07279b8.71820674.jpg',
@@ -591,7 +570,6 @@ export const addAccommodations = async () => {
         place_name: '전라북도 전주시 완산구 전동성당길 33-9',
         sub_city: '전주시 완산구',
       },
-      rating: 3.5,
       type: 'guesthouse',
       images: [
         'https://yaimg.yanolja.com/v5/2023/03/23/17/1280/641c8864260dc3.33974343.jpg',
@@ -616,7 +594,6 @@ export const addAccommodations = async () => {
         place_name: '전라북도 전주시 완산구 간납로 10',
         sub_city: '전주시 완산구',
       },
-      rating: 3.5,
       type: 'guesthouse',
       images: [
         'https://yaimg.yanolja.com/v5/2023/03/29/15/1280/64245633dd5170.25551168.jpg',
@@ -639,7 +616,6 @@ export const addAccommodations = async () => {
         place_name: '부산광역시 해운대구 해운대해변로237번길 12',
         sub_city: '해운대구',
       },
-      rating: 3.5,
       type: 'resort',
       images: [
         'https://yaimg.yanolja.com/v5/2024/05/29/14/1280/66573c91eb9d64.12010940.jpg',

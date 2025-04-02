@@ -11,6 +11,7 @@ const SignIn = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState({ title: '', description: '' });
   const [modalType, setModalType] = useState('error');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const showModal = (type, title, description) => {
@@ -21,9 +22,15 @@ const SignIn = () => {
 
   const loginMutation = useSignInMutation(state, dispatch, showModal, navigate);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    loginMutation.mutate();
+    setLoading(true);
+
+    try {
+      await loginMutation.mutateAsync();
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,8 +41,7 @@ const SignIn = () => {
             to="/"
             className="block text-center">
             <p className="font-bold text-2xl">
-              TRIP
-              <span className="text-indigo-500">SPHERE</span>
+              TRIP<span className="text-indigo-500">SPHERE</span>
             </p>
           </Link>
 
@@ -76,8 +82,9 @@ const SignIn = () => {
             <div>
               <button
                 type="submit"
-                className="cursor-pointer flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-indigo-600">
-                로그인
+                className="cursor-pointer flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-indigo-600"
+                disabled={loading}>
+                {loading ? '로그인 중...' : '로그인'}
               </button>
             </div>
           </form>

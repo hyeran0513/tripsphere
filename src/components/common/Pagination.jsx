@@ -6,28 +6,35 @@ const Pagination = ({ data = [], pagePerItem, setCurrentPageData }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
 
-  if (!data.length) return null;
-
   const totalPages = Math.ceil(data.length / pagePerItem);
   const maxVisiblePages = 5;
 
   // 데이터 잘라내기
   useEffect(() => {
-    const startIdx = (currentPage - 1) * pagePerItem;
-    setCurrentPageData(data.slice(startIdx, startIdx + pagePerItem));
+    if (data.length > 0) {
+      const startIdx = (currentPage - 1) * pagePerItem;
+      setCurrentPageData(data.slice(startIdx, startIdx + pagePerItem));
+    }
   }, [data, pagePerItem, currentPage, setCurrentPageData]);
 
   // 페이지 변경 핸들러
   const handlePageChange = (newPage) => {
-    searchParams.set('page', newPage);
-    setSearchParams(searchParams);
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams);
+      newParams.set('page', newPage);
+      return newParams;
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // 빈 데이터일 경우
+  if (!data.length) {
+    return null;
+  }
 
   // 페이지네이션 범위 계산
   let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
   let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
   if (endPage - startPage + 1 < maxVisiblePages) {
     startPage = Math.max(1, endPage - maxVisiblePages + 1);
   }

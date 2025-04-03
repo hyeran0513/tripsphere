@@ -2,8 +2,13 @@
 
 ### **📍 미리보기**
 
+#### 상세 페이지
 ![Animation128](https://github.com/user-attachments/assets/1cb7f65c-0921-4283-a5d1-a4c8d37b3467)
 
+#### 결제 페이지
+![Animation129](https://github.com/user-attachments/assets/2a60c30a-58af-4cb1-b806-6e3380a05c76)
+
+---
 
 ### **📍 팀원 역할 및 담당 업무**
 

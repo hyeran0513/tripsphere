@@ -4,7 +4,6 @@ import SubLayout from '../layouts/SubLayout';
 import ResetPassword from '../pages/auth/ResetPassword';
 import SignIn from '../pages/auth/SignIn';
 import SignUp from '../pages/auth/SignUp';
-import Dummy from '../pages/Dummy';
 import NotFound from '../pages/error/NotFound';
 import Home from '../pages/Home';
 import OrderConfirmation from '../pages/order/OrderConfirmation';
@@ -41,7 +40,6 @@ const router = createBrowserRouter([
       { path: 'signin', element: <SignIn /> },
       { path: 'signup', element: <SignUp /> },
       { path: 'resetpassword', element: <ResetPassword /> },
-      { path: 'dummy', element: <Dummy /> },
     ],
   },
   { path: '*', element: <NotFound /> },

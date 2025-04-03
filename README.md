@@ -1,17 +1,5 @@
 ## 여행 예약 서비스 구축
 
-### **📍 미리보기**
-
-#### 상세 페이지
-
-![Animation128](https://github.com/user-attachments/assets/1cb7f65c-0921-4283-a5d1-a4c8d37b3467)
-
-#### 결제 페이지
-
-![Animation129](https://github.com/user-attachments/assets/2a60c30a-58af-4cb1-b806-6e3380a05c76)
-
----
-
 ### **📍 팀원 역할 및 담당 업무**
 
 | 이름   | 역할 | 담당 업무                                                                                                                                                                                                                            |
@@ -20,6 +8,22 @@
 | 박세진 | 팀원 | 주문 완료 페이지,<br/> 결제 페이지,<br/> UI/UX 설계                                                                                                                                                                                  |
 | 최승이 | 팀원 | 마이페이지,<br/> 찜 목록 페이지,<br/> UI/UX 설계                                                                                                                                                                                     |
 | 형주희 | 팀원 | 주문 내역 페이지,<br/> 장바구니 페이지,<br/> UI/UX 설계                                                                                                                                                                              |
+
+---
+
+### **📍 미리보기**
+
+#### - 상세 페이지
+
+![Animation128](https://github.com/user-attachments/assets/1cb7f65c-0921-4283-a5d1-a4c8d37b3467)
+
+#### - 결제 페이지
+
+![Animation129](https://github.com/user-attachments/assets/2a60c30a-58af-4cb1-b806-6e3380a05c76)
+
+#### - 숙소 목록 및 다크 모드
+
+![Animation130](https://github.com/user-attachments/assets/f5e19ecb-ae68-4b21-97c1-a824b6b79d27)
 
 ---
 

@@ -13,7 +13,6 @@ const OrderConfirmState = () => {
   } = useRoomSelectionStore();
 
   const { resetRoomIds, clearReservationInfo } = useCheckoutStore();
-
   const { orderIds, resetOrderIds } = useOrderStore();
 
   useEffect(() => {

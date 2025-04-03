@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-const useCheckoutStore = create()(
+const useCheckoutStore = create(
   persist(
     (set) => ({
       roomIds: [],

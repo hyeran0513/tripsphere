@@ -10,7 +10,7 @@ const EmailPassword = ({ onNext, showToast }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
-  const mutation = useSignupMutation(showToast);
+  const { mutate } = useSignupMutation(showToast, onNext);
 
   const handleRegister = (e) => {
     if (e) e.preventDefault();
@@ -24,15 +24,13 @@ const EmailPassword = ({ onNext, showToast }) => {
       return;
     }
 
-    mutation.mutate({
+    mutate({
       email: state.email,
       password: state.password,
       username: state.username,
       nickname: state.nickname,
       phone: state.phone,
     });
-
-    onNext();
   };
 
   return (

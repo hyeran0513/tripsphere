@@ -11,14 +11,19 @@ import { useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
 
 // 이메일 & 비밀번호
-export const useSignupMutation = (showToast) => {
+export const useSignupMutation = (showToast, onNext) => {
   return useMutation({
     mutationFn: (userData) => signupUser({ ...userData, showToast }),
     onSuccess: (user) => {
       console.log('회원가입 성공:', user);
+      onNext();
     },
     onError: (error) => {
-      console.error('회원가입 실패:', error.message);
+      if (error.code === 'auth/email-already-in-use') {
+        showToast('error', '이미 회원가입이 된 계정입니다.');
+      } else {
+        console.error('회원가입 실패:', error.message);
+      }
     },
   });
 };

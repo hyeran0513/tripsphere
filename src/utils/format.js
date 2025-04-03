@@ -152,3 +152,9 @@ export const formatPhoneNumber = (value) => {
     return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
   return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
 };
+
+// hh:mm 분으로 변환
+export const timeToMinutes = (label) => {
+  const [h, m] = label.split(':');
+  return parseInt(h) * 60 + parseInt(m);
+};

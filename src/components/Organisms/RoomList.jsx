@@ -1,6 +1,6 @@
 import React from 'react';
 import { BiUser, BiSearchAlt } from 'react-icons/bi';
-import RoomCard from '../Molecules/RoomCard';
+import RoomCard from './RoomCard';
 import { PiBabyLight } from 'react-icons/pi';
 import RoomTypeMapping from '../Atoms/RoomTypeMapping';
 import NoData from '../Atoms/NoData';

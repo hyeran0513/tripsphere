@@ -81,7 +81,7 @@ const ProductGallery = ({ product }) => {
 
       {/* 이미지 영역 (4개 이상일 경우) */}
       {product?.images?.length >= 4 && (
-        <div className="mx-auto max-w-2xl max-w-7xl grid grid-cols-3 gap-x-2 h-[500px] overflow-hidden rounded-l-lg rounded-r-lg">
+        <div className="mx-auto max-w-2xl max-w-7xl grid grid-cols-3 gap-x-2 overflow-hidden rounded-l-lg rounded-r-lg">
           <img
             alt={product?.name}
             src={product?.images[0]}

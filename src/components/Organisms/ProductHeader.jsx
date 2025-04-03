@@ -6,7 +6,7 @@ import {
   useControlFavorite,
 } from '../../hooks/useFavoriteData';
 import useAuthStore from '../../stores/useAuthStore';
-import ToastMessage from './ToastMessage';
+import ToastMessage from '../Atoms/ToastMessage';
 
 const ProductHeader = ({ product, productId, hideFavorite }) => {
   const [toast, setToast] = useState(null);
@@ -19,8 +19,7 @@ const ProductHeader = ({ product, productId, hideFavorite }) => {
   };
 
   const { isAuthenticated } = useAuthStore();
-  const { mutate: favoriteMutation, isLoading: isFavoriteLoading } =
-    useControlFavorite(showToast, user?.uid);
+  const { mutate: favoriteMutation } = useControlFavorite(showToast, user?.uid);
   const { data: isFavorite } = useCheckFavorite(user?.uid, productId);
 
   // 찜 버튼 핸들러

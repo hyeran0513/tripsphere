@@ -3,12 +3,12 @@ import PageHeader from '../../components/Molecules/PageHeader';
 import { useAuthForm } from '../../hooks/useAuthForm';
 import { useEffect, useState } from 'react';
 import InputField from '../../components/Atoms/InputField';
-import { useEditUserData, useUserData } from '../../hooks/useUserData';
+import { useEditUserData } from '../../hooks/useUserData';
 import NotificationModal from '../../components/Molecules/NotificationModal';
 import { validateForm } from '../../utils/validation';
-import Loading from '../../components/Molecules/Loading';
 import { formatPhoneNumber } from '../../utils/format';
 import InputErrorMessage from '../../components/Atoms/InputErrorMessage';
+import useAuthStore from '../../stores/useAuthStore';
 
 const breadcrumb = [
   { link: '/mypage', text: '마이페이지' },
@@ -18,7 +18,7 @@ const breadcrumb = [
 const Profile = () => {
   const navigate = useNavigate();
   const [state, dispatch] = useAuthForm();
-  const { data, isLoading, error } = useUserData();
+  const { user } = useAuthStore();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState({ title: '', description: '' });
@@ -31,15 +31,15 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (data) {
-      dispatch({ type: 'SET_EMAIL', payload: data.email || '' });
+    if (user) {
+      dispatch({ type: 'SET_EMAIL', payload: user.email || '' });
       dispatch({ type: 'SET_PASSWORD', payload: '' });
       dispatch({ type: 'SET_PASSWORDCONFIRM', payload: '' });
-      dispatch({ type: 'SET_USERNAME', payload: data.username || '' });
-      dispatch({ type: 'SET_NICKNAME', payload: data.nickname || '' });
-      dispatch({ type: 'SET_PHONE', payload: data.phone || '' });
+      dispatch({ type: 'SET_USERNAME', payload: user.username || '' });
+      dispatch({ type: 'SET_NICKNAME', payload: user.nickname || '' });
+      dispatch({ type: 'SET_PHONE', payload: user.phone || '' });
     }
-  }, [data, dispatch]);
+  }, [user, dispatch]);
 
   const { mutate } = useEditUserData(showModal);
 
@@ -65,9 +65,6 @@ const Profile = () => {
 
     mutate(updatedData);
   };
-
-  if (isLoading) return <Loading />;
-  if (error) return <>오류</>;
 
   return (
     <>

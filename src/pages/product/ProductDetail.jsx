@@ -11,7 +11,7 @@ import ProductInfo from '../../components/Molecules/ProductInfo';
 import SearchForm from '../../components/Molecules/SearchForm';
 import HostInfo from '../../components/Molecules/HostInfo';
 import ProductDescription from '../../components/Molecules/ProductDescription';
-import ProductHeader from '../../components/Atoms/ProductHeader';
+import ProductHeader from '../../components/Organisms/ProductHeader';
 import Loading from '../../components/Molecules/Loading';
 import NavBar from '../../components/Molecules/NavBar';
 

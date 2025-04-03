@@ -3,18 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { BiCog, BiSolidUser } from 'react-icons/bi';
 import InputField from '../Atoms/InputField';
 import { useAuthForm } from '../../hooks/useAuthForm';
-import { useUserData, useVerifyPassword } from '../../hooks/useUserData';
+import { useVerifyPassword } from '../../hooks/useUserData';
 import Loading from '../Molecules/Loading';
 import Modal from '../Molecules/Modal';
 import ToastMessage from '../Atoms/ToastMessage';
 import InputErrorMessage from '../Atoms/InputErrorMessage';
+import useAuthStore from '../../stores/useAuthStore';
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const [state, dispatch] = useAuthForm();
   const [showPassword, setShowPassword] = useState(false);
-  const { data: userInfo, isLoading, error } = useUserData();
   const { mutate: verify } = useVerifyPassword();
+  const { user } = useAuthStore();
 
   // 본인 인증 폼 제출
   const handleVerify = () => {
@@ -39,20 +40,17 @@ const UserProfile = () => {
     setTimeout(() => setToast(null), 3000);
   };
 
-  if (isLoading) return <Loading />;
-  if (error) return <>오류</>;
-
   return (
     <>
       <div className="flex px-4 mb-8">
         {/* 프로필사진 */}
         <div className="avatar">
           <div className="w-[80px] h-[80px] rounded-lg overflow-hidden">
-            {userInfo?.profile_image ? (
+            {user?.profile_image ? (
               <img
                 className="w-[100%] h-[100%] object-cover"
-                src={userInfo?.profile_image}
-                alt={userInfo?.username}
+                src={user?.profile_image}
+                alt={user?.username}
               />
             ) : (
               <div className="flex justify-center items-center w-[100%] h-[100%] bg-gray-100 dark:bg-base-200">
@@ -71,13 +69,11 @@ const UserProfile = () => {
             <div className="flex justify-between text-base font-medium ">
               <h3>
                 <a href="#">
-                  <strong>{userInfo?.username}님</strong>
+                  <strong>{user?.username}님</strong>
                 </a>
               </h3>
             </div>
-            <div className="mt-1 text-sm text-gray-500">
-              {userInfo?.nickname}
-            </div>
+            <div className="mt-1 text-sm text-gray-500">{user?.nickname}</div>
           </div>
         </div>
 

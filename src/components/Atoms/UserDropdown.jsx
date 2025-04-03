@@ -1,16 +1,21 @@
 import { BiUser } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUserData } from '../../hooks/useUserData';
 import useAuthStore from '../../stores/useAuthStore';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
 
 const UserDropdown = () => {
-  const { isAuthenticated, logout } = useAuthStore();
-  const { data: userData } = useUserData();
+  const { isAuthenticated, logout, subscribeAuthChanges, cleanupAuthListener } =
+    useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    subscribeAuthChanges();
+    return () => cleanupAuthListener();
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -34,7 +39,7 @@ const UserDropdown = () => {
         <ul className="absolute right-0 z-10 mt-2 w-52 rounded-box bg-base-100 p-2 shadow menu menu-sm">
           {isAuthenticated && (
             <li>
-              <Link to="/mypage">{userData?.username}님 마이페이지</Link>
+              <Link to="/mypage">{user?.username}님 마이페이지</Link>
             </li>
           )}
           <li>

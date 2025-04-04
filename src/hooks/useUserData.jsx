@@ -19,11 +19,14 @@ export const useUserData = () => {
 
 // 사용자 정보 수정
 export const useEditUserData = (showModal) => {
-  const { user } = useAuthStore();
+  const { user, login } = useAuthStore();
 
   return useMutation({
     mutationFn: (updatedData) => editUserData(user?.uid, updatedData),
-    onSuccess: () => {
+    onSuccess: async () => {
+      const updatedUser = await fetchUserData(user.uid);
+      login({ ...user, ...updatedUser });
+
       showModal('success', '', '유저 정보가 수정되었습니다.');
     },
     onError: (error) => {

@@ -117,7 +117,10 @@ const ProductDetail = () => {
           </div>
           <div className="flex items-center gap-0.5">
             <BiSolidStar className="text-orange-400" />
-            <span className="text-orange-400">{avgRating}</span>
+            <span className="text-orange-400">
+              {' '}
+              {(avgRating || 0).toFixed(1)}
+            </span>
           </div>
         </h3>
 

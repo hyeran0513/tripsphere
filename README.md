@@ -86,16 +86,6 @@
 
 ---
 
-### **📍 배포 및 시연영상**
-
-**시연 영상**
+### **📍 시연영상**
 
 https://www.youtube.com/watch?v=1Ja1eEiGR60
-
-**배포 URL**
-
-[tripsphere-96e2d.web.app/](https://tripsphere-96e2d.web.app/)
-
-**배포 QR 코드**
-
-![image](https://github.com/user-attachments/assets/452c97b7-3651-4735-b3a5-1b7d4fbeb8f0)
